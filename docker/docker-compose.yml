@@ -1,0 +1,51 @@
+version: "3.5"
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      target: developement
+    image: nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    networks:
+      - transcendence_network
+    restart: on-failure
+
+  backend:
+    build: 
+      context: ./nestjs
+      dockerfile: Dockerfile
+      target: developement
+    image: nestjs
+    container_name: nestjs
+    networks:
+      - transcendence_network
+    depends_on:
+      - nginx
+      - postgres
+    restart: on-failure
+
+  frontend:
+    build: 
+      context: ./angular
+      dockerfile: Dockerfile
+      target: developement
+    image: angular
+    container_name: angular
+    networks:
+      - transcendence_network
+    depends_on:
+      - nginx
+    restart: on-failure
+  
+  postgres:
+    image: postgres:10.4
+    restart: on-failure
+
+
+
+networks:
+  transcendence_network:
+      driver: bridge
