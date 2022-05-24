@@ -1,0 +1,57 @@
+version: "3.5"
+services:
+  backend:
+    build: 
+      context: ./src/backend
+      dockerfile: Dockerfile
+      target: development
+    image: backend
+    container_name: backend
+    volumes:
+      - ./src/backend:/transcendence/backend
+      - /transcendence/backend/node_modules
+    command: npm run start:debug
+    networks:
+      - transcendence_network
+    depends_on:
+      - postgres
+    ports:
+      - 3000:3000
+    restart: on-failure
+
+  frontend:
+    build: 
+      context: ./src/frontend
+      dockerfile: Dockerfile
+      target: development
+    image: frontend
+    container_name: frontend
+    volumes:
+      - ./src/frontend:/transcendence/frontend
+      - /transcendence/frontend/node_modules
+    command: npm run start
+    ports:
+      - 4200:4200
+    networks:
+      - transcendence_network
+    restart: on-failure
+  
+  postgres:
+    build: 
+      context: ./docker/postgres
+      dockerfile: Dockerfile
+    image: postgres
+    container_name: postgres
+    networks:
+      - transcendence_network
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=rootpass
+      - APP_DB_USER=dockeruser
+      - APP_DB_PASS=dockerpass
+      - APP_DB_NAME=transcendence
+    restart: on-failure
+
+networks:
+  transcendence_network:
+      driver: bridge
