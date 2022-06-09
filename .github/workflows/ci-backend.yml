@@ -1,0 +1,33 @@
+name: CI backend
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install node modules (dependencies)
+      run: npm --prefix src/backend install
+
+    - name: Compile backend
+      run: npm --prefix src/backend run build
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install node modules (dependencies)
+      run: npm --prefix src/backend install
+
+    - name: Run tests with jest
+      run: npm --prefix src/backend test
