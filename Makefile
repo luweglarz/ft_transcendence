@@ -5,8 +5,12 @@ DOCKER_VOLUME_LS= $(shell docker volume ls -q)
 all: build
 
 build:
-	docker-compose  up --build 
-	@echo "`tput  setaf 2` Server build and up"
+	docker-compose up --build 
+	@echo "`tput  setaf 2` Server built and up"
+
+up:
+	docker-compose up
+	@echo "`tput  setaf 2` Server up"
 
 run:
 	docker-compose start
