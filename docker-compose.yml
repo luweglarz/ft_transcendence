@@ -45,12 +45,15 @@ services:
     networks:
       - transcendence_network
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=rootpass
-      - APP_DB_USER=dockeruser
-      - APP_DB_PASS=dockerpass
-      - APP_DB_NAME=transcendence
+      - POSTGRES_USER=dockeruser
+      - POSTGRES_PASSWORD=dockerpass
+      - POSTGRES_DB=transcendance
+      # - APP_DB_USER=dockeruser # Is it necessary ?
+      # - APP_DB_PASS=dockerpass
+      # - APP_DB_NAME=transcendence
     restart: on-failure
+    ports:
+      - 5432:5432
 
 networks:
   transcendence_network:
