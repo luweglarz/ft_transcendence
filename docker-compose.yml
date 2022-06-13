@@ -17,6 +17,7 @@ services:
       - postgres
     ports:
       - 3000:3000
+      - 5555:5555 # prisma studio
     restart: on-failure
 
   frontend:
@@ -54,6 +55,7 @@ services:
     restart: on-failure
     ports:
       - 5432:5432
+    # TODO: add a volume
 
 networks:
   transcendence_network:
