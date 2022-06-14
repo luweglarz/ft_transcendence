@@ -46,7 +46,7 @@ jobs:
       run: docker-compose up -d --build
 
     - name: Run tests with jest
-      run: npm --prefix src/backend test
+      run: npm --prefix src/backend run test:ci
     
     - name: Stop containers
       if: always()
