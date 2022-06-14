@@ -7,7 +7,7 @@ import { PongModule } from './pong/pong.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
