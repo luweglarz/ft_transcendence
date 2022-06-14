@@ -20,21 +20,21 @@ jobs:
   test:
     # needs: build
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: dockeruser
-          POSTGRES_PASSWORD: dockerpass
-          POSTGRES_DB: transcendance
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+    # services:
+    #   postgres:
+    #     image: postgres
+    #     env:
+    #       POSTGRES_USER: dockeruser
+    #       POSTGRES_PASSWORD: dockerpass
+    #       POSTGRES_DB: transcendance
+    #     # Set health checks to wait until postgres has started
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
+    #     ports:
+    #       - 5432:5432
 
     steps:
     - uses: actions/checkout@v3
@@ -42,5 +42,12 @@ jobs:
     - name: Install node modules (dependencies)
       run: npm --prefix src/backend install
 
+    - name: Start containers
+      run: docker-compose up -d --build
+
     - name: Run tests with jest
       run: npm --prefix src/backend test
+    
+    - name: Stop containers
+      if: always()
+      run: docker-compose down
