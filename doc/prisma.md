@@ -56,4 +56,34 @@ Note that the environment data to run these commands are only available in our d
 - for temporary changes: `npm run prisma:push`
 - for definitive changes (before a commit): `npm run prisma:migrate`
 
+More info: [reference: cli](https://www.prisma.io/docs/reference/api-reference/command-reference)
+
 ## Typescript client
+
+Now that our dabase is properly setup, we want to run queries from our backend code.
+For that we will need a client (provided by the npm dependency `@prisma/client`).
+
+Examples, based on the simple model above, where `service` is an instance of `PrismaClient`.
+
+### Create a user:
+```ts
+await service.user.create({
+  data: {
+    username: 'Agent Smith',
+  },
+});
+```
+
+### Find a user:
+
+```ts
+const user = await service.user.findFirst({
+  where: { id: 1 },
+});
+```
+
+### How we will invoke the client in practice
+
+We create a dedicated module with an injectable service `DbClientService` that extends the `PrismaClient` class.
+
+We only need to inject it in the constuctor of the services that will run queries on the database.
