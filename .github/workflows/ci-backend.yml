@@ -42,6 +42,10 @@ jobs:
     - name: Install node modules (dependencies)
       run: npm --prefix src/backend install
 
+    - name: Compile backend
+      run: npm --prefix src/backend run build
+
+    # TODO: Add cache to github actions
     - name: Start containers
       run: docker-compose up -d --build
 
