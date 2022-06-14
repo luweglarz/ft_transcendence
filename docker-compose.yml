@@ -18,6 +18,8 @@ services:
     ports:
       - 3000:3000
       - 5555:5555 # prisma studio
+    env_file:
+      - ./src/postgres/dev.env
     restart: on-failure
 
   frontend:
@@ -39,19 +41,14 @@ services:
   
   postgres:
     build: 
-      context: ./docker/postgres
+      context: ./src/postgres/docker
       dockerfile: Dockerfile
     image: postgres
     container_name: postgres
     networks:
       - transcendence_network
-    environment:
-      - POSTGRES_USER=dockeruser
-      - POSTGRES_PASSWORD=dockerpass
-      - POSTGRES_DB=transcendance
-      # - APP_DB_USER=dockeruser # Is it necessary ?
-      # - APP_DB_PASS=dockerpass
-      # - APP_DB_NAME=transcendence
+    env_file:
+      - ./src/postgres/dev.env
     restart: on-failure
     ports:
       - 5432:5432
