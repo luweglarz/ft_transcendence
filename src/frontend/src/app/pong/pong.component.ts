@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PongService } from './pong.service';
 
 @Component({
   selector: 'app-pong',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PongComponent implements OnInit {
 
-  constructor() { }
+  constructor(private pongService: PongService) { }
 
   ngOnInit(): void {
   }
 
+  buttonRequestCreateCustomGame(){
+    this.pongService.requestCreateCustomGame();
+  }
+
+  buttonRequestJoinGame(roomId: number){
+    this.pongService.requestJoinGameRoom(roomId);
+  }
 }
+
