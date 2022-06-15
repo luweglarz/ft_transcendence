@@ -26,7 +26,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
   handleDisconnect(client: Socket) {
-    this.clients.splice(this.clients.findIndex(element => {element == client}));
+    this.clients.splice(this.clients.findIndex(element => {element == client}), 1);
     this.logger.log("clientarray length " + this.clients.length);
     this.logger.log(`Client disconnected: ${client.id}`);
   }

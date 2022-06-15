@@ -4,7 +4,7 @@ import { Socket } from 'socket.io';
 @Injectable()
 export class GameService {
     createGameRoom(client: Socket): number{
-        var newRoomId = ( Math.random() * 100000 ) | 0;
+        var newRoomId = Math.floor(Math.random() * 100000);
 
         client.emit('newGameCreated', {roomId: newRoomId, mySocketId: client.id});
 
@@ -13,7 +13,7 @@ export class GameService {
     }
 
     removeGameRoom(roomId: number, rooms: number[]){
-        rooms.splice(rooms.findIndex(element => element == roomId));
+        rooms.splice(rooms.findIndex(element => element == roomId), 1);
     }
 
 }
