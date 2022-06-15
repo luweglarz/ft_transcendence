@@ -1,0 +1,26 @@
+
+name: CI lint
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install node modules (dependencies)
+      run: npm --prefix src/backend install && npm --prefix src/frontend install
+
+    - name: lint backend
+      run: npm --prefix src/backend run lint:check
+
+    - name: lint frontend
+      run: npm --prefix src/frontend run lint:check

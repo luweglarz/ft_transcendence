@@ -4,21 +4,20 @@ import { PongService } from './pong.service';
 @Component({
   selector: 'app-pong',
   templateUrl: './pong.component.html',
-  styleUrls: ['./pong.component.css']
+  styleUrls: ['./pong.component.css'],
 })
 export class PongComponent implements OnInit {
-
-  constructor(private pongService: PongService) { }
+  constructor(private pongService: PongService) {}
 
   ngOnInit(): void {
+    // TODO
   }
 
-  buttonRequestCreateCustomGame(){
+  buttonRequestCreateCustomGame() {
     this.pongService.requestCreateCustomGame();
   }
 
-  buttonRequestJoinGame(roomId: number){
+  buttonRequestJoinGame(roomId: number) {
     this.pongService.requestJoinGameRoom(roomId);
   }
 }
-
