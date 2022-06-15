@@ -39,8 +39,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - id: backend-node_modules-cache
+      uses: actions/cache@v3
+      with:
+          path: src/backend/node_modules
+          key: backend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/backend/package-lock.json') }}
+
     - name: Install node modules (dependencies)
       run: npm --prefix src/backend install
+      if: steps.backend-node_modules-cache.outputs.cache-hit != 'true'
 
     - name: Compile backend
       run: npm --prefix src/backend run build
