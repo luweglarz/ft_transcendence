@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="card-login">
+
+    <div class="logo-login">
+      <img src="/assets/images/Logo.png" alt="42Pong logo">
+    </div>
+
+    <p>
+      Please sign in with your 42's intranet account to play.
+    </p>
+
+    <button class="btn-login" (click)="login()">
+      <p>Sign in with</p>
+      <img class="icon-login" src="/assets/icons/42-icon.svg" height="24px" width="24px" alt="42 icon">
+    </button>
+
+    <mat-error *ngIf="wrongCredentials">Invalid credentials. Please try again...</mat-error>
+
+  </div>
+</div>
