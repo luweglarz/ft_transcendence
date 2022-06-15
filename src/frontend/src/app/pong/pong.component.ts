@@ -9,7 +9,9 @@ import { PongService } from './pong.service';
 export class PongComponent implements OnInit {
   constructor(private pongService: PongService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // TODO
+  }
 
   buttonRequestCreateCustomGame() {
     this.pongService.requestCreateCustomGame();
