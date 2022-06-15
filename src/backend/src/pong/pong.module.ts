@@ -6,6 +6,6 @@ import { GameRoomModule } from './game-room/game-room.module';
 @Module({
   controllers: [],
   providers: [GameGateway, GameService],
-  imports: [GameRoomModule]
+  imports: [GameRoomModule],
 })
 export class PongModule {}
