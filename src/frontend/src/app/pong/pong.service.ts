@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PongService {
-  
-  constructor(private socket: Socket) { }
+  constructor(private socket: Socket) {}
 
   requestCreateCustomGame(roomName: string){
     this.socket.emit("createCustomGame", roomName);
@@ -24,8 +23,7 @@ export class PongService {
     });
   }
 
-  close(){
+  close() {
     this.socket.disconnect();
   }
-
 }

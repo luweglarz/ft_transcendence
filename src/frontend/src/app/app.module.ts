@@ -6,15 +6,9 @@ import { AppComponent } from './app.component';
 import { PongModule } from './pong/pong.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    PongModule
-  ],
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, PongModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
