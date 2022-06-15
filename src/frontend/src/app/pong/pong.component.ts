@@ -14,11 +14,12 @@ export class PongComponent implements OnInit {
   }
 
   buttonRequestCreateCustomGame(){
-    this.pongService.requestCreateCustomGame();
+    //Be able to have custom name room
+    this.pongService.requestCreateCustomGame("noname");
   }
 
-  buttonRequestJoinGame(roomId: number){
-    this.pongService.requestJoinGameRoom(roomId);
+  buttonRequestJoinGame(roomName: string){
+    this.pongService.requestJoinGameRoom(roomName);
   }
 }
 
