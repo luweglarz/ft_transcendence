@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="card-register">
+      <form>
+        <div class="logo-register">
+          <img src="/assets/images/Logo.png" alt="42Pong logo">
+        </div>
+
+        <div class="avatar-register">
+          <label>Upload your avatar</label>
+          <img class="avatar" src="/assets/images/default-avatar.png">
+        </div>
+
+        <div class="forms-register">
+          <div class="form-register">
+            <label>Choose your username</label>
+            <input placeholder="Username" name="username" [(ngModel)]="username">
+          </div>
+
+          <button class="btn-register" (click)="register()">
+            <p>Register</p>
+            <img id="icon-login" src="/assets/icons/42-icon.svg" height="24px" width="24px" alt="42 icon">
+          </button>
+
+          <mat-error *ngIf="wrongCredentials">Invalid credentials. Please try again...</mat-error>
+        </div>
+      </form>
+
+    </div>
+</div>
