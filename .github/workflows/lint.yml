@@ -24,7 +24,7 @@ jobs:
           key: backend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/backend/package-lock.json') }}
 
     - name: Install node modules (backend dependencies)
-      run: npm --prefix src/backend install
+      run: npm --prefix src/backend clean-install
       if: steps.backend-node_modules-cache.outputs.cache-hit != 'true'
 
     - name: lint backend
@@ -38,7 +38,7 @@ jobs:
           key: frontend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/frontend/package-lock.json') }}
 
     - name: Install node modules (frontend dependencies)
-      run: npm --prefix src/frontend install
+      run: npm --prefix src/frontend clean-install
       if: steps.frontend-node_modules-cache.outputs.cache-hit != 'true'
 
     - name: lint frontend
