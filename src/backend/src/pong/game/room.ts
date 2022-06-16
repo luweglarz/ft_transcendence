@@ -1,9 +1,22 @@
 import { Socket } from 'socket.io';
 
 export class Room {
-    //should be the user data type instead of Socket
-    constructor(private playerArray: Socket[], private newUuid: string) {}
+  //should be the user data type instead of Socket
+  constructor(private playerArray: Socket[], private newUuid: string) {}
 
-    players: Socket[] = this.playerArray;
-    uuid: string = this.newUuid;
+  private _uuid: string = this.newUuid;
+
+  get uuid(): string {
+    return this._uuid;
+  }
+
+  private _players: Socket[] = this.playerArray;
+
+  set players(newPlayers: Socket[]) {
+    this._players = newPlayers;
+  }
+
+  get players(): Socket[] {
+    return this._players;
+  }
 }
