@@ -13,8 +13,15 @@ export class PongComponent implements OnInit {
     // TODO
   }
 
-  buttonRequestJoinMatchMaking() {
+  buttonRequestJoinNormalMatchMaking() {
     this.pongService.requestJoinNormalMatchMaking();
   }
 
+  buttonRequestLeaveNormalMatchMaking() {
+    this.pongService.requestLeaveNormalMatchMaking();
+  }
+
+  buttonRequestLeaveNormalGame() {
+    this.pongService.requestLeaveNormalGame();
+  }
 }
