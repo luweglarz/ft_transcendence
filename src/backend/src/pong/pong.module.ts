@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { GameMatchmakingGateway } from './game/game-matchmaking.gateway';
 import { GameGateway } from './game/game.gateway';
-import { GameService } from './game/game.service';
+import { GameMatchmakingGateway } from './matchmaking/game-matchmaking.gateway';
 
 @Module({
   controllers: [],
-  providers: [GameGateway, GameMatchmakingGateway, GameService],
+  providers: [GameGateway, GameMatchmakingGateway],
 })
 export class PongModule {}
