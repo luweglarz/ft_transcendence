@@ -9,6 +9,7 @@ services:
     container_name: backend
     volumes:
       - ./src/backend:/transcendence/backend
+      - transcendence_backend_modules:/transcendence/backend/node_modules
     command: npm run start:debug
     networks:
       - transcendence_network
@@ -30,6 +31,7 @@ services:
     container_name: frontend
     volumes:
       - ./src/frontend:/transcendence/frontend
+      - transcendence_frontend_modules:/transcendence/frontend/node_modules
     command: npm run start
     ports:
       - 4200:4200
@@ -55,3 +57,7 @@ services:
 networks:
   transcendence_network:
       driver: bridge
+
+volumes:
+  transcendence_backend_modules: {}
+  transcendence_frontend_modules: {}
