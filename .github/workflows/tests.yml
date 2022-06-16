@@ -1,4 +1,4 @@
-name: CI backend
+name: CI
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  tests:
     runs-on: ubuntu-latest
     # services:
     #   postgres:
@@ -66,10 +66,6 @@ jobs:
 
     - name: Start containers
       run: docker-compose up -d
-
-    - name: Wait until up
-      run: sleep 10
-      # run: while ! nc -z localhost 3000; do sleep 1; done
 
     - name: Run tests with jest
       run: npm --prefix src/backend run test:ci
