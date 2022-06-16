@@ -29,35 +29,40 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # # BACKEND Install and build
-    # - id: backend-node_modules-cache
-    #   uses: actions/cache@v3
-    #   with:
-    #       path: src/backend/node_modules
-    #       key: backend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/backend/package-lock.json') }}
-    # - name: Install node modules (dependencies)
-    #   run: npm --prefix src/backend clean-install
-    #   if: steps.backend-node_modules-cache.outputs.cache-hit != 'true'
+    # BACKEND Install and build
+    - id: backend-node_modules-cache
+      uses: actions/cache@v3
+      with:
+          path: src/backend/node_modules
+          key: backend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/backend/package-lock.json') }}
+    - name: Install node modules (dependencies)
+      run: npm --prefix src/backend clean-install
+      if: steps.backend-node_modules-cache.outputs.cache-hit != 'true'
 
-    # - name: Compile backend
-    #   run: npm --prefix src/backend run build
+    - name: Compile backend
+      run: npm --prefix src/backend run build
 
-    # # FRONTEND Install and build
-    # - id: frontend-node_modules-cache
-    #   uses: actions/cache@v3
-    #   with:
-    #       path: src/frontend/node_modules
-    #       key: frontend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/frontend/package-lock.json') }}
-    # - name: Install node modules (frontend dependencies)
-    #   run: npm --prefix src/frontend clean-install
-    #   if: steps.frontend-node_modules-cache.outputs.cache-hit != 'true'
+    # FRONTEND Install and build
+    - id: frontend-node_modules-cache
+      uses: actions/cache@v3
+      with:
+          path: src/frontend/node_modules
+          key: frontend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/frontend/package-lock.json') }}
+    - name: Install node modules (frontend dependencies)
+      run: npm --prefix src/frontend clean-install
+      if: steps.frontend-node_modules-cache.outputs.cache-hit != 'true'
 
-    # - name: Compile backend
-    #   run: npm --prefix src/frontend run build
+    - name: Compile backend
+      run: npm --prefix src/frontend run build
 
     # TODO: Add cache to github actions
     - name: Build containers
-      run: docker-compose build
+      run: |
+        sed -i '/^volumes/d' docker-compose.yml
+        sed -i '/transcendence_.*modules/d' docker-compose.yml
+        sed -i '/^RUN/d' src/backend/Dockerfile
+        sed -i '/^RUN/d' src/frontend/Dockerfile
+        docker-compose build
 
     - name: Start containers
       run: docker-compose up -d
