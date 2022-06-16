@@ -1,4 +1,4 @@
-FROM node:14 as development
+FROM node:18 as development
 
 WORKDIR /transcendence/frontend
 

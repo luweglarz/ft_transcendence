@@ -29,22 +29,38 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - id: backend-node_modules-cache
-      uses: actions/cache@v3
-      with:
-          path: src/backend/node_modules
-          key: backend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/backend/package-lock.json') }}
+    # # BACKEND Install and build
+    # - id: backend-node_modules-cache
+    #   uses: actions/cache@v3
+    #   with:
+    #       path: src/backend/node_modules
+    #       key: backend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/backend/package-lock.json') }}
+    # - name: Install node modules (dependencies)
+    #   run: npm --prefix src/backend clean-install
+    #   if: steps.backend-node_modules-cache.outputs.cache-hit != 'true'
 
-    - name: Install node modules (dependencies)
-      run: npm --prefix src/backend clean-install
-      if: steps.backend-node_modules-cache.outputs.cache-hit != 'true'
+    # - name: Compile backend
+    #   run: npm --prefix src/backend run build
 
-    - name: Compile backend
-      run: npm --prefix src/backend run build
+    # # FRONTEND Install and build
+    # - id: frontend-node_modules-cache
+    #   uses: actions/cache@v3
+    #   with:
+    #       path: src/frontend/node_modules
+    #       key: frontend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/frontend/package-lock.json') }}
+    # - name: Install node modules (frontend dependencies)
+    #   run: npm --prefix src/frontend clean-install
+    #   if: steps.frontend-node_modules-cache.outputs.cache-hit != 'true'
+
+    # - name: Compile backend
+    #   run: npm --prefix src/frontend run build
 
     # TODO: Add cache to github actions
+    - name: Build containers
+      run: docker-compose build
+
     - name: Start containers
-      run: docker-compose up -d --build
+      run: docker-compose up -d
 
     - name: Run tests with jest
       run: npm --prefix src/backend run test:ci
