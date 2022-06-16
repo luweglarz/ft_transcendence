@@ -8,17 +8,7 @@ on:
     branches: [ main ]
 
 jobs:
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Install node modules (dependencies)
-  #     run: npm --prefix src/backend install
-  #   - name: Compile backend
-  #     run: npm --prefix src/backend run build
-
   test:
-    # needs: build
     runs-on: ubuntu-latest
     # services:
     #   postgres:
