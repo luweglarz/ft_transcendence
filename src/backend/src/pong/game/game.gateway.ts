@@ -7,14 +7,11 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { GameService } from './game.service';
 
 @WebSocketGateway({ cors: true })
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  constructor(private gameService: GameService) {}
-
   @WebSocketServer()
   server: Server;
 
