@@ -9,10 +9,7 @@ export class AuthController {
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
   signup(@Body() dto: AuthDto) {
-    console.log({
-      username: dto.username,
-      typeofUsername: typeof dto.username,
-    });
+    console.log(dto);
     return this.authService.signup(dto);
   }
 
