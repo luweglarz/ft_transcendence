@@ -13,7 +13,10 @@ import { GameMatchmakingGateway } from '../matchmaking/game-matchmaking.gateway'
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  constructor(@Inject(forwardRef(() => GameMatchmakingGateway))private matchmakingGateway: GameMatchmakingGateway) {}
+  constructor(
+    @Inject(forwardRef(() => GameMatchmakingGateway))
+    private matchmakingGateway: GameMatchmakingGateway,
+  ) {}
 
   @WebSocketServer()
   server: Server;
@@ -32,6 +35,5 @@ export class GameGateway
     this.matchmakingGateway.leaveGame(client);
     this.matchmakingGateway.leaveMatchmaking(client);
     this.logger.log(`Client disconnected: ${client.id}`);
-
   }
 }
