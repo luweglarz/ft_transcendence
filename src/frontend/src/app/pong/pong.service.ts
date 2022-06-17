@@ -6,7 +6,11 @@ import { Socket } from 'ngx-socket-io';
   providedIn: 'root',
 })
 export class PongService {
-  constructor(private socket: Socket) {}
+  constructor(private socket: Socket) {
+    this.socket.on('normalGameLeft', (arg: any) => {
+      console.log(arg);
+    });
+  }
 
   requestJoinNormalMatchMaking() {
     this.socket.emit('joinNormalMatchmaking');
@@ -33,9 +37,6 @@ export class PongService {
 
   requestLeaveNormalGame() {
     this.socket.emit('leaveNormalGame');
-    this.socket.on('normalGameLeft', (arg: any) => {
-      console.log(arg);
-    });
   }
 
   close() {
