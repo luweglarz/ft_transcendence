@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,17 +10,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  username: string = '';
-  password: string = '';
-  wrongCredentials: boolean = false;
-
-  constructor() { }
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+      private http: HttpClient,
+      public router: Router
+    ) { }
 
   ngOnInit(): void {
   }
 
   login() {
-    this.wrongCredentials = !this.wrongCredentials;
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': '183',
+      'Host': 'localhost:4200'
+    };
+    const body = 'grant_type=client_credentials&client_id=eeb0e0a43e664699fe90ad4eefdec48dc656e8b75737d363731f5221dd57f6dd&client_secret=***REMOVED***';
+    this.http.post<any>('https://api.intra.42.fr/oauth/token', body, { headers }).subscribe(data => {
+    });
+    this.document.location.href = "https://api.intra.42.fr/oauth/authorize?client_id=eeb0e0a43e664699fe90ad4eefdec48dc656e8b75737d363731f5221dd57f6dd&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2F&response_type=code";
   }
-
 }

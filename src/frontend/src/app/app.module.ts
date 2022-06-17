@@ -5,11 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
 import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './pages/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { PongModule } from './pong/pong.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,9 +26,13 @@ import { RegisterComponent } from './pages/register/register.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    MatInputModule,
+    PongModule,
+    HttpClientModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+  providers: [
+
+  ],
+  bootstrap: [
+    AppComponent
+  ]})
+export class AppModule {}

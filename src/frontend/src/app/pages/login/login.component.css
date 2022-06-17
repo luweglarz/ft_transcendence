@@ -61,10 +61,3 @@
 .icon-login {
   fill: red;
 }
-
-mat-error {
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-size: smaller;
-}
