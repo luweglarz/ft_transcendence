@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "name": "Debug: Attach backend",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "address": "localhost",
+            "localRoot": "${workspaceFolder}/src/backend",
+            "remoteRoot": "/transcendence/backend",
+            "restart": true
+          }
+    ]
+}
