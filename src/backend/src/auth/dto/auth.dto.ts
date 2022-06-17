@@ -6,6 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { MatchProperty } from '../match-property.decorator';
 
 export class AuthDto {
   @IsString()
@@ -26,9 +27,6 @@ export class AuthDto {
   password: string;
 
   @IsString()
-  @MinLength(4)
-  @MaxLength(42)
+  @MatchProperty('password', { message: 'password does not match' })
   passwordConfirm: string;
 }
-
-// ref for the password checking: https://stackoverflow.com/questions/60451337/password-confirmation-in-typescript-with-class-validator
