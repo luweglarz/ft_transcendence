@@ -29,10 +29,7 @@ import { HttpClientModule } from '@angular/common/http';
     PongModule,
     HttpClientModule,
   ],
-  providers: [
-
-  ],
-  bootstrap: [
-    AppComponent
-  ]})
+  providers: [],
+  bootstrap: [AppComponent],
+})
 export class AppModule {}
