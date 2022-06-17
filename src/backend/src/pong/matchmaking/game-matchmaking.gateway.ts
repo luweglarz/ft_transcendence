@@ -11,7 +11,9 @@ import { GameGateway } from '../game/game.gateway';
 
 @WebSocketGateway({ cors: true })
 export class GameMatchmakingGateway {
-  constructor( @Inject(forwardRef(() => GameGateway))private gameGateway: GameGateway) {}
+  constructor(
+    @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway,
+  ) {}
 
   clientPool: Socket[] = [];
   rooms: Room[] = [];
