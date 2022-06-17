@@ -128,6 +128,7 @@
   justify-content: space-around;
   cursor: pointer;
   font-size: large;
+  font-weight: bold;
   border-radius: 8px;
   padding: 14px 24px;
   border: none;
@@ -145,7 +146,7 @@
 .btn-register:hover {
   background-color: #44526F;
   font-size: large;
-  font-weight: bold
+  font-weight: bold;
 }
 
 .btn-register:active {
@@ -161,4 +162,5 @@
 
 .btn-register:active .icon-register {
   fill: #1A202C;
+  stroke: #1A202C;
 }

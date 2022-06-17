@@ -9,23 +9,28 @@ import { PongComponent } from './pages/pong/pong.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
-  }, {
+    component: HomeComponent,
+  },
+  {
     path: 'login',
-    component: LoginComponent
-  }, {
+    component: LoginComponent,
+  },
+  {
     path: 'register',
-    component: RegisterComponent
-  }, {
+    component: RegisterComponent,
+  },
+  {
     path: 'game',
-    component: PongComponent
-  }, {
+    component: PongComponent,
+  },
+  {
     path: 'not-found',
-    component: NotFoundComponent
-  }, {
+    component: NotFoundComponent,
+  },
+  {
     path: '**',
-    redirectTo: '/not-found'
-  }
+    redirectTo: '/not-found',
+  },
 ];
 
 @NgModule({
