@@ -1,5 +1,5 @@
 
-name: CI lint
+name: CI
 
 on:
   workflow_dispatch:
@@ -16,11 +16,30 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install node modules (dependencies)
-      run: npm --prefix src/backend install && npm --prefix src/frontend install
+    # BACKEND
+    - id: backend-node_modules-cache
+      uses: actions/cache@v3
+      with:
+          path: src/backend/node_modules
+          key: backend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/backend/package-lock.json') }}
+
+    - name: Install node modules (backend dependencies)
+      run: npm --prefix src/backend clean-install
+      if: steps.backend-node_modules-cache.outputs.cache-hit != 'true'
 
     - name: lint backend
       run: npm --prefix src/backend run lint:check
+
+    # FRONTEND
+    - id: frontend-node_modules-cache
+      uses: actions/cache@v3
+      with:
+          path: src/frontend/node_modules
+          key: frontend-node_modules-cache-${{ runner.os }}-${{ hashFiles('src/frontend/package-lock.json') }}
+
+    - name: Install node modules (frontend dependencies)
+      run: npm --prefix src/frontend clean-install
+      if: steps.frontend-node_modules-cache.outputs.cache-hit != 'true'
 
     - name: lint frontend
       run: npm --prefix src/frontend run lint:check
