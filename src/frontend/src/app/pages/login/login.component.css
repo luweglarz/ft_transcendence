@@ -15,6 +15,13 @@
   border-radius: 5%;
 }
 
+.card-login .logo-login {
+  display: flex;
+  justify-content: center;
+  height: auto;
+  width: 250px;
+}
+
 .card-login p {
   text-align: center;
   font-size: large;
@@ -22,15 +29,9 @@
   width: 90%;
 }
 
-.logo-login {
-  display: flex;
-  justify-content: center;
-  height: auto;
-  width: 250px;
-}
-
-/* BUTTON */
-
+/*
+  BUTTON
+*/
 .btn-login {
   width: 55%;
   height: 48px;
@@ -38,19 +39,29 @@
   justify-content: space-around;
   cursor: pointer;
   font-size: large;
+  font-weight: bold;
   border-radius: 8px;
   padding: 14px 24px;
   border: none;
   background-color: #1A202C;
+  margin: 12px;
   transition: all 0.3s;
+}
+
+.btn-login .icon-login {
+  fill: white;
 }
 
 .btn-login:hover {
   background-color: #44526F;
+  font-size: large;
+  font-weight: bold
 }
 
 .btn-login:active {
   background-color: white;
+  font-size: large;
+  font-weight: bold;
   color: #1A202C;
 }
 
@@ -58,6 +69,6 @@
   color: #1A202C;
 }
 
-.icon-login {
-  fill: red;
+.btn-login:active .icon-login {
+  fill: #1A202C;
 }
