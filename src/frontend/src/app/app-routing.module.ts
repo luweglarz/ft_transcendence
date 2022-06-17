@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './pages/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { PongComponent } from './pong/pong.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,9 @@ const routes: Routes = [
     path: 'register',
     component: RegisterComponent
   }, {
+    path: 'game',
+    component: PongComponent
+  }, {
     path: 'not-found',
     component: NotFoundComponent
   }, {
@@ -26,6 +30,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

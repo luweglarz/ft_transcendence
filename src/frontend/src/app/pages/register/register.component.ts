@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
+  avatar: string = '';
   username: string = '';
-  wrongCredentials: boolean = false;
 
   constructor() { }
 
@@ -16,7 +16,6 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    this.wrongCredentials = !this.wrongCredentials;
   }
 
 }
