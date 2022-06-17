@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { forwardRef, Inject, Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -7,11 +7,14 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
+import { GameMatchmakingGateway } from '../matchmaking/game-matchmaking.gateway';
 
 @WebSocketGateway({ cors: true })
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+  constructor(@Inject(forwardRef(() => GameMatchmakingGateway))private matchmakingGateway: GameMatchmakingGateway) {}
+
   @WebSocketServer()
   server: Server;
 
@@ -26,6 +29,9 @@ export class GameGateway
   }
 
   handleDisconnect(client: Socket) {
+    this.matchmakingGateway.leaveGame(client);
+    this.matchmakingGateway.leaveMatchmaking(client);
     this.logger.log(`Client disconnected: ${client.id}`);
+
   }
 }

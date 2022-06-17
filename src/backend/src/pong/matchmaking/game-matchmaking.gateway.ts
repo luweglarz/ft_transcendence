@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { forwardRef, Inject, Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   SubscribeMessage,
@@ -11,7 +11,7 @@ import { GameGateway } from '../game/game.gateway';
 
 @WebSocketGateway({ cors: true })
 export class GameMatchmakingGateway {
-  constructor(private gameGateway: GameGateway) {}
+  constructor( @Inject(forwardRef(() => GameGateway))private gameGateway: GameGateway) {}
 
   clientPool: Socket[] = [];
   rooms: Room[] = [];
