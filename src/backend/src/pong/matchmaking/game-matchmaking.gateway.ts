@@ -41,7 +41,6 @@ export class GameMatchmakingGateway {
       );
       return;
     }
-    this.rooms.forEach((element) => element.players[0] == client);
     this.logger.log(`A client has joined the matchmaking: ${client.id}`);
     if (this.clientPool.length > 1) this.generateGameRoom(this.clientPool);
     else client.emit('waitingForAMatch', 'Waiting for a match');
@@ -94,13 +93,5 @@ export class GameMatchmakingGateway {
     this.gameGateway.server
       .to(newRoomId)
       .emit('matchFound', 'A match has been found', { roomId: newRoomId });
-    this.clientPool.splice(
-      this.clientPool.findIndex((element) => element === players[0]),
-      1,
-    );
-    this.clientPool.splice(
-      this.clientPool.findIndex((element) => element === players[1]),
-      1,
-    );
   }
 }
