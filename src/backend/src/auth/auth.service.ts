@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { AuthDto } from './dto';
 
 @Injectable()
 export class AuthService {
-  signup() {
-    return { message: 'Successfully signed up!' };
+  signup(dto: AuthDto) {
+    return { message: `${dto.username} successfully signed up!` };
   }
-  signin() {
-    return { message: 'Successfully signed in!' };
+  signin(dto: AuthDto) {
+    return { message: `${dto.username} Successfully signed in!` };
   }
-  signout() {
-    return { message: 'Successfully signed out!' };
+  signout(dto: AuthDto) {
+    return { message: `${dto.username} Successfully signed out!` };
   }
 }
