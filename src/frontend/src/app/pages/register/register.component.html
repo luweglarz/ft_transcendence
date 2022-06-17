@@ -1,26 +1,40 @@
 <div class="container">
   <div class="card-register">
-      <form>
+      <form class="form-register">
         <div class="logo-register">
           <img src="/assets/images/Logo.png" alt="42Pong logo">
         </div>
 
         <div class="avatar-register">
-          <label>Upload your avatar</label>
-          <img class="avatar" src="/assets/images/default-avatar.png">
-        </div>
-
-        <div class="forms-register">
-          <div class="form-register">
-            <label>Choose your username</label>
-            <input placeholder="Username" name="username" [(ngModel)]="username">
+          <label class="avatar-label">Upload your avatar</label>
+          <div class="avatar-edit">
+            <form action="" method="post" class="form-image">
+              <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+              <label for="imageUpload">
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none" class="icon-register" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.7594 25.7012C14.6463 26.2329 12.8001 27.5179 11.5677 29.3149C10.3352 31.1118 9.80138 33.297 10.0664 35.4598C10.3314 37.6226 11.3771 39.6141 13.007 41.0603C14.6369 42.5065 16.7387 43.3077 18.9177 43.3135H21.1519M32.323 32.1424V52.2504V32.1424ZM32.323 32.1424L26.7375 36.6109L32.323 32.1424ZM32.323 32.1424L37.9085 36.6109L32.323 32.1424Z" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M40.8801 21.2795C40.1165 18.2556 38.2316 15.6353 35.6077 13.9496C32.9837 12.2639 29.8169 11.639 26.7493 12.2016C23.6816 12.7642 20.9427 14.4722 19.0877 16.9794C17.2327 19.4865 16.4004 22.6052 16.7595 25.7032C16.7595 25.7032 17.1013 27.6738 17.8007 28.7909" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M43.4942 43.3134C45.0717 43.3123 46.631 42.9771 48.0696 42.33C49.5082 41.6828 50.7934 40.7384 51.8407 39.5587C52.8879 38.3791 53.6735 36.991 54.1456 35.4858C54.6177 33.9807 54.7658 32.3927 54.5799 30.8262C54.3941 29.2597 53.8786 27.7504 53.0674 26.3975C52.2562 25.0446 51.1677 23.8789 49.8735 22.977C48.5793 22.0752 47.1087 21.4576 45.5586 21.165C44.0086 20.8724 42.4141 20.9115 40.8802 21.2795L37.9087 22.0883" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </label>
+            </form>
           </div>
-
-          <button class="btn-register" (click)="register()">
-            <p>Register</p>
-            <img id="icon-login" src="/assets/icons/42-icon.svg" height="24px" width="24px" alt="42 icon">
-          </button>
+          <div class="avatar-preview">
+            <img class="avatar" src="/assets/images/default-avatar.png">
+          </div>
         </div>
+
+        <div class="username-register">
+          <label>Choose your username</label>
+          <input placeholder="Username" name="username" [(ngModel)]="username">
+        </div>
+
+        <button class="btn-register" (click)="register()">
+          <p>Register</p>
+          <svg width="24" height="24" viewBox="0 0 24 25" class="icon-register" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M6 12C6 11.8011 6.07902 11.6103 6.21967 11.4696C6.36032 11.329 6.55109 11.25 6.75 11.25H15.4395L12.219 8.03097C12.0782 7.89014 11.9991 7.69913 11.9991 7.49997C11.9991 7.30081 12.0782 7.1098 12.219 6.96897C12.3598 6.82814 12.5508 6.74902 12.75 6.74902C12.9492 6.74902 13.1402 6.82814 13.281 6.96897L17.781 11.469C17.8508 11.5386 17.9063 11.6214 17.9441 11.7125C17.9819 11.8036 18.0013 11.9013 18.0013 12C18.0013 12.0986 17.9819 12.1963 17.9441 12.2874C17.9063 12.3785 17.8508 12.4613 17.781 12.531L13.281 17.031C13.1402 17.1718 12.9492 17.2509 12.75 17.2509C12.5508 17.2509 12.3598 17.1718 12.219 17.031C12.0782 16.8901 11.9991 16.6991 11.9991 16.5C11.9991 16.3008 12.0782 16.1098 12.219 15.969L15.4395 12.75H6.75C6.55109 12.75 6.36032 12.671 6.21967 12.5303C6.07902 12.3896 6 12.1989 6 12Z" stroke-width="1.5"/>
+          </svg>
+        </button>
       </form>
 
     </div>
