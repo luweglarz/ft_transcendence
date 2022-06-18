@@ -12,7 +12,8 @@ services:
       - transcendence_backend_modules:/transcendence/backend/node_modules
     command: npm run start:debug
     networks:
-      - transcendence_network
+      transcendence_network:
+        aliases: [ transcendence.backend ]
     depends_on:
       - postgres
     ports:
@@ -38,7 +39,8 @@ services:
     ports:
       - 4200:4200
     networks:
-      - transcendence_network
+      transcendence_network:
+        aliases: [ transcendence.frontend ]
     restart: on-failure
   
   postgres:
@@ -48,7 +50,8 @@ services:
     image: transcendence/postgres
     container_name: postgres
     networks:
-      - transcendence_network
+      transcendence_network:
+        aliases: [ transcendence.postgres ]
     env_file:
       - ./src/postgres/dev.env
     restart: on-failure
@@ -61,5 +64,10 @@ networks:
       driver: bridge
 
 volumes:
+  ## Some modules have to be compiled for the right architecture (ex argon2),
+  #  hence we need to isolate them from the host
+  ## If you have a dependency issue, run: 
+  #  `docker-compose down && docker volume prune && docker-compose build`
+  #  (or install stuff manually using `docker-compose exec ...`)
   transcendence_backend_modules: {}
   transcendence_frontend_modules: {}
