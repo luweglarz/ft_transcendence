@@ -39,6 +39,9 @@ jobs:
       run: npm --prefix src/backend clean-install
       if: steps.backend-node_modules-cache.outputs.cache-hit != 'true'
 
+    - name: generate prisma client's artifacts
+      run: (cd src/backend; npx prisma generate)
+
     - name: Compile backend
       run: npm --prefix src/backend run build
 
