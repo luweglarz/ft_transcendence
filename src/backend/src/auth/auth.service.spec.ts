@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DbClientService } from 'src/db-client/db-client.service';
+import { DbService } from 'src/db/db.service';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
@@ -7,7 +7,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService, DbClientService],
+      providers: [AuthService, DbService],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
