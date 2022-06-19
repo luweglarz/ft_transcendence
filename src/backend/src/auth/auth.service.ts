@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { hash } from 'argon2';
-import { DbClientService } from 'src/db-client/db-client.service';
+import { DbService } from 'src/db/db.service';
 import { AuthDto } from './dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private dbClient: DbClientService) {}
+  constructor(private db: DbService) {}
 
   async signup(dto: AuthDto) {
     const pwdHash = await hash(dto.password);
-    await this.dbClient.user.create({
+    await this.db.user.create({
       data: {
         username: dto.username,
         email: dto.email,
