@@ -24,9 +24,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "@comment scripts": {
-    "@comment Use those scripts if local and docker environment differ": {
+    "@comment Use those scripts instead if local and docker environment differ": {
       "test": "docker-compose exec backend npx jest",
-      "test:ci": "docker-compose exec -T backend npx jest --colors",
       "prisma:push": "docker-compose exec backend npx prisma db push",
       "prisma:migrate": "docker-compose exec backend npx prisma migrate dev"
     }
