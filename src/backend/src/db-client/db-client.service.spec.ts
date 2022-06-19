@@ -20,11 +20,21 @@ describe('DbClientService', () => {
     await service.user.create({
       data: {
         username: 'Monkey D. Luffy',
+        email: 'luffy@mugirawa.jp',
       },
     });
-    const user = await service.user.findFirst({
-      where: { id: 1 },
+    let user = await service.user.findFirst({
+      where: { username: 'Monkey D. Luffy' },
     });
-    expect(user.username).toBe('Monkey D. Luffy');
+    expect(user.email).toBe('luffy@mugirawa.jp');
+    await service.user.delete({
+      where: {
+        username: 'Monkey D. Luffy',
+      },
+    });
+    user = await service.user.findFirst({
+      where: { username: 'Monkey D. Luffy' },
+    });
+    expect(user).toBe(null);
   });
 });
