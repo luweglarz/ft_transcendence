@@ -2,6 +2,18 @@
 
 We use prisma as our ORM to handle our postres database queries.
 
+## CLI and typescript linting
+
+We have various commands available from the commandline:
+
+- `npx prisma generate`: will set up the "artifacts" in the node modules, which will for example be used by the linter (also by our scripts). You should try to run this command in the first place if you have any issue with prisma (and maybe rebuild the project if that still does not work).
+
+- `npx prisma db push`: push temporary changes to the database
+
+- `npx prisma migrate dev`: push definitive changes to the database (record the changes in `backend/prisma/migrations`)
+
+More info: [official documentation - reference: CLI](https://www.prisma.io/docs/reference/api-reference/command-reference)
+
 ## Schema (declaring tables)
 
 Prisma lets us define our data sources and tables in `src/prisma/schema.prisma`.
@@ -13,6 +25,7 @@ More info: [official documentation - concepts: schema](https://www.prisma.io/doc
 The main schema's declarations we will use is: `model`. It allows us to generate our tables.
 
 Example with a most basic model:
+
 ```prisma
 model User {
   id       Int    @id @default(autoincrement())
@@ -37,6 +50,7 @@ More info: [reference: field types](https://www.prisma.io/docs/reference/api-ref
 #### Attributes
 
 In our example we used two attributes to add information on the field `id`:
+
 - `@id`: tells that it can be used as the identifier of a row
 - `@default`: tells how to populate the field if no value is provided when adding a new entry (here we use a builtin prisma function `autoincrement()`)
 
@@ -66,6 +80,7 @@ For that we will need a client (provided by the npm dependency `@prisma/client`)
 Examples, based on the simple model above, where `service` is an instance of `PrismaClient`.
 
 ### Create a user:
+
 ```ts
 await service.user.create({
   data: {
@@ -84,6 +99,4 @@ const user = await service.user.findFirst({
 
 ### How we will invoke the client in practice
 
-We create a dedicated module with an injectable service `DbClientService` that extends the `PrismaClient` class.
-
-We only need to inject it in the constuctor of the services that will run queries on the database.
+Just inject the service `DbService` (that extends the `PrismaClient` class) to your module and use it as a db client directly from your module.
