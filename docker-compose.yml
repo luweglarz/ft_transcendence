@@ -9,6 +9,7 @@ services:
     container_name: backend
     volumes:
       - ./src/backend/src:/transcendence/backend/src:ro
+      - ./src/backend/prisma:/transcendence/backend/prisma:ro
       - ./src/backend/env/docker-compose.dev.env:/transcendence/backend/.env:ro
       # - transcendence_backend_modules:/transcendence/backend/node_modules
     command: npm run start:debug
