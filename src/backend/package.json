@@ -16,19 +16,20 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\"",
-    "test": " jest",
+    "test": "docker-compose exec backend npx jest",
     "test:ci": "docker-compose exec -T backend npx jest --colors",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "prisma:push": "docker-compose exec backend npx prisma db push",
+    "postprisma:push": "npx prisma generate",
+    "prisma:migrate": "docker-compose exec backend npx prisma migrate dev",
+    "postprisma:migrate": "npx prisma generate"
   },
   "@comment scripts": {
-    "@comment Use those scripts instead if local and docker environment differ": {
-      "test": "docker-compose exec backend npx jest",
-      "prisma:push": "docker-compose exec backend npx prisma db push",
-      "prisma:migrate": "docker-compose exec backend npx prisma migrate dev"
-    }
+    "@comment prisma:push": "push changes temporarily, then generate artifacts (in host and containers)",
+    "@comment prisma:migrate": "create a migration, then generate artifacts (in host and containers)"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
