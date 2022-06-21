@@ -4,9 +4,19 @@ DOCKER_VOLUME_LS= $(shell docker volume ls -q)
 
 all: build
 
+set_local_env:
+#	$(eval DB_PASSWORD=$(shell head -c 10 /dev/urandom | base64))
+	@cat src/postgres/dev.env src/backend/env/docker-compose.dev.env > src/backend/.env
+	@perl -i -pe 's/DB_HOST=.*/DB_HOST="localhost"/' src/backend/.env
+	@echo "`tput setaf 2`⚙ Local dev environment generated."
+
 build:
-	docker-compose  up --build 
-	@echo "`tput  setaf 2` Server build and up"
+	docker-compose up --build 
+	@echo "`tput  setaf 2` Server built and up"
+
+up:
+	docker-compose up
+	@echo "`tput  setaf 2` Server up"
 
 run:
 	docker-compose start

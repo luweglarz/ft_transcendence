@@ -5,18 +5,27 @@ services:
       context: ./src/backend
       dockerfile: Dockerfile
       target: development
-    image: backend
+    image: transcendence/backend
     container_name: backend
     volumes:
-      - ./src/backend:/transcendence/backend
-      - /transcendence/backend/node_modules
+      - ./src/backend/src:/transcendence/backend/src:ro
+      - ./src/backend/prisma:/transcendence/backend/prisma:ro
+      - ./src/backend/test:/transcendence/backend/test:ro
+      - ./src/backend/env/docker-compose.dev.env:/transcendence/backend/.env:ro
+      # - transcendence_backend_modules:/transcendence/backend/node_modules
     command: npm run start:debug
     networks:
-      - transcendence_network
+      transcendence_network:
+        aliases: [ transcendence.backend ]
     depends_on:
       - postgres
     ports:
       - 3000:3000
+      - 5555:5555 # prisma studio
+      - 9229:9229 # debug
+
+    env_file:
+      - ./src/postgres/dev.env
     restart: on-failure
 
   frontend:
@@ -24,34 +33,44 @@ services:
       context: ./src/frontend
       dockerfile: Dockerfile
       target: development
-    image: frontend
+    image: transcendence/frontend
     container_name: frontend
     volumes:
-      - ./src/frontend:/transcendence/frontend
-      - /transcendence/frontend/node_modules
+      - ./src/frontend/src:/transcendence/frontend/src:ro
+      # - transcendence_frontend_modules:/transcendence/frontend/node_modules
     command: npm run start
     ports:
       - 4200:4200
     networks:
-      - transcendence_network
+      transcendence_network:
+        aliases: [ transcendence.frontend ]
     restart: on-failure
   
   postgres:
     build: 
-      context: ./docker/postgres
+      context: ./src/postgres/docker
       dockerfile: Dockerfile
-    image: postgres
+    image: transcendence/postgres
     container_name: postgres
     networks:
-      - transcendence_network
-    environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=rootpass
-      - APP_DB_USER=dockeruser
-      - APP_DB_PASS=dockerpass
-      - APP_DB_NAME=transcendence
+      transcendence_network:
+        aliases: [ transcendence.postgres ]
+    env_file:
+      - ./src/postgres/dev.env
     restart: on-failure
+    ports:
+      - 5432:5432
+    # TODO: add a volume for the database
 
 networks:
   transcendence_network:
       driver: bridge
+
+# volumes:
+#   ## Some modules have to be compiled for the right architecture (ex argon2),
+#   #  hence we need to isolate them from the host
+#   ## If you have a dependency issue, run: 
+#   #  `docker-compose down && docker volume prune && docker-compose build`
+#   #  (or install stuff manually using `docker-compose exec ...`)
+#   transcendence_backend_modules: {}
+#   transcendence_frontend_modules: {}
