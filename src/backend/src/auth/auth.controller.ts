@@ -16,6 +16,7 @@ export class AuthController {
   @Post('signin')
   @HttpCode(HttpStatus.OK)
   async signin(@Body() dto: AuthDto) {
+    console.log(`OAUTH client ID: ${process.env['OAUTH_42_CLIENT_ID']}`);
     return this.authService.signin(dto);
   }
 
