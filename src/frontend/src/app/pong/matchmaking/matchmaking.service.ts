@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-// import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class PongService {
+export class MatchmakingService {
+
   constructor(private socket: Socket) {
     this.socket.on('normalGameLeft', (arg: any) => {
       console.log(arg);
