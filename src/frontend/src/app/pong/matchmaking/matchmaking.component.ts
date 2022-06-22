@@ -4,11 +4,10 @@ import { MatchmakingService } from './matchmaking.service';
 @Component({
   selector: 'app-matchmaking',
   templateUrl: './matchmaking.component.html',
-  styleUrls: ['./matchmaking.component.css']
+  styleUrls: ['./matchmaking.component.css'],
 })
 export class MatchmakingComponent implements OnInit {
-
-  constructor(private matchmakingService: MatchmakingService) { }
+  constructor(private matchmakingService: MatchmakingService) {}
 
   ngOnInit(): void {
     // TODO
@@ -25,5 +24,4 @@ export class MatchmakingComponent implements OnInit {
   buttonRequestLeaveNormalGame() {
     this.matchmakingService.requestLeaveNormalGame();
   }
-
 }

@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MatchmakingService {
-
   constructor(private socket: Socket) {
     this.socket.on('normalGameLeft', (arg: any) => {
       console.log(arg);
