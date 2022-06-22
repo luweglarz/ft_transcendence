@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { MatchProperty } from '../match-property.decorator';
 
-export class AuthDto {
+export class EmailSignupDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(42)
@@ -29,4 +29,14 @@ export class AuthDto {
   @IsString()
   @MatchProperty('password', { message: 'password does not match' })
   passwordConfirm: string;
+}
+
+export class UsernameSigninDto {
+  @IsString()
+  @IsNotEmpty()
+  username: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
