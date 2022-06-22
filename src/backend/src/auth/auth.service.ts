@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { hash } from 'argon2';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { verify, hash } from 'argon2';
 import { DbService } from 'src/db/db.service';
 import { AuthDto } from './dto';
 
@@ -13,14 +13,21 @@ export class AuthService {
       data: {
         username: dto.username,
         email: dto.email,
-        password: dto.password,
+        password: pwdHash,
       },
     });
     return { message: `${dto.username} successfully signed up! ${pwdHash}` };
   }
-  signin(dto: AuthDto) {
-    return { message: `${dto.username} Successfully signed in!` };
+
+  async signin(dto: AuthDto) {
+    const user = await this.db.user.findUnique({
+      where: { username: dto.username },
+    });
+    if (user && (await verify(user.password, dto.password))) {
+      return { message: `${user.username} Successfully signed in!` };
+    } else throw new ForbiddenException({ message: 'Credentials incorrect' });
   }
+
   signout(dto: AuthDto) {
     return { message: `${dto.username} Successfully signed out!` };
   }
