@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PongComponent } from './pong/pong.component';
+import { MatchmakingComponent } from './pong/matchmaking/matchmaking.component';
 
-const routes: Routes = [{ path: 'game', component: PongComponent }];
+const routes: Routes = [{ path: 'matchmaking', component: MatchmakingComponent }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
