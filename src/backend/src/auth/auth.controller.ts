@@ -1,4 +1,13 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { UsernameSigninDto, EmailSignupDto } from './dto';
 
@@ -24,5 +33,11 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   signout(@Body() dto: EmailSignupDto) {
     return this.authService.signout(dto);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('test')
+  check_signin() {
+    return { message: 'I am signed in !' };
   }
 }

@@ -22,14 +22,18 @@ export class AuthService {
     return { message: `${dto.username} successfully signed up!` };
   }
 
-  async signin(dto: UsernameSigninDto) {
+  async signin(
+    dto: UsernameSigninDto,
+  ): Promise<{ message: string; jwt: string }> {
     const user = await this.db.user.findUnique({
       where: { username: dto.username },
     });
     if (user && (await argon.verify(user.password, dto.password))) {
       this.logger.log(`User '${dto.username}' successfully signed in!`);
-      // return { message: `${user.username} successfully signed in!` };
-      return { jwt: await this.signToken(user.id, user.username) };
+      return {
+        message: `${user.username} successfully signed in!`,
+        jwt: await this.signToken(user.id, user.username),
+      };
     } else throw new ForbiddenException({ message: 'Credentials incorrect' });
   }
 
@@ -37,7 +41,7 @@ export class AuthService {
     return { message: `${dto.username} Successfully signed out!` };
   }
 
-  signToken(userId: number, username: string): Promise<string> {
+  private signToken(userId: number, username: string): Promise<string> {
     const payload = {
       sub: userId,
       username: username,
