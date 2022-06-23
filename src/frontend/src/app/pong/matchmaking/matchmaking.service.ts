@@ -9,6 +9,12 @@ export class MatchmakingService {
     this.socket.on('normalGameLeft', (arg: any) => {
       console.log(arg);
     });
+    this.socket.on('matchmakingLeft', (arg: any) => {
+      console.log(arg);
+    });
+    this.socket.on('error', (arg: string) => {
+      console.log(arg);
+    });
   }
 
   requestJoinNormalMatchMaking() {
@@ -19,19 +25,10 @@ export class MatchmakingService {
     this.socket.on('matchFound', (arg: any) => {
       console.log(arg);
     });
-    this.socket.on('matchmakingAlreadyJoined', (arg: any) => {
-      console.log(arg);
-    });
-    this.socket.on('alreadyInGame', (arg: any) => {
-      console.log(arg);
-    });
   }
 
   requestLeaveNormalMatchMaking() {
     this.socket.emit('leaveNormalMatchmaking');
-    this.socket.on('matchmakingLeft', (arg: any) => {
-      console.log(arg);
-    });
   }
 
   requestLeaveNormalGame() {

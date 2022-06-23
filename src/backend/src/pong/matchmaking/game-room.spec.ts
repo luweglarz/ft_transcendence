@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io';
-import { Room } from './room';
+import { Room } from './game-room';
 import { v4 as uuidv4 } from 'uuid';
 
 describe('Room', () => {

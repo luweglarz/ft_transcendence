@@ -6,7 +6,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
-import { Room } from './room';
+import { Room } from './game-room';
 import { GameGateway } from '../game/game.gateway';
 
 @WebSocketGateway({ cors: true })
@@ -28,17 +28,14 @@ export class GameMatchmakingGateway {
   joinMatchMaking(@ConnectedSocket() client: Socket) {
     for (const room of this.rooms) {
       if (room.players.includes(client)) {
-        client.emit('alreadyInGame', 'You are already in a game');
+        client.emit('error', 'You are already in a game');
         return;
       }
     }
     if (this.clientPool.includes(client) === false)
       this.clientPool.push(client);
     else {
-      client.emit(
-        'matchmakingAlreadyJoined',
-        'You have already joined a matchmaking',
-      );
+      client.emit('error', 'You have already joined a matchmaking');
       return;
     }
     this.logger.log(`A client has joined the matchmaking: ${client.id}`);
@@ -56,7 +53,7 @@ export class GameMatchmakingGateway {
       this.logger.log('pool length after leave' + this.clientPool.length);
       this.logger.log(`A client has left the matchmaking: ${client.id}`);
       client.emit('matchmakingLeft', 'You have left the matchmaking');
-    }
+    } else client.emit('error', 'You are not in a matchmaking');
   }
 
   @SubscribeMessage('leaveNormalGame')
@@ -76,6 +73,7 @@ export class GameMatchmakingGateway {
         return;
       }
     }
+    client.emit('error', 'You are not in a game');
   }
 
   private async generateGameRoom(clientPool: Socket[]) {
