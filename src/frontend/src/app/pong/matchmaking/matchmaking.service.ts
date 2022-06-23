@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MatchmakingService {
-  constructor(private socket: Socket) {
+  public isInGame = false;
+
+  constructor(private socket: Socket, private router: Router) {
     this.socket.on('normalGameLeft', (arg: any) => {
       console.log(arg);
     });
@@ -23,6 +26,8 @@ export class MatchmakingService {
       console.log(arg);
     });
     this.socket.on('matchFound', (arg: any) => {
+      this.isInGame = true;
+      this.router.navigate(['game']);
       console.log(arg);
     });
   }
@@ -32,10 +37,7 @@ export class MatchmakingService {
   }
 
   requestLeaveNormalGame() {
+    this.isInGame = false;
     this.socket.emit('leaveNormalGame');
-  }
-
-  close() {
-    this.socket.disconnect();
   }
 }
