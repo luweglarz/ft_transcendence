@@ -18,6 +18,16 @@ export class GameGateway
     private matchmakingGateway: GameMatchmakingGateway,
   ) {}
 
+  playerOnePos = {
+    x: 0,
+    y: 225
+  }
+
+  playerTwoPos = {
+    x: 570,
+    y: 225
+  }
+
   @WebSocketServer()
   server: Server;
 
@@ -36,4 +46,5 @@ export class GameGateway
     this.matchmakingGateway.leaveMatchmaking(client);
     this.logger.log(`Client disconnected: ${client.id}`);
   }
+
 }
