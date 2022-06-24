@@ -91,5 +91,6 @@ export class GameMatchmakingGateway {
     this.gameGateway.server
       .to(newRoomId)
       .emit('matchFound', 'A match has been found', { roomId: newRoomId });
+    this.gameGateway.server.to(newRoomId).emit("racketPosition", this.gameGateway.playerOnePos, this.gameGateway.playerTwoPos);
   }
 }
