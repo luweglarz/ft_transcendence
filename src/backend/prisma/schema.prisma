@@ -38,6 +38,7 @@ enum  RoomType {
 model RoomUser {
   user        User      @relation(fields: [userId], references: [id])
   userId      Int       @id
+  socketId    String
   room        Room[]
   role        Role
   isBanned    Boolean   @default(false)
