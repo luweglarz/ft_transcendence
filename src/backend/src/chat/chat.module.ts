@@ -7,6 +7,6 @@ import { MessageService } from './message/message.service';
 
 @Module({
   providers: [ChatGateway, RoomService, RoomUserService, MessageService],
-  controllers: [ChatController]
+  controllers: [ChatController],
 })
 export class ChatModule {}
