@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
-import { Room, Prisma } from '@prisma/client'
+import { Room, Prisma, User, RoomUser } from '@prisma/client'
 
 @Injectable()
 export class RoomService {
@@ -35,5 +35,20 @@ export class RoomService {
         return this.prisma.room.create({
             data,
         });
+    }
+
+    async joinRoom(room: Room, nuser: User) {
+        //var roomUser = {user: {connect: nuser}, role: 'USER' }
+        //room.users.push({user: {connect: nuser}, role: 'USER' });
+        this.prisma.room.update({
+            where: {
+                id: room.id,
+            },
+            data: {
+                users: {
+                    create: {user: {connect: nuser}, role: 'USER' }, ////need to check if it doesn't overload previous info
+                },
+            },
+        })
     }
 }
