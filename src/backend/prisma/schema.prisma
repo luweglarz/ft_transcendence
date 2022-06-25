@@ -38,8 +38,8 @@ enum  RoomType {
 model RoomUser {
   user        User      @relation(fields: [userId], references: [id])
   userId      Int       @id
-  socketId    String
-  room        Room[]
+  socketId    String? //probably nned to be moved to User
+  room        Room[]  //probably useless
   role        Role
   isBanned    Boolean   @default(false)
   isMuted     Boolean   @default(false)
