@@ -6,7 +6,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
-import { Room } from './game-room';
+import { Room } from '../game/game-room';
 import { GameGateway } from '../game/game.gateway';
 
 @WebSocketGateway({ cors: true })
@@ -16,7 +16,6 @@ export class GameMatchmakingGateway {
   ) {}
 
   clientPool: Socket[] = [];
-  rooms: Room[] = [];
 
   private logger: Logger = new Logger('GameMatchMakingGateway');
 
@@ -26,7 +25,7 @@ export class GameMatchmakingGateway {
 
   @SubscribeMessage('joinNormalMatchmaking')
   joinMatchMaking(@ConnectedSocket() client: Socket) {
-    for (const room of this.rooms) {
+    for (const room of this.gameGateway.rooms) {
       if (room.players.includes(client)) {
         client.emit('error', 'You are already in a game');
         return;
@@ -58,15 +57,15 @@ export class GameMatchmakingGateway {
 
   @SubscribeMessage('leaveNormalGame')
   leaveGame(@ConnectedSocket() client: Socket) {
-    for (const room of this.rooms) {
+    for (const room of this.gameGateway.rooms) {
       if (room.players.includes(client)) {
         this.gameGateway.server
           .to(room.uuid)
           .emit('normalGameLeft', `player ${client.id} has left the game`);
         room.players[0].leave(room.uuid);
         room.players[1].leave(room.uuid);
-        this.rooms.splice(
-          this.rooms.findIndex((element) => element === room),
+        this.gameGateway.rooms.splice(
+          this.gameGateway.rooms.findIndex((element) => element === room),
           1,
         );
         this.logger.log(`player ${client.id} has left the game ${room.uuid}`);
@@ -84,13 +83,19 @@ export class GameMatchmakingGateway {
 
     await players[0].join(newRoomId);
     await players[1].join(newRoomId);
-    this.rooms.push(newRoom);
+    this.gameGateway.rooms.push(newRoom);
     this.logger.log(
       `Match between ${players[0].id} & ${players[1].id} in ${newRoomId}`,
     );
     this.gameGateway.server
       .to(newRoomId)
       .emit('matchFound', 'A match has been found', { roomId: newRoomId });
-    this.gameGateway.server.to(newRoomId).emit("racketPosition", this.gameGateway.playerOnePos, this.gameGateway.playerTwoPos);
+    this.gameGateway.server
+      .to(newRoomId)
+      .emit(
+        'racketPosition',
+        this.gameGateway.playerOnePos,
+        this.gameGateway.playerTwoPos,
+      );
   }
 }
