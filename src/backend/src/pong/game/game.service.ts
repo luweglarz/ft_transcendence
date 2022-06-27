@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Socket } from 'socket.io';
-import { Room } from './game-room';
+import { Player } from '../class/player';
+import { Room } from '../class/room';
 
 @Injectable()
 export class GameService {
@@ -10,15 +11,18 @@ export class GameService {
 
   findRoomId(rooms: Room[], client: Socket): Room {
     for (const room of rooms) {
-      if (room.players.includes(client)) {
+      if (
+        room.players[0].socket === client ||
+        room.players[1].socket === client
+      ) {
         return room;
       }
     }
     return;
   }
 
-  findPlayer(room: Room, client: Socket): number {
-    if (room.players[0] === client) return 1;
-    else if (room.players[1] === client) return 2;
+  findPlayer(room: Room, client: Socket): Player {
+    if (room.players[0].socket === client) return room.players[0];
+    else if (room.players[1].socket === client) return room.players[1];
   }
 }
