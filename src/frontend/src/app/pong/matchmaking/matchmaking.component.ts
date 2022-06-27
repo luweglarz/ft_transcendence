@@ -20,8 +20,4 @@ export class MatchmakingComponent implements OnInit {
   buttonRequestLeaveNormalMatchMaking() {
     this.matchmakingService.requestLeaveNormalMatchMaking();
   }
-
-  buttonRequestLeaveNormalGame() {
-    this.matchmakingService.requestLeaveNormalGame();
-  }
 }

@@ -11,6 +11,7 @@ export class MatchmakingService {
   constructor(private socket: Socket, private router: Router) {
     this.socket.on('normalGameLeft', (arg: any) => {
       console.log(arg);
+      this.router.navigate(['matchmaking']);
     });
     this.socket.on('matchmakingLeft', (arg: any) => {
       console.log(arg);
@@ -34,10 +35,5 @@ export class MatchmakingService {
 
   requestLeaveNormalMatchMaking() {
     this.socket.emit('leaveNormalMatchmaking');
-  }
-
-  requestLeaveNormalGame() {
-    this.isInGame = false;
-    this.socket.emit('leaveNormalGame');
   }
 }
