@@ -8,29 +8,20 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { GameMatchmakingGateway } from '../matchmaking/game-matchmaking.gateway';
-import { Room } from './game-room';
+import { MatchmakingGateway } from '../matchmaking/matchmaking.gateway';
+import { Room } from '../class/room';
 import { GameService } from './game.service';
+import { Player } from '../class/player';
 
 @WebSocketGateway({ cors: true })
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   constructor(
-    @Inject(forwardRef(() => GameMatchmakingGateway))
-    private matchmakingGateway: GameMatchmakingGateway,
+    @Inject(forwardRef(() => MatchmakingGateway))
+    private matchmakingGateway: MatchmakingGateway,
     private gameService: GameService,
   ) {}
-
-  playerOnePos = {
-    x: 0,
-    y: 225,
-  };
-
-  playerTwoPos = {
-    x: 570,
-    y: 225,
-  };
 
   @WebSocketServer()
   server: Server;
@@ -55,13 +46,15 @@ export class GameGateway
   @SubscribeMessage('move')
   movement(client: Socket, eventKey: string) {
     const gameRoom: Room = this.gameService.findRoomId(this.rooms, client);
-    const player: number = this.gameService.findPlayer(gameRoom, client);
-    if (eventKey == 'ArrowDown' && player == 1) this.playerOnePos.y += 15;
-    else if (eventKey == 'ArrowUp' && player == 1) this.playerOnePos.y -= 15;
-    else if (eventKey == 'ArrowDown' && player == 2) this.playerTwoPos.y += 15;
-    else if (eventKey == 'ArrowUp' && player == 2) this.playerTwoPos.y -= 15;
+    const player: Player = this.gameService.findPlayer(gameRoom, client);
+    if (eventKey == 'ArrowDown') player.y += 15;
+    else if (eventKey == 'ArrowUp') player.y -= 15;
     this.server
       .to(gameRoom.uuid)
-      .emit('racketPosition', this.playerOnePos, this.playerTwoPos);
+      .emit(
+        'racketPosition',
+        { x: gameRoom.players[0].x, y: gameRoom.players[0].y },
+        { x: gameRoom.players[1].x, y: gameRoom.players[1].y },
+      );
   }
 }
