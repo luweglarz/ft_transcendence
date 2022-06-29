@@ -47,12 +47,13 @@ export class GameGateway
   movement(client: Socket, eventKey: string) {
     const gameRoom: Room = this.gameService.findRoomId(this.rooms, client);
     const player: Player = this.gameService.findPlayer(gameRoom, client);
+    this.logger.log("playery ", player.y );
     if (eventKey == 'ArrowDown') {
-      if (player.y + 15 > 490) player.y = 490;
-      else player.y += 15;
+      if (player.y + 10 > 395) player.y = 395;
+      else player.y += 10;
     } else if (eventKey == 'ArrowUp') {
-      if (player.y - 15 < 0) player.y = 0;
-      else player.y -= 15;
+      if (player.y - 10 < 20) player.y = 20;
+      else player.y -= 10;
     }
     this.server
       .to(gameRoom.uuid)

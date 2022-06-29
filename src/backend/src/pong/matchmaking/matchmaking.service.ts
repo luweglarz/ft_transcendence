@@ -19,8 +19,8 @@ export class MatchmakingService {
     this.logger.log('Enough player to generate a game room');
     const newRoomId: string = uuidv4();
     const players: Player[] = [
-      new Player(0, 225, clientPool.pop()),
-      new Player(570, 225, clientPool.pop()),
+      new Player(20, 225, clientPool.pop()),
+      new Player(795, 225, clientPool.pop()),
     ];
     const newRoom: Room = new Room(players, newRoomId);
 
