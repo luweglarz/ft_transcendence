@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import * as argon from 'argon2';
 import { DbService } from 'src/db/db.service';
 import { UsernameSigninDto, EmailSignupDto } from './dto';
@@ -11,15 +12,21 @@ export class AuthService {
 
   async signup(dto: EmailSignupDto) {
     const pwdHash = await argon.hash(dto.password);
-    await this.db.user.create({
-      data: {
-        username: dto.username,
-        email: dto.email,
-        password: pwdHash,
-      },
-    });
-    this.logger.log(`New user '${dto.username}' successfully signed up!`);
-    return { message: `${dto.username} successfully signed up!` };
+    try {
+      await this.db.user.create({
+        data: {
+          username: dto.username,
+          email: dto.email,
+          password: pwdHash,
+        },
+      });
+      this.logger.log(`New user '${dto.username}' successfully signed up!`);
+      return { message: `${dto.username} successfully signed up!` };
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError)
+        throw new ForbiddenException('User already exists');
+      else throw err;
+    }
   }
 
   async signin(
@@ -34,7 +41,7 @@ export class AuthService {
         message: `${user.username} successfully signed in!`,
         jwt: await this.signToken(user.id, user.username),
       };
-    } else throw new ForbiddenException({ message: 'Credentials incorrect' });
+    } else throw new ForbiddenException('Credentials incorrect');
   }
 
   signout(dto: EmailSignupDto) {
