@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import * as argon from 'argon2';
+import { DbErrorCode } from 'src/db/db.errors';
 import { DbService } from 'src/db/db.service';
 import { UsernameSigninDto, EmailSignupDto } from './dto';
 
@@ -23,7 +24,10 @@ export class AuthService {
       this.logger.log(`New user '${dto.username}' successfully signed up!`);
       return { message: `${dto.username} successfully signed up!` };
     } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError)
+      if (
+        err instanceof PrismaClientKnownRequestError &&
+        err.code == DbErrorCode.UniqueConstraintFailed
+      )
         throw new ForbiddenException('User already exists');
       else throw err;
     }
@@ -45,6 +49,7 @@ export class AuthService {
   }
 
   signout(dto: EmailSignupDto) {
+    // TODO
     return { message: `${dto.username} Successfully signed out!` };
   }
 
