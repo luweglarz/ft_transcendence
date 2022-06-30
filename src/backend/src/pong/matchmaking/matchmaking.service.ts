@@ -33,12 +33,15 @@ export class MatchmakingService {
     this.gameGateway.server
       .to(newRoomId)
       .emit('matchFound', 'A match has been found', { roomId: newRoomId });
-    this.gameGateway.server
+    setInterval(() => {
+      this.gameGateway.server
       .to(newRoomId)
       .emit(
-        'racketPosition',
+        'gameUpdate',
         { x: players[0].x, y: players[0].y },
         { x: players[1].x, y: players[1].y },
       );
+    }, 15)
   }
+  
 }

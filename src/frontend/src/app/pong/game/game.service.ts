@@ -21,7 +21,6 @@ export class GameService {
   }
 
   movePaddle(event: KeyboardEvent) {
-    console.log(event);
     this.socket.emit('move', event.key);
   }
 }
