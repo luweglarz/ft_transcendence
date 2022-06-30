@@ -47,20 +47,25 @@ export class GameGateway
   movement(client: Socket, eventKey: string) {
     const gameRoom: Room = this.gameService.findRoomId(this.rooms, client);
     const player: Player = this.gameService.findPlayer(gameRoom, client);
-    this.logger.log("playery ", player.y );
+    const initialPos = player.y;
     if (eventKey == 'ArrowDown') {
-      if (player.y + 10 > 395) player.y = 395;
-      else player.y += 10;
+    if (player.y + 20 > 395) player.y = 395;
+    else {
+      clearInterval(upInterval);
+      var downInterval = setInterval( () => {
+      if (player.y >= initialPos + 20)
+        clearInterval(downInterval);
+      player.y += 2;
+    }, 10)}
     } else if (eventKey == 'ArrowUp') {
-      if (player.y - 10 < 20) player.y = 20;
-      else player.y -= 10;
+    if (player.y - 20 < 20) player.y = 20;
+    else  {
+      clearInterval(downInterval);
+      var upInterval = setInterval( () => {
+      if (player.y <= initialPos - 20)
+        clearInterval(upInterval);
+      player.y -= 2;
+    }, 10)}
     }
-    this.server
-      .to(gameRoom.uuid)
-      .emit(
-        'racketPosition',
-        { x: gameRoom.players[0].x, y: gameRoom.players[0].y },
-        { x: gameRoom.players[1].x, y: gameRoom.players[1].y },
-      );
   }
 }
