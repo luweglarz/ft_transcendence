@@ -11,6 +11,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { PongModule } from './pages/pong/pong.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { MatchmakingComponent } from './components/matchmaking/matchmaking.component';
+import { ProfilComponent } from './components/profil/profil.component';
+import { LadderComponent } from './components/ladder/ladder.component';
+import { SocialComponent } from './components/social/social.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +24,11 @@ import { HttpClientModule } from '@angular/common/http';
     NotFoundComponent,
     HomeComponent,
     RegisterComponent,
+    NavbarComponent,
+    MatchmakingComponent,
+    ProfilComponent,
+    LadderComponent,
+    SocialComponent,
   ],
   imports: [
     BrowserModule,
