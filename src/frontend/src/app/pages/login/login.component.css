@@ -25,6 +25,8 @@
 .card-login p {
   text-align: center;
   font-size: large;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
   color: white;
   width: 90%;
 }
@@ -37,9 +39,11 @@
   height: 48px;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   cursor: pointer;
   font-size: large;
   font-weight: bold;
+  font-family: 'Roboto', sans-serif;
   border-radius: 8px;
   padding: 14px 24px;
   border: none;

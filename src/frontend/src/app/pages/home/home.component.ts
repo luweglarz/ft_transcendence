@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
@@ -6,11 +7,56 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
+  //Nav
+  collapsed = false;
+
+  //Pop ups
+  profilPopup = false;
+  ladderPopup = false;
+  socialPopup = false;
+
   constructor() {
     //
   }
 
   ngOnInit(): void {
     //
+  }
+
+  //RECIEVE COLLAPSING
+  recieveCollapse(collapse: boolean){
+    this.collapsed = collapse;
+  }
+
+  //RECIEVE POP UP
+  recieveProfilPopup(profil: boolean){
+    this.profilPopup = profil;
+    if (this.profilPopup){
+      this.ladderPopup = false;
+      this.socialPopup = false;
+    }
+  }
+
+  recieveLadderPopup(ladder: boolean){
+    this.ladderPopup = ladder;
+    if (this.ladderPopup){
+      this.profilPopup = false;
+      this.socialPopup = false;
+    }
+  }
+
+  recieveSocialPopup(social: boolean){
+    this.socialPopup = social;
+    if (this.socialPopup){
+      this.profilPopup = false;
+      this.ladderPopup = false;
+    }
+  }
+
+  // PROFIL POP UP
+  closePopup() {
+    this.profilPopup = false;
+    this.ladderPopup = false;
+    this.socialPopup = false;
   }
 }
