@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms'
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -7,7 +7,6 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms'
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-
   twoFactors = false;
 
   //Data to retrieved
@@ -15,7 +14,7 @@ export class RegisterComponent implements OnInit {
     username: new FormControl(null, Validators.required),
     twoFactors: new FormControl(false, Validators.required),
     email: new FormControl(null, Validators.required),
-  })
+  });
 
   constructor(private formBuilder: FormBuilder) {
     //

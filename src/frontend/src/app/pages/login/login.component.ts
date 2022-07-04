@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+//import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit {
 
   login() {
     //Got a problem with git-secret, the API UI and KEY are not on this commit, need to fix this.
-
     /*const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
@@ -43,5 +42,4 @@ export class LoginComponent implements OnInit {
         }
       });*/
   }
-
 }

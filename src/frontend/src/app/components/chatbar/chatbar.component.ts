@@ -3,16 +3,18 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 @Component({
   selector: 'app-chatbar',
   templateUrl: './chatbar.component.html',
-  styleUrls: ['./chatbar.component.css']
+  styleUrls: ['./chatbar.component.css'],
 })
 export class ChatbarComponent implements OnInit {
-
   chatCollapsed = false;
   @Output() chatCollapseEvent = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor() {
+    //
+  }
 
   ngOnInit(): void {
+    //
   }
 
   openChat() {
@@ -24,5 +26,4 @@ export class ChatbarComponent implements OnInit {
     this.chatCollapsed = false;
     this.chatCollapseEvent.emit(this.chatCollapsed);
   }
-
 }
