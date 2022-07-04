@@ -8,14 +8,10 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms'
 })
 export class RegisterComponent implements OnInit {
 
-  //Data to retrieve
-  avatar = '';
-  username = '';
   twoFactors = false;
-  email = '';
 
+  //Data to retrieved
   registerForm = this.formBuilder.group({
-    //avatar: new FormControl(null, [Validators.required, requiredFileType('png')]),
     username: new FormControl(null, Validators.required),
     twoFactors: new FormControl(false, Validators.required),
     email: new FormControl(null, Validators.required),
@@ -35,5 +31,6 @@ export class RegisterComponent implements OnInit {
 
   register() {
     //Submit register informations
+    console.log(this.registerForm.value);
   }
 }
