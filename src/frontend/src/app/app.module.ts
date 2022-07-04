@@ -16,6 +16,7 @@ import { MatchmakingComponent } from './components/matchmaking/matchmaking.compo
 import { ProfilComponent } from './components/profil/profil.component';
 import { LadderComponent } from './components/ladder/ladder.component';
 import { SocialComponent } from './components/social/social.component';
+import { ChatbarComponent } from './components/chatbar/chatbar.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { SocialComponent } from './components/social/social.component';
     ProfilComponent,
     LadderComponent,
     SocialComponent,
+    ChatbarComponent,
   ],
   imports: [
     BrowserModule,
