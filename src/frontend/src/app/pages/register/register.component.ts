@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms'
 
 @Component({
   selector: 'app-register',
@@ -10,12 +11,17 @@ export class RegisterComponent implements OnInit {
   //Data to retrieve
   avatar = '';
   username = '';
+  twoFactors = false;
   email = '';
 
-  //Utils
-  twoFactors = false;
+  registerForm = this.formBuilder.group({
+    //avatar: new FormControl(null, [Validators.required, requiredFileType('png')]),
+    username: new FormControl(null, Validators.required),
+    twoFactors: new FormControl(false, Validators.required),
+    email: new FormControl(null, Validators.required),
+  })
 
-  constructor() {
+  constructor(private formBuilder: FormBuilder) {
     //
   }
 
@@ -28,6 +34,6 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-
+    //Submit register informations
   }
 }
