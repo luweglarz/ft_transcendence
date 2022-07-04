@@ -6,22 +6,37 @@ import { Socket } from 'ngx-socket-io';
   providedIn: 'root',
 })
 export class PongService {
-  constructor(private socket: Socket) {}
-
-  requestCreateCustomGame() {
-    this.socket.emit('createCustomGame');
-    this.socket.on('newGameCreated', (arg: any) => {
-      console.log('Connection established');
-      console.log('Received ' + arg);
+  constructor(private socket: Socket) {
+    this.socket.on('normalGameLeft', (arg: any) => {
+      console.log(arg);
     });
   }
 
-  requestJoinGameRoom(roomId: number) {
-    this.socket.emit('joinGameRoom', String(roomId));
-    this.socket.on('roomJoined', (arg: any) => {
-      console.log('Room joined succesfully');
-      console.log('Received ' + arg);
+  requestJoinNormalMatchMaking() {
+    this.socket.emit('joinNormalMatchmaking');
+    this.socket.on('waitingForAMatch', (arg: any) => {
+      console.log(arg);
     });
+    this.socket.on('matchFound', (arg: any) => {
+      console.log(arg);
+    });
+    this.socket.on('matchmakingAlreadyJoined', (arg: any) => {
+      console.log(arg);
+    });
+    this.socket.on('alreadyInGame', (arg: any) => {
+      console.log(arg);
+    });
+  }
+
+  requestLeaveNormalMatchMaking() {
+    this.socket.emit('leaveNormalMatchmaking');
+    this.socket.on('matchmakingLeft', (arg: any) => {
+      console.log(arg);
+    });
+  }
+
+  requestLeaveNormalGame() {
+    this.socket.emit('leaveNormalGame');
   }
 
   close() {
