@@ -1,36 +1,53 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
+import { GameComponent } from '../game/game.component';
+import { GameService } from '../game/game.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MatchmakingService {
-  public isInGame = false;
-
-  constructor(private socket: Socket, private router: Router) {
-    this.socket.on('normalGameLeft', (arg: any) => {
-      console.log(arg);
+  constructor(
+    private socket: Socket,
+    private router: Router,
+    private gameComponent: GameComponent,
+    private gameService: GameService,
+  ) {
+    this.socket.on('normalGameLeft', (msg: any) => {
+      console.log(msg);
       this.router.navigate(['matchmaking']);
     });
-    this.socket.on('matchmakingLeft', (arg: any) => {
-      console.log(arg);
+    this.socket.on('matchmakingLeft', (msg: any) => {
+      console.log(msg);
     });
-    this.socket.on('error', (arg: string) => {
-      console.log(arg);
+    this.socket.on('error', (msg: string) => {
+      console.log(msg);
     });
   }
 
   requestJoinNormalMatchMaking() {
     this.socket.emit('joinNormalMatchmaking');
-    this.socket.on('waitingForAMatch', (arg: any) => {
-      console.log(arg);
+    this.socket.on('waitingForAMatch', (msg: any) => {
+      console.log(msg);
     });
-    this.socket.on('matchFound', (arg: any) => {
-      this.isInGame = true;
-      this.router.navigate(['game']);
-      console.log(arg);
-    });
+    this.socket.on(
+      'matchFound',
+      (msg: any, gameMapInfo: any, playersInfo: any) => {
+        this.gameComponent.game.players[0].height = playersInfo.height;
+        this.gameComponent.game.players[0].width = playersInfo.width;
+        this.gameComponent.game.players[1].height = playersInfo.height;
+        this.gameComponent.game.players[1].width = playersInfo.width;
+        this.gameComponent.game.canvaHeight = gameMapInfo.canvaHeight;
+        this.gameComponent.game.canvaWidth = gameMapInfo.canvaWidth;
+        this.gameComponent.game.backgroundColor = gameMapInfo.backgroundColor;
+        this.gameComponent.game.borderHeight = gameMapInfo.borderHeight;
+        this.gameComponent.game.borderWidth = gameMapInfo.borderWidth;
+        this.gameService.isInGame = true;
+        this.router.navigate(['game']);
+        console.log(msg);
+      },
+    );
   }
 
   requestLeaveNormalMatchMaking() {
