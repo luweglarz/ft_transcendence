@@ -26,11 +26,11 @@ export class HomeComponent implements OnInit {
   }
 
   //RECIEVE COLLAPSING
-  recieveCollapse(collapse: boolean){
+  recieveNavCollapse(collapse: boolean){
     this.navCollapsed = collapse;
   }
 
-  //CHAT COLLAPSING
+  //CHAT CHAT COLLAPSING
   recieveChatCollapse(collapse: boolean){
     this.chatCollapsed = collapse;
   }
