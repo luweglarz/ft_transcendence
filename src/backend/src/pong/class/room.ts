@@ -1,7 +1,12 @@
+import { GameMap } from './game-map';
 import { Player } from './player';
 
 export class Room {
-  constructor(private _players: Player[], private _uuid: string) {}
+  constructor(
+    private _players: Player[],
+    private _uuid: string,
+    private _gameMap: GameMap,
+  ) {}
 
   get uuid(): string {
     return this._uuid;
@@ -13,5 +18,9 @@ export class Room {
 
   get players(): Player[] {
     return this._players;
+  }
+
+  get gameMap(): GameMap {
+    return this._gameMap;
   }
 }
