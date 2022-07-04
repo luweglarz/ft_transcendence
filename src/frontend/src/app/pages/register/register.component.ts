@@ -6,8 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
+
+  //Data to retrieve
   avatar = '';
   username = '';
+  email = '';
+
+  //Utils
+  twoFactors = false;
 
   constructor() {
     //
@@ -17,8 +23,11 @@ export class RegisterComponent implements OnInit {
     //
   }
 
+  choose2FA() {
+    this.twoFactors = !this.twoFactors;
+  }
+
   register() {
-    console.log(this.avatar);
-    console.log(this.username)
+
   }
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +7,10 @@ import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 })
 export class HomeComponent implements OnInit {
   //Nav
-  collapsed = false;
+  navCollapsed = false;
+
+  //Chat
+  chatCollapsed = false;
 
   //Pop ups
   profilPopup = false;
@@ -25,7 +27,12 @@ export class HomeComponent implements OnInit {
 
   //RECIEVE COLLAPSING
   recieveCollapse(collapse: boolean){
-    this.collapsed = collapse;
+    this.navCollapsed = collapse;
+  }
+
+  //CHAT COLLAPSING
+  recieveChatCollapse(collapse: boolean){
+    this.chatCollapsed = collapse;
   }
 
   //RECIEVE POP UP
