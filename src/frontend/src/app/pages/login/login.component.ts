@@ -25,14 +25,13 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    //Headers
-    const headers = {
+    //Got a problem with git-secret, the API UI and KEY are not on this commit, need to fix this.
+
+    /*const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
-    //Body
     const body =
       'grant_type=client_credentials&client_id=' + environment.apiUid + '&' + 'client_secret=' + environment.apiSecret;
-    //POST
     this.http
       .post<any>('https://api.intra.42.fr/oauth/token', body, { headers }).subscribe({
         next: data => {
@@ -42,7 +41,7 @@ export class LoginComponent implements OnInit {
         error: error => {
           console.log('Error');
         }
-      });
+      });*/
   }
 
 }
