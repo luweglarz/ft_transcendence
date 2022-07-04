@@ -8,18 +8,25 @@ services:
     image: transcendence/backend
     container_name: backend
     volumes:
-      - ./src/backend:/transcendence/backend
-      - transcendence_backend_modules:/transcendence/backend/node_modules
+      - ./src/backend/src:/transcendence/backend/src:ro
+      - ./src/backend/prisma:/transcendence/backend/prisma:ro
+      - ./src/backend/test:/transcendence/backend/test:ro
+      - ./src/backend/env/docker-compose.dev.env:/transcendence/backend/.env:ro
+      # - transcendence_backend_modules:/transcendence/backend/node_modules
     command: npm run start:debug
     networks:
-      - transcendence_network
+      transcendence_network:
+        aliases: [ transcendence.backend ]
     depends_on:
       - postgres
     ports:
       - 3000:3000
       - 5555:5555 # prisma studio
+      - 9229:9229 # debug
     env_file:
       - ./src/postgres/dev.env
+    environment:
+      TZ: "Europe/Paris"
     restart: on-failure
 
   frontend:
@@ -30,13 +37,16 @@ services:
     image: transcendence/frontend
     container_name: frontend
     volumes:
-      - ./src/frontend:/transcendence/frontend
-      - transcendence_frontend_modules:/transcendence/frontend/node_modules
+      - ./src/frontend/src:/transcendence/frontend/src:ro
+      # - transcendence_frontend_modules:/transcendence/frontend/node_modules
     command: npm run start
     ports:
       - 4200:4200
     networks:
-      - transcendence_network
+      transcendence_network:
+        aliases: [ transcendence.frontend ]
+    environment:
+      TZ: "Europe/Paris"
     restart: on-failure
   
   postgres:
@@ -46,9 +56,12 @@ services:
     image: transcendence/postgres
     container_name: postgres
     networks:
-      - transcendence_network
+      transcendence_network:
+        aliases: [ transcendence.postgres ]
     env_file:
       - ./src/postgres/dev.env
+    environment:
+      TZ: "Europe/Paris"
     restart: on-failure
     ports:
       - 5432:5432
@@ -58,6 +71,11 @@ networks:
   transcendence_network:
       driver: bridge
 
-volumes:
-  transcendence_backend_modules: {}
-  transcendence_frontend_modules: {}
+# volumes:
+#   ## Some modules have to be compiled for the right architecture (ex argon2),
+#   #  hence we need to isolate them from the host
+#   ## If you have a dependency issue, run: 
+#   #  `docker-compose down && docker volume prune && docker-compose build`
+#   #  (or install stuff manually using `docker-compose exec ...`)
+#   transcendence_backend_modules: {}
+#   transcendence_frontend_modules: {}

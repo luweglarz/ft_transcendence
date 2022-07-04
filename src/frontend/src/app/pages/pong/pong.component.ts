@@ -13,11 +13,15 @@ export class PongComponent implements OnInit {
     // TODO
   }
 
-  buttonRequestCreateCustomGame() {
-    this.pongService.requestCreateCustomGame();
+  buttonRequestJoinNormalMatchMaking() {
+    this.pongService.requestJoinNormalMatchMaking();
   }
 
-  buttonRequestJoinGame(roomId: number) {
-    this.pongService.requestJoinGameRoom(roomId);
+  buttonRequestLeaveNormalMatchMaking() {
+    this.pongService.requestLeaveNormalMatchMaking();
+  }
+
+  buttonRequestLeaveNormalGame() {
+    this.pongService.requestLeaveNormalGame();
   }
 }

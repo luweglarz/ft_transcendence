@@ -1,11 +1,21 @@
-import { Module } from '@nestjs/common';
+import { Module, Scope } from '@nestjs/common';
 import { PongModule } from './pong/pong.module';
 // import { AppController } from './app.controller';
 // import { AppService } from './app.service';
-import { DbClientModule } from './db-client/db-client.module';
+import { DbModule } from './db/db.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 @Module({
-  imports: [DbClientModule, PongModule],
+  imports: [DbModule, PongModule, AuthModule],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      scope: Scope.REQUEST,
+      useClass: LoggingInterceptor,
+    },
+  ],
   // controllers: [AppController], // TODO: should probably remove those
   // providers: [AppService],
 })
