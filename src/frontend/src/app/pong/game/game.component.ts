@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { Game } from '../class/game';
 import { GameService } from './game.service';
 
 @Component({
@@ -14,60 +15,77 @@ import { GameService } from './game.service';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
-  constructor(private gameService: GameService, private socket: Socket) {
-    //Todo
-  }
+  constructor(
+    private gameService: GameService,
+    private socket: Socket,
+    public game: Game,
+  ) {}
 
   //Get the element ref of the game canvas
   @ViewChild('gameCanvas')
-  private gameCanvas!: ElementRef;
-  private playerNb!: number;
-  private context: any;
-
-  player1Pos = {
-    x:0,
-    y:0,
-  }
-
-  player2Pos = {
-    x:0,
-    y:0,
-  }
+  private _gameCanvas!: ElementRef;
+  private _context: any;
 
   ngOnInit(): void {
     //Todo
   }
 
   ngAfterViewInit() {
-    //Get an object to draw on the canvas
-    this.context = this.gameCanvas.nativeElement.getContext('2d');
+    this._context = this._gameCanvas.nativeElement.getContext('2d');
+    this._gameCanvas.nativeElement.width = this.game.canvaWidth;
+    this._gameCanvas.nativeElement.height = this.game.canvaHeight;
     this.socket.on('gameUpdate', (pos1: any, pos2: any) => {
-      this.player1Pos.x = pos1.x;
-      this.player1Pos.y = pos1.y;
-      this.player2Pos.x = pos2.x;
-      this.player2Pos.y = pos2.y;
+      this.game.players[0].x = pos1.x;
+      this.game.players[0].y = pos1.y;
+      this.game.players[1].x = pos2.x;
+      this.game.players[1].y = pos2.y;
     });
     requestAnimationFrame(this.gameLoop);
   }
 
   private gameLoop = () => {
-    this.context.clearRect(
+    this._context.clearRect(
       0,
       0,
-      this.gameCanvas.nativeElement.width,
-      this.gameCanvas.nativeElement.height,
+      this._gameCanvas.nativeElement.width,
+      this._gameCanvas.nativeElement.height,
     );
-    this.context.fillRect(this.player1Pos.x, this.player1Pos.y, 35, 110);
-    this.context.fillRect(this.player2Pos.x, this.player2Pos.y, 35, 110);
-    this.context.strokeStyle = "black";
-    this.context.lineWidth = 5;
-    this.context.strokeRect(10,10, this.gameCanvas.nativeElement.width - 20, this.gameCanvas.nativeElement.height - 20);
-    this.context.moveTo(425, 515)
-    this.context.lineTo(425, 10);
-    this.context.strokeStyle = "black";
-    this.context.stroke();
+
+    this._context.fillRect(
+      this.game.players[0].x,
+      this.game.players[0].y,
+      this.game.players[0].width,
+      this.game.players[0].height,
+    );
+    this._context.fillRect(
+      this.game.players[1].x,
+      this.game.players[1].y,
+      this.game.players[1].width,
+      this.game.players[1].height,
+    );
+    this._context.backgroundColor = this.game.backgroundColor;
+
+    this._context.strokeStyle = this.game.borderColor;
+    this._context.lineWidth = 5;
+    this._context.strokeRect(
+      Math.round((this.game.canvaWidth * 5) / 100 / 2),
+      Math.round((this.game.canvaHeight * 5) / 100 / 2),
+      this.game.borderWidth,
+      this.game.borderHeight,
+    );
+    this._context.moveTo(
+      Math.round(this.game.borderWidth / 2),
+      Math.round((this.game.canvaHeight * 5) / 100 / 2),
+    );
+    this._context.lineTo(
+      Math.round(this.game.borderWidth / 2),
+      Math.round(this.game.borderHeight + this._context.lineWidth * 2 + 1),
+    );
+    this._context.strokeStyle = this.game.borderColor;
+    this._context.stroke();
+
     requestAnimationFrame(this.gameLoop);
-  }
+  };
 
   @HostListener('document:keydown', ['$event'])
   movement(event: KeyboardEvent) {
