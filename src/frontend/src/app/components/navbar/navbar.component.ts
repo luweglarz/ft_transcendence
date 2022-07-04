@@ -1,11 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 
-interface SideNavToggle {
-  screenWidth: number;
-  collapsed: boolean;
-}
-
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -13,19 +8,15 @@ interface SideNavToggle {
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
-        style({opacity: 0}),
-        animate('150ms',
-          style({opacity: 1})
-        )
+        style({ opacity: 0 }),
+        animate('150ms', style({ opacity: 1 })),
       ]),
       transition(':leave', [
-        style({opacity: 1}),
-        animate('150ms',
-          style({opacity: 0})
-        )
-      ])
+        style({ opacity: 1 }),
+        animate('150ms', style({ opacity: 0 })),
+      ]),
     ]),
-  ]
+  ],
 })
 export class NavbarComponent implements OnInit {
   collapsed = false;
@@ -38,35 +29,22 @@ export class NavbarComponent implements OnInit {
   socialPopup = false;
   @Output() socialEvent = new EventEmitter<boolean>();
 
-  ngOnInit(): void {
-
+  constructor() {
+    //
   }
 
-  sendToParent(collapsed: boolean){
-    this.collapseEvent.emit(this.collapsed);
+  ngOnInit(): void {
+    //
   }
 
   toggleCollapse(): void {
     this.collapsed = !this.collapsed;
-    this.sendToParent(this.collapsed);
+    this.collapseEvent.emit(this.collapsed);
   }
 
   closeSidenav(): void {
     this.collapsed = false;
-    this.sendToParent(this.collapsed);
-  }
-
-  // SEND POP UPS
-  sendProfilPopup() {
-    this.profilEvent.emit(this.profilPopup);
-  }
-
-  sendLadderPopup() {
-    this.ladderEvent.emit(this.ladderPopup);
-  }
-
-  sendSocialPopup() {
-    this.socialEvent.emit(this.socialPopup);
+    this.collapseEvent.emit(this.collapsed);
   }
 
   /* PROFIL POP UP */
@@ -74,12 +52,12 @@ export class NavbarComponent implements OnInit {
     this.profilPopup = true;
     this.ladderPopup = false;
     this.socialPopup = false;
-    this.sendProfilPopup();
+    this.profilEvent.emit(this.profilPopup);
   }
 
   closeProfil() {
     this.profilPopup = false;
-    this.sendProfilPopup();
+    this.ladderEvent.emit(this.profilPopup);
   }
 
   /* LADDER POP UP */
@@ -87,12 +65,12 @@ export class NavbarComponent implements OnInit {
     this.ladderPopup = true;
     this.profilPopup = false;
     this.socialPopup = false;
-    this.sendLadderPopup();
+    this.socialEvent.emit(this.ladderPopup);
   }
 
   closeLadder() {
     this.ladderPopup = false;
-    this.sendLadderPopup();
+    this.socialEvent.emit(this.ladderPopup);
   }
 
   /* SOCIAL POP UP */
@@ -100,12 +78,11 @@ export class NavbarComponent implements OnInit {
     this.socialPopup = true;
     this.profilPopup = false;
     this.ladderPopup = false;
-    this.sendSocialPopup();
+    this.socialEvent.emit(this.socialPopup);
   }
 
   closeSocial() {
     this.socialPopup = false;
-    this.sendSocialPopup();
+    this.socialEvent.emit(this.socialPopup);
   }
-
 }

@@ -8,9 +8,8 @@ describe('LadderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LadderComponent ]
-    })
-    .compileComponents();
+      declarations: [LadderComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

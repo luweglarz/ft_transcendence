@@ -26,35 +26,35 @@ export class HomeComponent implements OnInit {
   }
 
   //RECIEVE COLLAPSING
-  recieveNavCollapse(collapse: boolean){
+  recieveNavCollapse(collapse: boolean) {
     this.navCollapsed = collapse;
   }
 
   //CHAT CHAT COLLAPSING
-  recieveChatCollapse(collapse: boolean){
+  recieveChatCollapse(collapse: boolean) {
     this.chatCollapsed = collapse;
   }
 
   //RECIEVE POP UP
-  recieveProfilPopup(profil: boolean){
+  recieveProfilPopup(profil: boolean) {
     this.profilPopup = profil;
-    if (this.profilPopup){
+    if (this.profilPopup) {
       this.ladderPopup = false;
       this.socialPopup = false;
     }
   }
 
-  recieveLadderPopup(ladder: boolean){
+  recieveLadderPopup(ladder: boolean) {
     this.ladderPopup = ladder;
-    if (this.ladderPopup){
+    if (this.ladderPopup) {
       this.profilPopup = false;
       this.socialPopup = false;
     }
   }
 
-  recieveSocialPopup(social: boolean){
+  recieveSocialPopup(social: boolean) {
     this.socialPopup = social;
-    if (this.socialPopup){
+    if (this.socialPopup) {
       this.profilPopup = false;
       this.ladderPopup = false;
     }
