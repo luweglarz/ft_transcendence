@@ -5,10 +5,6 @@ import { Player } from './player';
   providedIn: 'root',
 })
 export class Game {
-  constructor() {
-    //Todo
-  }
-
   private _canvaHeight = 0;
   private _canvaWidth = 0;
   private _borderHeight = 0;

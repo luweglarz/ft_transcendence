@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatchmakingService } from './matchmaking.service';
 
 @Component({
@@ -6,12 +6,8 @@ import { MatchmakingService } from './matchmaking.service';
   templateUrl: './matchmaking.component.html',
   styleUrls: ['./matchmaking.component.css'],
 })
-export class MatchmakingComponent implements OnInit {
+export class MatchmakingComponent {
   constructor(private matchmakingService: MatchmakingService) {}
-
-  ngOnInit(): void {
-    // TODO
-  }
 
   buttonRequestJoinNormalMatchMaking() {
     this.matchmakingService.requestJoinNormalMatchMaking();
