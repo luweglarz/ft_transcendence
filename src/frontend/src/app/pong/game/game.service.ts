@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { Game } from '../class/game';
+import { Player } from '../class/player';
 
 @Injectable({
   providedIn: 'root',
@@ -18,5 +20,40 @@ export class GameService {
 
   movePaddle(event: KeyboardEvent) {
     this.socket.emit('move', event.key);
+  }
+
+  clearCanvas(gameCanvas: ElementRef, gameContext: any) {
+    gameContext.clearRect(
+      0,
+      0,
+      gameCanvas.nativeElement.width,
+      gameCanvas.nativeElement.height,
+    );
+  }
+
+  drawGameBorders(gameCanvas: ElementRef, gameContext: any, gameInfos: Game) {
+    gameContext.strokeStyle = gameInfos.borderColor;
+    gameContext.lineWidth = 5;
+    gameContext.strokeRect(
+      Math.round((gameCanvas.nativeElement.width * 5) / 100 / 2),
+      Math.round((gameCanvas.nativeElement.height * 5) / 100 / 2),
+      gameInfos.borderWidth,
+      gameInfos.borderHeight,
+    );
+
+    gameContext.moveTo(
+      Math.round(gameInfos.borderWidth / 2),
+      Math.round((gameInfos.canvaHeight * 5) / 100 / 2),
+    );
+    gameContext.lineTo(
+      Math.round(gameInfos.borderWidth / 2),
+      Math.round(gameInfos.borderHeight + gameContext.lineWidth * 2 + 1),
+    );
+    gameContext.strokeStyle = gameInfos.borderColor;
+    gameContext.stroke();
+  }
+
+  drawPaddle(gameContext: any, player: Player) {
+    gameContext.fillRect(player.x, player.y, player.width, player.height);
   }
 }
