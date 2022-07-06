@@ -42,11 +42,11 @@ export class GameService {
     );
 
     gameContext.moveTo(
-      Math.round(gameInfos.borderWidth / 2),
+      Math.round(gameInfos.canvaWidth / 2),
       Math.round((gameInfos.canvaHeight * 5) / 100 / 2),
     );
     gameContext.lineTo(
-      Math.round(gameInfos.borderWidth / 2),
+      Math.round(gameInfos.canvaWidth / 2),
       Math.round(gameInfos.borderHeight + gameContext.lineWidth * 2 + 1),
     );
     gameContext.strokeStyle = gameInfos.borderColor;
