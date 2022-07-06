@@ -5,26 +5,29 @@ import { GameMap } from '../class/game-map';
 import { Player } from '../class/player';
 import { Room } from '../class/room';
 import { GameGateway } from '../game/game.gateway';
+import { GameService } from '../game/game.service';
 
 @Injectable()
 export class MatchmakingService {
   constructor(
     @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway,
+    private gameService: GameService,
   ) {
-    //Todo
+    this.logger = new Logger('GameMatchMakingGateway');
   }
 
-  private logger: Logger = new Logger('GameMatchMakingGateway');
+  private logger: Logger;
 
   async generateGameRoom(clientPool: Socket[]) {
     this.logger.log('Enough player to generate a game room');
     const newRoomId: string = uuidv4();
-    const newGameMap: GameMap = new GameMap(525, 850, 'white', 'black');
+    const newGameMap: GameMap = new GameMap(525, 850, 'black', 'white');
     const players: Player[] = [
-      new Player(newGameMap, clientPool.pop(), 1),
-      new Player(newGameMap, clientPool.pop(), 2),
+      new Player(newGameMap, clientPool.pop(), 1, 5),
+      new Player(newGameMap, clientPool.pop(), 2, 5),
     ];
     const newRoom: Room = new Room(players, newRoomId, newGameMap);
+
     await players[0].socket.join(newRoomId);
     await players[1].socket.join(newRoomId);
     this.gameGateway.rooms.push(newRoom);
@@ -43,14 +46,6 @@ export class MatchmakingService {
       },
       { height: players[0].height, width: players[1].width },
     );
-    setInterval(() => {
-      this.gameGateway.server
-        .to(newRoomId)
-        .emit(
-          'gameUpdate',
-          { x: players[0].x, y: players[0].y },
-          { x: players[1].x, y: players[1].y },
-        );
-    }, 15);
+    this.gameService.gameLoop(players, newRoom, this.gameGateway.server);
   }
 }

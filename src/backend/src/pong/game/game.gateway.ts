@@ -47,19 +47,9 @@ export class GameGateway
   movement(client: Socket, eventKey: string) {
     const gameRoom: Room = this.gameService.findRoomId(this.rooms, client);
     const player: Player = this.gameService.findPlayer(gameRoom, client);
-    console.log('res1: ', gameRoom.gameMap.borderHeight - player.height);
-    console.log('res2: ', (gameRoom.gameMap.borderHeight * 5) / 100);
-    if (eventKey == 'ArrowDown') {
-      if (
-        player.y + 15 >
-        Math.round(gameRoom.gameMap.borderHeight - player.height)
-      )
-        player.y = Math.round(gameRoom.gameMap.borderHeight - player.height);
-      else player.y += 15;
-    } else if (eventKey == 'ArrowUp') {
-      if (player.y - 15 < Math.round((gameRoom.gameMap.borderHeight * 5) / 100))
-        player.y = Math.round((gameRoom.gameMap.borderHeight * 5) / 100);
-      else player.y -= 15;
-    }
+
+    if (eventKey == 'ArrowDown') player.velocity = 1;
+    else if (eventKey == 'ArrowUp') player.velocity = -1;
+    else player.velocity = 0;
   }
 }
