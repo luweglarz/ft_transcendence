@@ -75,11 +75,14 @@ export class Player {
     return this._socket;
   }
 
-  get borderCollisionUp(): number {
-    return this._borderCollisionUp;
-  }
-
-  get borderCollisionDown(): number {
-    return this._borderCollisionDown;
+  checkBorderCollision(): boolean {
+    if (this.velocity == -1 && this.y <= this._borderCollisionUp) {
+      this.y = this._borderCollisionUp;
+      return true;
+    } else if (this.velocity == 1 && this.y >= this._borderCollisionDown) {
+      this.y = this._borderCollisionDown;
+      return true;
+    }
+    return false;
   }
 }

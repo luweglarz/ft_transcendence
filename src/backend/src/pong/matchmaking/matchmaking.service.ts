@@ -1,6 +1,7 @@
 import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { Socket } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
+import { Ball } from '../class/ball';
 import { GameMap } from '../class/game-map';
 import { Player } from '../class/player';
 import { Room } from '../class/room';
@@ -27,6 +28,7 @@ export class MatchmakingService {
       new Player(newGameMap, clientPool.pop(), 2, 5),
     ];
     const newRoom: Room = new Room(players, newRoomId, newGameMap);
+    const ball: Ball = new Ball(newGameMap, 2);
 
     await players[0].socket.join(newRoomId);
     await players[1].socket.join(newRoomId);
@@ -43,9 +45,10 @@ export class MatchmakingService {
         borderHeight: newRoom.gameMap.borderHeight,
         borderWidth: newRoom.gameMap.borderWidth,
         backgroundColor: newRoom.gameMap.backgroundColor,
+        ballRadius: ball.radius,
       },
       { height: players[0].height, width: players[1].width },
     );
-    this.gameService.gameLoop(players, newRoom, this.gameGateway.server);
+    this.gameService.gameLoop(players, newRoom, this.gameGateway.server, ball);
   }
 }
