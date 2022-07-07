@@ -44,6 +44,7 @@ export class MatchmakingService {
         this.gameComponent.game.borderHeight = gameMapInfo.borderHeight;
         this.gameComponent.game.borderWidth = gameMapInfo.borderWidth;
         this.gameService.isInGame = true;
+        this.gameComponent.game.ball.radius = gameMapInfo.ballRadius;
         this.router.navigate(['game']);
         console.log(msg);
       },

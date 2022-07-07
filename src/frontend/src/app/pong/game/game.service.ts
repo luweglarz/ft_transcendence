@@ -1,5 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { Ball } from '../class/ball';
 import { Game } from '../class/game';
 import { Player } from '../class/player';
 
@@ -20,6 +21,9 @@ export class GameService {
 
   movePaddle(event: KeyboardEvent) {
     this.socket.emit('move', event.key);
+    // setTimeout( () => {
+    // this.socket.emit('move', "stop");
+    // },100);
   }
 
   clearCanvas(gameCanvas: ElementRef, gameContext: any) {
@@ -55,5 +59,13 @@ export class GameService {
 
   drawPaddle(gameContext: any, player: Player) {
     gameContext.fillRect(player.x, player.y, player.width, player.height);
+  }
+
+  drawBall(gameContext: any, ball: Ball) {
+    gameContext.beginPath();
+    gameContext.fillStyle = 'black';
+    gameContext.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI);
+    gameContext.fill();
+    gameContext.stroke();
   }
 }
