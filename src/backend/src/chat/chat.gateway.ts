@@ -46,21 +46,24 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       users: { create: { user: { connect: owner }, role: 'OWNER' } },
     });
     // needs emit once i can find how to identify user by connection to server
+    // emit new room to all connected user
   }
 
   @SubscribeMessage('joinRoom')
   async joinRoom(room: Room, user: User) {
     this.roomService.joinRoom(room, user);
     // needs emit once i can find how to identify user by connection to server
+    // emmit room messages to new member of room
   }
 
-  @SubscribeMessage('sendMessage')
-  async sendMessage(@MessageBody() content: string, room: Room, user: User) {
+  @SubscribeMessage('addMessage')
+  async addMessage(@MessageBody() content: string, room: Room, user: User) {
     this.messageService.createMessage({
       content,
       room: { connect: room },
       user: { connect: user },
     });
     // needs emit once i can find how to identify user by connection to server
+    // emmit new message to all members of the room
   }
 }
