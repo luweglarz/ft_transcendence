@@ -1,7 +1,7 @@
 Dockerfile
 
 #### Gitignore content
-# .env # TODO: ignore again
+.env
 # compiled output
 /dist
 /node_modules
