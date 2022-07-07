@@ -4,21 +4,24 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Logger,
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { UsernameSigninDto, EmailSignupDto } from './dto';
+import { JwtGuard } from './guard';
 
 @Controller('auth')
 export class AuthController {
+  private logger = new Logger(AuthController.name);
   constructor(private authService: AuthService) {}
 
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
   signup(@Body() dto: EmailSignupDto) {
-    console.log(dto);
+    // console.log(dto);
+    this.logger.debug(`Incoming signup dto: ${JSON.stringify(dto, null, 2)}`);
     return this.authService.signup(dto);
   }
 
@@ -35,7 +38,7 @@ export class AuthController {
     return this.authService.signout(dto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Get('test')
   check_signin() {
     return { message: 'I am signed in !' };
