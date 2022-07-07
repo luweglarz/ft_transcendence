@@ -1,0 +1,47 @@
+<div>
+  <!-- Side Navbar -->
+    <!-- Events shared between home and navbar-->
+  <app-navbar
+    (collapseEvent)="recieveNavCollapse($event)"
+    (profilEvent)="recieveProfilPopup($event)"
+    (ladderEvent)="recieveLadderPopup($event)"
+    (socialEvent)="recieveSocialPopup($event)"
+  ></app-navbar>
+
+  <!-- Content of the home page (responsive container)-->
+  <div class="home-container" [ngClass]="navCollapsed ? 'home-container-nav-collapsed': 'home-container'" [ngClass]="chatCollapsed ? 'home-container-chat-collapsed': 'home-container'">
+    <!-- Matchmaking component-->
+    <app-matchmaking></app-matchmaking>
+
+    <!-- Chatbar Footer-->
+    <app-chatbar
+      (chatCollapseEvent)="recieveChatCollapse($event)"
+    ></app-chatbar>
+  </div>
+
+  <!-- Pop-up container -->
+  <div class="popup-container" *ngIf="profilPopup || ladderPopup || socialPopup" [ngClass]="navCollapsed ? 'popup-collapsed' : ''">
+    <!-- Pop up window template -->
+    <div class="popup-window">
+      <!-- Title and close button -->
+      <div class="popup-header">
+        <button class="popup-close" (click)="closePopup()">
+          <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M26.6666 26.6666L5.33325 5.33325M26.6666 5.33325L5.33325 26.6666" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <h1 *ngIf="profilPopup">Profil</h1>
+        <h1 *ngIf="ladderPopup">Ladder</h1>
+        <h1 *ngIf="socialPopup">Social</h1>
+      </div>
+      <!-- Content -->
+      <div class="popup-content">
+        <!-- Profil/ladder/Social components -->
+        <app-profil *ngIf="profilPopup"></app-profil>
+        <app-ladder *ngIf="ladderPopup"></app-ladder>
+        <app-social *ngIf="socialPopup"></app-social>
+      </div>
+    </div>
+  </div>
+
+</div>
