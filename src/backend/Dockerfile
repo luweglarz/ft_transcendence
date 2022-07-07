@@ -7,6 +7,7 @@ COPY package*.json ./
 RUN npm clean-install 
 
 COPY . .
+RUN npx prisma generate && rm ./.env
 
 RUN npm run build
 
