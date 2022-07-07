@@ -25,12 +25,17 @@ export class GameComponent {
     this.gameContext = this.gameCanvas.nativeElement.getContext('2d');
     this.gameCanvas.nativeElement.width = this.game.canvaWidth;
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;
-    this.socket.on('gameUpdate', (pos1: any, pos2: any) => {
-      this.game.players[0].x = pos1.x;
-      this.game.players[0].y = pos1.y;
-      this.game.players[1].x = pos2.x;
-      this.game.players[1].y = pos2.y;
-    });
+    this.socket.on(
+      'gameUpdate',
+      (player1Pos: any, player2Pos: any, ballPos: any) => {
+        this.game.players[0].x = player1Pos.x;
+        this.game.players[0].y = player1Pos.y;
+        this.game.players[1].x = player2Pos.x;
+        this.game.players[1].y = player2Pos.y;
+        this.game.ball.x = ballPos.x;
+        this.game.ball.y = ballPos.y;
+      },
+    );
     requestAnimationFrame(this.gameLoop);
   }
 
@@ -44,6 +49,8 @@ export class GameComponent {
       this.gameContext,
       this.game,
     );
+    this.gameService.drawBall(this.gameContext, this.game.ball);
+
     requestAnimationFrame(this.gameLoop);
   };
 

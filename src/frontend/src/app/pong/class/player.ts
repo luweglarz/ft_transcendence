@@ -1,7 +1,6 @@
 export class Player {
   private _height = 0;
   private _width = 0;
-  private _velocity = 0;
   private _x = 0;
   private _y = 0;
 
@@ -35,13 +34,5 @@ export class Player {
 
   set x(newX: number) {
     this._x = newX;
-  }
-
-  get velocity(): number {
-    return this._velocity;
-  }
-
-  set velocity(newVelocity: number) {
-    this._velocity = newVelocity;
   }
 }

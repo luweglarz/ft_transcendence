@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Ball } from './ball';
 import { Player } from './player';
 
 @Injectable({
@@ -10,8 +11,9 @@ export class Game {
   private _borderHeight = 0;
   private _borderWidth = 0;
   private _borderColor = '';
-  private _players: Player[] = [new Player(), new Player()];
   private _backgroundColor = '';
+  private _players: Player[] = [new Player(), new Player()];
+  private _ball: Ball = new Ball();
 
   get canvaHeight(): number {
     return this._canvaHeight;
@@ -53,6 +55,14 @@ export class Game {
     return this._borderColor;
   }
 
+  get backgroundColor(): string {
+    return this._backgroundColor;
+  }
+
+  set backgroundColor(newColor: string) {
+    this._backgroundColor = newColor;
+  }
+
   set players(newPlayers: Player[]) {
     this._players = newPlayers;
   }
@@ -61,11 +71,11 @@ export class Game {
     return this._players;
   }
 
-  get backgroundColor(): string {
-    return this._backgroundColor;
+  get ball(): Ball {
+    return this._ball;
   }
 
-  set backgroundColor(newColor: string) {
-    this._backgroundColor = newColor;
+  set ball(newBall: Ball) {
+    this._ball = newBall;
   }
 }
