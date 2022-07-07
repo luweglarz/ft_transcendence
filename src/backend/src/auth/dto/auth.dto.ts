@@ -6,7 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { MatchProperty } from '../match-property.decorator';
+import { MatchProperty } from 'src/auth/decorator';
 
 export class EmailSignupDto {
   @IsString()

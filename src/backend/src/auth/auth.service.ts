@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import * as argon from 'argon2';
-import { DbErrorCode } from 'src/db/db.errors';
+import { DbErrorCode } from 'src/db/errors';
 import { DbService } from 'src/db/db.service';
 import { UsernameSigninDto, EmailSignupDto } from './dto';
 
@@ -33,9 +33,7 @@ export class AuthService {
     }
   }
 
-  async signin(
-    dto: UsernameSigninDto,
-  ): Promise<{ message: string; jwt: string }> {
+  async signin(dto: UsernameSigninDto) {
     const user = await this.db.user.findUnique({
       where: { username: dto.username },
     });
