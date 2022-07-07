@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
+import { Ball } from '../class/ball';
 import { Player } from '../class/player';
 import { Room } from '../class/room';
 
@@ -26,39 +27,43 @@ export class GameService {
     else if (room.players[1].socket === client) return room.players[1];
   }
 
-  checkBorderCollision(playerInfos: Player): boolean {
-    if (
-      playerInfos.velocity == -1 &&
-      playerInfos.y <= playerInfos.borderCollisionUp
-    ) {
-      playerInfos.y = playerInfos.borderCollisionUp;
-      return true;
-    } else if (
-      playerInfos.velocity == 1 &&
-      playerInfos.y >= playerInfos.borderCollisionDown
-    ) {
-      playerInfos.y = playerInfos.borderCollisionDown;
-      return true;
+  private playersMovement(players: Player[]) {
+    if (players[0].checkBorderCollision()) {
+      players[0].velocity = 0;
     }
-    return false;
+    if (players[1].checkBorderCollision()) {
+      players[1].velocity = 0;
+    }
+    players[0].y += players[0].velocity * players[0].speed;
+    players[1].y += players[1].velocity * players[1].speed;
   }
 
-  gameLoop(players: Player[], gameRoom: Room, server: Server) {
+  private ballMovement(ball: Ball, players: Player[]) {
+    if (ball.checkBorderCollision()) {
+      if (ball.yVelocity == -1) ball.yVelocity = 1;
+      else if (ball.yVelocity == 1) ball.yVelocity = -1;
+    }
+    if (ball.checkPaddleCollision(players)) {
+      if (ball.xVelocity == -1) ball.xVelocity = 1;
+      else if (ball.xVelocity == 1) ball.xVelocity = -1;
+    }
+    ball.x += ball.xVelocity * ball.speed;
+    ball.y += ball.yVelocity * ball.speed;
+  }
+
+  gameLoop(players: Player[], gameRoom: Room, server: Server, ball: Ball) {
+    ball.xVelocity = -1;
+    ball.yVelocity = 1;
     setInterval(() => {
-      if (this.checkBorderCollision(players[0])) {
-        players[0].velocity = 0;
-      }
-      if (this.checkBorderCollision(players[1])) {
-        players[1].velocity = 0;
-      }
-      players[0].y += players[0].velocity * players[0].speed;
-      players[1].y += players[1].velocity * players[1].speed;
+      this.playersMovement(players);
+      this.ballMovement(ball, players);
       server
         .to(gameRoom.uuid)
         .emit(
           'gameUpdate',
           { x: players[0].x, y: players[0].y },
           { x: players[1].x, y: players[1].y },
+          { x: ball.x, y: ball.y },
         );
     }, 5);
   }
