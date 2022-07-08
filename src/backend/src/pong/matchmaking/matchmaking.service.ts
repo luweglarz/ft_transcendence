@@ -57,6 +57,7 @@ export class MatchmakingService {
     this.gameLoopInterval = this.gameService.gameLoop(
       players,
       newRoom,
+      this.gameGateway.rooms,
       this.gameGateway.server,
       ball,
     );

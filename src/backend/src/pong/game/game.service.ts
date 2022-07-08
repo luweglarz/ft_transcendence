@@ -71,7 +71,22 @@ export class GameService {
     }
   }
 
-  gameLoop(players: Player[], gameRoom: Room, server: Server, ball: Ball): any {
+  clearRoom(roomToClear: Room, rooms: Room[]) {
+    roomToClear.players[0].socket.leave(roomToClear.uuid);
+    roomToClear.players[1].socket.leave(roomToClear.uuid);
+    rooms.splice(
+      rooms.findIndex((element) => element === roomToClear),
+      1,
+    );
+  }
+
+  gameLoop(
+    players: Player[],
+    gameRoom: Room,
+    rooms: Room[],
+    server: Server,
+    ball: Ball,
+  ): any {
     ball.xVelocity = -1;
     ball.yVelocity = -1;
 
@@ -83,11 +98,13 @@ export class GameService {
         server
           .to(gameRoom.uuid)
           .emit('gameFinished', { winner: players[0].socket.id });
+        this.clearRoom(gameRoom, rooms);
         clearInterval(interval);
       } else if (players[1].goals == 11) {
         server
           .to(gameRoom.uuid)
           .emit('gameFinished', { winner: players[1].socket.id });
+        this.clearRoom(gameRoom, rooms);
         clearInterval(interval);
       }
       server.to(gameRoom.uuid).emit(

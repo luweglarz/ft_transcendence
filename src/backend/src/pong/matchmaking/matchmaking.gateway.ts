@@ -58,28 +58,4 @@ export class MatchmakingGateway {
       client.emit('matchmakingLeft', 'You have left the matchmaking');
     } else client.emit('error', 'You are not in a matchmaking');
   }
-
-  @SubscribeMessage('leaveNormalGame')
-  leaveGame(@ConnectedSocket() client: Socket) {
-    for (const room of this.gameGateway.rooms) {
-      if (
-        room.players[0].socket === client ||
-        room.players[1].socket === client
-      ) {
-        this.gameGateway.server
-          .to(room.uuid)
-          .emit('normalGameLeft', `player ${client.id} has left the game`);
-        room.players[0].socket.leave(room.uuid);
-        room.players[1].socket.leave(room.uuid);
-        clearInterval(this.matchmakingService.gameLoopInterval);
-        this.gameGateway.rooms.splice(
-          this.gameGateway.rooms.findIndex((element) => element === room),
-          1,
-        );
-        this.logger.log(`player ${client.id} has left the game ${room.uuid}`);
-        return;
-      }
-    }
-    client.emit('error', 'You are not in a game');
-  }
 }
