@@ -5,11 +5,17 @@ import * as argon from 'argon2';
 import { DbErrorCode } from 'src/db/errors';
 import { DbService } from 'src/db/db.service';
 import { UsernameSigninDto, EmailSignupDto } from './dto';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
-  constructor(private db: DbService, private jwt: JwtService) {}
+  constructor(
+    private db: DbService,
+    private jwt: JwtService,
+    private readonly httpService: HttpService,
+  ) {}
 
   async signup(dto: EmailSignupDto) {
     const pwdHash = await argon.hash(dto.password);
@@ -60,5 +66,18 @@ export class AuthService {
       expiresIn: '42m',
       secret: process.env['JWT_SECRET'],
     });
+  }
+
+  async oauthFindOrCreate(accessToken: string) {
+    const userObservable = this.httpService.get(
+      'https://api.intra.42.fr/v2/me',
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
+    const { data } = await lastValueFrom(userObservable); // lastValueFrom: convert observable to promise
+    // this.logger.debug(`data: ${JSON.stringify(data, null, 2)}`); // user format: https://api.intra.42.fr/apidoc/2.0/users/me.html
+    const user = { email: data.email, login: data.login };
+    return user;
   }
 }

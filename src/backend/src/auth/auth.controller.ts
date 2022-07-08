@@ -9,6 +9,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { UsernameSigninDto, EmailSignupDto } from './dto';
 import { JwtGuard, OAuth2Guard } from './guard';
@@ -53,9 +54,10 @@ export class AuthController {
 
   @Get('oauth/redirect')
   @UseGuards(OAuth2Guard)
-  async oauhtRedirectCallback(@Req() req: Request & { user: any }) {
+  async oauhtRedirectCallback(@Req() req: Request) {
     this.logger.debug(`${this.oauhtRedirectCallback.name} called`);
     this.logger.debug(`user: ${JSON.stringify(req.user, null, 2)}`);
-    return { message: `welcome ${req.user.login}` };
+    const user: any = req.user;
+    return { message: `welcome ${user.login}` };
   }
 }
