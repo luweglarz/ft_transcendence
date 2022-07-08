@@ -64,7 +64,7 @@ export class GameService {
     } else if (
       ball.xVelocity == 1 &&
       ball.x - ball.radius >=
-        (gameMap.canvaWidth * 5) / 100 / 2 + gameMap.borderWidth
+        (gameMap.canvaWidth * 5) / 100 / 2 + gameMap.canvaWidth
     ) {
       ball.resetBall(gameMap);
       players[0].goals += 1;
@@ -73,7 +73,7 @@ export class GameService {
 
   gameLoop(players: Player[], gameRoom: Room, server: Server, ball: Ball): any {
     ball.xVelocity = -1;
-    ball.yVelocity = 1;
+    ball.yVelocity = -1;
 
     const interval = setInterval(() => {
       this.playersMovement(players);
@@ -100,7 +100,7 @@ export class GameService {
           playerTwoGoals: players[1].goals,
         },
       );
-    }, 5);
+    }, 10);
     return interval;
   }
 }

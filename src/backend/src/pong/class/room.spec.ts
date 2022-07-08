@@ -9,7 +9,7 @@ describe('Room', () => {
     let player2: Player;
     const players: Player[] = [player1, player2];
     const roomUuid: string = uuidv4();
-    const gameMap: GameMap = new GameMap(525, 850, 'black', 'yellow');
+    const gameMap: GameMap = new GameMap(525, 850, 'black');
     const room: Room = new Room(players, roomUuid, gameMap);
     expect(room).toBeDefined();
   });

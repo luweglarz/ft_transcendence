@@ -4,6 +4,7 @@ export class Player {
   private _x = 0;
   private _y = 0;
   private _goals = 0;
+  private _color = '';
 
   get height(): number {
     return this._height;
@@ -43,5 +44,13 @@ export class Player {
 
   set goals(goal: number) {
     this._goals = goal;
+  }
+
+  get color(): string {
+    return this._color;
+  }
+
+  set color(newColor: string) {
+    this._color = newColor;
   }
 }
