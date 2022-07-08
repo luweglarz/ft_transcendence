@@ -6,18 +6,19 @@ import {
   HttpStatus,
   Logger,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsernameSigninDto, EmailSignupDto } from './dto';
-import { JwtGuard } from './guard';
+import { JwtGuard, OAuth2Guard } from './guard';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
-  private logger = new Logger(AuthController.name);
+  private readonly logger = new Logger(AuthController.name);
   constructor(private authService: AuthService) {}
 
-  @Post('signup')
+  @Post('auth/signup')
   @HttpCode(HttpStatus.CREATED)
   signup(@Body() dto: EmailSignupDto) {
     // console.log(dto);
@@ -25,22 +26,40 @@ export class AuthController {
     return this.authService.signup(dto);
   }
 
-  @Post('signin')
+  @Post('auth/signin')
   @HttpCode(HttpStatus.OK)
   async signin(@Body() dto: UsernameSigninDto) {
-    // console.log(`OAUTH client ID: ${process.env['OAUTH_42_CLIENT_ID']}`);
+    // this.logger.debug(`OAUTH client ID: ${process.env['OAUTH_42_CLIENT_ID']}`);
     return this.authService.signin(dto);
   }
 
-  @Post('signout')
+  @Post('auth/signout')
   @HttpCode(HttpStatus.OK)
   signout(@Body() dto: EmailSignupDto) {
     return this.authService.signout(dto);
   }
 
   @UseGuards(JwtGuard)
-  @Get('test')
+  @Get('auth/test')
   check_signin() {
     return { message: 'I am signed in !' };
+  }
+
+  @Get('oauth/authenticate')
+  @UseGuards(OAuth2Guard)
+  oauthAutenticate() {
+    //
+  }
+
+  @Get('oauth/redirect')
+  @UseGuards(OAuth2Guard)
+  async oauhtRedirectCallback(
+    @Body() body: any,
+    @Req() req: Request & { user: any },
+  ) {
+    this.logger.debug(`${this.oauhtRedirectCallback.name} called`);
+    this.logger.debug(`body: ${JSON.stringify(body, null, 2)}`);
+    this.logger.debug(`user: ${JSON.stringify(req.user, null, 2)}`);
+    return { message: 'redirected' };
   }
 }
