@@ -69,4 +69,21 @@ export class GameService {
     gameContext.fill();
     gameContext.stroke();
   }
+
+  drawScore(gameContext: any, gameInfos: Game) {
+    gameContext.beginPath();
+    gameContext.font = '48px serif';
+    gameContext.fillText(
+      String(gameInfos.players[0].goals),
+      (gameInfos.canvaWidth * 5) / 100 / 2 + gameInfos.borderWidth / 2 / 2,
+      50,
+    );
+    gameContext.fillText(
+      String(gameInfos.players[1].goals),
+      (gameInfos.canvaWidth * 5) / 100 / 2 +
+        gameInfos.borderWidth / 2 +
+        gameInfos.borderWidth / 4,
+      50,
+    );
+  }
 }

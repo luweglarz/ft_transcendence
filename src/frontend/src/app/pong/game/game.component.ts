@@ -1,4 +1,11 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { Game } from '../class/game';
 import { GameService } from './game.service';
@@ -8,12 +15,20 @@ import { GameService } from './game.service';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css'],
 })
-export class GameComponent {
+export class GameComponent implements OnInit {
   constructor(
     private gameService: GameService,
     private socket: Socket,
+    private router: Router,
     public game: Game,
   ) {}
+
+  ngOnInit() {
+    this.socket.on('gameFinished', (winner: any) => {
+      console.log(winner + ' Won the game');
+      this.router.navigate(['matchmaking']);
+    });
+  }
 
   /** Get the #gameCanvas reference with ViewChild decorator. */
   @ViewChild('gameCanvas')
@@ -27,13 +42,15 @@ export class GameComponent {
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;
     this.socket.on(
       'gameUpdate',
-      (player1Pos: any, player2Pos: any, ballPos: any) => {
+      (player1Pos: any, player2Pos: any, ballPos: any, score: any) => {
         this.game.players[0].x = player1Pos.x;
         this.game.players[0].y = player1Pos.y;
         this.game.players[1].x = player2Pos.x;
         this.game.players[1].y = player2Pos.y;
         this.game.ball.x = ballPos.x;
         this.game.ball.y = ballPos.y;
+        this.game.players[0].goals = score.playerOneGoals;
+        this.game.players[1].goals = score.playerTwoGoals;
       },
     );
     requestAnimationFrame(this.gameLoop);
@@ -50,7 +67,7 @@ export class GameComponent {
       this.game,
     );
     this.gameService.drawBall(this.gameContext, this.game.ball);
-
+    this.gameService.drawScore(this.gameContext, this.game);
     requestAnimationFrame(this.gameLoop);
   };
 
