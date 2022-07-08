@@ -1,12 +1,18 @@
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import * as argon from 'argon2';
 import { DbErrorCode } from 'src/db/errors';
 import { DbService } from 'src/db/db.service';
-import { UsernameSigninDto, EmailSignupDto } from './dto';
+import { UsernameSigninDto, EmailSignupDto, OAuthUserDto } from './dto';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class AuthService {
@@ -68,16 +74,32 @@ export class AuthService {
     });
   }
 
-  async oauthFindOrCreate(accessToken: string) {
+  private async fetch42APIUserData(accessToken: string) {
     const userObservable = this.httpService.get(
       'https://api.intra.42.fr/v2/me',
       {
         headers: { Authorization: `Bearer ${accessToken}` },
       },
     );
-    const { data } = await lastValueFrom(userObservable); // lastValueFrom: convert observable to promise
-    // this.logger.debug(`data: ${JSON.stringify(data, null, 2)}`); // user format: https://api.intra.42.fr/apidoc/2.0/users/me.html
-    const user = { email: data.email, login: data.login };
+    const { data } = await lastValueFrom(userObservable);
+    if (!data)
+      throw new ForbiddenException('Could not fetch user with 42 OAuth2 API');
+    const user = new OAuthUserDto();
+    for (const key in data) {
+      user[key] = data[key];
+    }
+    const errors = await validate(user, {
+      whitelist: true,
+    });
+    if (errors.length > 0)
+      throw new BadRequestException(
+        `42's API sent incorrect data: ${errors[0]}`,
+      );
+    return user;
+  }
+
+  async oauthFindOrCreate(accessToken: string) {
+    const user = this.fetch42APIUserData(accessToken);
     return user;
   }
 }

@@ -40,3 +40,13 @@ export class UsernameSigninDto {
   @IsNotEmpty()
   password: string;
 }
+
+export class OAuthUserDto {
+  @IsString()
+  @IsNotEmpty()
+  login: string;
+
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+}
