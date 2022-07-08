@@ -87,8 +87,8 @@ export class GameService {
     server: Server,
     ball: Ball,
   ): any {
-    ball.xVelocity = -1;
-    ball.yVelocity = -1;
+    ball.xVelocity = Math.round(Math.random()) * 2 - 1;
+    ball.yVelocity = Math.round(Math.random()) * 2 - 1;
 
     const interval = setInterval(() => {
       this.playersMovement(players);
