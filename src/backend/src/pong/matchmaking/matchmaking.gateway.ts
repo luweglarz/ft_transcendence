@@ -71,6 +71,7 @@ export class MatchmakingGateway {
           .emit('normalGameLeft', `player ${client.id} has left the game`);
         room.players[0].socket.leave(room.uuid);
         room.players[1].socket.leave(room.uuid);
+        clearInterval(this.matchmakingService.gameLoopInterval);
         this.gameGateway.rooms.splice(
           this.gameGateway.rooms.findIndex((element) => element === room),
           1,

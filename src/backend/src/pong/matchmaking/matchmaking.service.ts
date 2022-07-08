@@ -17,6 +17,7 @@ export class MatchmakingService {
     this.logger = new Logger('GameMatchMakingGateway');
   }
 
+  public gameLoopInterval: any;
   private logger: Logger;
 
   async generateGameRoom(clientPool: Socket[]) {
@@ -49,6 +50,11 @@ export class MatchmakingService {
       },
       { height: players[0].height, width: players[1].width },
     );
-    this.gameService.gameLoop(players, newRoom, this.gameGateway.server, ball);
+    this.gameLoopInterval = this.gameService.gameLoop(
+      players,
+      newRoom,
+      this.gameGateway.server,
+      ball,
+    );
   }
 }
