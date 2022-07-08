@@ -7,17 +7,20 @@ export class Player {
     private _socket: Socket,
     playerNb: number,
     private _speed: number,
+    private _color: string,
   ) {
-    this._width = Math.round((gameMap.borderWidth * 3) / 100);
-    this._height = Math.round((gameMap.borderHeight * 20) / 100);
-    if (playerNb === 1) this._x = (gameMap.canvaWidth * 5) / 100;
-    else if (playerNb === 2) this._x = gameMap.borderWidth - this._width;
-    this._y = gameMap.borderHeight / 2 - this._height / 2;
+    this._width = Math.round((gameMap.canvaWidth * 2) / 100);
+    this._height = Math.round((gameMap.canvaHeight * 20) / 100);
+    if (playerNb === 1) this._x = (gameMap.canvaWidth * 2) / 100;
+    else if (playerNb === 2)
+      this._x =
+        gameMap.canvaWidth - this._width - (gameMap.canvaWidth * 2) / 100;
+    this._y = gameMap.canvaHeight / 2 - this._height / 2;
 
-    this._borderCollisionUp = Math.round((gameMap.borderHeight * 5) / 100);
+    this._borderCollisionUp = Math.round((gameMap.canvaHeight * 2) / 100);
     this._borderCollisionDown = Math.round(
       gameMap.canvaHeight -
-        Math.round((gameMap.borderHeight * 5) / 100) -
+        Math.round((gameMap.canvaHeight * 2) / 100) -
         this._height,
     );
   }
@@ -81,6 +84,10 @@ export class Player {
 
   set goals(goal: number) {
     this._goals = goal;
+  }
+
+  get color(): string {
+    return this._color;
   }
 
   checkBorderCollision(): boolean {

@@ -8,9 +8,6 @@ import { Player } from './player';
 export class Game {
   private _canvaHeight = 0;
   private _canvaWidth = 0;
-  private _borderHeight = 0;
-  private _borderWidth = 0;
-  private _borderColor = '';
   private _backgroundColor = '';
   private _players: Player[] = [new Player(), new Player()];
   private _ball: Ball = new Ball();
@@ -29,30 +26,6 @@ export class Game {
 
   set canvaWidth(newWidth: number) {
     this._canvaWidth = newWidth;
-  }
-
-  get borderHeight(): number {
-    return this._borderHeight;
-  }
-
-  set borderHeight(newHeight: number) {
-    this._borderHeight = newHeight;
-  }
-
-  get borderWidth(): number {
-    return this._borderWidth;
-  }
-
-  set borderWidth(newWidth: number) {
-    this._borderWidth = newWidth;
-  }
-
-  set borderColor(newColor: string) {
-    this._borderColor = newColor;
-  }
-
-  get borderColor(): string {
-    return this._borderColor;
   }
 
   get backgroundColor(): string {

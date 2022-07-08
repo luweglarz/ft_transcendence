@@ -23,13 +23,13 @@ export class MatchmakingService {
   async generateGameRoom(clientPool: Socket[]) {
     this.logger.log('Enough player to generate a game room');
     const newRoomId: string = uuidv4();
-    const newGameMap: GameMap = new GameMap(525, 850, 'black', 'white');
+    const newGameMap: GameMap = new GameMap(525, 950, 'black');
     const players: Player[] = [
-      new Player(newGameMap, clientPool.pop(), 1, 5),
-      new Player(newGameMap, clientPool.pop(), 2, 5),
+      new Player(newGameMap, clientPool.pop(), 1, 6, 'white'),
+      new Player(newGameMap, clientPool.pop(), 2, 6, 'white'),
     ];
     const newRoom: Room = new Room(players, newRoomId, newGameMap);
-    const ball: Ball = new Ball(newGameMap, 2);
+    const ball: Ball = new Ball(newGameMap, 5, 'white', 6);
 
     await players[0].socket.join(newRoomId);
     await players[1].socket.join(newRoomId);
@@ -43,12 +43,16 @@ export class MatchmakingService {
       {
         canvaHeight: newRoom.gameMap.canvaHeight,
         canvaWidth: newRoom.gameMap.canvaWidth,
-        borderHeight: newRoom.gameMap.borderHeight,
-        borderWidth: newRoom.gameMap.borderWidth,
         backgroundColor: newRoom.gameMap.backgroundColor,
         ballRadius: ball.radius,
+        ballColor: ball.color,
       },
-      { height: players[0].height, width: players[1].width },
+      {
+        height: players[0].height,
+        width: players[0].width,
+        playerOneColor: players[0].color,
+        playerTwoColor: players[1].color,
+      },
     );
     this.gameLoopInterval = this.gameService.gameLoop(
       players,

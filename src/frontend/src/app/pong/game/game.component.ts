@@ -25,6 +25,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.socket.on('gameFinished', (winner: any) => {
+      this.gameService.isInGame = false;
       console.log(winner + ' Won the game');
       this.router.navigate(['matchmaking']);
     });
@@ -58,14 +59,10 @@ export class GameComponent implements OnInit {
 
   private gameLoop = () => {
     this.gameService.clearCanvas(this.gameCanvas, this.gameContext);
-    this.gameContext.backgroundColor = this.game.backgroundColor;
+    this.gameService.fillBackground(this.gameContext, this.game);
+    this.gameService.drawMiddleline(this.gameContext, this.game);
     this.gameService.drawPaddle(this.gameContext, this.game.players[0]);
     this.gameService.drawPaddle(this.gameContext, this.game.players[1]);
-    this.gameService.drawGameBorders(
-      this.gameCanvas,
-      this.gameContext,
-      this.game,
-    );
     this.gameService.drawBall(this.gameContext, this.game.ball);
     this.gameService.drawScore(this.gameContext, this.game);
     requestAnimationFrame(this.gameLoop);

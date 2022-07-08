@@ -2,24 +2,23 @@ import { GameMap } from './game-map';
 import { Player } from './player';
 
 export class Ball {
-  constructor(gameMap: GameMap, private _speed: number) {
+  constructor(
+    gameMap: GameMap,
+    private _speed: number,
+    private _color: string,
+    private _radius: number,
+  ) {
     this._mapCenter.x = gameMap.canvaWidth / 2;
     this._mapCenter.y = gameMap.canvaHeight / 2;
 
     this._x = this._mapCenter.x;
     this._y = this._mapCenter.y;
-    this._radius =
-      (((gameMap.borderHeight * 2 + gameMap.borderWidth * 2) / 2) * 0.5) / 100;
-
-    this._borderCollisionUp = Math.round((gameMap.borderHeight * 5) / 100);
-    this._borderCollisionDown = Math.round(
-      gameMap.canvaHeight - Math.round((gameMap.borderHeight * 5) / 100),
-    );
+    this._borderCollisionUp = 0;
+    this._borderCollisionDown = gameMap.canvaHeight;
   }
 
   private _x: number;
   private _y: number;
-  private _radius: number;
   private _xVelocity = 0;
   private _yVelocity = 0;
   private _borderCollisionUp: number;
@@ -73,14 +72,21 @@ export class Ball {
     return this._speed;
   }
 
+  get color(): string {
+    return this._color;
+  }
+
   checkBorderCollision(): boolean {
-    if (this.yVelocity == -1 && this.y <= this._borderCollisionUp) {
-      this.y = this._borderCollisionUp;
+    if (
+      this.yVelocity == -1 &&
+      this.y - this.radius * 2 <= this._borderCollisionUp
+    )
       return true;
-    } else if (this.yVelocity == 1 && this.y >= this._borderCollisionDown) {
-      this.y = this._borderCollisionDown;
+    else if (
+      this.yVelocity == 1 &&
+      this.y + this.radius * 2 >= this._borderCollisionDown
+    )
       return true;
-    }
     return false;
   }
 

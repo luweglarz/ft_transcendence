@@ -38,11 +38,12 @@ export class MatchmakingService {
         this.gameComponent.game.players[0].width = playersInfo.width;
         this.gameComponent.game.players[1].height = playersInfo.height;
         this.gameComponent.game.players[1].width = playersInfo.width;
+        this.gameComponent.game.players[0].color = playersInfo.playerOneColor;
+        this.gameComponent.game.players[1].color = playersInfo.playerTwoColor;
+        this.gameComponent.game.ball.color = gameMapInfo.ballColor;
         this.gameComponent.game.canvaHeight = gameMapInfo.canvaHeight;
         this.gameComponent.game.canvaWidth = gameMapInfo.canvaWidth;
         this.gameComponent.game.backgroundColor = gameMapInfo.backgroundColor;
-        this.gameComponent.game.borderHeight = gameMapInfo.borderHeight;
-        this.gameComponent.game.borderWidth = gameMapInfo.borderWidth;
         this.gameService.isInGame = true;
         this.gameComponent.game.ball.radius = gameMapInfo.ballRadius;
         this.router.navigate(['game']);
