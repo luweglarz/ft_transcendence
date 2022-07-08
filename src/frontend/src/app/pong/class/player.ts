@@ -3,6 +3,7 @@ export class Player {
   private _width = 0;
   private _x = 0;
   private _y = 0;
+  private _goals = 0;
 
   get height(): number {
     return this._height;
@@ -34,5 +35,13 @@ export class Player {
 
   set x(newX: number) {
     this._x = newX;
+  }
+
+  get goals(): number {
+    return this._goals;
+  }
+
+  set goals(goal: number) {
+    this._goals = goal;
   }
 }
