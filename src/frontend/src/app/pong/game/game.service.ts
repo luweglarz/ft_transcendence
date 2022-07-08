@@ -23,7 +23,7 @@ export class GameService {
     this.socket.emit('move', event.key);
     // setTimeout( () => {
     // this.socket.emit('move', "stop");
-    // },100);
+    // },200);
   }
 
   clearCanvas(gameCanvas: ElementRef, gameContext: any) {
@@ -45,6 +45,7 @@ export class GameService {
       gameInfos.borderHeight,
     );
 
+    gameContext.beginPath();
     gameContext.moveTo(
       Math.round(gameInfos.canvaWidth / 2),
       Math.round((gameInfos.canvaHeight * 5) / 100 / 2),

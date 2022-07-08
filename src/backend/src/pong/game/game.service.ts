@@ -10,6 +10,8 @@ export class GameService {
     //todo
   }
 
+  private interval: any;
+
   findRoomId(rooms: Room[], client: Socket): Room {
     for (const room of rooms) {
       if (
@@ -51,10 +53,12 @@ export class GameService {
     ball.y += ball.yVelocity * ball.speed;
   }
 
-  gameLoop(players: Player[], gameRoom: Room, server: Server, ball: Ball) {
+  gameLoop(players: Player[], gameRoom: Room, server: Server, ball: Ball): any {
     ball.xVelocity = -1;
     ball.yVelocity = 1;
-    setInterval(() => {
+
+    const interval = setInterval(() => {
+      console.log('linterval, ', ball.x + gameRoom.uuid);
       this.playersMovement(players);
       this.ballMovement(ball, players);
       server
@@ -66,5 +70,6 @@ export class GameService {
           { x: ball.x, y: ball.y },
         );
     }, 5);
+    return interval;
   }
 }

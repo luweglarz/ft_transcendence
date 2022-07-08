@@ -78,11 +78,18 @@ export class Ball {
   }
 
   checkPaddleCollision(players: Player[]): boolean {
-    if (this.xVelocity == -1 && this.x <= players[0].x + players[0].width) {
+    if (
+      this.xVelocity == -1 &&
+      this.x - this.radius <= players[0].x + players[0].width &&
+      this.x - this.radius >= players[0].x
+    )
       if (this.y >= players[0].y && this.y <= players[0].y + players[0].height)
         return true;
-    }
-    if (this.xVelocity == 1 && this.x >= players[1].x)
+    if (
+      this.xVelocity == 1 &&
+      this.x + this.radius >= players[1].x &&
+      this.x + this.radius <= players[1].x + players[1].width
+    )
       if (this.y >= players[1].y && this.y <= players[1].y + players[1].height)
         return true;
   }
