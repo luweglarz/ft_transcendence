@@ -53,13 +53,9 @@ export class AuthController {
 
   @Get('oauth/redirect')
   @UseGuards(OAuth2Guard)
-  async oauhtRedirectCallback(
-    @Body() body: any,
-    @Req() req: Request & { user: any },
-  ) {
+  async oauhtRedirectCallback(@Req() req: Request & { user: any }) {
     this.logger.debug(`${this.oauhtRedirectCallback.name} called`);
-    this.logger.debug(`body: ${JSON.stringify(body, null, 2)}`);
     this.logger.debug(`user: ${JSON.stringify(req.user, null, 2)}`);
-    return { message: 'redirected' };
+    return { message: `welcome ${req.user.login}` };
   }
 }
