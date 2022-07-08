@@ -12,7 +12,7 @@ export class Ball {
     this._mapCenter.y = gameMap.canvaHeight / 2;
 
     this._x = this._mapCenter.x;
-    this._y = this._mapCenter.y;
+    this._y = Math.floor(Math.random() * gameMap.canvaHeight + 1);
     this._borderCollisionUp = 0;
     this._borderCollisionDown = gameMap.canvaHeight;
   }
