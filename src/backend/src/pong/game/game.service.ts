@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 import { Ball } from '../class/ball';
+import { GameMap } from '../class/game-map';
 import { Player } from '../class/player';
 import { Room } from '../class/room';
 
@@ -53,22 +54,52 @@ export class GameService {
     ball.y += ball.yVelocity * ball.speed;
   }
 
+  private checkGoal(ball: Ball, gameMap: GameMap, players: Player[]) {
+    if (
+      ball.xVelocity == -1 &&
+      ball.x + ball.radius <= (gameMap.canvaWidth * 5) / 100 / 2
+    ) {
+      ball.resetBall(gameMap);
+      players[1].goals += 1;
+    } else if (
+      ball.xVelocity == 1 &&
+      ball.x - ball.radius >=
+        (gameMap.canvaWidth * 5) / 100 / 2 + gameMap.borderWidth
+    ) {
+      ball.resetBall(gameMap);
+      players[0].goals += 1;
+    }
+  }
+
   gameLoop(players: Player[], gameRoom: Room, server: Server, ball: Ball): any {
     ball.xVelocity = -1;
     ball.yVelocity = 1;
 
     const interval = setInterval(() => {
-      console.log('linterval, ', ball.x + gameRoom.uuid);
       this.playersMovement(players);
       this.ballMovement(ball, players);
-      server
-        .to(gameRoom.uuid)
-        .emit(
-          'gameUpdate',
-          { x: players[0].x, y: players[0].y },
-          { x: players[1].x, y: players[1].y },
-          { x: ball.x, y: ball.y },
-        );
+      this.checkGoal(ball, gameRoom.gameMap, players);
+      if (players[0].goals == 11) {
+        server
+          .to(gameRoom.uuid)
+          .emit('gameFinished', { winner: players[0].socket.id });
+        clearInterval(interval);
+      } else if (players[1].goals == 11) {
+        server
+          .to(gameRoom.uuid)
+          .emit('gameFinished', { winner: players[1].socket.id });
+        clearInterval(interval);
+      }
+      server.to(gameRoom.uuid).emit(
+        'gameUpdate',
+        { x: players[0].x, y: players[0].y },
+        { x: players[1].x, y: players[1].y },
+        { x: ball.x, y: ball.y },
+        {
+          playerOneGoals: players[0].goals,
+          playerTwoGoals: players[1].goals,
+        },
+      );
     }, 5);
     return interval;
   }
