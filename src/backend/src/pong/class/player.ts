@@ -29,7 +29,7 @@ export class Player {
   private _height: number;
   private _borderCollisionUp: number;
   private _borderCollisionDown: number;
-  public keydown = false;
+  private _goals = 0;
 
   get x(): number {
     return this._x;
@@ -73,6 +73,14 @@ export class Player {
 
   get socket(): Socket {
     return this._socket;
+  }
+
+  get goals(): number {
+    return this._goals;
+  }
+
+  set goals(goal: number) {
+    this._goals = goal;
   }
 
   checkBorderCollision(): boolean {

@@ -3,8 +3,11 @@ import { Player } from './player';
 
 export class Ball {
   constructor(gameMap: GameMap, private _speed: number) {
-    this._x = gameMap.canvaWidth / 2;
-    this._y = gameMap.canvaHeight / 2;
+    this._mapCenter.x = gameMap.canvaWidth / 2;
+    this._mapCenter.y = gameMap.canvaHeight / 2;
+
+    this._x = this._mapCenter.x;
+    this._y = this._mapCenter.y;
     this._radius =
       (((gameMap.borderHeight * 2 + gameMap.borderWidth * 2) / 2) * 0.5) / 100;
 
@@ -21,6 +24,10 @@ export class Ball {
   private _yVelocity = 0;
   private _borderCollisionUp: number;
   private _borderCollisionDown: number;
+  private _mapCenter = {
+    x: 0,
+    y: 0,
+  };
 
   get x(): number {
     return this._x;
@@ -92,5 +99,10 @@ export class Ball {
     )
       if (this.y >= players[1].y && this.y <= players[1].y + players[1].height)
         return true;
+  }
+
+  resetBall(gameMap: GameMap) {
+    this.x = this._mapCenter.x;
+    this.y = Math.floor(Math.random() * gameMap.canvaHeight + 1);
   }
 }
