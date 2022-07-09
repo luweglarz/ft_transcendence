@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
+  IsUrl,
   Matches,
   MaxLength,
   MinLength,
@@ -49,4 +50,13 @@ export class OAuthUserDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
+
+  @IsString()
+  first_name: string;
+
+  @IsString()
+  last_name: string;
+
+  @IsUrl()
+  image_url: string;
 }

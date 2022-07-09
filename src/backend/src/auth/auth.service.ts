@@ -85,7 +85,13 @@ export class AuthService {
     if (!data)
       throw new ForbiddenException('Could not fetch user with 42 OAuth2 API');
     const user = new OAuthUserDto();
-    for (const key in data) {
+    for (const key of [
+      'login',
+      'email',
+      'first_name',
+      'last_name',
+      'image_url',
+    ]) {
       user[key] = data[key];
     }
     const errors = await validate(user, {
