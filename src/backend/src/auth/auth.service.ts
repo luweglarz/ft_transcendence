@@ -24,6 +24,8 @@ export class AuthService {
     private readonly httpService: HttpService,
   ) {}
 
+  //  ============================ PUBLIC Methods ============================  //
+
   async localSignup(dto: EmailSignupDto) {
     const pwdHash = await argon.hash(dto.password);
     await this.createUser({
@@ -32,21 +34,6 @@ export class AuthService {
       password: pwdHash,
     });
     return { message: `${dto.username} successfully signed up!` };
-  }
-
-  private async createUser(data: SignupUser) {
-    try {
-      const user = await this.db.user.create({ data: data });
-      this.logger.log(`New user '${data.username}' successfully signed up!`);
-      return user;
-    } catch (err) {
-      if (
-        err instanceof PrismaClientKnownRequestError &&
-        err.code == DbErrorCode.UniqueConstraintFailed
-      )
-        throw new ForbiddenException('User already exists');
-      else throw err;
-    }
   }
 
   async signin(dto: UsernameSigninDto) {
@@ -65,6 +52,39 @@ export class AuthService {
   signout(dto: EmailSignupDto) {
     // TODO
     return { message: `${dto.username} Successfully signed out!` };
+  }
+
+  async oauthFindOrCreate(accessToken: string) {
+    const apiUser = await this.fetch42APIUserData(accessToken);
+    let user = await this.db.user.findUnique({
+      where: {
+        username: apiUser.login,
+      },
+    });
+    if (!user) {
+      user = await this.createUser({
+        username: apiUser.login,
+        email: apiUser.email,
+      });
+    }
+    return user;
+  }
+
+  //  =========================== PRIVATE Methods ============================  //
+
+  private async createUser(data: SignupUser) {
+    try {
+      const user = await this.db.user.create({ data: data });
+      this.logger.log(`New user '${data.username}' successfully signed up!`);
+      return user;
+    } catch (err) {
+      if (
+        err instanceof PrismaClientKnownRequestError &&
+        err.code == DbErrorCode.UniqueConstraintFailed
+      )
+        throw new ForbiddenException('User already exists');
+      else throw err;
+    }
   }
 
   private signToken(payload: JwtPayload): Promise<string> {
@@ -101,22 +121,6 @@ export class AuthService {
       throw new BadRequestException(
         `42's API sent incorrect data: ${errors[0]}`,
       );
-    return user;
-  }
-
-  async oauthFindOrCreate(accessToken: string) {
-    const apiUser = await this.fetch42APIUserData(accessToken);
-    let user = await this.db.user.findUnique({
-      where: {
-        username: apiUser.login,
-      },
-    });
-    if (!user) {
-      user = await this.createUser({
-        username: apiUser.login,
-        email: apiUser.email,
-      });
-    }
     return user;
   }
 }

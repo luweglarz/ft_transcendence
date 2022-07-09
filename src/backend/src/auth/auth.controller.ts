@@ -30,7 +30,6 @@ export class AuthController {
   @Post('auth/signin')
   @HttpCode(HttpStatus.OK)
   async signin(@Body() dto: UsernameSigninDto) {
-    // this.logger.debug(`OAUTH client ID: ${process.env['OAUTH_42_CLIENT_ID']}`);
     return this.authService.signin(dto);
   }
 
