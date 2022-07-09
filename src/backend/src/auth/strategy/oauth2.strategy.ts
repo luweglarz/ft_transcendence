@@ -16,6 +16,8 @@ export class OAuth2Strategy extends PassportStrategy(Strategy, 'oauth2') {
       clientSecret: process.env['OAUTH_42_CLIENT_SECRET'],
       callbackURL: 'http://localhost:3000/oauth/redirect',
     });
+    this.logger.debug(`OAUTH client ID: ${process.env['OAUTH_42_CLIENT_ID']}`);
+    // this.logger.debug(`OAUTH SECRET: ${process.env['OAUTH_42_CLIENT_SECRET']}`);
   }
 
   async validate(
