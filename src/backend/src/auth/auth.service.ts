@@ -13,6 +13,7 @@ import { UsernameSigninDto, EmailSignupDto, OAuthUserDto } from './dto';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { validate } from 'class-validator';
+import { JwtPayload } from './interfaces';
 
 @Injectable()
 export class AuthService {
@@ -53,7 +54,7 @@ export class AuthService {
       this.logger.log(`User '${dto.username}' successfully signed in!`);
       return {
         message: `${user.username} successfully signed in!`,
-        jwt: await this.signToken(user.id, user.username),
+        jwt: await this.signToken({ sub: user.id, username: user.username }),
       };
     } else throw new ForbiddenException('Credentials incorrect');
   }
@@ -63,11 +64,7 @@ export class AuthService {
     return { message: `${dto.username} Successfully signed out!` };
   }
 
-  private signToken(userId: number, username: string): Promise<string> {
-    const payload = {
-      sub: userId,
-      username: username,
-    };
+  private signToken(payload: JwtPayload): Promise<string> {
     return this.jwt.signAsync(payload, {
       expiresIn: '42m',
       secret: process.env['JWT_SECRET'],
