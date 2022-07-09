@@ -13,7 +13,7 @@ import { UsernameSigninDto, EmailSignupDto, OAuthUserDto } from './dto';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { validate } from 'class-validator';
-import { JwtPayload } from './interfaces';
+import { JwtPayload, SignupUser } from './interfaces';
 
 @Injectable()
 export class AuthService {
@@ -24,18 +24,21 @@ export class AuthService {
     private readonly httpService: HttpService,
   ) {}
 
-  async signup(dto: EmailSignupDto) {
+  async localSignup(dto: EmailSignupDto) {
     const pwdHash = await argon.hash(dto.password);
+    await this.createUser({
+      username: dto.username,
+      email: dto.email,
+      password: pwdHash,
+    });
+    return { message: `${dto.username} successfully signed up!` };
+  }
+
+  private async createUser(data: SignupUser) {
     try {
-      await this.db.user.create({
-        data: {
-          username: dto.username,
-          email: dto.email,
-          password: pwdHash,
-        },
-      });
-      this.logger.log(`New user '${dto.username}' successfully signed up!`);
-      return { message: `${dto.username} successfully signed up!` };
+      const user = await this.db.user.create({ data: data });
+      this.logger.log(`New user '${data.username}' successfully signed up!`);
+      return user;
     } catch (err) {
       if (
         err instanceof PrismaClientKnownRequestError &&
@@ -102,7 +105,18 @@ export class AuthService {
   }
 
   async oauthFindOrCreate(accessToken: string) {
-    const user = this.fetch42APIUserData(accessToken);
+    const apiUser = await this.fetch42APIUserData(accessToken);
+    let user = await this.db.user.findUnique({
+      where: {
+        username: apiUser.login,
+      },
+    });
+    if (!user) {
+      user = await this.createUser({
+        username: apiUser.login,
+        email: apiUser.email,
+      });
+    }
     return user;
   }
 }

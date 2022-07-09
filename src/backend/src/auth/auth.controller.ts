@@ -24,7 +24,7 @@ export class AuthController {
   signup(@Body() dto: EmailSignupDto) {
     // console.log(dto);
     this.logger.debug(`Incoming signup dto: ${JSON.stringify(dto, null, 2)}`);
-    return this.authService.signup(dto);
+    return this.authService.localSignup(dto);
   }
 
   @Post('auth/signin')
@@ -58,6 +58,6 @@ export class AuthController {
     this.logger.debug(`${this.oauhtRedirectCallback.name} called`);
     this.logger.debug(`user: ${JSON.stringify(req.user, null, 2)}`);
     const user: any = req.user;
-    return { message: `welcome ${user.login}` };
+    return { message: `welcome ${user.username}` };
   }
 }
