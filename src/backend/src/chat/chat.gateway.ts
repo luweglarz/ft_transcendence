@@ -33,7 +33,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('createRoom')
   async createRoom(
-    @MessageBody() name: string,
+    name: string,
     roomType: RoomType,
     owner: User,
     password?: string,
@@ -57,7 +57,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('addMessage')
-  async addMessage(@MessageBody() content: string, room: Room, user: User) { // maybe @messagebody is useless or worse
+  async addMessage(content: string, room: Room, user: User) {
     this.messageService.createMessage({
       content,
       room: { connect: room },

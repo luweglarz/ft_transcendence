@@ -17,6 +17,8 @@ import { ProfilComponent } from './components/profil/profil.component';
 import { LadderComponent } from './components/ladder/ladder.component';
 import { SocialComponent } from './components/social/social.component';
 import { ChatbarComponent } from './components/chatbar/chatbar.component';
+import { ChatRoomComponent } from './components/chat-room/chat-room.component';
+import { ChatMessageComponent } from './components/chat-message/chat-message.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { ChatbarComponent } from './components/chatbar/chatbar.component';
     LadderComponent,
     SocialComponent,
     ChatbarComponent,
+    ChatRoomComponent,
+    ChatMessageComponent,
   ],
   imports: [
     BrowserModule,
