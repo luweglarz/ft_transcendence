@@ -13,8 +13,8 @@ import { LocalSigninDto, LocalSignupDto, OAuthUserDto } from './dto';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { validate } from 'class-validator';
-import { JwtPayload, SignupUser } from './interfaces';
-import { User } from '@prisma/client';
+import { JwtPayload } from './interfaces';
+import { Prisma, User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -88,7 +88,7 @@ export class AuthService {
 
   //  =========================== PRIVATE Methods ============================  //
 
-  private async createUser(data: SignupUser) {
+  private async createUser(data: Prisma.UserCreateInput) {
     try {
       const user = await this.db.user.create({ data: data });
       this.logger.log(`New user '${data.username}' successfully signed up!`);
