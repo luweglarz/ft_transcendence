@@ -24,7 +24,7 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.socket.on('gameFinished', (winner: any) => {
+    this.socket.on('gameFinished', (winner: string) => {
       this.gameService.isInGame = false;
       console.log(winner + ' Won the game');
       this.router.navigate(['matchmaking']);
