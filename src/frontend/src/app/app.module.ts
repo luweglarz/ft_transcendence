@@ -20,6 +20,15 @@ import { ChatbarComponent } from './components/chatbar/chatbar.component';
 import { ChatRoomComponent } from './components/chat-room/chat-room.component';
 import { ChatMessageComponent } from './components/chat-message/chat-message.component';
 
+import { MatCardModule } from '@angular/material/card'
+import { MatListModule } from '@angular/material/list' 
+import { MatFormFieldModule} from '@angular/material/form-field'
+import { MatButtonModule } from '@angular/material/button'
+import { MatInputModule } from '@angular/material/input'
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog'
+import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room-create.component'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +44,7 @@ import { ChatMessageComponent } from './components/chat-message/chat-message.com
     ChatbarComponent,
     ChatRoomComponent,
     ChatMessageComponent,
+    ChatRoomCreateComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +54,13 @@ import { ChatMessageComponent } from './components/chat-message/chat-message.com
     ReactiveFormsModule,
     PongModule,
     HttpClientModule,
+    MatListModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatInputModule,
+    MatIconModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
