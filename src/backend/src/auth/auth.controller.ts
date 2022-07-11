@@ -30,13 +30,13 @@ export class AuthController {
   @Post('auth/signin')
   @HttpCode(HttpStatus.OK)
   async signin(@Body() dto: UsernameSigninDto) {
-    return this.authService.signin(dto);
+    return this.authService.localSignin(dto);
   }
 
   @Post('auth/signout')
   @HttpCode(HttpStatus.OK)
-  signout(@Body() dto: EmailSignupDto) {
-    return this.authService.signout(dto);
+  signout() {
+    return this.authService.signout();
   }
 
   @UseGuards(JwtGuard)
@@ -48,7 +48,7 @@ export class AuthController {
   @Get('oauth/authenticate')
   @UseGuards(OAuth2Guard)
   oauthAutenticate() {
-    //
+    // redirected by the guard
   }
 
   @Get('oauth/redirect')
@@ -57,6 +57,6 @@ export class AuthController {
     this.logger.debug(`${this.oauhtRedirectCallback.name} called`);
     this.logger.debug(`user: ${JSON.stringify(req.user, null, 2)}`);
     const user: any = req.user;
-    return { message: `welcome ${user.username}` };
+    return this.authService.signInSuccess(user);
   }
 }

@@ -14,6 +14,7 @@ import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { validate } from 'class-validator';
 import { JwtPayload, SignupUser } from './interfaces';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -28,38 +29,41 @@ export class AuthService {
 
   async localSignup(dto: EmailSignupDto) {
     const pwdHash = await argon.hash(dto.password);
-    await this.createUser({
+    const user = await this.createUser({
       username: dto.username,
       email: dto.email,
       password: pwdHash,
     });
-    return { message: `${dto.username} successfully signed up!` };
+    this.logger.log(`User '${user.username}' successfully signed up!`);
+    return this.signInSuccess(user);
   }
 
-  async signin(dto: UsernameSigninDto) {
+  async localSignin(dto: UsernameSigninDto) {
     const user = await this.db.user.findUnique({
       where: { username: dto.username },
     });
     if (user && (await argon.verify(user.password, dto.password))) {
-      this.logger.log(`User '${dto.username}' successfully signed in!`);
-      return {
-        message: `${user.username} successfully signed in!`,
-        jwt: await this.signToken({ sub: user.id, username: user.username }),
-      };
+      return this.signInSuccess(user);
     } else throw new ForbiddenException('Credentials incorrect');
   }
 
-  signout(dto: EmailSignupDto) {
+  async signInSuccess(user: User) {
+    this.logger.log(`User '${user.username}' successfully signed in!`);
+    return {
+      message: `${user.username} successfully signed in!`,
+      jwt: await this.signToken({ sub: user.id, username: user.username }),
+    };
+  }
+
+  signout() {
     // TODO
-    return { message: `${dto.username} Successfully signed out!` };
+    return { message: 'Successfully signed out!' };
   }
 
   async oauthFindOrCreate(accessToken: string) {
     const apiUser = await this.fetch42APIUserData(accessToken);
     let user = await this.db.user.findUnique({
-      where: {
-        username: apiUser.login,
-      },
+      where: { username: apiUser.login },
     });
     if (!user) {
       user = await this.createUser({
