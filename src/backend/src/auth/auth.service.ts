@@ -9,7 +9,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import * as argon from 'argon2';
 import { DbErrorCode } from 'src/db/errors';
 import { DbService } from 'src/db/db.service';
-import { UsernameSigninDto, EmailSignupDto, OAuthUserDto } from './dto';
+import { LocalSigninDto, LocalSignupDto, OAuthUserDto } from './dto';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { validate } from 'class-validator';
@@ -27,7 +27,10 @@ export class AuthService {
 
   //  ============================ PUBLIC Methods ============================  //
 
-  async localSignup(dto: EmailSignupDto) {
+  /*
+   * @brief sign up with email and password
+   */
+  async localSignup(dto: LocalSignupDto) {
     const pwdHash = await argon.hash(dto.password);
     const user = await this.createUser({
       username: dto.username,
@@ -38,7 +41,10 @@ export class AuthService {
     return this.signInSuccess(user);
   }
 
-  async localSignin(dto: UsernameSigninDto) {
+  /*
+   * @brief sign in with email and password
+   */
+  async localSignin(dto: LocalSigninDto) {
     const user = await this.db.user.findUnique({
       where: { username: dto.username },
     });
@@ -47,6 +53,9 @@ export class AuthService {
     } else throw new ForbiddenException('Credentials incorrect');
   }
 
+  /*
+   * @brief Return a signed token. To be called after the sign in checks were successful
+   */
   async signInSuccess(user: User) {
     this.logger.log(`User '${user.username}' successfully signed in!`);
     return {
@@ -55,11 +64,14 @@ export class AuthService {
     };
   }
 
-  signout() {
+  signOut() {
     // TODO
     return { message: 'Successfully signed out!' };
   }
 
+  /*
+   * @brief Fetch 42 user data, then find or create corresponding user
+   */
   async oauthFindOrCreate(accessToken: string) {
     const apiUser = await this.fetch42APIUserData(accessToken);
     let user = await this.db.user.findUnique({
