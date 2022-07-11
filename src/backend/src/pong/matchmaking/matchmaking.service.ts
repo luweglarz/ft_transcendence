@@ -16,8 +16,6 @@ export class MatchmakingService {
   ) {
     this.logger = new Logger('GameMatchMakingGateway');
   }
-
-  public gameLoopInterval: any;
   private logger: Logger;
 
   async generateGameRoom(clientPool: Socket[]) {
@@ -25,11 +23,11 @@ export class MatchmakingService {
     const newRoomId: string = uuidv4();
     const newGameMap: GameMap = new GameMap(525, 950, 'black');
     const players: Player[] = [
-      new Player(newGameMap, clientPool.pop(), 1, 6, 'white'),
-      new Player(newGameMap, clientPool.pop(), 2, 6, 'white'),
+      new Player(newGameMap, clientPool.pop(), 1, 3, 'white'),
+      new Player(newGameMap, clientPool.pop(), 2, 3, 'white'),
     ];
     const newRoom: Room = new Room(players, newRoomId, newGameMap);
-    const ball: Ball = new Ball(newGameMap, 5, 'white', 6);
+    const ball: Ball = new Ball(newGameMap, 3, 'white', 6);
 
     await players[0].socket.join(newRoomId);
     await players[1].socket.join(newRoomId);
@@ -54,7 +52,7 @@ export class MatchmakingService {
         playerTwoColor: players[1].color,
       },
     );
-    this.gameLoopInterval = this.gameService.gameLoop(
+    this.gameService.gameLoopInterval = this.gameService.gameLoop(
       players,
       newRoom,
       this.gameGateway.rooms,

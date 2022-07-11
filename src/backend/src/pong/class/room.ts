@@ -12,10 +12,6 @@ export class Room {
     return this._uuid;
   }
 
-  set players(newPlayers: Player[]) {
-    this._players = newPlayers;
-  }
-
   get players(): Player[] {
     return this._players;
   }

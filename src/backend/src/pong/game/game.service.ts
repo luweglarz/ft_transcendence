@@ -7,11 +7,7 @@ import { Room } from '../class/room';
 
 @Injectable()
 export class GameService {
-  constructor() {
-    //todo
-  }
-
-  private interval: any;
+  gameLoopInterval: any;
 
   findRoomId(rooms: Room[], client: Socket): Room {
     for (const room of rooms) {
@@ -28,6 +24,15 @@ export class GameService {
   findPlayer(room: Room, client: Socket): Player {
     if (room.players[0].socket === client) return room.players[0];
     else if (room.players[1].socket === client) return room.players[1];
+  }
+
+  clearRoom(roomToClear: Room, rooms: Room[]) {
+    roomToClear.players[0].socket.leave(roomToClear.uuid);
+    roomToClear.players[1].socket.leave(roomToClear.uuid);
+    rooms.splice(
+      rooms.findIndex((element) => element === roomToClear),
+      1,
+    );
   }
 
   private playersMovement(players: Player[]) {
@@ -54,30 +59,36 @@ export class GameService {
     ball.y += ball.yVelocity * ball.speed;
   }
 
+  private checkWinner(
+    players: Player[],
+    server: Server,
+    gameRoom: Room,
+  ): boolean {
+    if (players[0].goals == 11) {
+      server
+        .to(gameRoom.uuid)
+        .emit('gameFinished', { winner: players[0].socket.id });
+      return true;
+    } else if (players[1].goals == 11) {
+      server
+        .to(gameRoom.uuid)
+        .emit('gameFinished', { winner: players[1].socket.id });
+      return true;
+    }
+    return false;
+  }
+
   private checkGoal(ball: Ball, gameMap: GameMap, players: Player[]) {
-    if (
-      ball.xVelocity == -1 &&
-      ball.x + ball.radius <= (gameMap.canvaWidth * 5) / 100 / 2
-    ) {
+    if (ball.xVelocity == -1 && ball.x + ball.radius <= 0) {
       ball.resetBall(gameMap);
       players[1].goals += 1;
     } else if (
       ball.xVelocity == 1 &&
-      ball.x - ball.radius >=
-        (gameMap.canvaWidth * 5) / 100 / 2 + gameMap.canvaWidth
+      ball.x - ball.radius >= gameMap.canvaWidth
     ) {
       ball.resetBall(gameMap);
       players[0].goals += 1;
     }
-  }
-
-  clearRoom(roomToClear: Room, rooms: Room[]) {
-    roomToClear.players[0].socket.leave(roomToClear.uuid);
-    roomToClear.players[1].socket.leave(roomToClear.uuid);
-    rooms.splice(
-      rooms.findIndex((element) => element === roomToClear),
-      1,
-    );
   }
 
   gameLoop(
@@ -86,7 +97,7 @@ export class GameService {
     rooms: Room[],
     server: Server,
     ball: Ball,
-  ): any {
+  ) {
     ball.xVelocity = Math.round(Math.random()) * 2 - 1;
     ball.yVelocity = Math.round(Math.random()) * 2 - 1;
 
@@ -94,16 +105,7 @@ export class GameService {
       this.playersMovement(players);
       this.ballMovement(ball, players);
       this.checkGoal(ball, gameRoom.gameMap, players);
-      if (players[0].goals == 11) {
-        server
-          .to(gameRoom.uuid)
-          .emit('gameFinished', { winner: players[0].socket.id });
-        this.clearRoom(gameRoom, rooms);
-        clearInterval(interval);
-      } else if (players[1].goals == 11) {
-        server
-          .to(gameRoom.uuid)
-          .emit('gameFinished', { winner: players[1].socket.id });
+      if (this.checkWinner(players, server, gameRoom) == true) {
         this.clearRoom(gameRoom, rooms);
         clearInterval(interval);
       }
@@ -117,7 +119,7 @@ export class GameService {
           playerTwoGoals: players[1].goals,
         },
       );
-    }, 10);
+    }, 5);
     return interval;
   }
 }

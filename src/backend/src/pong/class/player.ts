@@ -11,6 +11,7 @@ export class Player {
   ) {
     this._width = Math.round((gameMap.canvaWidth * 2) / 100);
     this._height = Math.round((gameMap.canvaHeight * 20) / 100);
+
     if (playerNb === 1) this._x = (gameMap.canvaWidth * 2) / 100;
     else if (playerNb === 2)
       this._x =
@@ -28,11 +29,11 @@ export class Player {
   private _x: number;
   private _y: number;
   private _velocity = 0;
+  private _goals = 0;
   private _width: number;
   private _height: number;
   private _borderCollisionUp: number;
   private _borderCollisionDown: number;
-  private _goals = 0;
 
   get x(): number {
     return this._x;
@@ -58,12 +59,16 @@ export class Player {
     this._velocity = newVelocity;
   }
 
-  get speed(): number {
-    return this._speed;
+  get goals(): number {
+    return this._goals;
   }
 
-  set speed(newSpeed: number) {
-    this._speed = newSpeed;
+  set goals(goal: number) {
+    this._goals = goal;
+  }
+
+  get speed(): number {
+    return this._speed;
   }
 
   get height(): number {
@@ -76,14 +81,6 @@ export class Player {
 
   get socket(): Socket {
     return this._socket;
-  }
-
-  get goals(): number {
-    return this._goals;
-  }
-
-  set goals(goal: number) {
-    this._goals = goal;
   }
 
   get color(): string {

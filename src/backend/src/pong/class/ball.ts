@@ -8,11 +8,12 @@ export class Ball {
     private _color: string,
     private _radius: number,
   ) {
-    this._mapCenter.x = gameMap.canvaWidth / 2;
-    this._mapCenter.y = gameMap.canvaHeight / 2;
+    this._mapCenter.x = Math.round(gameMap.canvaWidth / 2);
+    this._mapCenter.y = Math.round(gameMap.canvaHeight / 2);
 
     this._x = this._mapCenter.x;
-    this._y = Math.floor(Math.random() * gameMap.canvaHeight + 1);
+    this._y = Math.round(Math.random() * gameMap.canvaHeight + 1);
+
     this._borderCollisionUp = 0;
     this._borderCollisionDown = gameMap.canvaHeight;
   }
@@ -77,14 +78,11 @@ export class Ball {
   }
 
   checkBorderCollision(): boolean {
-    if (
-      this.yVelocity == -1 &&
-      this.y - this.radius * 2 <= this._borderCollisionUp
-    )
+    if (this.yVelocity == -1 && this.y - this.radius <= this._borderCollisionUp)
       return true;
     else if (
       this.yVelocity == 1 &&
-      this.y + this.radius * 2 >= this._borderCollisionDown
+      this.y + this.radius >= this._borderCollisionDown
     )
       return true;
     return false;
