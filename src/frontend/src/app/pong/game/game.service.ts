@@ -9,10 +9,10 @@ import { Player } from '../class/player';
 })
 export class GameService {
   constructor(private socket: Socket) {
-    //Todo
+    this.isInGame = false;
   }
 
-  public isInGame = false;
+  public isInGame;
 
   requestLeaveNormalGame() {
     this.isInGame = false;
@@ -21,9 +21,6 @@ export class GameService {
 
   movePaddle(event: KeyboardEvent) {
     this.socket.emit('move', event.key);
-    // setTimeout( () => {
-    // this.socket.emit('move', "stop");
-    // },200);
   }
 
   clearCanvas(gameCanvas: ElementRef, gameContext: any) {
