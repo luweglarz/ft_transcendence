@@ -2,8 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
-  HttpStatus,
   Logger,
   Post,
   Req,
@@ -11,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
-import { UsernameSigninDto, EmailSignupDto } from './dto';
+import { LocalSigninDto, LocalSignupDto } from './dto';
 import { JwtGuard, OAuth2Guard } from './guard';
 
 @Controller()
@@ -20,29 +18,24 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('auth/signup')
-  @HttpCode(HttpStatus.CREATED)
-  signup(@Body() dto: EmailSignupDto) {
-    // console.log(dto);
-    this.logger.debug(`Incoming signup dto: ${JSON.stringify(dto, null, 2)}`);
+  localSignUp(@Body() dto: LocalSignupDto) {
     return this.authService.localSignup(dto);
   }
 
   @Post('auth/signin')
-  @HttpCode(HttpStatus.OK)
-  async signin(@Body() dto: UsernameSigninDto) {
+  async localSignIn(@Body() dto: LocalSigninDto) {
     return this.authService.localSignin(dto);
   }
 
   @Post('auth/signout')
-  @HttpCode(HttpStatus.OK)
-  signout() {
-    return this.authService.signout();
+  signOut() {
+    return this.authService.signOut();
   }
 
   @UseGuards(JwtGuard)
   @Get('auth/test')
-  check_signin() {
-    return { message: 'I am signed in !' };
+  testSignIn() {
+    return { message: 'I am signed in!' };
   }
 
   @Get('oauth/authenticate')
