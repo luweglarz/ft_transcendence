@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 import { MatchProperty } from 'src/auth/decorator';
 
-export class EmailSignupDto {
+export class LocalSignupDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(42)
@@ -32,7 +32,7 @@ export class EmailSignupDto {
   passwordConfirm: string;
 }
 
-export class UsernameSigninDto {
+export class LocalSigninDto {
   @IsString()
   @IsNotEmpty()
   username: string;
