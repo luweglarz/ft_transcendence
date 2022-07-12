@@ -1,5 +1,4 @@
 export interface Room {
-    id:         number
     name:       string;
     password?:  string;
     roomType:   RoomType;
@@ -8,9 +7,9 @@ export interface Room {
 }
 
 export enum RoomType {
-    PUBLIC,
-    PROTECTED,
-    PRIVATE
+    PUBLIC = "PUBLIC",
+    PROTECTED = "PROTECTED",
+    PRIVATE = "PRIVATE"
 }
 
 // prisma model

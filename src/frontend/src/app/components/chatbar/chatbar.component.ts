@@ -13,7 +13,7 @@ import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.co
   styleUrls: ['./chatbar.component.css'],
 })
 export class ChatbarComponent implements OnInit {
-  private roomCreate: Room = {id: 0, name: '', roomType: RoomType.PUBLIC};
+  private roomCreate: Room = {name: '', roomType: RoomType.PUBLIC};
   chatCollapsed = false;
   @Output() chatCollapseEvent = new EventEmitter<boolean>();
   rooms: Observable<Room[]> = this.chatService.getRooms();
