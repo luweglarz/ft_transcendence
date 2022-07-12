@@ -1,1 +1,17 @@
-<p>chat-room-create works!</p>
+<h1 mat-dialog-title>Create Room</h1>
+<div mat-dialog-content>
+    <p>Room name</p>
+    <mat-form-field appearance="fill">
+        <mat-label>Room name</mat-label>
+        <input matInput [(ngModel)]="data.name">
+        <mat-label>Room type</mat-label>
+        <mat-select>
+            <mat-option *ngFor="let roomType of roomTypes" [value]="roomType">
+                {{roomType}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div matDialogActions>
+    <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Ok</button>
+</div>

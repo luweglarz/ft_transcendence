@@ -27,6 +27,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatInputModule } from '@angular/material/input'
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog'
+import { MatSelectModule } from '@angular/material/select'
 import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room-create.component'
 
 @NgModule({
@@ -61,6 +62,7 @@ import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room
     MatInputModule,
     MatIconModule,
     MatDialogModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
