@@ -30,7 +30,7 @@ export class AuthService {
   /*
    * @brief sign up with email and password
    */
-  async localSignup(dto: LocalSignupDto) {
+  async localSignUp(dto: LocalSignupDto) {
     const pwdHash = await argon.hash(dto.password);
     const user = await this.createUser({
       username: dto.username,
@@ -44,7 +44,7 @@ export class AuthService {
   /*
    * @brief sign in with email and password
    */
-  async localSignin(dto: LocalSigninDto) {
+  async localSignIn(dto: LocalSigninDto) {
     const user = await this.db.user.findUnique({
       where: { username: dto.username },
     });
