@@ -2,8 +2,10 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ChatService } from 'src/app/services/chatService/chat.service';
 import { Room } from 'src/app/interface/room'
+import { RoomType } from 'src/app/interface/room';
 import { MatSelectionListChange } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
+import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.component';
 
 @Component({
   selector: 'app-chatbar',
@@ -11,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./chatbar.component.css'],
 })
 export class ChatbarComponent implements OnInit {
+  private roomCreate: Room = {id: 0, name: '', roomType: RoomType.PUBLIC};
   chatCollapsed = false;
   @Output() chatCollapseEvent = new EventEmitter<boolean>();
   rooms: Observable<Room[]> = this.chatService.getRooms();
@@ -39,6 +42,13 @@ export class ChatbarComponent implements OnInit {
   }
 
   openDialog(): void {
+    const dialogRef = this.dialog.open(ChatRoomCreateComponent, {
+      width: '250px',
+      data: {room: this.roomCreate},
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      this.roomCreate = result;
+    })
   }
 }

@@ -1,6 +1,5 @@
 export interface Room {
     id:         number
-    createdAt:  Date;
     name:       string;
     password?:  string;
     roomType:   RoomType;
