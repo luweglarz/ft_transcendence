@@ -19,23 +19,17 @@ export class AuthController {
 
   @Post('auth/signup')
   localSignUp(@Body() dto: LocalSignupDto) {
-    return this.authService.localSignup(dto);
+    return this.authService.localSignUp(dto);
   }
 
   @Post('auth/signin')
   async localSignIn(@Body() dto: LocalSigninDto) {
-    return this.authService.localSignin(dto);
+    return this.authService.localSignIn(dto);
   }
 
   @Post('auth/signout')
   signOut() {
     return this.authService.signOut();
-  }
-
-  @UseGuards(JwtGuard)
-  @Get('auth/test')
-  testSignIn() {
-    return { message: 'I am signed in!' };
   }
 
   @Get('oauth/authenticate')
@@ -51,5 +45,18 @@ export class AuthController {
     this.logger.debug(`user: ${JSON.stringify(req.user, null, 2)}`);
     const user: any = req.user;
     return this.authService.signInSuccess(user);
+  }
+
+  //  ============================ Testing routes ============================  //
+
+  @UseGuards(JwtGuard)
+  @Get('auth/private')
+  isSignedIn() {
+    return { message: 'I am signed in!' };
+  }
+
+  @Get('auth/public')
+  testPublicRoute() {
+    return { message: 'Hello, this is a public route!' };
   }
 }
