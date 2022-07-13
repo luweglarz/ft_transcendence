@@ -10,17 +10,21 @@ import { Player } from '../class/player';
 export class GameService {
   constructor(private socket: Socket) {
     this.isInGame = false;
+    this.keyPressed = '';
   }
 
   public isInGame;
+  public keyPressed: string;
 
   requestLeaveNormalGame() {
     this.isInGame = false;
     this.socket.emit('leaveNormalGame');
   }
 
-  movePaddle(event: KeyboardEvent) {
-    this.socket.emit('move', event.key);
+  async sendKeyEvents() {
+    setInterval(() => {
+      this.socket.emit('move', this.keyPressed);
+    }, 25);
   }
 
   clearCanvas(gameCanvas: ElementRef, gameContext: any) {

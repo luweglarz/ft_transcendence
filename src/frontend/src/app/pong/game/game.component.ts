@@ -70,7 +70,13 @@ export class GameComponent implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   movement(event: KeyboardEvent) {
-    this.gameService.movePaddle(event);
+    this.gameService.keyPressed = event.key;
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  movementUp(event: KeyboardEvent) {
+    if (event.key == this.gameService.keyPressed)
+      this.gameService.keyPressed = 'stop';
   }
 
   buttonRequestLeaveNormalGame() {
