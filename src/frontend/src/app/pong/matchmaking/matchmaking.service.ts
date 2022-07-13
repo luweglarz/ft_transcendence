@@ -47,6 +47,7 @@ export class MatchmakingService {
         this.gameService.isInGame = true;
         this.gameComponent.game.ball.radius = gameMapInfo.ballRadius;
         this.router.navigate(['game']);
+        this.gameService.sendKeyEvents();
         console.log(msg);
       },
     );
