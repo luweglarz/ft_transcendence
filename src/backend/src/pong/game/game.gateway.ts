@@ -51,19 +51,25 @@ export class GameGateway
 
     if (eventKey == 'ArrowDown') player.velocity = 1;
     else if (eventKey == 'ArrowUp') player.velocity = -1;
-    else player.velocity = 0;
+    else if (eventKey == 'stop') player.velocity = 0;
   }
 
   @SubscribeMessage('leaveNormalGame')
   leaveGame(@ConnectedSocket() client: Socket) {
+    let winner: Player;
     for (const room of this.rooms) {
       if (
         room.players[0].socket === client ||
         room.players[1].socket === client
       ) {
+        winner = room.players.find((element) => element.socket.id != client.id);
+        this.logger.log("winner is " + winner.socket.id);
         this.server
           .to(room.uuid)
           .emit('normalGameLeft', `player ${client.id} has left the game`);
+        this.server
+          .to(room.uuid)
+          .emit('gameFinished', { winner: winner.socket.id });
         this.gameService.clearRoom(room, this.rooms);
         clearInterval(this.gameService.gameLoopInterval);
         this.logger.log(`player ${client.id} has left the game ${room.uuid}`);
