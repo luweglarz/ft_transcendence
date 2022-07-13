@@ -12,6 +12,7 @@ import { RoomType } from 'src/app/interface/room';
 export class ChatRoomCreateComponent implements OnInit {
 
   roomTypes = Object.values(RoomType);
+  public value: any;
 
   constructor(
     public dialogRef: MatDialogRef<ChatRoomCreateComponent>,
