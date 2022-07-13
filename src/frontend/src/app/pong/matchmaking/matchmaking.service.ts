@@ -28,10 +28,10 @@ export class MatchmakingService {
 
   requestJoinNormalMatchMaking() {
     this.socket.emit('joinNormalMatchmaking');
-    this.socket.on('waitingForAMatch', (msg: any) => {
+    this.socket.once('waitingForAMatch', (msg: any) => {
       console.log(msg);
     });
-    this.socket.on(
+    this.socket.once(
       'matchFound',
       (msg: any, gameMapInfo: any, playersInfo: any) => {
         this.gameComponent.game.players[0].height = playersInfo.height;

@@ -15,14 +15,15 @@ export class GameService {
 
   public isInGame;
   public keyPressed: string;
+  public keyEventsInterval: any;
 
   requestLeaveNormalGame() {
     this.isInGame = false;
     this.socket.emit('leaveNormalGame');
   }
 
-  async sendKeyEvents() {
-    setInterval(() => {
+  sendKeyEvents() {
+    this.keyEventsInterval = setInterval(() => {
       this.socket.emit('move', this.keyPressed);
     }, 25);
   }
