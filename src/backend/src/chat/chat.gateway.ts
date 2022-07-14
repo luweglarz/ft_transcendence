@@ -35,9 +35,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async createRoom(
     name: string,
     roomType: RoomType,
-    owner: User,
     password?: string,
   ) {
+    var owner: User;
     if (roomType === 'PROTECTED' && !password) return 'Error';
     this.roomService.createRoom({
       name,

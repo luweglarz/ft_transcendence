@@ -13,4 +13,8 @@ export class ChatService {
   getRooms(): Observable<Room[]> {
     return this.socket.fromEvent<Room[]>('rooms')
   }
+
+  createRoom(room: Room) {
+    this.socket.emit('createRoom', room.name, room.roomType, room.password);
+  }
 }
