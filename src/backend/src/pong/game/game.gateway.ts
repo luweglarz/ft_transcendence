@@ -63,13 +63,16 @@ export class GameGateway
         room.players[1].socket === client
       ) {
         winner = room.players.find((element) => element.socket.id != client.id);
-        this.logger.log("winner is " + winner.socket.id);
         this.server
           .to(room.uuid)
           .emit('normalGameLeft', `player ${client.id} has left the game`);
         this.server
           .to(room.uuid)
-          .emit('gameFinished', { winner: winner.socket.id });
+          .emit(
+            'gameFinished',
+            { winner: winner.socket.id },
+            { Leaver: client.id },
+          );
         this.gameService.clearRoom(room, this.rooms);
         clearInterval(this.gameService.gameLoopInterval);
         this.logger.log(`player ${client.id} has left the game ${room.uuid}`);

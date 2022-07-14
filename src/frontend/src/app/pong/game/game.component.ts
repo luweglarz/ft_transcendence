@@ -24,11 +24,12 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.socket.on('gameFinished', (winner: string) => {
+    this.socket.on('gameFinished', (winner: any, leaver?: any) => {
       clearInterval(this.gameService.keyEventsInterval);
       this.gameService.isInGame = false;
+      if (leaver != null) console.log(`player ${leaver} has left the game`);
       console.log(winner + ' Won the game');
-      this.router.navigate(['matchmaking']);
+      this.router.navigate(['/']);
     });
   }
 

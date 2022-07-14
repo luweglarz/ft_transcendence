@@ -14,10 +14,6 @@ export class MatchmakingService {
     private gameComponent: GameComponent,
     private gameService: GameService,
   ) {
-    this.socket.on('normalGameLeft', (msg: any) => {
-      console.log(msg);
-      this.router.navigate(['matchmaking']);
-    });
     this.socket.on('matchmakingLeft', (msg: any) => {
       console.log(msg);
     });
