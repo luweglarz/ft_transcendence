@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Room } from 'src/app/interface/room';
 import { RoomType } from 'src/app/interface/room';
+import { ChatService } from 'src/app/services/chatService/chat.service';
 
 @Component({
   selector: 'app-chat-room-create',
@@ -12,14 +13,21 @@ import { RoomType } from 'src/app/interface/room';
 export class ChatRoomCreateComponent implements OnInit {
 
   roomTypes = Object.values(RoomType);
-  public value: any;
+  name = new FormControl(null, [Validators.required]);
 
   constructor(
     public dialogRef: MatDialogRef<ChatRoomCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Room,
+    private chatService: ChatService
   ) { }
 
   ngOnInit(): void {
+  }
+
+  create() {
+    if (this.name.valid) {
+      this.chatService.createRoom(this.data);
+    }
   }
 
   onNoClick(): void {
