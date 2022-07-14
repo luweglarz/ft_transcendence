@@ -10,7 +10,7 @@ export class IsInGameGuard implements CanActivate {
 
   canActivate(): boolean {
     if (this.gameService.isInGame === false) {
-      this.router.navigate(['matchmaking']);
+      this.router.navigate(['/']);
       console.log('You are not in a game');
       return false;
     }
