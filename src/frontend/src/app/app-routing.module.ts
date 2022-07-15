@@ -4,7 +4,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './pages/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { PongComponent } from './pages/pong/pong.component';
+import { GameComponent } from './pong/game/game.component';
+import { IsInGameGuard } from './pong/game/is-in-game.guard';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
   },
   {
     path: 'game',
-    component: PongComponent,
+    component: GameComponent,
+    canActivate: [IsInGameGuard],
   },
   {
     path: 'not-found',
