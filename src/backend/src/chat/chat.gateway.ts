@@ -24,7 +24,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {}
   
  async handleConnection(socket: Socket) {
-    
+    console.log('client connected');
+    this.server.to(socket.id).emit('rooms', await this.roomService.rooms({}));
+    //this.server.to(socket.id).emit('testfgh');
+    console.log(await this.roomService.rooms({}));
   }
 
   async handleDisconnect(socket: Socket) {
@@ -37,6 +40,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     roomType: RoomType,
     password?: string,
   ) {
+    console.log('createRoom Smessage');
     var owner: User;
     if (roomType === 'PROTECTED' && !password) return 'Error';
     this.roomService.createRoom({
@@ -65,5 +69,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     });
     // needs emit once i can find how to identify user by connection to server
     // emmit new message to all members of the room
+  }
+
+  @SubscribeMessage('getRooms')
+  async getRooms(socket: Socket) {
+    this.server.to(socket.id).emit('rooms', await this.roomService.rooms({}));
   }
 }

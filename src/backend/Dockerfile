@@ -8,7 +8,7 @@ RUN npm clean-install
 
 COPY . .
 
-RUN cp env/docker-compose.dev.env .env
+#RUN cp env/docker-compose.dev.env .env
 RUN npx prisma generate
 RUN npm run build
 

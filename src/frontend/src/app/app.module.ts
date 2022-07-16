@@ -28,7 +28,11 @@ import { MatInputModule } from '@angular/material/input'
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatSelectModule } from '@angular/material/select'
+import { MatPaginatorModule } from '@angular/material/paginator'
 import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room-create.component'
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+
+const config: SocketIoConfig = {url: 'http://localhost:3000', options: {}};
 
 @NgModule({
   declarations: [
@@ -63,6 +67,8 @@ import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room
     MatIconModule,
     MatDialogModule,
     MatSelectModule,
+    MatPaginatorModule,
+    SocketIoModule.forRoot(config),
   ],
   providers: [],
   bootstrap: [AppComponent],
