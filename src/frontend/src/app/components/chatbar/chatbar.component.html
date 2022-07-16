@@ -23,14 +23,14 @@
             </span>
             <button mat-raised-button (click)="openDialog()">Create new room</button>
           </div>
-
-          <div *ngIf="(rooms|async)" class="rooms">
+          <div class="rooms">
             <mat-selection-list [multiple]="false" (selectionChange)="onSelectRoom($event)">
               <mat-list-option *ngFor="let room of (rooms|async)" [value]="room">
                 Name: {{room.name}}
                 <mat-divider></mat-divider>
               </mat-list-option>
             </mat-selection-list>
+            <mat-paginator></mat-paginator>
           </div>
         </div>
 

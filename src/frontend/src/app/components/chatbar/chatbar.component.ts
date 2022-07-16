@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { ChatService } from 'src/app/services/chatService/chat.service';
-import { Room } from 'src/app/interface/room'
+import { Room, RoomTab } from 'src/app/interface/room'
 import { RoomType } from 'src/app/interface/room';
 import { MatSelectionListChange } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
@@ -30,6 +30,7 @@ export class ChatbarComponent implements OnInit {
   openChat() {
     this.chatCollapsed = true;
     this.chatCollapseEvent.emit(this.chatCollapsed);
+    this.chatService.openChat();
   }
 
   closeChat() {

@@ -1,9 +1,16 @@
 export interface Room {
-    name:       string;
+    id?:        number;
+    createdAt?: Date;
+    updatedAt?: Date;
+    name?:      string;
     password?:  string;
     roomType:   RoomType;
     //users:    RoomUser[];
     //messages  Message[];
+}
+
+export interface RoomTab {
+  roomstab: Room[]
 }
 
 export enum RoomType {
