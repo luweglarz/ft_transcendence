@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -9,13 +9,11 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  twoFactors = false;
-
   //Data to retrieved
   registerForm = this.formBuilder.group({
-    username: new FormControl(null, Validators.required),
-    twoFactors: new FormControl(false, Validators.required),
-    email: new FormControl(null, Validators.required),
+    username: ['', Validators.required],
+    twoFactors: [false, Validators.required],
+    email: ['', Validators.required],
   });
 
   constructor(
@@ -45,8 +43,8 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  choose2FA() {
-    this.twoFactors = !this.twoFactors;
+  get twoFactors() {
+    return this.registerForm.value.twoFactors;
   }
 
   register() {
