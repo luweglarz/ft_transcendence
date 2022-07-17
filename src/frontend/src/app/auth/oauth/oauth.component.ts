@@ -19,11 +19,13 @@ export class OauthComponent implements OnInit {
       console.log(params);
       if (params['code'])
         this.http
-          .get(`http://localhost:3000/oauth/redirect?code=${params['code']}`)
+          .get(
+            `http://localhost:3000/auth/oauth42/redirect?code=${params['code']}`,
+          )
           .subscribe((response: any) => {
             console.log(response);
             localStorage.setItem('jwt', response['jwt']);
-            this.router.navigate(['/register']);
+            this.router.navigate(['/auth/register']);
           });
       else {
         // this.router.navigate(['/not-found']);

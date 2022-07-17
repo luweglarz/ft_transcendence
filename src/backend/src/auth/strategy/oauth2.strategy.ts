@@ -14,7 +14,7 @@ export class OAuth2Strategy extends PassportStrategy(Strategy, 'oauth2') {
       tokenURL: 'https://api.intra.42.fr/oauth/token',
       clientID: process.env['OAUTH_42_CLIENT_ID'],
       clientSecret: process.env['OAUTH_42_CLIENT_SECRET'],
-      callbackURL: 'http://localhost:4200/oauth42/callback',
+      callbackURL: 'http://localhost:4200/auth/oauth42/callback',
       scope: ['public'],
     });
     this.logger.debug(`OAUTH client ID: ${process.env['OAUTH_42_CLIENT_ID']}`);
