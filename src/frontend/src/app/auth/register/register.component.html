@@ -36,7 +36,7 @@
       <!-- 2FA field -->
       <div class="checkbox-register">
         <label>Enable 2FA</label>
-        <input formControlName="twoFactors" type="checkbox" (click)="choose2FA()">
+        <input formControlName="twoFactors" type="checkbox">
       </div>
       <div class="field-register" *ngIf="twoFactors">
         <input formControlName="email" placeholder="Email" name="Email">
