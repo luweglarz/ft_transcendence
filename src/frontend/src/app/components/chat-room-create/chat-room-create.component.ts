@@ -25,7 +25,10 @@ export class ChatRoomCreateComponent implements OnInit {
   }
 
   create() {
-    if (this.name.valid) {
+    console.log('call create');
+    this.dialogRef.close();
+    console.log(this.data);
+    if (this.data.name && this.data.roomType && (this.data.password || this.data.roomType != 'PROTECTED')) {
       this.chatService.createRoom(this.data);
     }
   }

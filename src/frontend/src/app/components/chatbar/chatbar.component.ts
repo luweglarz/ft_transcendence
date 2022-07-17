@@ -13,7 +13,7 @@ import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.co
   styleUrls: ['./chatbar.component.css'],
 })
 export class ChatbarComponent implements OnInit {
-  private roomCreate: Room = {name: '', roomType: RoomType.PUBLIC};
+  //private roomCreate: Room;
   chatCollapsed = false;
   @Output() chatCollapseEvent = new EventEmitter<boolean>();
   rooms: Observable<Room[]> = this.chatService.getRooms();
@@ -45,11 +45,11 @@ export class ChatbarComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(ChatRoomCreateComponent, {
       width: '250px',
-      data: {room: this.roomCreate},
+      data: {},
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.roomCreate = result;
+      //this.roomCreate = result;
     })
   }
 }
