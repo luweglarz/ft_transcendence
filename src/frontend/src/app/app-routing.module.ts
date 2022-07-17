@@ -13,16 +13,22 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-  },
-  {
-    path: 'oauth42/callback',
-    component: OauthComponent,
+    path: 'auth',
+    children: [
+      { path: '', redirectTo: '/not-found', pathMatch: 'full' },
+      {
+        path: 'login',
+        component: LoginComponent,
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
+      },
+      {
+        path: 'oauth42/callback',
+        component: OauthComponent,
+      },
+    ],
   },
   {
     path: 'game',

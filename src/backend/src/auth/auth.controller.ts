@@ -12,33 +12,33 @@ import { AuthService } from './auth.service';
 import { LocalSigninDto, LocalSignupDto } from './dto';
 import { JwtGuard, OAuth2Guard } from './guard';
 
-@Controller()
+@Controller('auth')
 export class AuthController {
   private readonly logger = new Logger(AuthController.name);
   constructor(private authService: AuthService) {}
 
-  @Post('auth/signup')
+  @Post('signup')
   localSignUp(@Body() dto: LocalSignupDto) {
     return this.authService.localSignUp(dto);
   }
 
-  @Post('auth/signin')
+  @Post('signin')
   async localSignIn(@Body() dto: LocalSigninDto) {
     return this.authService.localSignIn(dto);
   }
 
-  @Post('auth/signout')
+  @Post('signout')
   signOut() {
     return this.authService.signOut();
   }
 
-  @Get('oauth/authenticate')
-  @UseGuards(OAuth2Guard)
-  oauthAutenticate() {
-    // redirected by the guard
-  }
+  // @Get('oauth42/authenticate')
+  // @UseGuards(OAuth2Guard)
+  // oauthAutenticate() {
+  //   // redirected by the guard to the authorize url
+  // }
 
-  @Get('oauth/redirect')
+  @Get('oauth42/redirect')
   @UseGuards(OAuth2Guard)
   async oauhtRedirectCallback(@Req() req: Request) {
     this.logger.debug(`${this.oauhtRedirectCallback.name} called`);
@@ -50,12 +50,12 @@ export class AuthController {
   //  ============================ Testing routes ============================  //
 
   @UseGuards(JwtGuard)
-  @Get('auth/private')
+  @Get('private')
   isSignedIn() {
     return { message: 'I am signed in!' };
   }
 
-  @Get('auth/public')
+  @Get('public')
   testPublicRoute() {
     return { message: 'Hello, this is a public route!' };
   }
