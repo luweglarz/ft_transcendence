@@ -25,9 +25,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   
  async handleConnection(socket: Socket) {
     console.log('client connected');
-    this.server.to(socket.id).emit('rooms', await this.roomService.rooms({}));
+    let rooms = await this.roomService.rooms({});
+    if (rooms.length > 0)
+      this.server.to(socket.id).emit('rooms', rooms);
     //this.server.to(socket.id).emit('testfgh');
-    console.log(await this.roomService.rooms({}));
+    //console.log(await this.roomService.rooms({}));
   }
 
   async handleDisconnect(socket: Socket) {
@@ -36,21 +38,20 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('createRoom')
   async createRoom(
-    name: string,
-    roomType: RoomType,
-    password?: string,
+    socket: Socket,
+    room: Room
   ) {
-    console.log('createRoom Smessage');
-    var owner: User;
-    if (roomType === 'PROTECTED' && !password) return 'Error';
-    this.roomService.createRoom({
-      name,
-      password,
-      roomType,
-      users: { create: { user: { connect: owner }, role: 'OWNER' } },
+    if (room.roomType === 'PROTECTED' && !room.password) return 'Error';
+    await this.roomService.createRoom({
+      name: room.name,
+      password: room.password,
+      roomType: room.roomType,
+      //users: { create: { user: { connect: owner }, role: 'OWNER' } },
     });
     // needs emit once i can find how to identify user by connection to server
     // emit new room to all connected user
+    //this.server.to(socket.id).emit('rooms', this.roomService.rooms({}));
+    this.getRooms(socket);
   }
 
   @SubscribeMessage('joinRoom')
