@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { JwtService } from '../jwt';
-import { OAuthService } from '../oauth/oauth.service';
+import { OAuthService } from '../oauth';
 //import { environment } from 'src/environments/environment';
 
 @Component({
