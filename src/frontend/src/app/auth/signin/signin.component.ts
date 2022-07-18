@@ -6,10 +6,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  templateUrl: './signin.component.html',
+  styleUrls: ['./signin.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class SignInComponent implements OnInit {
   access_token = 'access_token';
 
   constructor(
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     //
   }
 
-  login() {
+  signin() {
     //Got a problem with git-secret, the API UI and KEY are not on this commit, need to fix this.
     /*const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',

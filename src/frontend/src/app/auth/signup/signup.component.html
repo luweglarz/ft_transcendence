@@ -6,7 +6,7 @@
     </div>
 
     <!-- FORMS -->
-    <form [formGroup]="registerForm" (ngSubmit)="register()" (keydown.meta.enter)="register()" class="form-register">
+    <form [formGroup]="registerForm" (ngSubmit)="signUp()" (keydown.meta.enter)="signUp()" class="form-register">
       <!-- Avatar field -->
       <div class="avatar-register">
         <label class="avatar-label">Upload your avatar</label>
@@ -55,7 +55,7 @@
     </form>
 
     <!-- Submit button -->
-    <button class="btn-register" (click)="register()">
+    <button class="btn-register" (click)="signUp()">
       <p>Register</p>
       <svg width="24" height="24" viewBox="0 0 24 24" class="icon-register" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M2 11.7506C2 11.4191 2.13168 11.1012 2.36608 10.8668C2.60047 10.6324 2.91838 10.5007 3.24986 10.5007H17.7307L12.3638 5.13634C12.1292 4.90165 11.9973 4.58334 11.9973 4.25144C11.9973 3.91954 12.1292 3.60123 12.3638 3.36654C12.5985 3.13185 12.9168 3 13.2487 3C13.5806 3 13.899 3.13185 14.1336 3.36654L21.6328 10.8657C21.7492 10.9818 21.8415 11.1197 21.9046 11.2716C21.9676 11.4234 22 11.5862 22 11.7506C22 11.915 21.9676 12.0778 21.9046 12.2296C21.8415 12.3815 21.7492 12.5194 21.6328 12.6355L14.1336 20.1347C13.899 20.3694 13.5806 20.5012 13.2487 20.5012C12.9168 20.5012 12.5985 20.3694 12.3638 20.1347C12.1292 19.9 11.9973 19.5817 11.9973 19.2498C11.9973 18.9179 12.1292 18.5996 12.3638 18.3649L17.7307 13.0005H3.24986C2.91838 13.0005 2.60047 12.8688 2.36608 12.6344C2.13168 12.4 2 12.0821 2 11.7506Z" stroke-width="1.5"/>
