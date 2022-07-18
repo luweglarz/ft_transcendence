@@ -72,8 +72,7 @@ export class AuthService {
   /*
    * @brief Fetch 42 user data, then find or create corresponding user
    */
-  async oauthFindOrCreate(accessToken: string) {
-    const apiUser = await this.fetch42APIUserData(accessToken);
+  async oauthFindOrCreate(apiUser: OAuthUserDto) {
     let user = await this.db.user.findUnique({
       where: { username: apiUser.login },
     });
@@ -86,31 +85,7 @@ export class AuthService {
     return user;
   }
 
-  //  =========================== PRIVATE Methods ============================  //
-
-  private async createUser(data: Prisma.UserCreateInput) {
-    try {
-      const user = await this.db.user.create({ data: data });
-      this.logger.log(`New user '${data.username}' successfully signed up!`);
-      return user;
-    } catch (err) {
-      if (
-        err instanceof PrismaClientKnownRequestError &&
-        err.code == DbErrorCode.UniqueConstraintFailed
-      )
-        throw new ForbiddenException('User already exists');
-      else throw err;
-    }
-  }
-
-  private signToken(payload: JwtPayload): Promise<string> {
-    return this.jwt.signAsync(payload, {
-      expiresIn: '42m',
-      secret: process.env['JWT_SECRET'],
-    });
-  }
-
-  private async fetch42APIUserData(accessToken: string) {
+  async fetch42APIUserData(accessToken: string) {
     const userObservable = this.httpService.get(
       'https://api.intra.42.fr/v2/me',
       {
@@ -138,5 +113,29 @@ export class AuthService {
         `42's API sent incorrect data: ${errors[0]}`,
       );
     return user;
+  }
+
+  //  =========================== PRIVATE Methods ============================  //
+
+  private async createUser(data: Prisma.UserCreateInput) {
+    try {
+      const user = await this.db.user.create({ data: data });
+      this.logger.log(`New user '${data.username}' successfully signed up!`);
+      return user;
+    } catch (err) {
+      if (
+        err instanceof PrismaClientKnownRequestError &&
+        err.code == DbErrorCode.UniqueConstraintFailed
+      )
+        throw new ForbiddenException('User already exists');
+      else throw err;
+    }
+  }
+
+  private signToken(payload: JwtPayload): Promise<string> {
+    return this.jwt.signAsync(payload, {
+      expiresIn: '42m',
+      secret: process.env['JWT_SECRET'],
+    });
   }
 }
