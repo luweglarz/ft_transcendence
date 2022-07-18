@@ -6,6 +6,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { GameComponent } from './pong/game/game.component';
 import { IsInGameGuard } from './pong/game/is-in-game.guard';
 import { OauthComponent } from './auth/oauth/oauth.component';
+import { SignOutComponent } from './auth/signout/signout.component';
 
 const routes: Routes = [
   {
@@ -17,12 +18,16 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: '/not-found', pathMatch: 'full' },
       {
+        path: 'signup',
+        component: SignUpComponent,
+      },
+      {
         path: 'signin',
         component: SignInComponent,
       },
       {
-        path: 'signup',
-        component: SignUpComponent,
+        path: 'signout',
+        component: SignOutComponent,
       },
       {
         path: 'oauth42/callback',
