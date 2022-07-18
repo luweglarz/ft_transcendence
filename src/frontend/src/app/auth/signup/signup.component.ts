@@ -27,6 +27,8 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
     this.jwt.testToken();
+    if (window.history.state['oauth']) this.oauthRegister = true;
+    console.log(`OAuth register: ${this.oauthRegister}`);
   }
 
   get twoFactors() {
