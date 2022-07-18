@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { JwtService } from '../jwt/jwt.service';
+import { JwtService } from '../jwt';
 
 @Component({
   selector: 'app-register',

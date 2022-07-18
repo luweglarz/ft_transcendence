@@ -6,7 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { PongModule } from './pong/pong.module';
-import { AuthModule } from './auth';
+import { AuthModule, JwtInterceptor } from './auth';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -15,7 +15,6 @@ import { ProfilComponent } from './components/profil/profil.component';
 import { LadderComponent } from './components/ladder/ladder.component';
 import { SocialComponent } from './components/social/social.component';
 import { ChatbarComponent } from './components/chatbar/chatbar.component';
-import { JwtInterceptor } from './auth/jwt/jwt.interceptor';
 
 @NgModule({
   declarations: [
