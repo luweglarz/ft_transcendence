@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SignInComponent } from './signin/signin.component';
-import { SignUpComponent } from './signup/signup.component';
+import { SignInComponent } from './signin';
+import { SignUpComponent } from './signup';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { OauthComponent } from './oauth/oauth.component';
-import { JwtService } from './jwt/jwt.service';
+import { OauthComponent } from './oauth';
+import { JwtService } from './jwt';
 
 @NgModule({
   declarations: [SignInComponent, SignUpComponent, OauthComponent],
