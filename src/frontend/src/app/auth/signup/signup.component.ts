@@ -26,12 +26,7 @@ export class SignUpComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.jwt.getToken()) {
-      console.log(`My jwt: ${this.jwt.getToken()}`);
-      this.http
-        .get(`http://localhost:3000/auth/private`)
-        .subscribe((response) => console.log(response));
-    } else console.log('Not signed in!');
+    this.jwt.testToken();
   }
 
   get twoFactors() {

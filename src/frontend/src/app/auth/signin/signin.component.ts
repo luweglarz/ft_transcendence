@@ -1,7 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { JwtService } from '../jwt';
 //import { environment } from 'src/environments/environment';
 
 @Component({
@@ -12,16 +10,13 @@ import { Router } from '@angular/router';
 export class SignInComponent implements OnInit {
   access_token = 'access_token';
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private http: HttpClient,
-    public router: Router,
-  ) {
-    //
-  }
+  constructor(private jwt: JwtService) {}
+  // @Inject(DOCUMENT) private document: Document,
+  // private http: HttpClient,
+  // public router: Router,
 
   ngOnInit(): void {
-    //
+    this.jwt.testToken();
   }
 
   signin() {
