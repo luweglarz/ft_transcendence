@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { JwtService } from '../jwt';
+import { OAuthService } from '../oauth/oauth.service';
 
 @Component({
   selector: 'app-register',
@@ -23,6 +24,7 @@ export class SignUpComponent implements OnInit {
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private jwt: JwtService,
+    private oauth: OAuthService,
   ) {}
 
   ngOnInit(): void {
@@ -42,8 +44,7 @@ export class SignUpComponent implements OnInit {
       .subscribe((response) => console.log(response));
   }
 
-  oAuth() {
-    window.location.href =
-      'https://api.intra.42.fr/oauth/authorize?client_id=86fb252b97a66621fd8e06b39794ec809a80cef7383535c464d0310c4ca7418a&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2Fauth%2Foauth42%2Fcallback&response_type=code';
+  oAuthSignUp() {
+    this.oauth.authorize();
   }
 }
