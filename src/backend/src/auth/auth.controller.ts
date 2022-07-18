@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
-import { LocalSigninDto, LocalSignupDto } from './dto';
+import { LocalSigninDto, LocalSignupDto, OAuthUserDto } from './dto';
 import { JwtGuard, OAuth2Guard } from './guard';
 
 @Controller('auth')
@@ -41,9 +41,10 @@ export class AuthController {
   @Get('oauth42/redirect')
   @UseGuards(OAuth2Guard)
   async oauhtRedirectCallback(@Req() req: Request) {
-    this.logger.debug(`${this.oauhtRedirectCallback.name} called`);
-    this.logger.debug(`user: ${JSON.stringify(req.user, null, 2)}`);
-    const user: any = req.user;
+    const user = await this.authService.oauthFindOrCreate(
+      <OAuthUserDto>req.user,
+    );
+    this.logger.debug(`user: ${JSON.stringify(user, null, 2)}`);
     return this.authService.signInSuccess(user);
   }
 

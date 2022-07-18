@@ -30,7 +30,7 @@ export class OAuth2Strategy extends PassportStrategy(Strategy, 'oauth2') {
     this.logger.debug(`${OAuth2Strategy.name}.${this.validate.name} called`);
     this.logger.debug(`accessToken: ${accessToken}`);
     this.logger.debug(`refreshToken: ${refreshToken}`);
-    const user = this.authService.oauthFindOrCreate(accessToken);
+    const user = this.authService.fetch42APIUserData(accessToken);
     verified(null, user, { accessToken, refreshToken, profile });
   }
 }
