@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { JwtService } from '../jwt/jwt.service';
 
 @Component({
   selector: 'app-oauth',
@@ -12,6 +13,7 @@ export class OauthComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
+    private jwt: JwtService,
   ) {}
 
   ngOnInit(): void {
@@ -24,13 +26,11 @@ export class OauthComponent implements OnInit {
           )
           .subscribe((response: any) => {
             console.log(response);
-            localStorage.setItem('jwt', response['jwt']);
+            this.jwt.setToken(response['jwt']);
             this.router.navigate(['/auth/register']);
           });
       else {
-        // this.router.navigate(['/not-found']);
-        const jwt = localStorage.getItem('jwt');
-        if (jwt) console.log(`My jwt: ${jwt}`);
+        if (this.jwt.getToken()) console.log(`My jwt: ${this.jwt.getToken()}`);
       }
     });
   }
