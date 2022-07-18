@@ -24,6 +24,7 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.gameService.sendKeyEvents();
     this.socket.on('gameFinished', (winner: any, leaver?: any) => {
       clearInterval(this.gameService.keyEventsInterval);
       this.gameService.isInGame = false;
