@@ -8,6 +8,8 @@ export class Ball {
     private _color: string,
     private _radius: number,
   ) {
+    this._initialSpeed = this._speed;
+
     this._mapCenter.x = Math.round(gameMap.canvaWidth / 2);
     this._mapCenter.y = Math.round(gameMap.canvaHeight / 2);
 
@@ -28,6 +30,7 @@ export class Ball {
     x: 0,
     y: 0,
   };
+  private _initialSpeed;
 
   get x(): number {
     return this._x;
@@ -67,6 +70,10 @@ export class Ball {
 
   set yVelocity(newVelocity: number) {
     this._yVelocity = newVelocity;
+  }
+
+  set speed(newSpeed: number) {
+    this._speed = newSpeed;
   }
 
   get speed(): number {
@@ -114,7 +121,7 @@ export class Ball {
 
     this.xVelocity = 0;
     this.yVelocity = 0;
-
+    this.speed = this._initialSpeed;
     setTimeout(() => {
       this.xVelocity = xOldVelocity;
       this.yVelocity = yOldVelocity;
