@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { PongModule } from './pong/pong.module';
@@ -15,6 +15,7 @@ import { ProfilComponent } from './components/profil/profil.component';
 import { LadderComponent } from './components/ladder/ladder.component';
 import { SocialComponent } from './components/social/social.component';
 import { ChatbarComponent } from './components/chatbar/chatbar.component';
+import { JwtInterceptor } from './auth/jwt/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,9 @@ import { ChatbarComponent } from './components/chatbar/chatbar.component';
     HttpClientModule,
     AuthModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
