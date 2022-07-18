@@ -38,9 +38,20 @@ export class AuthController {
   //   // redirected by the guard to the authorize url
   // }
 
-  @Get('oauth42/redirect')
+  @Get('oauth42/signin')
   @UseGuards(OAuth2Guard)
-  async oauhtRedirectCallback(@Req() req: Request) {
+  async oauthSignIn(@Req() req: Request) {
+    const user = await this.authService.oauthFindOrCreate(
+      <OAuthUserDto>req.user,
+    );
+    this.logger.debug(`user: ${JSON.stringify(user, null, 2)}`);
+    return this.authService.signInSuccess(user);
+  }
+
+  @Post('oauth42/signup')
+  @UseGuards(OAuth2Guard)
+  async oauthSignUp(@Req() req: Request, @Body() dto: { username: string }) {
+    req.user['login'] = dto.username;
     const user = await this.authService.oauthFindOrCreate(
       <OAuthUserDto>req.user,
     );
