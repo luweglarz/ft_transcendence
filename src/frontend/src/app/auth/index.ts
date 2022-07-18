@@ -1,3 +1,3 @@
-export * from './login';
-export * from './register';
+export * from './signin';
+export * from './signup';
 export * from './auth.module';

@@ -5,10 +5,10 @@ import { JwtService } from '../jwt/jwt.service';
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.css'],
 })
-export class RegisterComponent implements OnInit {
+export class SignUpComponent implements OnInit {
   localRegister = false;
   oauthRegister = false;
   //Data to retrieved
@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.value.twoFactors;
   }
 
-  register() {
+  signUp() {
     console.log(this.registerForm.value);
     this.http
       .post('http://localhost:3000/auth/local/signup', this.registerForm.value)
