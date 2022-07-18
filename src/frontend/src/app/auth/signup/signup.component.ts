@@ -31,7 +31,7 @@ export class SignUpComponent implements OnInit {
       this.http
         .get(`http://localhost:3000/auth/private`)
         .subscribe((response) => console.log(response));
-    }
+    } else console.log('Not signed in!');
   }
 
   get twoFactors() {
