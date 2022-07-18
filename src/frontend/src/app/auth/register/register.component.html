@@ -6,7 +6,7 @@
     </div>
 
     <!-- FORMS -->
-    <form [formGroup]="registerForm" (ngSubmit)="register()" class="form-register">
+    <form [formGroup]="registerForm" (ngSubmit)="register()" (keydown.meta.enter)="register()" class="form-register">
       <!-- Avatar field -->
       <div class="avatar-register">
         <label class="avatar-label">Upload your avatar</label>
@@ -30,7 +30,17 @@
       <!-- Username field -->
       <div class="field-register">
         <label>Choose your username</label>
-        <input formControlName="username" placeholder="Username" name="Username">
+        <input formControlName="username" placeholder="Username" name="username">
+      </div>
+      <!-- Username field -->
+      <div class="field-register">
+        <label>Password: </label>
+        <input formControlName="password" placeholder="Password" name="password">
+      </div>
+      <!-- Email field -->
+      <div class="field-register">
+        <label>Email: </label>
+        <input formControlName="email" placeholder="Email" name="email">
       </div>
 
       <!-- 2FA field -->
@@ -38,9 +48,9 @@
         <label>Enable 2FA</label>
         <input formControlName="twoFactors" type="checkbox">
       </div>
-      <div class="field-register" *ngIf="twoFactors">
-        <input formControlName="email" placeholder="Email" name="Email">
-      </div>
+      <!-- <div class="field-register" *ngIf="twoFactors"> -->
+      <!--   <input formControlName="email" placeholder="Email" name="email"> -->
+      <!-- </div> -->
 
     </form>
 

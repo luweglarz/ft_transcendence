@@ -7,9 +7,9 @@ async function bootstrap() {
     cors: {
       origin: ['http://localhost:4200'],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      preflightContinue: true,
+      preflightContinue: false,
       credentials: true,
-      // allowedHeaders: ['content-type'],
+      allowedHeaders: ['content-type'],
     },
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));

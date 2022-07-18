@@ -17,12 +17,12 @@ export class AuthController {
   private readonly logger = new Logger(AuthController.name);
   constructor(private authService: AuthService) {}
 
-  @Post('signup')
+  @Post('local/signup')
   localSignUp(@Body() dto: LocalSignupDto) {
     return this.authService.localSignUp(dto);
   }
 
-  @Post('signin')
+  @Post('local/signin')
   async localSignIn(@Body() dto: LocalSigninDto) {
     return this.authService.localSignIn(dto);
   }
