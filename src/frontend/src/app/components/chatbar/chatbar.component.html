@@ -1,4 +1,4 @@
-<div class="chatbar">
+<div class="chatbar" [ngClass]=" chatCollapsed ? 'chatbar-collapsed' : ''">
 
   <div class="chatbar-header">
     <button class="btn-collapse" (click)="openChat()" *ngIf="!chatCollapsed">
