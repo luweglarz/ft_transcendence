@@ -1,12 +1,14 @@
 .sidenav {
   background-color: #2c3649;
-  transition: 0.3s;
+  transition: all 0.3s;
   position: fixed;
   z-index: 1;
   top: 0;
   width: 80px;
   height: 100%;
   float: left;
+
+  overflow: hidden;
 }
 
 .sidenav-collapsed {
@@ -65,6 +67,7 @@
 }
 
 .sidenav-nav-item {
+  transition: 3s;
   width: 100%;
   margin-bottom: 12px;
   cursor: pointer;
@@ -86,12 +89,14 @@
 }
 .sidenav-nav-item .sidenav-nav-link .sidenav-link-icon {
   width: 32px;
+  min-width: 32px;
   height: 32px;
   margin: 8px 8px;
   fill: white;
 }
 
 .sidenav-nav-item .sidenav-nav-link .sidenav-link-text {
+  transition: 3s;
   margin-left: 12px;
   color: white;
   font-family: Roboto, sans-serif;
