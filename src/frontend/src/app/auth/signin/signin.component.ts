@@ -40,7 +40,7 @@ export class SignInComponent implements OnInit {
   }
 
   oAuthSignIn() {
-    this.oauth.authorize();
+    this.oauth.authorize('signin');
   }
 
   // signin() {

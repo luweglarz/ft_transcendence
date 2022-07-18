@@ -18,21 +18,25 @@ export class OauthComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      console.log(params);
-      if (params['code'])
-        this.http
-          .get(
-            `http://localhost:3000/auth/oauth42/redirect?code=${params['code']}`,
-          )
-          .subscribe((response: any) => {
-            console.log(response);
-            this.jwt.setToken(response['jwt']);
-            this.router.navigate(['/auth/signup'], {
-              state: { oauth: true },
-              replaceUrl: true, // cannot go back to the callback page
-            });
+      if (params['code']) {
+        if (params['state'] == 'signup') {
+          this.router.navigate(['/auth/signup'], {
+            queryParams: { code: params['code'] },
+            replaceUrl: true, // cannot go back to the callback page
           });
-      else {
+        } else if (params['state'] == 'signin') {
+          this.http
+            .get(
+              `http://localhost:3000/auth/oauth42/redirect?code=${params['code']}`,
+            )
+            .subscribe((response: any) => {
+              this.jwt.setToken(response['jwt']);
+              this.router.navigate(['/'], {
+                replaceUrl: true,
+              });
+            });
+        }
+      } else {
         if (this.jwt.getToken()) console.log(`My jwt: ${this.jwt.getToken()}`);
       }
     });
