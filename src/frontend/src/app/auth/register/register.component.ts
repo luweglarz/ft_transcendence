@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { JwtService } from '../jwt/jwt.service';
 
 @Component({
   selector: 'app-register',
@@ -18,11 +19,14 @@ export class RegisterComponent implements OnInit {
     twoFactors: [false, Validators.required],
   });
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private jwt: JwtService,
+  ) {}
 
   ngOnInit(): void {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) console.log(`My jwt: ${jwt}`);
+    if (this.jwt.getToken()) console.log(`My jwt: ${this.jwt.getToken()}`);
   }
 
   get twoFactors() {
