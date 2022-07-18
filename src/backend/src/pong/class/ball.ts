@@ -12,7 +12,7 @@ export class Ball {
     this._mapCenter.y = Math.round(gameMap.canvaHeight / 2);
 
     this._x = this._mapCenter.x;
-    this._y = Math.round(Math.random() * gameMap.canvaHeight + 1);
+    this._y = this._mapCenter.y;
 
     this._borderCollisionUp = 0;
     this._borderCollisionDown = gameMap.canvaHeight;
@@ -106,8 +106,8 @@ export class Ball {
   }
 
   resetBall(gameMap: GameMap) {
-    let xOldVelocity = this.xVelocity;
-    let yOldVelocity = this.yVelocity;
+    const xOldVelocity = this.xVelocity;
+    const yOldVelocity = this.yVelocity;
 
     this.x = this._mapCenter.x;
     this.y = Math.floor(Math.random() * gameMap.canvaHeight + 1);
@@ -115,9 +115,9 @@ export class Ball {
     this.xVelocity = 0;
     this.yVelocity = 0;
 
-    setTimeout( () => {
+    setTimeout(() => {
       this.xVelocity = xOldVelocity;
       this.yVelocity = yOldVelocity;
-    },500);
+    }, 500);
   }
 }

@@ -11,9 +11,8 @@ export class GameService {
 
   findRoomId(rooms: Room[], client: Socket): Room {
     for (const room of rooms) {
-      for (const player of room.players){
-        if (player.socket === client)
-          return room;
+      for (const player of room.players) {
+        if (player.socket === client) return room;
       }
     }
     return;
@@ -21,8 +20,7 @@ export class GameService {
 
   findPlayer(room: Room, client: Socket): Player {
     for (const player of room.players) {
-      if (player.socket === client )
-        return player;
+      if (player.socket === client) return player;
     }
     return;
   }
@@ -79,12 +77,11 @@ export class GameService {
     return false;
   }
 
-  private checkGoal(ball: Ball, gameMap: GameMap, players: Player[]): Player{
-    if (ball.xVelocity == -1 && ball.x + ball.radius <= 0)
-      return players[1];
+  private checkGoal(ball: Ball, gameMap: GameMap, players: Player[]): Player {
+    if (ball.xVelocity == -1 && ball.x + ball.radius <= 0) return players[1];
     else if (ball.xVelocity == 1 && ball.x - ball.radius >= gameMap.canvaWidth)
       return players[0];
-    return ;
+    return;
   }
 
   gameLoop(
@@ -95,13 +92,18 @@ export class GameService {
     ball: Ball,
   ) {
     let scorer: Player;
-    ball.xVelocity = Math.round(Math.random()) * 2 - 1;
-    ball.yVelocity = Math.round(Math.random()) * 2 - 1;
+
+    setTimeout(() => {
+      ball.xVelocity = Math.round(Math.random()) * 2 - 1;
+      ball.yVelocity = Math.round(Math.random()) * 2 - 1;
+    }, 3000);
 
     const interval = setInterval(() => {
       this.playersMovement(players);
       this.ballMovement(ball, players);
-      if ((scorer = this.checkGoal(ball, gameRoom.gameMap, players)) != undefined){
+      if (
+        (scorer = this.checkGoal(ball, gameRoom.gameMap, players)) != undefined
+      ) {
         scorer.goals++;
         ball.resetBall(gameRoom.gameMap);
       }
