@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
 
@@ -10,8 +11,7 @@ import { OAuthService } from '../oauth';
   styleUrls: ['./signup.component.css'],
 })
 export class SignUpComponent implements OnInit {
-  localRegister = false;
-  oauthRegister = false;
+  signUpType: 'local' | 'oauth' = 'local';
   //Data to retrieved
   registerForm = this.formBuilder.group({
     username: ['', Validators.required],
@@ -25,12 +25,17 @@ export class SignUpComponent implements OnInit {
     private http: HttpClient,
     private jwt: JwtService,
     private oauth: OAuthService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.jwt.testToken();
-    if (window.history.state['oauth']) this.oauthRegister = true;
-    console.log(`OAuth register: ${this.oauthRegister}`);
+    this.route.queryParams.subscribe((params) => {
+      if (params['code']) {
+        this.signUpType = 'oauth';
+      }
+    });
+    console.log(`signUpType: ${this.signUpType}`);
   }
 
   get twoFactors() {
@@ -45,6 +50,6 @@ export class SignUpComponent implements OnInit {
   }
 
   oAuthSignUp() {
-    this.oauth.authorize();
+    this.oauth.authorize('signup');
   }
 }
