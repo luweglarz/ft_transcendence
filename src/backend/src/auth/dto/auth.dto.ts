@@ -7,7 +7,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { MatchProperty } from 'src/auth/decorator';
+// import { MatchProperty } from 'src/auth/decorator';
 
 export class LocalSignupDto {
   @IsString()
@@ -22,14 +22,14 @@ export class LocalSignupDto {
   @IsString()
   @MinLength(4)
   @MaxLength(42)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'password too weak',
-  })
+  // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+  //   message: 'password too weak',
+  // })
   password: string;
 
-  @IsString()
-  @MatchProperty('password', { message: 'password does not match' })
-  passwordConfirm: string;
+  // @IsString()
+  // @MatchProperty('password', { message: 'password does not match' })
+  // passwordConfirm: string;
 }
 
 export class LocalSigninDto {
