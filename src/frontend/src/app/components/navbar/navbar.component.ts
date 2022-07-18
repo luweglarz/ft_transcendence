@@ -5,18 +5,7 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('150ms', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [
-        style({ opacity: 1 }),
-        animate('150ms', style({ opacity: 0 })),
-      ]),
-    ]),
-  ],
+  animations: [],
 })
 export class NavbarComponent implements OnInit {
   collapsed = false;
