@@ -1,6 +1,5 @@
 .sidenav {
   background-color: #2c3649;
-  transition: all 0.3s;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -8,6 +7,7 @@
   height: 100%;
   float: left;
 
+  transition: all 0.3s;
   overflow: hidden;
 }
 
@@ -67,7 +67,6 @@
 }
 
 .sidenav-nav-item {
-  transition: 3s;
   width: 100%;
   margin-bottom: 12px;
   cursor: pointer;
@@ -96,7 +95,6 @@
 }
 
 .sidenav-nav-item .sidenav-nav-link .sidenav-link-text {
-  transition: 3s;
   margin-left: 12px;
   color: white;
   font-family: Roboto, sans-serif;
