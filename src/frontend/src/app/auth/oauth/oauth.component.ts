@@ -27,7 +27,10 @@ export class OauthComponent implements OnInit {
           .subscribe((response: any) => {
             console.log(response);
             this.jwt.setToken(response['jwt']);
-            this.router.navigate(['/auth/signup'], { state: { oauth: true } });
+            this.router.navigate(['/auth/signup'], {
+              state: { oauth: true },
+              replaceUrl: true, // cannot go back to the callback page
+            });
           });
       else {
         if (this.jwt.getToken()) console.log(`My jwt: ${this.jwt.getToken()}`);
