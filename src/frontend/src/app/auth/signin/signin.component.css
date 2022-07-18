@@ -83,3 +83,7 @@
 .btn-login:active .icon-login {
   fill: #1a202c;
 }
+
+a {
+  color: white;
+}
