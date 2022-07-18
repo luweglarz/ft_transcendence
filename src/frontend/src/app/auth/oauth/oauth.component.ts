@@ -27,7 +27,7 @@ export class OauthComponent implements OnInit {
         } else if (params['state'] == 'signin') {
           this.http
             .get(
-              `http://localhost:3000/auth/oauth42/redirect?code=${params['code']}`,
+              `http://localhost:3000/auth/oauth42/signin?code=${params['code']}`,
             )
             .subscribe((response: any) => {
               this.jwt.setToken(response['jwt']);
