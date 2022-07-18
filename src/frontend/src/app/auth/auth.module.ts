@@ -7,6 +7,7 @@ import { OauthComponent } from './oauth';
 import { JwtService } from './jwt';
 import { SignOutComponent } from './signout/signout.component';
 import { RouterModule } from '@angular/router';
+import { OAuthService } from './oauth/oauth.service';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,6 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   exports: [SignInComponent, SignUpComponent, OauthComponent],
-  providers: [JwtService],
+  providers: [JwtService, OAuthService],
 })
 export class AuthModule {}
