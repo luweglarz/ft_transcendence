@@ -53,6 +53,7 @@ export class GameService {
     if (ball.checkPaddleCollision(players)) {
       if (ball.xVelocity == -1) ball.xVelocity = 1;
       else if (ball.xVelocity == 1) ball.xVelocity = -1;
+      ball.speed += 0.1;
     }
     ball.x += ball.xVelocity * ball.speed;
     ball.y += ball.yVelocity * ball.speed;
