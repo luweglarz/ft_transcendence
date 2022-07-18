@@ -13,8 +13,10 @@ export class NavbarComponent implements OnInit {
 
   profilPopup = false;
   @Output() profilEvent = new EventEmitter<boolean>();
+
   ladderPopup = false;
   @Output() ladderEvent = new EventEmitter<boolean>();
+
   socialPopup = false;
   @Output() socialEvent = new EventEmitter<boolean>();
 
@@ -26,6 +28,7 @@ export class NavbarComponent implements OnInit {
     //
   }
 
+  /* NAVBAR COLLAPSE */
   toggleCollapse(): void {
     this.collapsed = !this.collapsed;
     this.collapseEvent.emit(this.collapsed);
@@ -41,32 +44,35 @@ export class NavbarComponent implements OnInit {
     this.profilPopup = true;
     this.ladderPopup = false;
     this.socialPopup = false;
+    console.log(this.profilPopup, this.ladderPopup, this.socialPopup);
     this.profilEvent.emit(this.profilPopup);
   }
 
   closeProfil() {
     this.profilPopup = false;
-    this.ladderEvent.emit(this.profilPopup);
+    this.profilEvent.emit(this.profilPopup);
   }
 
   /* LADDER POP UP */
   openLadder() {
-    this.ladderPopup = true;
     this.profilPopup = false;
+    this.ladderPopup = true;
     this.socialPopup = false;
-    this.socialEvent.emit(this.ladderPopup);
+    console.log(this.profilPopup, this.ladderPopup, this.socialPopup);
+    this.ladderEvent.emit(this.ladderPopup);
   }
 
   closeLadder() {
     this.ladderPopup = false;
-    this.socialEvent.emit(this.ladderPopup);
+    this.ladderEvent.emit(this.ladderPopup);
   }
 
   /* SOCIAL POP UP */
   openSocial() {
-    this.socialPopup = true;
     this.profilPopup = false;
     this.ladderPopup = false;
+    this.socialPopup = true;
+    console.log(this.profilPopup, this.ladderPopup, this.socialPopup);
     this.socialEvent.emit(this.socialPopup);
   }
 
