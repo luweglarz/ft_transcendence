@@ -37,7 +37,6 @@ export class HomeComponent implements OnInit {
 
   //RECIEVE POP UP
   recieveProfilPopup(profil: boolean) {
-    console.log('JE DOIS OUVRIR LE PROFIL');
     this.profilPopup = profil;
     if (this.profilPopup) {
       this.ladderPopup = false;
@@ -46,7 +45,6 @@ export class HomeComponent implements OnInit {
   }
 
   recieveLadderPopup(ladder: boolean) {
-    console.log('JE DOIS OUVRIR LE LADDER');
     this.ladderPopup = ladder;
     if (this.ladderPopup) {
       this.profilPopup = false;
@@ -55,7 +53,6 @@ export class HomeComponent implements OnInit {
   }
 
   recieveSocialPopup(social: boolean) {
-    console.log('JE DOIS OUVRIR LE SOCIAL');
     this.socialPopup = social;
     if (this.socialPopup) {
       this.profilPopup = false;
