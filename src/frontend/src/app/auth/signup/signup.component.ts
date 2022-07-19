@@ -13,9 +13,8 @@ import { OAuthService } from '../oauth';
 })
 export class SignUpComponent implements OnInit {
   signUpType?: 'local' | 'oauth';
-  // oauthCode?: string;
   token?: string;
-  //Data to retrieved
+
   registerForm = this.formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
@@ -48,7 +47,7 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp() {
-    console.log(this.registerForm.value);
+    console.table(this.registerForm.value);
     let signUpStatus$: Observable<any>;
     if (this.signUpType == 'local') {
       signUpStatus$ = this.http.post(
