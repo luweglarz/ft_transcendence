@@ -10,6 +10,7 @@ export class InfoComponent implements OnInit {
   payload?: JwtPayload;
   is_valid = false;
   expiration = '';
+  backend_messagee = '';
 
   constructor(private jwt: JwtService) {}
 
@@ -17,6 +18,9 @@ export class InfoComponent implements OnInit {
     this.payload = this.jwt.getPayload();
     this.is_valid = this.jwt.isValid();
     this.expiration = this.jwt.expirationString();
+    this.jwt
+      .testToken()
+      .then((status) => (this.backend_messagee = status.message));
     console.table(this.payload);
   }
 }

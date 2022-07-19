@@ -62,7 +62,7 @@ export class AuthController {
   @UseGuards(JwtGuard)
   @Get('private')
   isSignedIn() {
-    return { message: 'I am signed in!' };
+    return { message: 'Private connection established! 👍' };
   }
 
   @Get('public')

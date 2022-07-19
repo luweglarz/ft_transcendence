@@ -33,7 +33,6 @@ export class SignUpComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.jwt.testToken();
     this.route.queryParams.subscribe((params) => {
       if (params['type'] == 'oauth') {
         this.signUpType = 'oauth';
@@ -42,7 +41,6 @@ export class SignUpComponent implements OnInit {
         this.signUpType = 'local';
       }
     });
-    console.log(`signUpType: ${this.signUpType}`);
   }
 
   get twoFactors() {

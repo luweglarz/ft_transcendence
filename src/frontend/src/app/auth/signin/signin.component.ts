@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
 //import { environment } from 'src/environments/environment';
 
@@ -17,14 +16,13 @@ export class SignInComponent implements OnInit {
   });
 
   constructor(
-    private jwt: JwtService,
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private oauth: OAuthService,
   ) {}
 
   ngOnInit(): void {
-    this.jwt.testToken();
+    //
   }
 
   localSignIn() {
