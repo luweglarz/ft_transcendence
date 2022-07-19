@@ -15,44 +15,38 @@ export class MatchmakingComponent {
   msInQueue : number = 0;
   secInQueue : number = 0;
   running: boolean = false;
-  timerRef = 0;
+  timer = 0;
 
   constructor(private matchmakingService: MatchmakingService) {}
 
-  startTimer() {
-    //this.running = !this.running;
-    this.originalQueue = !this.originalQueue;
-    //if (this.running) {
-    if (this,this.originalQueue) {
+  startTimer(queueBool: boolean) {
+    if (queueBool) {
       const startTime = Date.now() - (this.msInQueue || 0);
-      this.timerRef = setInterval(() => {
+      this.timer = setInterval(() => {
         this.msInQueue = Date.now() - startTime;
         if (this.msInQueue / 1000 >= this.secInQueue)
           this.secInQueue++;
       });
     }
-    else {
-      clearInterval(this.timerRef);
-    }
+    else
+      clearInterval(this.timer);
   }
 
-  clearTimer() {
-    this.originalQueue = false;
-    //this.running = false;
+  clearTimer(queueBool: boolean) {
     this.msInQueue = 0;
     this.secInQueue = 0;
-    clearInterval(this.timerRef);
+    clearInterval(this.timer);
   }
 
   buttonRequestJoinNormalMatchMaking() {
     this.matchmakingService.requestJoinNormalMatchMaking();
-    //this.originalQueue = true;
-    this.startTimer();
+    this.originalQueue = true;
+    this.startTimer(this.originalQueue);
   }
 
   buttonRequestLeaveNormalMatchMaking() {
     this.matchmakingService.requestLeaveNormalMatchMaking();
-    //this.originalQueue = false;
-    this.clearTimer();
+    this.originalQueue = false;
+    this.clearTimer(this.originalQueue);
   }
 }
