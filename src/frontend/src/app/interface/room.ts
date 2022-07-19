@@ -4,7 +4,7 @@ export interface Room {
     updatedAt?: Date;
     name?:      string;
     password?:  string;
-    roomType:   RoomType;
+    roomType?:   RoomType;
     //users:    RoomUser[];
     //messages  Message[];
 }

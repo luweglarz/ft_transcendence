@@ -13,7 +13,6 @@ import { ChatService } from 'src/app/services/chatService/chat.service';
 export class ChatRoomCreateComponent implements OnInit {
 
   roomTypes = Object.values(RoomType);
-  name = new FormControl(null, [Validators.required]);
 
   constructor(
     public dialogRef: MatDialogRef<ChatRoomCreateComponent>,

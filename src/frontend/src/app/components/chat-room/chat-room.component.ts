@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Room } from 'src/app/interface/room';
 
 @Component({
   selector: 'app-chat-room',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-room.component.css']
 })
 export class ChatRoomComponent implements OnInit {
+
+  @Input() chatRoom: Room = {};
 
   constructor() { }
 
