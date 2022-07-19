@@ -8,6 +8,7 @@ import { JwtService } from './jwt';
 import { SignOutComponent } from './signout/signout.component';
 import { RouterModule } from '@angular/router';
 import { OAuthService } from './oauth/oauth.service';
+import { InfoComponent } from './info/info.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { OAuthService } from './oauth/oauth.service';
     SignUpComponent,
     OauthComponent,
     SignOutComponent,
+    InfoComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   exports: [SignInComponent, SignUpComponent, OauthComponent],

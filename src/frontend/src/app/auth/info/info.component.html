@@ -1,0 +1,22 @@
+<div class="container">
+	<div class="card" *ngIf="payload">
+		<h1>User infos</h1>
+		<table>
+			<tr>
+				<th>sub <span class="detail">(user id)</span></th><td>{{payload.sub}}</td>
+			</tr>
+			<tr>
+				<th>username</th><td>{{payload.username}}</td>
+			</tr>
+			<tr>
+				<th>token state</th><td>{{is_valid ? "valid": "invalid"}}</td>
+			</tr>
+			<tr>
+				<th>token expiration</th><td>{{expiration}}</td>
+			</tr>
+		</table>
+	</div>
+	<div class="card" *ngIf="!payload">
+		<p>User not logged in.</p>
+	</div>
+</div>

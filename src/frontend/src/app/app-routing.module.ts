@@ -7,6 +7,7 @@ import { GameComponent } from './pong/game/game.component';
 import { IsInGameGuard } from './pong/game/is-in-game.guard';
 import { OauthComponent } from './auth/oauth/oauth.component';
 import { SignOutComponent } from './auth/signout/signout.component';
+import { InfoComponent } from './auth/info/info.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'oauth42/callback',
         component: OauthComponent,
+      },
+      {
+        path: 'info',
+        component: InfoComponent,
       },
     ],
   },
