@@ -14,9 +14,12 @@
 			<tr>
 				<th>token expiration</th><td>{{expiration}}</td>
 			</tr>
+			<tr>
+				<th>Backend connection status</th><td>{{backend_messagee}}</td>
+			</tr>
 		</table>
 	</div>
 	<div class="card" *ngIf="!payload">
-		<p>User not logged in.</p>
+		<p>User not logged in 🙁 (no token found locally).</p>
 	</div>
 </div>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
+import { lastValueFrom } from 'rxjs';
 
 export interface JwtPayload {
   sub: number;
@@ -49,12 +50,23 @@ export class JwtService {
     else return '';
   }
 
-  testToken() {
+  async testToken() {
+    let status = { message: 'Cannot establish private connection... 🛑' };
     if (this.getToken()) {
       console.log(`My jwt: ${this._token}`);
-      this.http
-        .get(`http://localhost:3000/auth/private`)
-        .subscribe((response) => console.log(response));
-    } else console.warn('Not signed in!');
+      try {
+        status = await lastValueFrom<{ message: string }>(
+          this.http.get<{ message: string }>(
+            `http://localhost:3000/auth/private`,
+          ),
+        );
+        console.log(status);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.warn('No token available');
+    }
+    return status;
   }
 }
