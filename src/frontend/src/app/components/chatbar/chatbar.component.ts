@@ -17,7 +17,7 @@ export class ChatbarComponent implements OnInit {
   chatCollapsed = false;
   @Output() chatCollapseEvent = new EventEmitter<boolean>();
   rooms: Observable<Room[]> = this.chatService.getRooms();
-  selectedRoom = null;
+  selectedRoom: Room = {};
 
   constructor(private chatService: ChatService, public dialog: MatDialog) {
     //
