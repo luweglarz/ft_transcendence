@@ -9,7 +9,12 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
-import { LocalSigninDto, LocalSignupDto, OAuthUserDto } from './dto';
+import {
+  LocalSigninDto,
+  LocalSignupDto,
+  OAuthSignUpDto,
+  OAuthUserDto,
+} from './dto';
 import { JwtGuard, OAuth2Guard } from './guard';
 
 @Controller('auth')
@@ -32,30 +37,23 @@ export class AuthController {
     return this.authService.signOut();
   }
 
-  // @Get('oauth42/authenticate')
-  // @UseGuards(OAuth2Guard)
-  // oauthAutenticate() {
-  //   // redirected by the guard to the authorize url
-  // }
-
   @Get('oauth42/signin')
   @UseGuards(OAuth2Guard)
   async oauthSignIn(@Req() req: Request) {
-    const user = await this.authService.oauthFindOrCreate(
-      <OAuthUserDto>req.user,
-    );
+    const user = await this.authService.oauthFindUser(<OAuthUserDto>req.user);
     this.logger.debug(`user: ${JSON.stringify(user, null, 2)}`);
     return this.authService.signInSuccess(user);
   }
 
-  @Post('oauth42/signup')
+  @Get('oauth42/signup-temp-token')
   @UseGuards(OAuth2Guard)
-  async oauthSignUp(@Req() req: Request, @Body() dto: { username: string }) {
-    req.user['login'] = dto.username;
-    const user = await this.authService.oauthFindOrCreate(
-      <OAuthUserDto>req.user,
-    );
-    this.logger.debug(`user: ${JSON.stringify(user, null, 2)}`);
+  async oauthSignUpTempToken(@Req() req: Request) {
+    return this.authService.oauthSignUpTempToken(<OAuthUserDto>req.user);
+  }
+
+  @Post('oauth42/signup')
+  async oauthSignUp(@Body() dto: OAuthSignUpDto) {
+    const user = await this.authService.oauthCreateUser(dto);
     return this.authService.signInSuccess(user);
   }
 

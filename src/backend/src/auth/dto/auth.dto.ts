@@ -42,6 +42,9 @@ export class LocalSigninDto {
   password: string;
 }
 
+/*
+ * @brief Partial user infos fetched with 42's API
+ */
 export class OAuthUserDto {
   @IsString()
   @IsNotEmpty()
@@ -51,12 +54,22 @@ export class OAuthUserDto {
   @IsNotEmpty()
   email: string;
 
-  @IsString()
-  first_name: string;
-
-  @IsString()
-  last_name: string;
-
   @IsUrl()
   image_url: string;
+
+  // @IsString()
+  // first_name: string;
+
+  // @IsString()
+  // last_name: string;
+}
+
+export class OAuthSignUpDto {
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(42)
+  username: string;
+
+  @IsString()
+  jwt: string;
 }

@@ -33,12 +33,12 @@
         <input formControlName="username" placeholder="Username" name="username">
       </div>
       <!-- Password field -->
-      <div class="field-register">
+      <div class="field-register" *ngIf="signUpType == 'local'">
         <label>Password: </label>
         <input formControlName="password" placeholder="Password" name="password">
       </div>
       <!-- Email field -->
-      <div class="field-register">
+      <div class="field-register" *ngIf="signUpType == 'local'">
         <label>Email: </label>
         <input formControlName="email" placeholder="Email" name="email">
       </div>
