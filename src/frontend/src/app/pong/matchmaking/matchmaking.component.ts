@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatchmakingService } from './matchmaking.service';
 
 @Component({
@@ -7,6 +7,10 @@ import { MatchmakingService } from './matchmaking.service';
   styleUrls: ['./matchmaking.component.css'],
 })
 export class MatchmakingComponent {
+
+  //Chat collapse
+  @Input()
+  chatCollapsed: boolean = false;
 
   //Original gamemode
   originalQueue : boolean = false;

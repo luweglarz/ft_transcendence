@@ -9,9 +9,9 @@
   ></app-navbar>
 
   <!-- Content of the home page (responsive container)-->
-  <div class="home-container" [ngClass]="navCollapsed ? 'home-container-nav-collapsed': 'home-container'" [ngClass]="chatCollapsed ? 'home-container-chat-collapsed': 'home-container'">
+  <div class="home-container" [ngClass]="navCollapsed ? 'home-container-nav-collapsed': 'home-container'">
     <!-- Matchmaking component-->
-    <app-matchmaking></app-matchmaking>
+    <app-matchmaking [chatCollapsed]="chatCollapsed"></app-matchmaking>
 
     <!-- Chatbar Footer-->
     <app-chatbar (chatCollapseEvent)="recieveChatCollapse($event)"></app-chatbar>

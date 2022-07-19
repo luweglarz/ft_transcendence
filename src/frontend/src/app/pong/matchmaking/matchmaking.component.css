@@ -6,6 +6,11 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+    transition: all 0.3s;
+  }
+
+  .matchmaking-cards-collapsed {
+    height: calc(100% - 300px);
   }
 
   .matchmaking-card {
