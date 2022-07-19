@@ -23,10 +23,10 @@
       </div>
       <!-- Password field -->
       <div class="field-signin">
-        <input formControlName="password" placeholder="Password" name="password">
+        <input formControlName="password" placeholder="Password" name="password" type="password">
       </div>
       <button class="btn-login" (click)="localSignIn()">
-        <p>Sign up locally</p>
+        <p>Sign in locally</p>
       </button>
     </form>
     <p>No account ? Sign up <a [routerLink]="['/auth/signup']">here</a></p>
