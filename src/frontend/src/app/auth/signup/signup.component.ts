@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
 
@@ -11,7 +12,7 @@ import { OAuthService } from '../oauth';
   styleUrls: ['./signup.component.css'],
 })
 export class SignUpComponent implements OnInit {
-  signUpType: 'local' | 'oauth' = 'local';
+  signUpType?: 'local' | 'oauth';
   // oauthCode?: string;
   token?: string;
   //Data to retrieved
@@ -36,9 +37,9 @@ export class SignUpComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params['type'] == 'oauth') {
         this.signUpType = 'oauth';
-        // this.oauthCode = params['code'];
         this.token = params['jwt'];
-        // this.oauthCode = params['code'];
+      } else if (params['type'] == 'local') {
+        this.signUpType = 'local';
       }
     });
     console.log(`signUpType: ${this.signUpType}`);
@@ -50,29 +51,37 @@ export class SignUpComponent implements OnInit {
 
   signUp() {
     console.log(this.registerForm.value);
+    let signUpStatus$: Observable<any>;
     if (this.signUpType == 'local') {
-      this.http
-        .post(
-          'http://localhost:3000/auth/local/signup',
-          this.registerForm.value,
-        )
-        .subscribe((response) => console.log(response));
+      signUpStatus$ = this.http.post(
+        'http://localhost:3000/auth/local/signup',
+        this.registerForm.value,
+      );
     } else {
-      this.http
-        .post(`http://localhost:3000/auth/oauth42/signup`, {
+      signUpStatus$ = this.http.post(
+        `http://localhost:3000/auth/oauth42/signup`,
+        {
           ...this.registerForm.value,
           jwt: this.token,
-        })
-        .subscribe((response: any) => {
-          this.jwt.setToken(response['jwt']);
-          this.router.navigate(['/'], {
-            replaceUrl: true,
-          });
-        });
+        },
+      );
     }
+    signUpStatus$.subscribe((response: any) => {
+      this.jwt.setToken(response['jwt']);
+      this.router.navigate(['/'], {
+        replaceUrl: true,
+      });
+    });
   }
 
   oAuthSignUp() {
     this.oauth.authorize('signup');
+  }
+
+  localSignUp() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { type: 'local' },
+    });
   }
 }
