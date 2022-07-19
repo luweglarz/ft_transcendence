@@ -33,6 +33,7 @@ export class SignInComponent implements OnInit {
   }
 
   localSignIn() {
+    console.table(this.signInForm.value);
     this.http
       .post<{ jwt: string }>(this.backend_signin_url, this.signInForm.value)
       .subscribe({
@@ -43,7 +44,6 @@ export class SignInComponent implements OnInit {
           });
         },
         error: (err) => {
-          console.table(this.signInForm.value);
           console.error(err);
         },
       });
