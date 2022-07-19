@@ -7,36 +7,32 @@ import { MatchmakingService } from './matchmaking.service';
   styleUrls: ['./matchmaking.component.css'],
 })
 export class MatchmakingComponent {
-
   //Chat collapse
   @Input()
-  chatCollapsed: boolean = false;
+  chatCollapsed = false;
 
   //Original gamemode
-  originalQueue : boolean = false;
-  nbPlayersOriginal : number = 0;
+  originalQueue = false;
+  nbPlayersOriginal = 0;
   //timer
-  msInQueue : number = 0;
-  secInQueue : number = 0;
-  running: boolean = false;
+  msInQueue = 0;
+  secInQueue = 0;
+  running = false;
   timer = 0;
 
   constructor(private matchmakingService: MatchmakingService) {}
 
   startTimer(queueBool: boolean) {
-    if (queueBool) {
+    if (queueBool === true) {
       const startTime = Date.now() - (this.msInQueue || 0);
       this.timer = setInterval(() => {
         this.msInQueue = Date.now() - startTime;
-        if (this.msInQueue / 1000 >= this.secInQueue)
-          this.secInQueue++;
+        if (this.msInQueue / 1000 >= this.secInQueue) this.secInQueue++;
       });
-    }
-    else
-      clearInterval(this.timer);
+    } else clearInterval(this.timer);
   }
 
-  clearTimer(queueBool: boolean) {
+  clearTimer() {
     this.msInQueue = 0;
     this.secInQueue = 0;
     clearInterval(this.timer);
