@@ -7,15 +7,16 @@ import { JwtService } from '../jwt';
   providedIn: 'root',
 })
 export class OAuthService {
-  readonly authorize_url = 'https://api.intra.42.fr/oauth/authorize';
-  readonly client_id =
+  private readonly authorize_url = 'https://api.intra.42.fr/oauth/authorize';
+  private readonly client_id =
     '86fb252b97a66621fd8e06b39794ec809a80cef7383535c464d0310c4ca7418a';
-  readonly redirect_uri = encodeURI(
+  private readonly redirect_uri = encodeURI(
     'http://localhost:4200/auth/oauth42/callback',
   );
-  readonly backend_temp_token_url =
+  private readonly backend_temp_token_url =
     'http://localhost:3000/auth/oauth42/signup-temp-token';
-  readonly backend_signin_url = 'http://localhost:3000/auth/oauth42/signin';
+  private readonly backend_signin_url =
+    'http://localhost:3000/auth/oauth42/signin';
 
   constructor(
     private http: HttpClient,

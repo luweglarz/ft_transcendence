@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
 //import { environment } from 'src/environments/environment';
 
@@ -10,6 +12,9 @@ import { OAuthService } from '../oauth';
   styleUrls: ['./signin.component.css'],
 })
 export class SignInComponent implements OnInit {
+  private readonly backend_signin_url =
+    'http://localhost:3000/auth/local/signin';
+
   signInForm = this.formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
@@ -19,6 +24,8 @@ export class SignInComponent implements OnInit {
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private oauth: OAuthService,
+    private jwt: JwtService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -26,10 +33,20 @@ export class SignInComponent implements OnInit {
   }
 
   localSignIn() {
-    console.log(this.signInForm.value);
     this.http
-      .post('http://localhost:3000/auth/local/signin', this.signInForm.value)
-      .subscribe((response) => console.log(response));
+      .post<{ jwt: string }>(this.backend_signin_url, this.signInForm.value)
+      .subscribe({
+        next: (response) => {
+          this.jwt.setToken(response.jwt);
+          this.router.navigate(['/'], {
+            replaceUrl: true,
+          });
+        },
+        error: (err) => {
+          console.table(this.signInForm.value);
+          console.error(err);
+        },
+      });
   }
 
   oAuthSignIn() {
