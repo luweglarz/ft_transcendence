@@ -44,7 +44,6 @@ export class NavbarComponent implements OnInit {
     this.profilPopup = true;
     this.ladderPopup = false;
     this.socialPopup = false;
-    console.log(this.profilPopup, this.ladderPopup, this.socialPopup);
     this.profilEvent.emit(this.profilPopup);
   }
 
@@ -58,7 +57,6 @@ export class NavbarComponent implements OnInit {
     this.profilPopup = false;
     this.ladderPopup = true;
     this.socialPopup = false;
-    console.log(this.profilPopup, this.ladderPopup, this.socialPopup);
     this.ladderEvent.emit(this.ladderPopup);
   }
 
@@ -72,7 +70,6 @@ export class NavbarComponent implements OnInit {
     this.profilPopup = false;
     this.ladderPopup = false;
     this.socialPopup = true;
-    console.log(this.profilPopup, this.ladderPopup, this.socialPopup);
     this.socialEvent.emit(this.socialPopup);
   }
 
