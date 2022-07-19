@@ -12,7 +12,8 @@ import { OAuthService } from '../oauth';
 })
 export class SignUpComponent implements OnInit {
   signUpType: 'local' | 'oauth' = 'local';
-  oauthCode: string | undefined = undefined;
+  // oauthCode?: string;
+  token?: string;
   //Data to retrieved
   registerForm = this.formBuilder.group({
     username: ['', Validators.required],
@@ -33,9 +34,11 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
     this.jwt.testToken();
     this.route.queryParams.subscribe((params) => {
-      if (params['code']) {
+      if (params['type'] == 'oauth') {
         this.signUpType = 'oauth';
-        this.oauthCode = params['code'];
+        // this.oauthCode = params['code'];
+        this.token = params['jwt'];
+        // this.oauthCode = params['code'];
       }
     });
     console.log(`signUpType: ${this.signUpType}`);
@@ -56,10 +59,10 @@ export class SignUpComponent implements OnInit {
         .subscribe((response) => console.log(response));
     } else {
       this.http
-        .post(
-          `http://localhost:3000/auth/oauth42/signup?code=${this.oauthCode}`,
-          this.registerForm.value,
-        )
+        .post(`http://localhost:3000/auth/oauth42/signup`, {
+          ...this.registerForm.value,
+          jwt: this.token,
+        })
         .subscribe((response: any) => {
           this.jwt.setToken(response['jwt']);
           this.router.navigate(['/'], {

@@ -11,8 +11,6 @@ import { OAuthService } from '../oauth';
   styleUrls: ['./signin.component.css'],
 })
 export class SignInComponent implements OnInit {
-  // access_token = 'access_token';
-
   signInForm = this.formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
@@ -24,9 +22,6 @@ export class SignInComponent implements OnInit {
     private http: HttpClient,
     private oauth: OAuthService,
   ) {}
-  // @Inject(DOCUMENT) private document: Document,
-  // private http: HttpClient,
-  // public router: Router,
 
   ngOnInit(): void {
     this.jwt.testToken();

@@ -10,7 +10,6 @@ export class OAuthService {
   readonly redirect_uri = encodeURI(
     'http://localhost:4200/auth/oauth42/callback',
   );
-  // 'http%3A%2F%2Flocalhost%3A4200%2Fauth%2Foauth42%2Fcallback';
 
   authorize(state: 'signin' | 'signup') {
     window.location.href = `${this.authorize_url}?client_id=${this.client_id}&redirect_uri=${this.redirect_uri}&response_type=code&state=${state}`;

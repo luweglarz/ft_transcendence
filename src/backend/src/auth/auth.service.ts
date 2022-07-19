@@ -9,11 +9,16 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import * as argon from 'argon2';
 import { DbErrorCode } from 'src/db/errors';
 import { DbService } from 'src/db/db.service';
-import { LocalSigninDto, LocalSignupDto, OAuthUserDto } from './dto';
+import {
+  LocalSigninDto,
+  LocalSignupDto,
+  OAuthSignUpDto,
+  OAuthUserDto,
+} from './dto';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { validate } from 'class-validator';
-import { JwtPayload } from './interfaces';
+import { JwtPayload, OAuthJwtPayload } from './interfaces';
 import { Prisma, User } from '@prisma/client';
 
 @Injectable()
@@ -60,7 +65,19 @@ export class AuthService {
     this.logger.log(`User '${user.username}' successfully signed in!`);
     return {
       message: `${user.username} successfully signed in!`,
-      jwt: await this.signToken({ sub: user.id, username: user.username }),
+      jwt: await this.signToken(<JwtPayload>{
+        sub: user.id,
+        username: user.username,
+      }),
+    };
+  }
+
+  async oauthSignUpTempToken(user: OAuthUserDto) {
+    return {
+      jwt: await this.signToken(<OAuthJwtPayload>{
+        state: 'incomplete',
+        oAuthUser: user,
+      }),
     };
   }
 
@@ -69,19 +86,27 @@ export class AuthService {
     return { message: 'Successfully signed out!' };
   }
 
-  /*
-   * @brief Fetch 42 user data, then find or create corresponding user
-   */
-  async oauthFindOrCreate(apiUser: OAuthUserDto) {
-    let user = await this.db.user.findUnique({
-      where: { username: apiUser.login },
+  async oauthFindUser(apiUser: OAuthUserDto) {
+    const user = await this.db.user.findUnique({
+      where: { email: apiUser.email },
     });
-    if (!user) {
-      user = await this.createUser({
-        username: apiUser.login,
-        email: apiUser.email,
-      });
-    }
+    if (!user) throw new ForbiddenException('Unknown user');
+    else return user;
+  }
+
+  async oauthCreateUser(dto: OAuthSignUpDto) {
+    if (
+      !(await this.jwt.verifyAsync(dto.jwt, {
+        secret: process.env['JWT_SECRET'],
+      }))
+    )
+      throw new ForbiddenException('Invalid temp jwt token');
+    const payload = <OAuthJwtPayload>this.jwt.decode(dto.jwt);
+    const user = await this.createUser({
+      username: dto.username,
+      email: payload.oAuthUser.email,
+      authType: 'OAUTH42',
+    });
     return user;
   }
 
@@ -99,9 +124,9 @@ export class AuthService {
     for (const key of [
       'login',
       'email',
-      'first_name',
-      'last_name',
       'image_url',
+      // 'first_name',
+      // 'last_name',
     ]) {
       user[key] = data[key];
     }
@@ -132,7 +157,7 @@ export class AuthService {
     }
   }
 
-  private signToken(payload: JwtPayload): Promise<string> {
+  private signToken(payload: JwtPayload | OAuthJwtPayload): Promise<string> {
     return this.jwt.signAsync(payload, {
       expiresIn: '42m',
       secret: process.env['JWT_SECRET'],

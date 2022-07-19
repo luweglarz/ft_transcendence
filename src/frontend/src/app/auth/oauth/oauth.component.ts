@@ -20,10 +20,17 @@ export class OauthComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params['code']) {
         if (params['state'] == 'signup') {
-          this.router.navigate(['/auth/signup'], {
-            queryParams: { code: params['code'] },
-            replaceUrl: true, // cannot go back to the callback page
-          });
+          this.http
+            .get(
+              `http://localhost:3000/auth/oauth42/signup-temp-token?code=${params['code']}`,
+            )
+            .subscribe((response: any) => {
+              // this.jwt.setToken(response['jwt']);
+              this.router.navigate(['/auth/signup'], {
+                queryParams: { type: 'oauth', jwt: response['jwt'] },
+                replaceUrl: true, // cannot go back to the callback page
+              });
+            });
         } else if (params['state'] == 'signin') {
           this.http
             .get(
