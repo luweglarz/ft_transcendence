@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OAuthService {
   private readonly authorize_url = 'https://api.intra.42.fr/oauth/authorize';
-  private readonly get_client_id_url =
-    'http://localhost:3000/auth/oauth42/client_id';
+  private readonly get_client_id_url = `${environment.backend}/auth/oauth42/client_id`;
   private client_id = '';
   private readonly frontend_url = 'http://localhost:4200';
   private readonly redirect_uri = encodeURI(
