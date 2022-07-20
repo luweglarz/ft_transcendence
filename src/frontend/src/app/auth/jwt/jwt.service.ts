@@ -38,6 +38,13 @@ export class JwtService {
     else return undefined;
   }
 
+  logPayload() {
+    const payload = this.getPayload();
+    if (payload) {
+      console.table(payload);
+    } else console.error('Could not load jwt payload');
+  }
+
   isValid() {
     const payload = this.getPayload();
     if (payload && payload.exp * 1000 > Date.now()) return true;

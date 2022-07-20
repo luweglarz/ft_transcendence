@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
+import { SigninService } from './signin.service';
 //import { environment } from 'src/environments/environment';
 
 @Component({
@@ -24,8 +23,7 @@ export class SignInComponent implements OnInit {
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private oauth: OAuthService,
-    private jwt: JwtService,
-    private router: Router,
+    private service: SigninService,
   ) {}
 
   ngOnInit(): void {
@@ -33,42 +31,15 @@ export class SignInComponent implements OnInit {
   }
 
   localSignIn() {
-    console.table(this.signInForm.value);
     this.http
       .post<{ jwt: string }>(this.backend_signin_url, this.signInForm.value)
       .subscribe({
-        next: (response) => {
-          this.jwt.setToken(response.jwt);
-          this.router.navigate(['/'], {
-            replaceUrl: true,
-          });
-        },
-        error: (err) => {
-          console.error(err);
-        },
+        next: (response) => this.service.signInSuccess(response.jwt),
+        error: (err) => this.service.signInFailure(err, this.signInForm.value),
       });
   }
 
   oAuthSignIn() {
     this.oauth.authorize('signin');
   }
-
-  // signin() {
-  //Got a problem with git-secret, the API UI and KEY are not on this commit, need to fix this.
-  /*const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
-    const body =
-      'grant_type=client_credentials&client_id=' + environment.apiUid + '&' + 'client_secret=' + environment.apiSecret;
-    this.http
-      .post<any>('https://api.intra.42.fr/oauth/token', body, { headers }).subscribe({
-        next: data => {
-          this.access_token = data.access_token;
-          console.log('Recuperation de ' + data.access_token);
-        },
-        error: error => {
-          console.log('Error');
-        }
-      });*/
-  // }
 }

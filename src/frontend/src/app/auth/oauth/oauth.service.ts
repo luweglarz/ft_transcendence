@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { JwtService } from '../jwt';
+import { SigninService } from '../signin/signin.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,7 @@ export class OAuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private jwt: JwtService,
+    private signin: SigninService,
   ) {}
 
   authorize(state: 'signin' | 'signup') {
@@ -47,12 +47,7 @@ export class OAuthService {
     this.http
       .get<{ jwt: string }>(`${this.backend_signin_url}?code=${code}`)
       .subscribe({
-        next: (response) => {
-          this.jwt.setToken(response.jwt);
-          this.router.navigate(['/'], {
-            replaceUrl: true,
-          });
-        },
+        next: (response) => this.signin.signInSuccess(response.jwt),
         error: (err) => console.error(err),
       });
   }
