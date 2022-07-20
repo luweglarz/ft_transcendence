@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OAuthUser } from '../interface';
-import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
+import { SigninService } from '../signin/signin.service';
 import { SignupService } from './signup.service';
 
 @Component({
@@ -26,11 +26,11 @@ export class SignUpComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private jwt: JwtService,
     private oauth: OAuthService,
     private route: ActivatedRoute,
     private router: Router,
     private service: SignupService,
+    private signin: SigninService,
   ) {}
 
   ngOnInit(): void {
@@ -58,10 +58,7 @@ export class SignUpComponent implements OnInit {
       this.token,
     );
     signUpStatus$.subscribe((response: any) => {
-      this.jwt.setToken(response['jwt']);
-      this.router.navigate(['/'], {
-        replaceUrl: true,
-      });
+      this.signin.signInSuccess(response['jwt']);
     });
   }
 
