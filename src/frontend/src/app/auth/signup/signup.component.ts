@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import jwtDecode from 'jwt-decode';
 import { Observable } from 'rxjs';
+import { OAuthJwtPayload, OAuthUser } from '../interface';
 import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
 
@@ -14,6 +16,8 @@ import { OAuthService } from '../oauth';
 export class SignUpComponent implements OnInit {
   signUpType?: 'local' | 'oauth';
   token?: string;
+  oauthData?: OAuthUser;
+  image_url = '/assets/images/default-avatar.png';
 
   registerForm = this.formBuilder.group({
     username: ['', Validators.required],
@@ -35,7 +39,11 @@ export class SignUpComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params['type'] == 'oauth') {
         this.signUpType = 'oauth';
-        this.token = params['jwt'];
+        this.token = <string>params['jwt'];
+        this.oauthData = jwtDecode<OAuthJwtPayload>(this.token).oAuthUser;
+        console.table(this.oauthData);
+        this.registerForm.patchValue({ username: this.oauthData.login });
+        this.image_url = this.oauthData.image_url;
       } else if (params['type'] == 'local') {
         this.signUpType = 'local';
       }
