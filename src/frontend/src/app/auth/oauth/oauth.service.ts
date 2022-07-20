@@ -9,9 +9,8 @@ export class OAuthService {
   private readonly authorize_url = 'https://api.intra.42.fr/oauth/authorize';
   private readonly get_client_id_url = `${environment.backend}/auth/oauth42/client_id`;
   private client_id = '';
-  private readonly frontend_url = 'http://localhost:4200';
   private readonly redirect_uri = encodeURI(
-    `${this.frontend_url}/auth/oauth42/callback`,
+    `${environment.frontend}/auth/oauth42/callback`,
   );
 
   constructor(private http: HttpClient) {}
