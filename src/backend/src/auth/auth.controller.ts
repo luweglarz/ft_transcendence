@@ -11,6 +11,8 @@ import { JwtGuard, OAuth2Guard } from './guard';
 
 @Controller('auth')
 export class AuthController {
+  private readonly client_id = process.env['OAUTH_42_CLIENT_ID'];
+
   constructor(private service: AuthService) {}
 
   @Post('local/signup')
@@ -38,6 +40,11 @@ export class AuthController {
   @Post('oauth42/signup')
   async oauthSignUp(@Body() dto: OAuthSignUpDto) {
     return this.service.oauthSignUp(dto);
+  }
+
+  @Get('oauth42/client_id')
+  getOAuthClientId() {
+    return { client_id: this.client_id };
   }
 
   //  ============================ Testing routes ============================  //
