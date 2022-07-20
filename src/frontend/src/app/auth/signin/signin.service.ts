@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtService } from '../jwt';
@@ -6,7 +7,33 @@ import { JwtService } from '../jwt';
   providedIn: 'root',
 })
 export class SigninService {
-  constructor(private jwt: JwtService, private router: Router) {}
+  private readonly backend_url = 'http://localhost:3000';
+  private readonly local_signin_url = `${this.backend_url}/auth/local/signin`;
+  private readonly oauth_signin_url = `${this.backend_url}/auth/oauth42/signin`;
+
+  constructor(
+    private jwt: JwtService,
+    private router: Router,
+    private http: HttpClient,
+  ) {}
+
+  signIn(data: { type: 'oauth'; code: string } | { type: 'local'; form: any }) {
+    let url: string;
+    let payload: any;
+
+    if (data.type == 'local') {
+      url = this.local_signin_url;
+      payload = data.form;
+    } else {
+      url = `${this.oauth_signin_url}?code=${data.code}`;
+      payload = undefined;
+    }
+
+    this.http.post<{ jwt: string }>(url, payload).subscribe({
+      next: (response) => this.signInSuccess(response.jwt),
+      error: (err) => this.signInFailure(err, payload),
+    });
+  }
 
   signInSuccess(token: string) {
     this.jwt.setToken(token);

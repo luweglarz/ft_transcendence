@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { OAuthService } from './oauth.service';
+import { SigninService } from '../signin/signin.service';
+import { SignupService } from '../signup/signup.service';
 
 @Component({
   selector: 'app-oauth',
@@ -8,15 +9,19 @@ import { OAuthService } from './oauth.service';
   styleUrls: ['./oauth.component.css'],
 })
 export class OauthComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private service: OAuthService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private signup: SignupService,
+    private signin: SigninService,
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       if (params['code']) {
         if (params['state'] == 'signup')
-          this.service.getSignupTempToken(params['code']);
+          this.signup.getTempToken(params['code']);
         else if (params['state'] == 'signin')
-          this.service.getSignInToken(params['code']);
+          this.signin.signIn({ type: 'oauth', code: params['code'] });
       } else {
         console.warn('"code" or "state" query param is missing.');
       }
