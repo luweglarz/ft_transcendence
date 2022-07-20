@@ -1,12 +1,10 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import jwtDecode from 'jwt-decode';
-import { Observable } from 'rxjs';
-import { OAuthJwtPayload, OAuthUser } from '../interface';
+import { OAuthUser } from '../interface';
 import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
+import { SignupService } from './signup.service';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +14,7 @@ import { OAuthService } from '../oauth';
 export class SignUpComponent implements OnInit {
   signUpType?: 'local' | 'oauth';
   token?: string;
-  oauthData?: OAuthUser;
+  oAuthUser?: OAuthUser;
   image_url = '/assets/images/default-avatar.png';
 
   registerForm = this.formBuilder.group({
@@ -28,11 +26,11 @@ export class SignUpComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient,
     private jwt: JwtService,
     private oauth: OAuthService,
     private route: ActivatedRoute,
     private router: Router,
+    private service: SignupService,
   ) {}
 
   ngOnInit(): void {
@@ -40,10 +38,9 @@ export class SignUpComponent implements OnInit {
       if (params['type'] == 'oauth') {
         this.signUpType = 'oauth';
         this.token = <string>params['jwt'];
-        this.oauthData = jwtDecode<OAuthJwtPayload>(this.token).oAuthUser;
-        console.table(this.oauthData);
-        this.registerForm.patchValue({ username: this.oauthData.login });
-        this.image_url = this.oauthData.image_url;
+        this.oAuthUser = this.service.getOAuthUserData(this.token);
+        this.registerForm.patchValue({ username: this.oAuthUser.login });
+        this.image_url = this.oAuthUser.image_url;
       } else if (params['type'] == 'local') {
         this.signUpType = 'local';
       }
@@ -55,22 +52,11 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp() {
-    console.table(this.registerForm.value);
-    let signUpStatus$: Observable<any>;
-    if (this.signUpType == 'local') {
-      signUpStatus$ = this.http.post(
-        'http://localhost:3000/auth/local/signup',
-        this.registerForm.value,
-      );
-    } else {
-      signUpStatus$ = this.http.post(
-        `http://localhost:3000/auth/oauth42/signup`,
-        {
-          ...this.registerForm.value,
-          jwt: this.token,
-        },
-      );
-    }
+    const signUpStatus$ = this.service.postSignUpData(
+      this.signUpType!,
+      this.registerForm.value,
+      this.token,
+    );
     signUpStatus$.subscribe((response: any) => {
       this.jwt.setToken(response['jwt']);
       this.router.navigate(['/'], {

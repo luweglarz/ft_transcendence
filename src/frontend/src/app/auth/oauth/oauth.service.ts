@@ -10,13 +10,14 @@ export class OAuthService {
   private readonly authorize_url = 'https://api.intra.42.fr/oauth/authorize';
   private readonly client_id =
     '86fb252b97a66621fd8e06b39794ec809a80cef7383535c464d0310c4ca7418a';
+  private readonly frontend_url = 'http://localhost:4200';
   private readonly redirect_uri = encodeURI(
-    'http://localhost:4200/auth/oauth42/callback',
+    `${this.frontend_url}/auth/oauth42/callback`,
   );
-  private readonly backend_temp_token_url =
-    'http://localhost:3000/auth/oauth42/signup-temp-token';
-  private readonly backend_signin_url =
-    'http://localhost:3000/auth/oauth42/signin';
+
+  private readonly backend_url = 'http://localhost:3000';
+  private readonly backend_temp_token_url = `${this.backend_url}/auth/oauth42/signup-temp-token`;
+  private readonly backend_signin_url = `${this.backend_url}/auth/oauth42/signin`;
 
   constructor(
     private http: HttpClient,
