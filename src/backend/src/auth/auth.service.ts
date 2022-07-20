@@ -58,6 +58,17 @@ export class AuthService {
     } else throw new ForbiddenException('Credentials incorrect');
   }
 
+  async oauthSignUp(dto: OAuthSignUpDto) {
+    const user = await this.oauthCreateUser(dto);
+    return this.signInSuccess(user);
+  }
+
+  async oauthSignIn(oauthUser: OAuthUserDto) {
+    const user = await this.oauthFindUser(oauthUser);
+    this.logger.debug(`Sign in user: ${JSON.stringify(user, null, 2)}`);
+    return this.signInSuccess(user);
+  }
+
   /*
    * @brief Return a signed token. To be called after the sign in checks were successful
    */
@@ -79,11 +90,6 @@ export class AuthService {
         oAuthUser: user,
       }),
     };
-  }
-
-  signOut() {
-    // TODO
-    return { message: 'Successfully signed out!' };
   }
 
   async oauthFindUser(apiUser: OAuthUserDto) {

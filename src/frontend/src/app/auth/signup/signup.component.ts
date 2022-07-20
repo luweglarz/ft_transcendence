@@ -52,14 +52,16 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp() {
-    const signUpStatus$ = this.service.postSignUpData(
-      this.signUpType!,
-      this.registerForm.value,
-      this.token,
-    );
-    signUpStatus$.subscribe((response: any) => {
-      this.signin.signInSuccess(response['jwt']);
-    });
+    if (this.signUpType) {
+      const signUpStatus$ = this.service.postSignUpData(
+        this.signUpType,
+        this.registerForm.value,
+        this.token,
+      );
+      signUpStatus$.subscribe((response: any) => {
+        this.signin.signInSuccess(response['jwt']);
+      });
+    }
   }
 
   oAuthSignUp() {

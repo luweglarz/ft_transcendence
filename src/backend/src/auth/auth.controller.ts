@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Logger,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
 import {
@@ -19,42 +11,33 @@ import { JwtGuard, OAuth2Guard } from './guard';
 
 @Controller('auth')
 export class AuthController {
-  private readonly logger = new Logger(AuthController.name);
-  constructor(private authService: AuthService) {}
+  constructor(private service: AuthService) {}
 
   @Post('local/signup')
   localSignUp(@Body() dto: LocalSignupDto) {
-    return this.authService.localSignUp(dto);
+    return this.service.localSignUp(dto);
   }
 
   @Post('local/signin')
   async localSignIn(@Body() dto: LocalSigninDto) {
-    return this.authService.localSignIn(dto);
+    return this.service.localSignIn(dto);
   }
 
-  @Post('signout')
-  signOut() {
-    return this.authService.signOut();
-  }
-
-  @Get('oauth42/signin')
+  @Post('oauth42/signin')
   @UseGuards(OAuth2Guard)
   async oauthSignIn(@Req() req: Request) {
-    const user = await this.authService.oauthFindUser(<OAuthUserDto>req.user);
-    this.logger.debug(`user: ${JSON.stringify(user, null, 2)}`);
-    return this.authService.signInSuccess(user);
+    return this.service.oauthSignIn(<OAuthUserDto>req.user);
   }
 
   @Get('oauth42/signup-temp-token')
   @UseGuards(OAuth2Guard)
   async oauthSignUpTempToken(@Req() req: Request) {
-    return this.authService.oauthSignUpTempToken(<OAuthUserDto>req.user);
+    return this.service.oauthSignUpTempToken(<OAuthUserDto>req.user);
   }
 
   @Post('oauth42/signup')
   async oauthSignUp(@Body() dto: OAuthSignUpDto) {
-    const user = await this.authService.oauthCreateUser(dto);
-    return this.authService.signInSuccess(user);
+    return this.service.oauthSignUp(dto);
   }
 
   //  ============================ Testing routes ============================  //
