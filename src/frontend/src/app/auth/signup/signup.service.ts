@@ -2,16 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import jwtDecode from 'jwt-decode';
+import { environment } from 'src/environments/environment';
 import { OAuthJwtPayload } from '../interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignupService {
-  private readonly backend_url = 'http://localhost:3000';
-  private readonly local_signup_url = `${this.backend_url}/auth/local/signup`;
-  private readonly oauth_signup_url = `${this.backend_url}/auth/oauth42/signup`;
-  private readonly oauth_temp_token_url = `${this.backend_url}/auth/oauth42/signup-temp-token`;
+  private readonly local_signup_url = `${environment.backend}/auth/local/signup`;
+  private readonly oauth_signup_url = `${environment.backend}/auth/oauth42/signup`;
+  private readonly oauth_temp_token_url = `${environment.backend}/auth/oauth42/signup-temp-token`;
 
   constructor(private http: HttpClient, private router: Router) {}
 

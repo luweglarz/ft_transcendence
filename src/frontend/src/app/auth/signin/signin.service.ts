@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SigninService {
-  private readonly backend_url = 'http://localhost:3000';
-  private readonly local_signin_url = `${this.backend_url}/auth/local/signin`;
-  private readonly oauth_signin_url = `${this.backend_url}/auth/oauth42/signin`;
+  private readonly local_signin_url = `${environment.backend}/auth/local/signin`;
+  private readonly oauth_signin_url = `${environment.backend}/auth/oauth42/signin`;
 
   constructor(
     private jwt: JwtService,

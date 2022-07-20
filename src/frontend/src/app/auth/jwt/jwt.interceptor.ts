@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { JwtService } from './jwt.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -16,7 +17,7 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    if (request.url.startsWith('http://localhost:3000')) {
+    if (request.url.startsWith(environment.backend)) {
       const token = this.jwt.getToken();
       if (token)
         request = request.clone({

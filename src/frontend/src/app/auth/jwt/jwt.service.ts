@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
 import { lastValueFrom } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 export interface JwtPayload {
   sub: number;
@@ -64,7 +65,7 @@ export class JwtService {
       try {
         status = await lastValueFrom<{ message: string }>(
           this.http.get<{ message: string }>(
-            `http://localhost:3000/auth/private`,
+            `${environment.backend}/auth/private`,
           ),
         );
         console.log(status);
