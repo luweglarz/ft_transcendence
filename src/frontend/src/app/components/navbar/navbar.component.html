@@ -1,13 +1,15 @@
+<!-- Sidenav -->
 <div class="sidenav" (mouseenter)="toggleCollapse()" (mouseleave)="closeSidenav()" [ngClass]="collapsed ? 'sidenav-collapsed': ''">
 
+  <!-- Logo -->
   <div class="sidenav-header">
       <img class="logo" src="/assets/images/42.png" height="64px" width="64px" alt="">
-      <div class="logo-text" *ngIf="collapsed">
-        Pong
-      </div>
+      <div class="logo-text" *ngIf="collapsed">Pong</div>
   </div>
 
+  <!-- Links -->
   <ul class="sidenav-nav">
+    <!-- Profil -->
     <li class="sidenav-nav-item" (click)="openProfil()">
       <a class="sidenav-nav-link">
         <img class="sidenav-link-avatar" src="/assets/images/default-avatar.png" height="32px" width="32px" alt="User avatar">
@@ -17,18 +19,19 @@
       </a>
     </li>
 
+    <!-- Ladder -->
     <li class="sidenav-nav-item" (click)="openLadder()">
       <a class="sidenav-nav-link" >
         <svg class="sidenav-link-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
           <path d="M20.305 6.78244C20.77 6.85444 20.97 7.42944 20.63 7.77044L18.73 9.60494L19.18 12.2049C19.205 12.6749 18.765 13.0349 18.335 12.8199L16.01 11.5949L13.665 12.8349C13.235 13.0499 12.75 12.6899 12.82 12.2249L13.27 9.61995L11.37 7.77044C11.03 7.42944 11.23 6.85444 11.695 6.78244L14.31 6.40544L15.49 4.01654C15.705 3.58549 16.315 3.60344 16.51 4.01654L17.69 6.40544L20.305 6.78244ZM19.2 16.4999C20.085 16.4999 20.8 17.2149 20.8 18.0999V27.7C20.8 28.585 20.085 29.3 19.2 29.3H12.8C11.915 29.3 11.2 28.585 11.2 27.7V18.0999C11.2 17.2149 11.915 16.4999 12.8 16.4999H19.2ZM8 19.6999C8.885 19.6999 9.6 20.4149 9.6 21.2999V27.7C9.6 28.585 8.885 29.3 8 29.3H1.6C0.7165 29.3 0 28.585 0 27.7V21.2999C0 20.4149 0.7165 19.6999 1.6 19.6999H8ZM22.4 24.5C22.4 23.615 23.115 22.9 24 22.9H30.4C31.285 22.9 32 23.615 32 24.5V27.7C32 28.585 31.285 29.3 30.4 29.3H24C23.115 29.3 22.4 28.585 22.4 27.7V24.5Z"/>
         </svg>
-
         <span class="sidenav-link-text" *ngIf="collapsed">
           Leaderboard
         </span>
       </a>
     </li>
 
+    <!-- Social -->
     <li class="sidenav-nav-item" (click)="openSocial()">
       <a class="sidenav-nav-link" >
         <svg class="sidenav-link-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -42,7 +45,9 @@
     </li>
   </ul>
 
-  <ul class="sidenav-settings">
+  <!-- Footer -->
+  <ul class="sidenav-footer">
+    <!-- Log out -->
     <li class="sidenav-nav-item">
       <a class="sidenav-nav-link" >
         <svg class="sidenav-link-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">

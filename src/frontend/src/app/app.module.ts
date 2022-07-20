@@ -16,6 +16,7 @@ import { SocialComponent } from './components/social/social.component';
 import { ChatbarComponent } from './components/chatbar/chatbar.component';
 import { PongModule } from './pong/pong.module';
 import { RouterModule } from '@angular/router';
+import { PopupsComponent } from './components/popups/popups.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { RouterModule } from '@angular/router';
     LadderComponent,
     SocialComponent,
     ChatbarComponent,
+    PopupsComponent,
   ],
   imports: [
     RouterModule,
