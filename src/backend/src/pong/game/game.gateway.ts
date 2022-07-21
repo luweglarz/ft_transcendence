@@ -71,29 +71,34 @@ export class GameGateway
 
   @SubscribeMessage('leaveNormalGame')
   leaveGame(@ConnectedSocket() client: Socket) {
-    let winner: Player;
+    let winner: string;
+    let leaver: string;
+
     for (const room of this.rooms) {
-      if (
-        room.players[0].socket === client ||
-        room.players[1].socket === client
-      ) {
-        winner = room.players.find((element) => element.socket.id != client.id);
+      for (const player of room.players) {
+        if (
+          player.socket.handshake.auth.token === client.handshake.auth.token
+        ){
+          winner = room.players.find((element) => element.socket.handshake.auth.token != client.handshake.auth.token).username;
+          leaver = room.players.find((element) => element.socket.handshake.auth.token == client.handshake.auth.token).username;
         this.server
           .to(room.uuid)
-          .emit('normalGameLeft', `player ${client.id} has left the game`);
+          .emit('normalGameLeft', `player ${leaver} has left the game`);
         this.server
           .to(room.uuid)
           .emit(
             'gameFinished',
-            { winner: winner.socket.id },
-            { Leaver: client.id },
+            { username: winner},
+            { username: leaver},
           );
         this.gameService.clearRoom(room, this.rooms);
         clearInterval(this.gameService.gameLoopInterval);
-        this.logger.log(`player ${client.id} has left the game ${room.uuid}`);
+        this.logger.log(`player ${leaver} has left the game ${room.uuid}`);
         return;
       }
     }
+    }
+    
     client.emit('error', 'You are not in a game');
   }
 }
