@@ -2,7 +2,7 @@
   <label class="avatar-label">Upload your avatar</label>
   <div class="avatar-edit">
     <form action="" method="post" class="form-image">
-      <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+      <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg" #imageUpload (change)="processUpload(imageUpload)">
       <label for="imageUpload">
         <svg width="64" height="64" viewBox="0 0 64 64" fill="none" class="icon-register" xmlns="http://www.w3.org/2000/svg">
           <path d="M16.7594 25.7012C14.6463 26.2329 12.8001 27.5179 11.5677 29.3149C10.3352 31.1118 9.80138 33.297 10.0664 35.4598C10.3314 37.6226 11.3771 39.6141 13.007 41.0603C14.6369 42.5065 16.7387 43.3077 18.9177 43.3135H21.1519M32.323 32.1424V52.2504V32.1424ZM32.323 32.1424L26.7375 36.6109L32.323 32.1424ZM32.323 32.1424L37.9085 36.6109L32.323 32.1424Z" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
