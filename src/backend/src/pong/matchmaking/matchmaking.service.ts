@@ -18,6 +18,28 @@ export class MatchmakingService {
   }
   private logger: Logger;
 
+  isClientInGame(client: Socket): boolean {
+    for (const room of this.gameGateway.rooms) {
+      for (const player of room.players) {
+        if (
+          player.socket.handshake.auth.token === client.handshake.auth.token
+        ) {
+          client.emit('error', 'You are already in a game');
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  isClientInMatchmaking(client: Socket, clientPool: Socket[]): boolean {
+    for (const clientToken of clientPool) {
+      if (clientToken.handshake.auth.token === client.handshake.auth.token)
+        return true;
+    }
+    return false;
+  }
+
   async generateGameRoom(clientPool: Socket[]) {
     this.logger.log('Enough player to generate a game room');
     const newRoomId: string = uuidv4();

@@ -25,25 +25,22 @@ export class MatchmakingGateway {
 
   @SubscribeMessage('joinNormalMatchmaking')
   joinMatchMaking(@ConnectedSocket() client: Socket) {
-    for (const room of this.gameGateway.rooms) {
-      if (
-        room.players[0].socket === client ||
-        room.players[1].socket === client
-      ) {
-        client.emit('error', 'You are already in a game');
-        return;
-      }
-    }
-    if (this.clientPool.includes(client) === false)
+    if (this.matchmakingService.isClientInGame(client) === true) return;
+    if (
+      this.matchmakingService.isClientInMatchmaking(client, this.clientPool) ===
+      false
+    )
       this.clientPool.push(client);
     else {
       client.emit('error', 'You have already joined a matchmaking');
       return;
     }
-    this.logger.log(`A client has joined the matchmaking: ${client.id}`);
-    if (this.clientPool.length > 1)
+    if (this.clientPool.length > 1) {
+      console.log('roomplayer1 ', this.clientPool[0].handshake.auth.token);
+      console.log('roomplayer1 ', this.clientPool[1].handshake.auth.token);
+      console.log('client: ', client.handshake.auth.token);
       this.matchmakingService.generateGameRoom(this.clientPool);
-    else client.emit('waitingForAMatch', 'Waiting for a match');
+    } else client.emit('waitingForAMatch', 'Waiting for a match');
   }
 
   @SubscribeMessage('leaveNormalMatchmaking')
