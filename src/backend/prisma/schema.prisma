@@ -18,9 +18,15 @@ model User {
   email       String?    @unique
   password    String?
   image       Bytes?
+   authType  AuthType @default(LOCAL)
   
   roomUser    RoomUser? //useless but needed for table relation
   message     Message?  //useless but needed for table relation
+}
+
+enum AuthType {
+  LOCAL
+  OAUTH42
 }
 
 enum  Role {
@@ -65,3 +71,4 @@ model Room {
   users       RoomUser[]
   messages    Message[]
 }
+
