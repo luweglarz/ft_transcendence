@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="card-register">
+    <!-- LOGO -->
+    <div class="logo-register">
+      <img src="/assets/images/Logo.png" alt="42Pong logo">
+    </div>
+
+    <!-- FORMS -->
+    <form [formGroup]="registerForm" (ngSubmit)="signUp()" class="form-register" *ngIf="signUpType">
+      <!-- Avatar field -->
+      <div class="avatar-register">
+        <label class="avatar-label">Upload your avatar</label>
+        <div class="avatar-edit">
+          <form action="" method="post" class="form-image">
+            <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+            <label for="imageUpload">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" class="icon-register" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.7594 25.7012C14.6463 26.2329 12.8001 27.5179 11.5677 29.3149C10.3352 31.1118 9.80138 33.297 10.0664 35.4598C10.3314 37.6226 11.3771 39.6141 13.007 41.0603C14.6369 42.5065 16.7387 43.3077 18.9177 43.3135H21.1519M32.323 32.1424V52.2504V32.1424ZM32.323 32.1424L26.7375 36.6109L32.323 32.1424ZM32.323 32.1424L37.9085 36.6109L32.323 32.1424Z" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M40.8801 21.2795C40.1165 18.2556 38.2316 15.6353 35.6077 13.9496C32.9837 12.2639 29.8169 11.639 26.7493 12.2016C23.6816 12.7642 20.9427 14.4722 19.0877 16.9794C17.2327 19.4865 16.4004 22.6052 16.7595 25.7032C16.7595 25.7032 17.1013 27.6738 17.8007 28.7909" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M43.4942 43.3134C45.0717 43.3123 46.631 42.9771 48.0696 42.33C49.5082 41.6828 50.7934 40.7384 51.8407 39.5587C52.8879 38.3791 53.6735 36.991 54.1456 35.4858C54.6177 33.9807 54.7658 32.3927 54.5799 30.8262C54.3941 29.2597 53.8786 27.7504 53.0674 26.3975C52.2562 25.0446 51.1677 23.8789 49.8735 22.977C48.5793 22.0752 47.1087 21.4576 45.5586 21.165C44.0086 20.8724 42.4141 20.9115 40.8802 21.2795L37.9087 22.0883" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </label>
+          </form>
+        </div>
+        <div class="avatar-preview">
+          <img class="avatar" [src]="image_url">
+        </div>
+      </div>
+
+      <!-- Username field -->
+      <div class="field-register">
+        <label>Choose your username</label>
+        <input formControlName="username" placeholder="Username" name="username">
+      </div>
+      <!-- Password field -->
+      <div class="field-register" *ngIf="signUpType == 'local'">
+        <label>Password: </label>
+        <input formControlName="password" placeholder="Password" name="password" type="password">
+      </div>
+      <!-- Email field -->
+      <div class="field-register" *ngIf="signUpType == 'local'">
+        <label>Email: </label>
+        <input formControlName="email" placeholder="Email" name="email">
+      </div>
+
+      <!-- 2FA field -->
+      <div class="checkbox-register">
+        <label>Enable 2FA</label>
+        <input formControlName="twoFactors" type="checkbox">
+      </div>
+      <!-- <div class="field-register" *ngIf="twoFactors"> -->
+      <!--   <input formControlName="email" placeholder="Email" name="email"> -->
+      <!-- </div> -->
+
+    <!-- Submit button -->
+    <button class="btn-register">
+      <p>Sign up</p>
+      <svg width="24" height="24" viewBox="0 0 24 24" class="icon-register" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M2 11.7506C2 11.4191 2.13168 11.1012 2.36608 10.8668C2.60047 10.6324 2.91838 10.5007 3.24986 10.5007H17.7307L12.3638 5.13634C12.1292 4.90165 11.9973 4.58334 11.9973 4.25144C11.9973 3.91954 12.1292 3.60123 12.3638 3.36654C12.5985 3.13185 12.9168 3 13.2487 3C13.5806 3 13.899 3.13185 14.1336 3.36654L21.6328 10.8657C21.7492 10.9818 21.8415 11.1197 21.9046 11.2716C21.9676 11.4234 22 11.5862 22 11.7506C22 11.915 21.9676 12.0778 21.9046 12.2296C21.8415 12.3815 21.7492 12.5194 21.6328 12.6355L14.1336 20.1347C13.899 20.3694 13.5806 20.5012 13.2487 20.5012C12.9168 20.5012 12.5985 20.3694 12.3638 20.1347C12.1292 19.9 11.9973 19.5817 11.9973 19.2498C11.9973 18.9179 12.1292 18.5996 12.3638 18.3649L17.7307 13.0005H3.24986C2.91838 13.0005 2.60047 12.8688 2.36608 12.6344C2.13168 12.4 2 12.0821 2 11.7506Z" stroke-width="1.5"/>
+      </svg>
+    </button>
+
+    </form>
+
+    <div *ngIf="!signUpType" class="auth-mode">
+      <!-- OAuth button -->
+      <button class="btn-register" (click)="localSignUp()">
+        <p>Sign up locally</p>
+      </button>
+      <p>OR</p>
+      <!-- OAuth button -->
+      <button class="btn-register" (click)="oAuthSignUp()">
+        <p>Sign up with </p>
+        <svg width="25" height="25" viewBox="0 0 25 25" class="icon-register" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.92092 8.49959L0.5 12.9205V14.7067V16.4916H4.91841H9.33682L9.33933 18.7034L9.3431 20.9163L11.5498 20.9201L13.7552 20.9226V16.9184V12.9142H9.34059H4.92469L7.82427 10.0109C9.41967 8.41549 11.4042 6.42721 12.2364 5.59248L13.749 4.07742H11.546H9.3431L4.92092 8.49959Z"/>
+          <path d="M15.6632 6.28281V8.4895L16.8067 7.34724C17.4343 6.71837 18.4247 5.72674 19.0046 5.14055L20.059 4.07737H17.8611H15.6632V6.28281Z"/>
+          <path d="M20.069 6.2905V8.50222L17.8661 10.7051L15.6632 12.9081V15.1198V17.3328H17.8661H20.069V15.1261V12.9194L22.2845 10.7051L24.5 8.49092V6.28423V4.07753H22.2845H20.069V6.2905Z"/>
+          <path d="M22.282 15.122C21.072 16.3296 20.0816 17.32 20.0816 17.325C20.0816 17.3287 21.0745 17.3313 22.2883 17.33L24.4937 17.3262L24.4975 15.1258C24.4988 13.917 24.4962 12.9266 24.4912 12.9279C24.485 12.9279 23.4908 13.9158 22.282 15.122Z"/>
+        </svg>
+      </button>
+    </div>
+
+    <p>Already have an account ? Sign in <a [routerLink]="['/auth/signin']">here</a></p>
+  </div>
+</div>

@@ -27,6 +27,9 @@ services:
       - ./src/postgres/dev.env
     environment:
       TZ: "Europe/Paris"
+      OAUTH_42_CLIENT_ID: ${OAUTH_42_CLIENT_ID}
+      OAUTH_42_CLIENT_SECRET: ${OAUTH_42_CLIENT_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
     restart: on-failure
 
   frontend:
@@ -47,6 +50,7 @@ services:
         aliases: [ transcendence.frontend ]
     environment:
       TZ: "Europe/Paris"
+      OAUTH_42_CLIENT_ID: ${OAUTH_42_CLIENT_ID}
     restart: on-failure
   
   postgres:

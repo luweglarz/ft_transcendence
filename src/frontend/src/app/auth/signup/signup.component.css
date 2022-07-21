@@ -1,0 +1,199 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.card-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  background-color: #2c3649;
+  border-radius: 5%;
+  padding: 20px 20px;
+}
+
+.logo-register {
+  height: auto;
+  width: auto;
+}
+
+.form-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
+
+/* AVATAR */
+.avatar-register {
+  position: relative;
+  max-width: 205px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.avatar-label {
+  display: flex;
+  justify-content: center;
+  margin: 12px;
+  text-align: center;
+  font-size: large;
+  color: white;
+}
+
+.avatar-edit {
+  position: absolute;
+  left: 148px;
+  z-index: 1;
+  top: 148px;
+}
+
+.avatar-edit input {
+  display: none;
+}
+
+.avatar-edit input + label {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 0;
+  border-radius: 100%;
+  background: #ffffff;
+  border: 3px solid #f1f1f1;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  font-weight: normal;
+  font-family: 'Roboto', sans-serif;
+  transition: all 0.2s ease-in-out;
+}
+
+.avatar-edit input + label:hover {
+  background-color: #f1f1f1;
+}
+
+.avatar-edit .icon-register {
+  stroke: #1a202c;
+}
+
+.avatar-edit:hover .icon-register {
+  stroke: #2c3649;
+}
+
+.avatar-edit .form-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar {
+  border-radius: 100%;
+  height: 200px;
+  width: 200px;
+}
+
+/* FORMS */
+.field-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.field-register label {
+  text-align: center;
+  font-size: large;
+  color: white;
+  margin: 8px;
+}
+
+.field-register input {
+  width: 100%;
+  height: 32px;
+  text-align: center;
+  border-radius: 5px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/*
+  BUTTON
+*/
+.btn-register {
+  width: 60%;
+  height: 48px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+  font-size: large;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 14px 24px;
+  border: none;
+  background-color: #1a202c;
+  color: #fff;
+  margin: 12px;
+  transition: all 0.3s;
+}
+
+.btn-register .icon-register {
+  fill: white;
+  stroke: white;
+}
+
+.btn-register:hover {
+  background-color: #44526f;
+  font-size: large;
+  font-weight: bold;
+}
+
+.btn-register:active {
+  background-color: white;
+  font-size: large;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  color: #1a202c;
+}
+
+.btn-register:active p {
+  color: #1a202c;
+}
+
+.btn-register:active .icon-register {
+  fill: #1a202c;
+  stroke: #1a202c;
+}
+
+/* CHECKBOX */
+.checkbox-register {
+  /* width: 100%; */
+  /* display: flex; */
+  /* flex-direction: row; */
+  justify-content: center;
+}
+
+.checkbox-register label {
+  text-align: center;
+  font-size: large;
+  color: white;
+  margin: 8px;
+}
+
+/* AUTH MODE */
+.auth-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+}
+
+a {
+  color: white;
+}

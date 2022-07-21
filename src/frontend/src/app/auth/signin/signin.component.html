@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="card-login">
+    <!-- LOGO -->
+    <div class="logo-login">
+      <img src="/assets/images/Logo.png" alt="42Pong logo">
+    </div>
+    <p>Please sign in with your 42's intranet account to play.</p>
+    <!-- Auth button -->
+    <button class="btn-login" (click)="oAuthSignIn()">
+      <p>Sign in with</p>
+      <svg width="25" height="25" viewBox="0 0 25 25" class="icon-login" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4.92092 8.49959L0.5 12.9205V14.7067V16.4916H4.91841H9.33682L9.33933 18.7034L9.3431 20.9163L11.5498 20.9201L13.7552 20.9226V16.9184V12.9142H9.34059H4.92469L7.82427 10.0109C9.41967 8.41549 11.4042 6.42721 12.2364 5.59248L13.749 4.07742H11.546H9.3431L4.92092 8.49959Z"/>
+        <path d="M15.6632 6.28281V8.4895L16.8067 7.34724C17.4343 6.71837 18.4247 5.72674 19.0046 5.14055L20.059 4.07737H17.8611H15.6632V6.28281Z"/>
+        <path d="M20.069 6.2905V8.50222L17.8661 10.7051L15.6632 12.9081V15.1198V17.3328H17.8661H20.069V15.1261V12.9194L22.2845 10.7051L24.5 8.49092V6.28423V4.07753H22.2845H20.069V6.2905Z"/>
+        <path d="M22.282 15.122C21.072 16.3296 20.0816 17.32 20.0816 17.325C20.0816 17.3287 21.0745 17.3313 22.2883 17.33L24.4937 17.3262L24.4975 15.1258C24.4988 13.917 24.4962 12.9266 24.4912 12.9279C24.485 12.9279 23.4908 13.9158 22.282 15.122Z"/>
+      </svg>
+    </button>
+    <p>OR</p>
+    <form [formGroup]="signInForm" (ngSubmit)="localSignIn()" (keydown.meta.enter)="localSignIn()" class="form-signin">
+      <!-- Username field -->
+      <div class="field-signin">
+        <input formControlName="username" placeholder="Username" name="username">
+      </div>
+      <!-- Password field -->
+      <div class="field-signin">
+        <input formControlName="password" placeholder="Password" name="password" type="password">
+      </div>
+      <button class="btn-login">
+        <p>Sign in locally</p>
+      </button>
+    </form>
+    <p>No account ? Sign up <a [routerLink]="['/auth/signup']">here</a></p>
+  </div>
+</div>
