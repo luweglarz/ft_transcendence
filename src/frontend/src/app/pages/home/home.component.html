@@ -12,14 +12,21 @@
   <div class="home-container" [ngClass]="navCollapsed ? 'home-container-nav-collapsed': 'home-container'">
     <!-- Matchmaking component-->
     <app-matchmaking [chatCollapsed]="chatCollapsed"></app-matchmaking>
-    <!-- Game Component -->
-    <!-- <app-game></app-game> -->
 
     <!-- Chatbar Footer-->
     <app-chatbar (chatCollapseEvent)="recieveChatCollapse($event)"></app-chatbar>
   </div>
 
   <!-- Pop-ups -->
-  <app-popups [navCollapsed]="navCollapsed" [profilPopup]="profilPopup" [ladderPopup]="ladderPopup" [socialPopup]="socialPopup"></app-popups>
+  <app-popups
+  [navCollapsed]="navCollapsed"
+  [chatCollapsed]="chatCollapsed"
+  [profilPopup]="profilPopup"
+  [ladderPopup]="ladderPopup"
+  [socialPopup]="socialPopup"
+  (profilEvent)="recieveProfilPopup($event)"
+  (ladderEvent)="recieveLadderPopup($event)"
+  (socialEvent)="recieveSocialPopup($event)"
+  ></app-popups>
 
 </div>

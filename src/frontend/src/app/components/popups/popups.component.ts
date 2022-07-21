@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-popups',
@@ -10,6 +10,9 @@ export class PopupsComponent implements OnInit {
   @Input()
   navCollapsed = false;
 
+  @Input()
+  chatCollapsed = false;
+
   //Pop ups
   @Input()
   profilPopup = false;
@@ -17,6 +20,10 @@ export class PopupsComponent implements OnInit {
   ladderPopup = false;
   @Input()
   socialPopup = false;
+
+  @Output() profilEvent = new EventEmitter<boolean>();
+  @Output() ladderEvent = new EventEmitter<boolean>();
+  @Output() socialEvent = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -27,6 +34,9 @@ export class PopupsComponent implements OnInit {
     this.profilPopup = false;
     this.ladderPopup = false;
     this.socialPopup = false;
+    this.profilEvent.emit(this.profilPopup);
+    this.ladderEvent.emit(this.ladderPopup);
+    this.socialEvent.emit(this.socialPopup);
   }
 
 }
