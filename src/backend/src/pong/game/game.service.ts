@@ -11,19 +11,18 @@ export class GameService {
 
   findRoomId(rooms: Room[], client: Socket): Room {
     for (const room of rooms) {
-      if (
-        room.players[0].socket === client ||
-        room.players[1].socket === client
-      ) {
-        return room;
+      for (const player of room.players) {
+        if (player.socket === client) return room;
       }
     }
     return;
   }
 
   findPlayer(room: Room, client: Socket): Player {
-    if (room.players[0].socket === client) return room.players[0];
-    else if (room.players[1].socket === client) return room.players[1];
+    for (const player of room.players) {
+      if (player.socket === client) return player;
+    }
+    return;
   }
 
   clearRoom(roomToClear: Room, rooms: Room[]) {
@@ -54,6 +53,7 @@ export class GameService {
     if (ball.checkPaddleCollision(players)) {
       if (ball.xVelocity == -1) ball.xVelocity = 1;
       else if (ball.xVelocity == 1) ball.xVelocity = -1;
+      ball.speed += 0.1;
     }
     ball.x += ball.xVelocity * ball.speed;
     ball.y += ball.yVelocity * ball.speed;
@@ -78,17 +78,11 @@ export class GameService {
     return false;
   }
 
-  private checkGoal(ball: Ball, gameMap: GameMap, players: Player[]) {
-    if (ball.xVelocity == -1 && ball.x + ball.radius <= 0) {
-      ball.resetBall(gameMap);
-      players[1].goals += 1;
-    } else if (
-      ball.xVelocity == 1 &&
-      ball.x - ball.radius >= gameMap.canvaWidth
-    ) {
-      ball.resetBall(gameMap);
-      players[0].goals += 1;
-    }
+  private checkGoal(ball: Ball, gameMap: GameMap, players: Player[]): Player {
+    if (ball.xVelocity == -1 && ball.x + ball.radius <= 0) return players[1];
+    else if (ball.xVelocity == 1 && ball.x - ball.radius >= gameMap.canvaWidth)
+      return players[0];
+    return;
   }
 
   gameLoop(
@@ -98,13 +92,22 @@ export class GameService {
     server: Server,
     ball: Ball,
   ) {
-    ball.xVelocity = Math.round(Math.random()) * 2 - 1;
-    ball.yVelocity = Math.round(Math.random()) * 2 - 1;
+    let scorer: Player;
+
+    setTimeout(() => {
+      ball.xVelocity = Math.round(Math.random()) * 2 - 1;
+      ball.yVelocity = Math.round(Math.random()) * 2 - 1;
+    }, 3000);
 
     const interval = setInterval(() => {
       this.playersMovement(players);
       this.ballMovement(ball, players);
-      this.checkGoal(ball, gameRoom.gameMap, players);
+      if (
+        (scorer = this.checkGoal(ball, gameRoom.gameMap, players)) != undefined
+      ) {
+        scorer.goals++;
+        ball.resetBall(gameRoom.gameMap);
+      }
       if (this.checkWinner(players, server, gameRoom) == true) {
         this.clearRoom(gameRoom, rooms);
         clearInterval(interval);

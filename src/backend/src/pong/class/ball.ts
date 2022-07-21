@@ -8,11 +8,13 @@ export class Ball {
     private _color: string,
     private _radius: number,
   ) {
+    this._initialSpeed = this._speed;
+
     this._mapCenter.x = Math.round(gameMap.canvaWidth / 2);
     this._mapCenter.y = Math.round(gameMap.canvaHeight / 2);
 
     this._x = this._mapCenter.x;
-    this._y = Math.round(Math.random() * gameMap.canvaHeight + 1);
+    this._y = this._mapCenter.y;
 
     this._borderCollisionUp = 0;
     this._borderCollisionDown = gameMap.canvaHeight;
@@ -28,6 +30,7 @@ export class Ball {
     x: 0,
     y: 0,
   };
+  private _initialSpeed;
 
   get x(): number {
     return this._x;
@@ -69,6 +72,10 @@ export class Ball {
     this._yVelocity = newVelocity;
   }
 
+  set speed(newSpeed: number) {
+    this._speed = newSpeed;
+  }
+
   get speed(): number {
     return this._speed;
   }
@@ -106,7 +113,18 @@ export class Ball {
   }
 
   resetBall(gameMap: GameMap) {
+    const xOldVelocity = this.xVelocity;
+    const yOldVelocity = this.yVelocity;
+
     this.x = this._mapCenter.x;
     this.y = Math.floor(Math.random() * gameMap.canvaHeight + 1);
+
+    this.xVelocity = 0;
+    this.yVelocity = 0;
+    this.speed = this._initialSpeed;
+    setTimeout(() => {
+      this.xVelocity = xOldVelocity;
+      this.yVelocity = yOldVelocity;
+    }, 500);
   }
 }
