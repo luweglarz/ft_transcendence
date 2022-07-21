@@ -28,8 +28,8 @@ export class GameComponent implements OnInit {
     this.gameService.socket.on('gameFinished', (winner: any, leaver?: any) => {
       clearInterval(this.gameService.keyEventsInterval);
       this.gameService.isInGame = false;
-      if (leaver != null) console.log(`player ${leaver} has left the game`);
-      console.log(winner + ' Won the game');
+      if (leaver != null) console.log(`Player ${leaver.username} has left the game`);
+      console.log(winner.username + ' Has won the game');
       this.router.navigate(['/']);
     });
   }

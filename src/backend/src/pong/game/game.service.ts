@@ -19,9 +19,12 @@ export class GameService {
   }
 
   findPlayer(room: Room, client: Socket): Player {
-    for (const player of room.players) {
-      if (player.socket === client) return player;
+    try{
+      for (const player of room.players) {
+        if (player.socket === client) return player;
+      }
     }
+    catch{}
     return;
   }
 
@@ -67,12 +70,12 @@ export class GameService {
     if (players[0].goals == 11) {
       server
         .to(gameRoom.uuid)
-        .emit('gameFinished', { winner: players[0].socket.id });
+        .emit('gameFinished', { winner: players[0].username });
       return true;
     } else if (players[1].goals == 11) {
       server
         .to(gameRoom.uuid)
-        .emit('gameFinished', { winner: players[1].socket.id });
+        .emit('gameFinished', { winner: players[1].username });
       return true;
     }
     return false;
