@@ -12,9 +12,13 @@
   transition: 0.3s;
 }
 
-.popup-collapsed {
+.popup-nav-collapsed {
   left: 250px;
   width: calc(100% - 250px);
+}
+
+.popup-chat-collapsed {
+  height: calc(100% - 300px);
 }
 
 .popup-window {
