@@ -39,8 +39,19 @@ export class GameComponent implements OnInit {
   private gameCanvas!: ElementRef;
   private gameContext: any;
 
+  @ViewChild('playersInfo')
+  private playersInfo!: ElementRef;
+
+  @ViewChild('playerOneInfo')
+  private playerOneInfo!: ElementRef;
+
+  @ViewChild('playerTwoInfo')
+  private playerTwoInfo!: ElementRef;
+
   /** Lifecycle hook called after component's view has been initialized. */
   ngAfterViewInit() {
+    this.playersInfo.nativeElement.style.width=this.game.canvaWidth + "px";
+    this.gameService.drawPlayersInfos(this.playerOneInfo, this.playerTwoInfo, this.game.players);
     this.gameContext = this.gameCanvas.nativeElement.getContext('2d');
     this.gameCanvas.nativeElement.width = this.game.canvaWidth;
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;

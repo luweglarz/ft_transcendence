@@ -87,4 +87,9 @@ export class GameService {
       50,
     );
   }
+
+  drawPlayersInfos(playerOneInfo: ElementRef, playerTwoInfo: ElementRef, players: Player[]){
+    playerOneInfo.nativeElement.innerHTML += players[0].username;
+    playerTwoInfo.nativeElement.innerHTML += players[1].username;
+  }
 }

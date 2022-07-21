@@ -50,6 +50,8 @@ export class MatchmakingService {
         width: players[0].width,
         playerOneColor: players[0].color,
         playerTwoColor: players[1].color,
+        playerOneUsername: players[0].username,
+        playerTwoUsername: players[1].username,
       },
     );
     this.gameService.gameLoopInterval = this.gameService.gameLoop(
