@@ -15,6 +15,7 @@ import { ProfilComponent } from './components/profil/profil.component';
 import { LadderComponent } from './components/ladder/ladder.component';
 import { SocialComponent } from './components/social/social.component';
 import { ChatbarComponent } from './components/chatbar/chatbar.component';
+import { SocketIoModule } from 'ngx-socket-io';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ChatbarComponent } from './components/chatbar/chatbar.component';
     PongModule,
     HttpClientModule,
     AuthModule,
+    SocketIoModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
