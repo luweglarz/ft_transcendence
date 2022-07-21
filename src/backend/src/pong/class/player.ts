@@ -26,8 +26,10 @@ export class Player {
         this._height,
     );
 
-    let jwtService = new JwtService;
-    this._username = JSON.parse(JSON.stringify(jwtService.decode(this._socket.handshake.auth.token))).username;
+    const jwtService = new JwtService();
+    this._username = JSON.parse(
+      JSON.stringify(jwtService.decode(this._socket.handshake.auth.token)),
+    ).username;
   }
 
   private _x: number;
@@ -92,7 +94,7 @@ export class Player {
     return this._color;
   }
 
-  get username(): string{
+  get username(): string {
     return this._username;
   }
 
