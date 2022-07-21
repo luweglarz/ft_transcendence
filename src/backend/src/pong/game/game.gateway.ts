@@ -13,6 +13,7 @@ import { MatchmakingGateway } from '../matchmaking/matchmaking.gateway';
 import { Room } from '../class/room';
 import { GameService } from './game.service';
 import { Player } from '../class/player';
+import { JwtService } from '@nestjs/jwt';
 
 @WebSocketGateway({ cors: true })
 export class GameGateway
@@ -22,6 +23,7 @@ export class GameGateway
     @Inject(forwardRef(() => MatchmakingGateway))
     private matchmakingGateway: MatchmakingGateway,
     private gameService: GameService,
+    private jwtService: JwtService,
   ) {}
 
   @WebSocketServer()
@@ -35,7 +37,20 @@ export class GameGateway
   }
 
   handleConnection(client: Socket) {
-    this.logger.log(`Client connected: ${client.id}`);
+    if (
+      client.handshake.auth.token == null ||
+      client.handshake.auth.token.length == 0
+    ) {
+      client.disconnect();
+      this.logger.log('The token is null or empty');
+    } else if (
+      this.jwtService.verify(client.handshake.auth.token, {
+        secret: process.env['JWT_SECRET'],
+      }) == false
+    ) {
+      client.disconnect();
+      this.logger.log('The token is wrong');
+    } else this.logger.log(`Client connected: ${client.id}`);
   }
 
   handleDisconnect(client: Socket) {

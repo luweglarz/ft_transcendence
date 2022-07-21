@@ -25,7 +25,6 @@ export class Player {
         Math.round((gameMap.canvaHeight * 2) / 100) -
         this._height,
     );
-
     const jwtService = new JwtService();
     this._username = JSON.parse(
       JSON.stringify(jwtService.decode(this._socket.handshake.auth.token)),
