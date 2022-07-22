@@ -50,7 +50,6 @@ export class MatchmakingGateway {
         this.clientPool.findIndex((element) => element === client),
         1,
       );
-      this.logger.log('pool length after leave' + this.clientPool.length);
       this.logger.log(`A client has left the matchmaking: ${client.id}`);
       client.emit('matchmakingLeft', 'You have left the matchmaking');
     } else client.emit('error', 'You are not in a matchmaking');

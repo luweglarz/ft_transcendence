@@ -37,20 +37,17 @@ export class GameGateway
   }
 
   handleConnection(client: Socket) {
-    if (
-      client.handshake.auth.token == null ||
-      client.handshake.auth.token.length == 0
-    ) {
-      client.disconnect();
-      this.logger.log('The token is null or empty');
-    } else if (
+    try {
       this.jwtService.verify(client.handshake.auth.token, {
         secret: process.env['JWT_SECRET'],
-      }) == false
-    ) {
+      });
+    }
+    catch(error){
+      this.logger.log(error);
       client.disconnect();
-      this.logger.log('The token is wrong');
-    } else this.logger.log(`Client connected: ${client.id}`);
+      return ;
+    }
+    this.logger.log(`Client connected: ${client.id}`);
   }
 
   handleDisconnect(client: Socket) {
