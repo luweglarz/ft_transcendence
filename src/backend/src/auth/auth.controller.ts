@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
 import {
@@ -8,6 +18,7 @@ import {
   OAuthUserDto,
 } from './dto';
 import { JwtGuard, OAuth2Guard } from './guard';
+import { JwtPayload } from './interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -45,6 +56,13 @@ export class AuthController {
   @Get('oauth42/client_id')
   getOAuthClientId() {
     return { client_id: this.client_id };
+  }
+
+  @Post('upload/avatar')
+  @UseGuards(JwtGuard)
+  @UseInterceptors(FileInterceptor('avatar'))
+  editAvatar(@UploadedFile() avatar: Express.Multer.File, @Req() req: Request) {
+    this.service.uploadAvatar(<JwtPayload>req.user, avatar.buffer);
   }
 
   //  ============================ Testing routes ============================  //
