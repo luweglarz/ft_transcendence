@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class AvatarUploadService {
+export class AvatarService {
   image_file?: File;
 
   constructor(private http: HttpClient) {}

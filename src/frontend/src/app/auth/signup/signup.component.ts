@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AvatarUploadService } from 'src/app/avatar/avatar-upload/avatar-upload.service';
+import { AvatarService } from 'src/app/avatar/avatar.service';
 import { OAuthUser } from '../interface';
 import { OAuthService } from '../oauth';
 import { SigninService } from '../signin/signin.service';
@@ -32,7 +32,7 @@ export class SignUpComponent implements OnInit {
     private router: Router,
     private service: SignupService,
     private signin: SigninService,
-    private avatar: AvatarUploadService,
+    private avatar: AvatarService,
   ) {}
 
   ngOnInit(): void {
