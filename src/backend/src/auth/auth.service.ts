@@ -159,6 +159,18 @@ export class AuthService {
     }
   }
 
+  async getAvatar(user: JwtPayload) {
+    try {
+      const dbUser = await this.db.user.findFirst({
+        where: { username: user.username },
+      });
+      return dbUser.image
+    } catch (err) {
+      console.log(`Error: ${this.uploadAvatar.name} failed.`);
+      throw new InternalServerErrorException('Could not upload the avatar');
+    }
+  }
+
   //  =========================== PRIVATE Methods ============================  //
 
   private async createUser(data: Prisma.UserCreateInput) {

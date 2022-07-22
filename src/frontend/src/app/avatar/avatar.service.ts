@@ -23,6 +23,20 @@ export class AvatarService {
     return this.avatar.file;
   }
 
+  fetch() {
+    this.http
+      .get(`${environment.backend}/auth/download/avatar`, {
+        responseType: 'blob',
+      })
+      .subscribe({
+        next: (blob) => {
+          this.update({ file: blob });
+          console.log(blob);
+        },
+        error: (err) => console.log(err),
+      });
+  }
+
   update(data: Partial<Avatar>) {
     if (data.src) {
       this.avatar.src = data.src;

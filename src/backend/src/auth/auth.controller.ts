@@ -4,12 +4,14 @@ import {
   Get,
   Post,
   Req,
+  Res,
+  StreamableFile,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import {
   LocalSigninDto,
@@ -63,6 +65,21 @@ export class AuthController {
   @UseInterceptors(FileInterceptor('avatar'))
   editAvatar(@UploadedFile() avatar: Express.Multer.File, @Req() req: Request) {
     this.service.uploadAvatar(<JwtPayload>req.user, avatar.buffer);
+  }
+
+  @Get('download/avatar')
+  @UseGuards(JwtGuard)
+  async downloadAvatar(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    res.set({
+      'Content-Disposition': `inline; filename="avatar.jpg"`,
+      'Content-Type': 'image/jpg',
+    });
+    return new StreamableFile(
+      await this.service.getAvatar(<JwtPayload>req.user),
+    );
   }
 
   //  ============================ Testing routes ============================  //
