@@ -1,0 +1,13 @@
+#game-container {
+    height: auto;
+    width: auto;
+ }
+
+ canvas {
+    display: inline;
+ }
+
+ #players-info{
+    width: auto;
+    height: auto;
+ }
