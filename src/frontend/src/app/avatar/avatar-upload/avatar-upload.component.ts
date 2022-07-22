@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AvatarUploadService } from './avatar-upload.service';
+import { AvatarService } from '../avatar.service';
 
 @Component({
   selector: 'app-avatar-upload',
@@ -10,7 +10,7 @@ export class AvatarUploadComponent implements OnInit {
   @Input() image_url = '/assets/images/default-avatar.png';
   image_file?: File;
 
-  constructor(private service: AvatarUploadService) {}
+  constructor(private service: AvatarService) {}
 
   ngOnInit(): void {
     //
