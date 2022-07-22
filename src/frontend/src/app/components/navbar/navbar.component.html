@@ -20,7 +20,7 @@
   <ul class="sidenav-nav">
     <li class="sidenav-nav-item" (click)="openProfil()">
       <a class="sidenav-nav-link">
-        <img class="sidenav-link-avatar" src="/assets/images/default-avatar.png" height="32px" width="32px" alt="User avatar">
+        <img class="sidenav-link-avatar" [src]="avatar.src" height="32px" width="32px" alt="User avatar">
         <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
           username
         </span>

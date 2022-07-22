@@ -9,6 +9,7 @@ import { SignOutComponent } from './signout/signout.component';
 import { RouterModule } from '@angular/router';
 import { OAuthService } from './oauth/oauth.service';
 import { InfoComponent } from './info/info.component';
+import { AvatarModule } from '../avatar/avatar.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,13 @@ import { InfoComponent } from './info/info.component';
     SignOutComponent,
     InfoComponent,
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    AvatarModule,
+  ],
   exports: [SignInComponent, SignUpComponent, OauthComponent],
   providers: [JwtService, OAuthService],
 })

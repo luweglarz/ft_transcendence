@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AvatarService } from 'src/app/avatar/avatar.service';
 import { OAuthUser } from '../interface';
 import { OAuthService } from '../oauth';
 import { SigninService } from '../signin/signin.service';
@@ -31,6 +32,7 @@ export class SignUpComponent implements OnInit {
     private router: Router,
     private service: SignupService,
     private signin: SigninService,
+    private avatar: AvatarService,
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +62,7 @@ export class SignUpComponent implements OnInit {
       );
       signUpStatus$.subscribe((response: any) => {
         this.signin.signInSuccess(response['jwt']);
+        this.avatar.backendUpload();
       });
     }
   }
