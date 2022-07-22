@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AvatarUploadService } from './avatar-upload.service';
 
 @Component({
   selector: 'app-avatar-upload',
@@ -7,6 +8,9 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class AvatarUploadComponent implements OnInit {
   @Input() image_url = '/assets/images/default-avatar.png';
+  image_file?: File;
+
+  constructor(private service: AvatarUploadService) {}
 
   ngOnInit(): void {
     //
@@ -19,8 +23,11 @@ export class AvatarUploadComponent implements OnInit {
       const reader = new FileReader();
       reader.addEventListener('load', (ev: ProgressEvent<FileReader>) => {
         // The load event is fired when a file has been read successfully.
-        if (typeof ev.target?.result === 'string')
+        if (typeof ev.target?.result === 'string') {
           this.image_url = ev.target?.result;
+          this.image_file = image;
+          this.service.image_file = this.image_file;
+        }
       });
       reader.readAsDataURL(image);
     }
