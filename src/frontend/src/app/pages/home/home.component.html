@@ -1,32 +1,18 @@
 <!-- Container -->
 <div>
   <!-- Side Navbar -->
-  <app-navbar
-    (collapseEvent)="recieveNavCollapse($event)"
-    (profilEvent)="recieveProfilPopup($event)"
-    (ladderEvent)="recieveLadderPopup($event)"
-    (socialEvent)="recieveSocialPopup($event)"
-  ></app-navbar>
+  <app-navbar></app-navbar>
 
   <!-- Content of the home page (responsive container)-->
-  <div class="home-container" [ngClass]="navCollapsed ? 'home-container-nav-collapsed': 'home-container'">
+  <div class="home-container" [ngClass]="collapseService.navCollapsed ? 'home-container-nav-collapsed': 'home-container'">
     <!-- Matchmaking component-->
-    <app-matchmaking [chatCollapsed]="chatCollapsed"></app-matchmaking>
+    <app-matchmaking></app-matchmaking>
 
     <!-- Chatbar Footer-->
-    <app-chatbar (chatCollapseEvent)="recieveChatCollapse($event)"></app-chatbar>
+    <app-chatbar></app-chatbar>
   </div>
 
   <!-- Pop-ups -->
-  <app-popups
-  [navCollapsed]="navCollapsed"
-  [chatCollapsed]="chatCollapsed"
-  [profilPopup]="profilPopup"
-  [ladderPopup]="ladderPopup"
-  [socialPopup]="socialPopup"
-  (profilEvent)="recieveProfilPopup($event)"
-  (ladderEvent)="recieveLadderPopup($event)"
-  (socialEvent)="recieveSocialPopup($event)"
-  ></app-popups>
+  <app-popups></app-popups>
 
 </div>

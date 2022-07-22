@@ -1,5 +1,5 @@
 <!-- Matchmaking container -->
-<div class="matchmaking-cards" [ngClass]=" chatCollapsed ? 'matchmaking-cards-collapsed': ''">
+<div class="matchmaking-cards" [ngClass]=" collapseService.chatCollapsed ? 'matchmaking-cards-collapsed': ''">
 
   <!-- Matchmaking gamemode-->
   <div class="matchmaking-card">
@@ -26,5 +26,5 @@
     <p class="matchmaking-card-desc">The funniest remix of the original pong gamemode.</p>
     <button class="matchmaking-btn" *ngIf="!funQueue" (click)="joinFunQueue()">Join queue</button>
     <button class="matchmaking-btn" *ngIf="funQueue" (click)="quitFunQueue()">Quit queue</button>
-  </div>
-</div> -->
+  </div> -->
+</div>

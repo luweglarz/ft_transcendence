@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { CollapseService } from 'src/app/collapse.service';
 import { MatchmakingService } from './matchmaking.service';
 
 @Component({
@@ -7,9 +8,6 @@ import { MatchmakingService } from './matchmaking.service';
   styleUrls: ['./matchmaking.component.css'],
 })
 export class MatchmakingComponent {
-  //Chat collapse
-  @Input()
-  chatCollapsed = false;
 
   //Original gamemode
   originalQueue = false;
@@ -20,7 +18,7 @@ export class MatchmakingComponent {
   running = false;
   timer = 0;
 
-  constructor(private matchmakingService: MatchmakingService) {}
+  constructor(private matchmakingService: MatchmakingService, public collapseService: CollapseService) {}
 
   startTimer(queueBool: boolean) {
     if (queueBool === true) {

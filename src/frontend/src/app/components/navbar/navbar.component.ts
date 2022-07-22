@@ -1,4 +1,6 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { CollapseService } from 'src/app/collapse.service';
+import { PopupsService } from 'src/app/popups.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,19 +9,8 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
   animations: [],
 })
 export class NavbarComponent implements OnInit {
-  collapsed = false;
-  @Output() collapseEvent = new EventEmitter<boolean>();
 
-  profilPopup = false;
-  @Output() profilEvent = new EventEmitter<boolean>();
-
-  ladderPopup = false;
-  @Output() ladderEvent = new EventEmitter<boolean>();
-
-  socialPopup = false;
-  @Output() socialEvent = new EventEmitter<boolean>();
-
-  constructor() {
+  constructor(public collapseService: CollapseService, public popupsService: PopupsService) {
     //
   }
 
@@ -28,38 +19,32 @@ export class NavbarComponent implements OnInit {
   }
 
   /* NAVBAR COLLAPSE */
-  toggleCollapse(): void {
-    this.collapsed = !this.collapsed;
-    this.collapseEvent.emit(this.collapsed);
+  openSidenav(){
+    this.collapseService.openNav();
+    console.log(this.collapseService.navCollapsed);
   }
 
-  closeSidenav(): void {
-    this.collapsed = false;
-    this.collapseEvent.emit(this.collapsed);
+  closeSidenav() {
+    this.collapseService.closeNav();
+    console.log(this.collapseService.navCollapsed);
   }
 
   /* PROFIL POP UP */
   openProfil() {
-    this.profilPopup = true;
-    this.ladderPopup = false;
-    this.socialPopup = false;
-    this.profilEvent.emit(this.profilPopup);
+    this.popupsService.openProfil();
+    console.log(this.popupsService.profilPopup, this.popupsService.ladderPopup, this.popupsService.socialPopup);
   }
 
   /* LADDER POP UP */
   openLadder() {
-    this.profilPopup = false;
-    this.ladderPopup = true;
-    this.socialPopup = false;
-    this.ladderEvent.emit(this.ladderPopup);
+    this.popupsService.openLadder();
+    console.log(this.popupsService.profilPopup, this.popupsService.ladderPopup, this.popupsService.socialPopup);
   }
 
   /* SOCIAL POP UP */
   openSocial() {
-    this.profilPopup = false;
-    this.ladderPopup = false;
-    this.socialPopup = true;
-    this.socialEvent.emit(this.socialPopup);
+    this.popupsService.openSocial();
+    console.log(this.popupsService.profilPopup, this.popupsService.ladderPopup, this.popupsService.socialPopup);
   }
 
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { CollapseService } from 'src/app/collapse.service';
+import { PopupsService } from 'src/app/popups.service';
 
 @Component({
   selector: 'app-popups',
@@ -7,36 +9,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class PopupsComponent implements OnInit {
 
-  @Input()
-  navCollapsed = false;
-
-  @Input()
-  chatCollapsed = false;
-
-  //Pop ups
-  @Input()
-  profilPopup = false;
-  @Input()
-  ladderPopup = false;
-  @Input()
-  socialPopup = false;
-
-  @Output() profilEvent = new EventEmitter<boolean>();
-  @Output() ladderEvent = new EventEmitter<boolean>();
-  @Output() socialEvent = new EventEmitter<boolean>();
-
-  constructor() { }
+  constructor(public collapseService: CollapseService, public popupsService: PopupsService) { }
 
   ngOnInit(): void {
   }
 
   closePopup() {
-    this.profilPopup = false;
-    this.ladderPopup = false;
-    this.socialPopup = false;
-    this.profilEvent.emit(this.profilPopup);
-    this.ladderEvent.emit(this.ladderPopup);
-    this.socialEvent.emit(this.socialPopup);
+    this.popupsService.closePopup();
+    console.log(this.popupsService.profilPopup, this.popupsService.ladderPopup, this.popupsService.socialPopup);
   }
 
 }
