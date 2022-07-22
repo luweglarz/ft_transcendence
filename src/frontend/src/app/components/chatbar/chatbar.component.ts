@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { CollapseService } from 'src/app/collapse.service';
 
 @Component({
   selector: 'app-chatbar',
@@ -6,10 +7,8 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
   styleUrls: ['./chatbar.component.css'],
 })
 export class ChatbarComponent implements OnInit {
-  chatCollapsed = false;
-  @Output() chatCollapseEvent = new EventEmitter<boolean>();
 
-  constructor() {
+  constructor(public collapseService: CollapseService) {
     //
   }
 
@@ -18,12 +17,12 @@ export class ChatbarComponent implements OnInit {
   }
 
   openChat() {
-    this.chatCollapsed = true;
-    this.chatCollapseEvent.emit(this.chatCollapsed);
+    this.collapseService.openChat();
+    console.log(this.collapseService.chatCollapsed);
   }
 
   closeChat() {
-    this.chatCollapsed = false;
-    this.chatCollapseEvent.emit(this.chatCollapsed);
+    this.collapseService.closeChat();
+    console.log(this.collapseService.chatCollapsed);
   }
 }

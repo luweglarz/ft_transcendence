@@ -1,5 +1,6 @@
-<div class="popup-container" *ngIf="profilPopup || ladderPopup || socialPopup"
-[ngClass]="navCollapsed ? 'popup-nav-collapsed' : ''"
+<div class="popup-container" *ngIf="popupsService.profilPopup || popupsService.ladderPopup || popupsService.socialPopup"
+[ngClass]="collapseService.navCollapsed ? 'popup-nav-collapsed' : ''"
+[ngClass]="collapseService.chatCollapsed ? 'popup-chat-collapsed' : ''"
 >
   <!-- Pop up window template -->
   <div class="popup-window">
@@ -10,16 +11,15 @@
           <path d="M26.6666 26.6666L5.33325 5.33325M26.6666 5.33325L5.33325 26.6666" stroke="white" stroke-width="3" stroke-linecap="round"/>
         </svg>
       </button>
-      <h1 *ngIf="profilPopup">Profil</h1>
-      <h1 *ngIf="ladderPopup">Ladder</h1>
-      <h1 *ngIf="socialPopup">Social</h1>
+      <h1 *ngIf="popupsService.profilPopup">Profil</h1>
+      <h1 *ngIf="popupsService.ladderPopup">Ladder</h1>
+      <h1 *ngIf="popupsService.socialPopup">Social</h1>
     </div>
     <!-- Content -->
     <div class="popup-content">
-      <!-- Profil/ladder/Social components -->
-      <app-profil *ngIf="profilPopup"></app-profil>
-      <app-ladder *ngIf="ladderPopup"></app-ladder>
-      <app-social *ngIf="socialPopup"></app-social>
+      <app-profil *ngIf="popupsService.profilPopup"></app-profil>
+      <app-ladder *ngIf="popupsService.ladderPopup"></app-ladder>
+      <app-social *ngIf="popupsService.socialPopup"></app-social>
     </div>
   </div>
 </div>
