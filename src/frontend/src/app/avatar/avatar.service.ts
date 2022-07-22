@@ -30,8 +30,10 @@ export class AvatarService {
       })
       .subscribe({
         next: (blob) => {
-          this.update({ file: blob });
-          console.log(blob);
+          if (blob.size) {
+            this.update({ file: blob });
+            console.log(blob);
+          }
         },
         error: (err) => console.log(err),
       });

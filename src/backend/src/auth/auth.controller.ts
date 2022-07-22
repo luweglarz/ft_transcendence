@@ -73,13 +73,14 @@ export class AuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
+    const image = await this.service.getAvatar(<JwtPayload>req.user);
     res.set({
       'Content-Disposition': `inline; filename="avatar.jpg"`,
       'Content-Type': 'image/jpg',
     });
-    return new StreamableFile(
-      await this.service.getAvatar(<JwtPayload>req.user),
-    );
+    if (image) {
+      return new StreamableFile(image);
+    } else return '';
   }
 
   //  ============================ Testing routes ============================  //
