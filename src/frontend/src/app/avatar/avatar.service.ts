@@ -27,8 +27,9 @@ export class AvatarService {
     if (data.src) {
       this.avatar.src = data.src;
       if (!data.file) {
-        // TODO
-        console.info('Avatar: url to file not implemented yet');
+        this.http.get(data.src, { responseType: 'blob' }).subscribe((blob) => {
+          this.avatar.file = blob;
+        });
       }
     }
     if (data.file) {
