@@ -8,7 +8,7 @@
     <!-- FORMS -->
     <form [formGroup]="registerForm" (ngSubmit)="signUp()" class="form-register" *ngIf="signUpType">
       <!-- Avatar field -->
-      <app-avatar-upload [image_url]="image_url"></app-avatar-upload>
+      <app-avatar-upload [default_src]="image_url"></app-avatar-upload>
 
       <!-- Username field -->
       <div class="field-register">
