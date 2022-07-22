@@ -19,12 +19,11 @@ export class GameService {
   }
 
   findPlayer(room: Room, client: Socket): Player {
-    try{
+    try {
       for (const player of room.players) {
         if (player.socket === client) return player;
       }
-    }
-    catch{}
+    } catch {}
     return;
   }
 

@@ -41,13 +41,11 @@ export class GameGateway
       this.jwtService.verify(client.handshake.auth.token, {
         secret: process.env['JWT_SECRET'],
       });
-    }
-    catch(error){
+      this.logger.log(`Client connected: ${client.id}`);
+    } catch (error) {
       this.logger.log(error);
       client.disconnect();
-      return ;
     }
-    this.logger.log(`Client connected: ${client.id}`);
   }
 
   handleDisconnect(client: Socket) {
@@ -75,27 +73,31 @@ export class GameGateway
       for (const player of room.players) {
         if (
           player.socket.handshake.auth.token === client.handshake.auth.token
-        ){
-          winner = room.players.find((element) => element.socket.handshake.auth.token != client.handshake.auth.token).username;
-          leaver = room.players.find((element) => element.socket.handshake.auth.token == client.handshake.auth.token).username;
-        this.server
-          .to(room.uuid)
-          .emit('normalGameLeft', `player ${leaver} has left the game`);
-        this.server
-          .to(room.uuid)
-          .emit(
-            'gameFinished',
-            { username: winner},
-            { username: leaver},
-          );
-        this.gameService.clearRoom(room, this.rooms);
-        clearInterval(this.gameService.gameLoopInterval);
-        this.logger.log(`player ${leaver} has left the game ${room.uuid}`);
-        return;
+        ) {
+          winner = room.players.find(
+            (element) =>
+              element.socket.handshake.auth.token !=
+              client.handshake.auth.token,
+          ).username;
+          leaver = room.players.find(
+            (element) =>
+              element.socket.handshake.auth.token ==
+              client.handshake.auth.token,
+          ).username;
+          this.server
+            .to(room.uuid)
+            .emit('normalGameLeft', `player ${leaver} has left the game`);
+          this.server
+            .to(room.uuid)
+            .emit('gameFinished', { username: winner }, { username: leaver });
+          this.gameService.clearRoom(room, this.rooms);
+          clearInterval(this.gameService.gameLoopInterval);
+          this.logger.log(`player ${leaver} has left the game ${room.uuid}`);
+          return;
+        }
       }
     }
-    }
-    
+
     client.emit('error', 'You are not in a game');
   }
 }

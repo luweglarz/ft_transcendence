@@ -35,12 +35,9 @@ export class MatchmakingGateway {
       client.emit('error', 'You have already joined a matchmaking');
       return;
     }
-    if (this.clientPool.length > 1) {
-      console.log('roomplayer1 ', this.clientPool[0].handshake.auth.token);
-      console.log('roomplayer1 ', this.clientPool[1].handshake.auth.token);
-      console.log('client: ', client.handshake.auth.token);
+    if (this.clientPool.length > 1)
       this.matchmakingService.generateGameRoom(this.clientPool);
-    } else client.emit('waitingForAMatch', 'Waiting for a match');
+    else client.emit('waitingForAMatch', 'Waiting for a match');
   }
 
   @SubscribeMessage('leaveNormalMatchmaking')
