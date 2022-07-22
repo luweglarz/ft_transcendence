@@ -1,4 +1,4 @@
 export interface Avatar {
   src: string;
-  file?: File;
+  file?: File | Blob;
 }
