@@ -62,16 +62,21 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('addMessage')
-  async addMessage(socket: Socket, message: Message, room: Room) {
+  async addMessage(socket: Socket, message: string) {
     var user: User;
+    console.log(socket);
+    var parsed = JSON.parse(JSON.stringify(message));
+    console.log(parsed.room);
     this.messageService.createMessage({
-      content: message.content,
-      room: { connect: room },
-      user: { connect: user },
+      content: parsed.content,
+      //room: { connect: message.room },
+      room: {connect: {name: parsed.room.name}},
+      //roomId: message.roomId,
+      user: { create: user },
     });
     // needs emit once i can find how to identify user by connection to server
     // emmit new message to all members of the room
-    await this.roomService.addMessage(room, message);
+    //await this.roomService.addMessage(room, message);
     //this.server.to(socket.id).emit('rooms', room);
     this.getRooms(socket);
   }

@@ -24,6 +24,7 @@ export class ChatService {
   }
 
   sendMessage(message: Message) {
-    this.socket.emit('addMessage', message.content, message.room);
+    console.log(message.room);
+    this.socket.emit('addMessage', message);
   }
 }
