@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
+import { AuthSocket } from 'src/app/class/auth-socket';
 import { Game } from '../class/game';
 import { GameService } from './game.service';
 
@@ -18,14 +19,13 @@ import { GameService } from './game.service';
 export class GameComponent implements OnInit {
   constructor(
     private gameService: GameService,
-    private socket: Socket,
     private router: Router,
     public game: Game,
   ) {}
 
   ngOnInit() {
     this.gameService.sendKeyEvents();
-    this.socket.on('gameFinished', (winner: any, leaver?: any) => {
+    this.gameService.socket.on('gameFinished', (winner: any, leaver?: any) => {
       clearInterval(this.gameService.keyEventsInterval);
       this.gameService.isInGame = false;
       if (leaver != null) console.log(`player ${leaver} has left the game`);
@@ -44,7 +44,7 @@ export class GameComponent implements OnInit {
     this.gameContext = this.gameCanvas.nativeElement.getContext('2d');
     this.gameCanvas.nativeElement.width = this.game.canvaWidth;
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;
-    this.socket.on(
+    this.gameService.socket.on(
       'gameUpdate',
       (player1Pos: any, player2Pos: any, ballPos: any, score: any) => {
         this.game.players[0].x = player1Pos.x;

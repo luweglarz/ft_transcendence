@@ -15,6 +15,7 @@ import { ProfilComponent } from './components/profil/profil.component';
 import { LadderComponent } from './components/ladder/ladder.component';
 import { SocialComponent } from './components/social/social.component';
 import { ChatbarComponent } from './components/chatbar/chatbar.component';
+<<<<<<< HEAD
 import { ChatRoomComponent } from './components/chat-room/chat-room.component';
 import { ChatMessageComponent } from './components/chat-message/chat-message.component';
 
@@ -31,6 +32,9 @@ import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
 const config: SocketIoConfig = {url: 'http://localhost:3000', options: {}};
+=======
+import { SocketIoModule } from 'ngx-socket-io';
+>>>>>>> main
 
 @NgModule({
   declarations: [
@@ -66,6 +70,7 @@ const config: SocketIoConfig = {url: 'http://localhost:3000', options: {}};
     MatPaginatorModule,
     SocketIoModule.forRoot(config),
     AuthModule,
+    SocketIoModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

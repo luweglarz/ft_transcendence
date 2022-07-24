@@ -1,5 +1,5 @@
 import { ElementRef, Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
+import { AuthSocket } from 'src/app/class/auth-socket';
 import { Ball } from '../class/ball';
 import { Game } from '../class/game';
 import { Player } from '../class/player';
@@ -8,7 +8,7 @@ import { Player } from '../class/player';
   providedIn: 'root',
 })
 export class GameService {
-  constructor(private socket: Socket) {
+  constructor(private _socket: AuthSocket) {
     this.isInGame = false;
     this.keyPressed = '';
   }
@@ -16,6 +16,10 @@ export class GameService {
   public isInGame;
   public keyPressed: string;
   public keyEventsInterval: any;
+
+  get socket(): AuthSocket{
+    return this._socket;
+  }
 
   requestLeaveNormalGame() {
     this.isInGame = false;
