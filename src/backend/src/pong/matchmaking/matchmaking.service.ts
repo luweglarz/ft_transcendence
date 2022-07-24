@@ -27,7 +27,7 @@ export class MatchmakingService {
       new Player(newGameMap, clientPool.pop(), 2, 3, 'white'),
     ];
     const newRoom: Room = new Room(players, newRoomId, newGameMap);
-    const ball: Ball = new Ball(newGameMap, 3, 'white', 6);
+    const ball: Ball = new Ball(newGameMap, 2, 'white', 6);
 
     await players[0].socket.join(newRoomId);
     await players[1].socket.join(newRoomId);

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Socket } from 'ngx-socket-io';
+import { AuthSocket } from 'src/app/class/auth-socket';
 import { GameComponent } from '../game/game.component';
 import { GameService } from '../game/game.service';
 
@@ -9,7 +9,7 @@ import { GameService } from '../game/game.service';
 })
 export class MatchmakingService {
   constructor(
-    private socket: Socket,
+    private socket: AuthSocket,
     private router: Router,
     private gameComponent: GameComponent,
     private gameService: GameService,
