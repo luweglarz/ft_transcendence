@@ -8,11 +8,24 @@
         </span>
     </div>
 
-    <div>
-        <!--Messages-->
+
+    <!--Messages-->
+    <div class="mesgs">
+        <li *ngFor="let message of chatRoom.messages">
+            <p>{{message.content}}</p>
+        </li>
     </div>
 
-    <div>
-        <!--Add Mesaage-->
+    <!--Add Mesaage-->
+    <div style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
+        <mat-form-field style="width: 350px;">
+            <input matInput [formControl]="chatMessage" type="text">
+        </mat-form-field>
+        <button mat-button [disabled]="!chatMessage.valid" (click)="sendMessage()">
+            <span style="display: flex; flex-direction: row; align-items: center;">
+                <mat-icon style="margin-left: 20px;">send</mat-icon>
+                <p style="margin-left: 10px;">Send</p>
+            </span>
+        </button>
     </div>
 </div>
