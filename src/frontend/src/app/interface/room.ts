@@ -1,3 +1,5 @@
+import  { Message } from 'src/app/interface/message'
+
 export interface Room {
     id?:        number;
     createdAt?: Date;
@@ -6,7 +8,7 @@ export interface Room {
     password?:  string;
     roomType?:   RoomType;
     //users:    RoomUser[];
-    //messages  Message[];
+    messages?:  Message[];
 }
 
 export interface RoomTab {

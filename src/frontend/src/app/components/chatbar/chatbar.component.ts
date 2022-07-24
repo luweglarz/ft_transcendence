@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { lastValueFrom, Observable } from 'rxjs';
 import { ChatService } from 'src/app/services/chatService/chat.service';
-import { Room, RoomTab } from 'src/app/interface/room'
+import { Room } from 'src/app/interface/room'
 import { RoomType } from 'src/app/interface/room';
 import { MatSelectionListChange } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';

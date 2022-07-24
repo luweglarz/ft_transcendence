@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
-import { Room, Prisma, User, RoomUser } from '@prisma/client';
+import { Room, Prisma, User, RoomUser, Message } from '@prisma/client';
 
 @Injectable()
 export class RoomService {
@@ -47,6 +47,19 @@ export class RoomService {
       data: {
         users: {
           create: { user: { connect: nuser }, role: 'USER' }, ////need to check if it doesn't erase previous info
+        },
+      },
+    });
+  }
+
+  async addMessage(room: Room, nMessage: Message) {
+    this.prisma.room.update({
+      where: {
+        name: room.name,
+      },
+      data: {
+        messages: {
+          connect: nMessage,
         },
       },
     });
