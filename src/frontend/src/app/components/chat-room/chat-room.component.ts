@@ -20,7 +20,8 @@ export class ChatRoomComponent implements OnInit {
 
   sendMessage() {
     console.log(this.chatRoom.name);
-    this.chatService.sendMessage({content: this.chatMessage.value, room: this.chatRoom});
+    console.log(this.chatMessage.value);
+    this.chatService.sendMessage({content: this.chatMessage.value, room: this.chatRoom, roomId: this.chatRoom.id});
     this.chatMessage.reset();
   }
 
