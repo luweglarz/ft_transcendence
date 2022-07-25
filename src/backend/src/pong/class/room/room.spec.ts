@@ -1,7 +1,7 @@
 import { Room } from './room';
 import { v4 as uuidv4 } from 'uuid';
-import { Player } from './player';
-import { GameMap } from './game-map';
+import { Player } from '../player/player';
+import { GameMap } from '../game-map/game-map';
 
 describe('Room', () => {
   it('should be defined', () => {

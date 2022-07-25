@@ -1,5 +1,5 @@
 import { Ball } from './ball';
-import { GameMap } from './game-map';
+import { GameMap } from '../game-map/game-map';
 
 describe('Ball', () => {
   it('should be defined', () => {
