@@ -14,10 +14,10 @@ export class MatchmakingService {
     private gameComponent: GameComponent,
     private gameService: GameService,
   ) {
-    this.socket.on('matchmakingLeft', (msg: any) => {
+    this.socket.once('matchmakingLeft', (msg: any) => {
       console.log(msg);
     });
-    this.socket.on('error', (msg: string) => {
+    this.socket.once('error', (msg: string) => {
       console.log(msg);
     });
   }
@@ -36,8 +36,10 @@ export class MatchmakingService {
         this.gameComponent.game.players[1].width = playersInfo.width;
         this.gameComponent.game.players[0].color = playersInfo.playerOneColor;
         this.gameComponent.game.players[1].color = playersInfo.playerTwoColor;
-        this.gameComponent.game.players[0].username = playersInfo.playerOneUsername;
-        this.gameComponent.game.players[1].username = playersInfo.playerTwoUsername;
+        this.gameComponent.game.players[0].username =
+          playersInfo.playerOneUsername;
+        this.gameComponent.game.players[1].username =
+          playersInfo.playerTwoUsername;
         this.gameComponent.game.ball.color = gameMapInfo.ballColor;
         this.gameComponent.game.canvaHeight = gameMapInfo.canvaHeight;
         this.gameComponent.game.canvaWidth = gameMapInfo.canvaWidth;
@@ -50,7 +52,7 @@ export class MatchmakingService {
     );
   }
 
-  requestLeaveNormalMatchMaking() {
-    this.socket.emit('leaveNormalMatchmaking');
+  requestLeaveMatchMaking() {
+    this.socket.emit('leaveMatchmaking');
   }
 }
