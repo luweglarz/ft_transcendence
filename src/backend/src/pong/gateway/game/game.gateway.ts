@@ -98,8 +98,8 @@ export class GameGateway
             winner,
             leaver,
           );
+          clearInterval(room.gameLoopInterval);
           this.gameGatewayService.clearRoom(room, this.rooms);
-          clearInterval(this.gameCoreService.gameLoopInterval);
           this.logger.log(`player ${leaver} has left the game ${room.uuid}`);
           return;
         }

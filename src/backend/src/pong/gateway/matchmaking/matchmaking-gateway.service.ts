@@ -2,11 +2,11 @@ import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { Socket } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
 import { Ball } from '../../class/ball/ball';
-import { GameMap } from '../../class/game-map/game-map';
 import { Player } from '../../class/player/player';
 import { Room } from '../../class/room/room';
 import { GameGateway } from '../game/game.gateway';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
+import { GameMap } from 'src/pong/class/game-map/game-map';
 
 @Injectable()
 export class MatchmakingService {
@@ -61,29 +61,19 @@ export class MatchmakingService {
     );
   }
 
-  async generateNormalGameRoom(clientPool: Socket[]) {
+  generateGameRoom(gameMap: GameMap, ball: Ball, players: Player[]) {
     this.logger.log('Enough player to generate a game room');
-    const newGameMap: GameMap = new GameMap(525, 950, 'black');
-    const players: Player[] = [
-      new Player(newGameMap, clientPool.pop(), 1, 3, 'white'),
-      new Player(newGameMap, clientPool.pop(), 2, 3, 'white'),
-    ];
-    const newRoomId: string = uuidv4();
-    const newRoom: Room = new Room(players, newRoomId, newGameMap);
-    const ball: Ball = new Ball(newGameMap, 2, 'white', 6);
+    const newRoom: Room = new Room(uuidv4(), gameMap, players, ball);
 
-    await players[0].socket.join(newRoomId);
-    await players[1].socket.join(newRoomId);
     this.gameGateway.rooms.push(newRoom);
     this.logger.log(
-      `Match between ${players[0].socket.id} & ${players[1].socket.id} in ${newRoomId}`,
+      `Match between ${newRoom.players[0].username} & ${newRoom.players[1].username} in ${newRoom.uuid}`,
     );
-    this.emitMatchFound(newRoom, ball, players);
-    this.gameCoreService.gameLoopInterval = this.gameCoreService.gameLoop(
+    this.emitMatchFound(newRoom, newRoom.ball, newRoom.players);
+    newRoom.gameLoopInterval = this.gameCoreService.gameLoop(
       newRoom,
       this.gameGateway.rooms,
       this.gameGateway.server,
-      ball,
     );
   }
 }
