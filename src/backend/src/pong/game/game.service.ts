@@ -69,12 +69,12 @@ export class GameService {
     if (players[0].goals == 11) {
       server
         .to(gameRoom.uuid)
-        .emit('gameFinished', { winner: players[0].username });
+        .emit('gameFinished', { username: players[0].username });
       return true;
     } else if (players[1].goals == 11) {
       server
         .to(gameRoom.uuid)
-        .emit('gameFinished', { winner: players[1].username });
+        .emit('gameFinished', { username: players[1].username });
       return true;
     }
     return false;
