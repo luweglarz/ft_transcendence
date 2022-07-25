@@ -9,6 +9,12 @@ import { GameCoreService } from './service/game-core/game-core.service';
 @Module({
   controllers: [],
   imports: [JwtModule],
-  providers: [GameCoreService, GameGateway, GameGatewayService, MatchmakingGateway, MatchmakingService],
+  providers: [
+    GameCoreService,
+    GameGateway,
+    GameGatewayService,
+    MatchmakingGateway,
+    MatchmakingService,
+  ],
 })
 export class PongModule {}

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
+import { Ball } from 'src/pong/class/ball/ball';
 import { Player } from '../../class/player/player';
 import { Room } from '../../class/room/room';
 
@@ -15,11 +16,9 @@ export class GameGatewayService {
   }
 
   findPlayer(room: Room, client: Socket): Player {
-    try {
-      for (const player of room.players) {
-        if (player.socket === client) return player;
-      }
-    } catch {}
+    for (const player of room.players) {
+      if (player.socket === client) return player;
+    }
     return;
   }
 
@@ -29,6 +28,30 @@ export class GameGatewayService {
     rooms.splice(
       rooms.findIndex((element) => element === roomToClear),
       1,
+    );
+  }
+
+  emitGameFinished(
+    server: Server,
+    roomUuid: string,
+    winner: string,
+    leaver?: string,
+  ) {
+    server
+      .to(roomUuid)
+      .emit('gameFinished', { username: winner }, { username: leaver });
+  }
+
+  emitGameUpdate(server: Server, gameRoom: Room, ball: Ball) {
+    server.to(gameRoom.uuid).emit(
+      'gameUpdate',
+      { x: gameRoom.players[0].x, y: gameRoom.players[0].y },
+      { x: gameRoom.players[1].x, y: gameRoom.players[1].y },
+      { x: ball.x, y: ball.y },
+      {
+        playerOneGoals: gameRoom.players[0].goals,
+        playerTwoGoals: gameRoom.players[1].goals,
+      },
     );
   }
 }

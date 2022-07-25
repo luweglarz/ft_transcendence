@@ -9,7 +9,6 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { MatchmakingGateway } from '../matchmaking/matchmaking.gateway';
 import { Room } from '../../class/room/room';
 import { GameGatewayService } from './game-gateway.service';
 import { Player } from '../../class/player/player';
@@ -44,7 +43,7 @@ export class GameGateway
       });
       this.logger.log(`Client connected: ${client.id}`);
     } catch (error) {
-      this.logger.log(error);
+      this.logger.debug(error);
       client.disconnect();
     }
   }
@@ -56,15 +55,24 @@ export class GameGateway
 
   @SubscribeMessage('move')
   movement(client: Socket, eventKey: string) {
-    const gameRoom: Room = this.gameGatewayService.findRoomId(this.rooms, client);
-    const player: Player = this.gameGatewayService.findPlayer(gameRoom, client);
-
-    if (eventKey == 'ArrowDown') player.velocity = 1;
-    else if (eventKey == 'ArrowUp') player.velocity = -1;
-    else if (eventKey == 'stop') player.velocity = 0;
+    try {
+      const gameRoom: Room = this.gameGatewayService.findRoomId(
+        this.rooms,
+        client,
+      );
+      const player: Player = this.gameGatewayService.findPlayer(
+        gameRoom,
+        client,
+      );
+      if (eventKey == 'ArrowDown') player.velocity = 1;
+      else if (eventKey == 'ArrowUp') player.velocity = -1;
+      else if (eventKey == 'stop') player.velocity = 0;
+    } catch (error) {
+      this.logger.debug(error);
+    }
   }
 
-  @SubscribeMessage('leaveNormalGame')
+  @SubscribeMessage('leaveGame')
   leaveGame(@ConnectedSocket() client: Socket) {
     let winner: string;
     let leaver: string;
@@ -84,12 +92,12 @@ export class GameGateway
               element.socket.handshake.auth.token ==
               client.handshake.auth.token,
           ).username;
-          this.server
-            .to(room.uuid)
-            .emit('normalGameLeft', `player ${leaver} has left the game`);
-          this.server
-            .to(room.uuid)
-            .emit('gameFinished', { username: winner }, { username: leaver });
+          this.gameGatewayService.emitGameFinished(
+            this.server,
+            room.uuid,
+            winner,
+            leaver,
+          );
           this.gameGatewayService.clearRoom(room, this.rooms);
           clearInterval(this.gameCoreService.gameLoopInterval);
           this.logger.log(`player ${leaver} has left the game ${room.uuid}`);
@@ -97,7 +105,6 @@ export class GameGateway
         }
       }
     }
-
     client.emit('error', 'You are not in a game');
   }
 }
