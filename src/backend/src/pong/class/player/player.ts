@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { Socket } from 'socket.io';
-import { GameMap } from './game-map';
+import { GameMap } from '../game-map/game-map';
 
 export class Player {
   constructor(

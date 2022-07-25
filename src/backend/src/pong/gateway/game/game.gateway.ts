@@ -10,20 +10,21 @@ import {
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { MatchmakingGateway } from '../matchmaking/matchmaking.gateway';
-import { Room } from '../class/room';
-import { GameService } from './game.service';
-import { Player } from '../class/player';
+import { Room } from '../../class/room/room';
+import { GameGatewayService } from './game-gateway.service';
+import { Player } from '../../class/player/player';
 import { JwtService } from '@nestjs/jwt';
+import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 
 @WebSocketGateway({ cors: true })
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   constructor(
-    @Inject(forwardRef(() => MatchmakingGateway))
-    private matchmakingGateway: MatchmakingGateway,
-    private gameService: GameService,
+    private gameGatewayService: GameGatewayService,
     private jwtService: JwtService,
+    @Inject(forwardRef(() => GameCoreService))
+    private gameCoreService: GameCoreService,
   ) {}
 
   @WebSocketServer()
@@ -50,14 +51,13 @@ export class GameGateway
 
   handleDisconnect(client: Socket) {
     this.leaveGame(client);
-    this.matchmakingGateway.leaveMatchmaking(client);
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
   @SubscribeMessage('move')
   movement(client: Socket, eventKey: string) {
-    const gameRoom: Room = this.gameService.findRoomId(this.rooms, client);
-    const player: Player = this.gameService.findPlayer(gameRoom, client);
+    const gameRoom: Room = this.gameGatewayService.findRoomId(this.rooms, client);
+    const player: Player = this.gameGatewayService.findPlayer(gameRoom, client);
 
     if (eventKey == 'ArrowDown') player.velocity = 1;
     else if (eventKey == 'ArrowUp') player.velocity = -1;
@@ -90,8 +90,8 @@ export class GameGateway
           this.server
             .to(room.uuid)
             .emit('gameFinished', { username: winner }, { username: leaver });
-          this.gameService.clearRoom(room, this.rooms);
-          clearInterval(this.gameService.gameLoopInterval);
+          this.gameGatewayService.clearRoom(room, this.rooms);
+          clearInterval(this.gameCoreService.gameLoopInterval);
           this.logger.log(`player ${leaver} has left the game ${room.uuid}`);
           return;
         }

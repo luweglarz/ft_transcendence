@@ -1,9 +1,9 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MatchmakingGateway } from '../matchmaking/matchmaking.gateway';
-import { MatchmakingService } from '../matchmaking/matchmaking.service';
+import { MatchmakingService } from '../matchmaking/matchmaking-gateway.service';
 import { GameGateway } from './game.gateway';
-import { GameService } from './game.service';
+import { GameGatewayService } from './game-gateway.service';
 
 describe('GameGateway', () => {
   let gateway: GameGateway;
@@ -13,7 +13,7 @@ describe('GameGateway', () => {
       providers: [
         GameGateway,
         MatchmakingGateway,
-        GameService,
+        GameGatewayService,
         MatchmakingService,
       ],
       imports: [JwtModule],

@@ -1,22 +1,21 @@
 import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { Socket } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
-import { Ball } from '../class/ball';
-import { GameMap } from '../class/game-map';
-import { Player } from '../class/player';
-import { Room } from '../class/room';
+import { Ball } from '../../class/ball/ball';
+import { GameMap } from '../../class/game-map/game-map';
+import { Player } from '../../class/player/player';
+import { Room } from '../../class/room/room';
 import { GameGateway } from '../game/game.gateway';
-import { GameService } from '../game/game.service';
+import { GameGatewayService } from '../game/game-gateway.service';
+import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 
 @Injectable()
 export class MatchmakingService {
   constructor(
-    @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway,
-    private gameService: GameService,
-  ) {
-    this.logger = new Logger('GameMatchMakingGateway');
-  }
-  private logger: Logger;
+    @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway, private gameCoreService: GameCoreService,
+  ) {}
+  
+  private logger: Logger = new Logger('GameMatchMakingGateway');
 
   isClientInGame(client: Socket): boolean {
     for (const room of this.gameGateway.rooms) {
@@ -76,7 +75,7 @@ export class MatchmakingService {
         playerTwoUsername: players[1].username,
       },
     );
-    this.gameService.gameLoopInterval = this.gameService.gameLoop(
+    this.gameCoreService.gameLoopInterval = this.gameCoreService.gameLoop(
       players,
       newRoom,
       this.gameGateway.rooms,

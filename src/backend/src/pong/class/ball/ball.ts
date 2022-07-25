@@ -1,5 +1,5 @@
-import { GameMap } from './game-map';
-import { Player } from './player';
+import { GameMap } from '../game-map/game-map';
+import { Player } from '../player/player';
 
 export class Ball {
   constructor(

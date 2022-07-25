@@ -1,22 +1,19 @@
-import { forwardRef, Inject, Logger } from '@nestjs/common';
+import {Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   SubscribeMessage,
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { GameGateway } from '../game/game.gateway';
-import { MatchmakingService } from './matchmaking.service';
+import { MatchmakingService } from './matchmaking-gateway.service';
 
 @WebSocketGateway({ cors: true })
 export class MatchmakingGateway {
   constructor(
-    @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway,
     private matchmakingService: MatchmakingService,
   ) {}
 
-  clientPool: Socket[] = [];
-
+  private clientPool: Socket[] = [];
   private logger: Logger = new Logger('GameMatchMakingGateway');
 
   afterInit() {
@@ -25,6 +22,7 @@ export class MatchmakingGateway {
 
   @SubscribeMessage('joinNormalMatchmaking')
   joinMatchMaking(@ConnectedSocket() client: Socket) {
+    console.log("joinqueu");
     if (this.matchmakingService.isClientInGame(client) === true) return;
     if (
       this.matchmakingService.isClientInMatchmaking(client, this.clientPool) ===

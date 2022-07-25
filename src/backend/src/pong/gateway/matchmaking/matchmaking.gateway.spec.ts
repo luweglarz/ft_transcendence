@@ -1,28 +1,28 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameGateway } from '../game/game.gateway';
-import { GameService } from '../game/game.service';
+import { GameGatewayService } from '../game/game-gateway.service';
 import { MatchmakingGateway } from './matchmaking.gateway';
-import { MatchmakingService } from './matchmaking.service';
+import { MatchmakingService } from './matchmaking-gateway.service';
 
-describe('MatchmakingService', () => {
-  let service: MatchmakingService;
+describe('MatchmakingGateway', () => {
+  let gateway: MatchmakingGateway;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        MatchmakingService,
-        GameGateway,
         MatchmakingGateway,
-        GameService,
+        MatchmakingService,
+        GameGatewayService,
+        GameGateway,
       ],
       imports: [JwtModule],
     }).compile();
 
-    service = module.get<MatchmakingService>(MatchmakingService);
+    gateway = module.get<MatchmakingGateway>(MatchmakingGateway);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(gateway).toBeDefined();
   });
 });
