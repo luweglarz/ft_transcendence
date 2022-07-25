@@ -1,4 +1,4 @@
-import {Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   SubscribeMessage,
@@ -9,9 +9,7 @@ import { MatchmakingService } from './matchmaking-gateway.service';
 
 @WebSocketGateway({ cors: true })
 export class MatchmakingGateway {
-  constructor(
-    private matchmakingService: MatchmakingService,
-  ) {}
+  constructor(private matchmakingService: MatchmakingService) {}
 
   private clientPool: Socket[] = [];
   private logger: Logger = new Logger('GameMatchMakingGateway');
@@ -21,24 +19,24 @@ export class MatchmakingGateway {
   }
 
   @SubscribeMessage('joinNormalMatchmaking')
-  joinMatchMaking(@ConnectedSocket() client: Socket) {
-    console.log("joinqueu");
-    if (this.matchmakingService.isClientInGame(client) === true) return;
-    if (
+  joinNormalMatchMaking(@ConnectedSocket() client: Socket) {
+    if (this.matchmakingService.isClientInGame(client) === true) {
+      client.emit('error', 'You are already in a game');
+      return;
+    } else if (
       this.matchmakingService.isClientInMatchmaking(client, this.clientPool) ===
-      false
-    )
-      this.clientPool.push(client);
-    else {
+      true
+    ) {
       client.emit('error', 'You have already joined a matchmaking');
       return;
-    }
+    } else this.clientPool.push(client);
+
     if (this.clientPool.length > 1)
-      this.matchmakingService.generateGameRoom(this.clientPool);
+      this.matchmakingService.generateNormalGameRoom(this.clientPool);
     else client.emit('waitingForAMatch', 'Waiting for a match');
   }
 
-  @SubscribeMessage('leaveNormalMatchmaking')
+  @SubscribeMessage('leaveMatchmaking')
   leaveMatchmaking(@ConnectedSocket() client: Socket) {
     if (this.clientPool.includes(client)) {
       this.clientPool.splice(

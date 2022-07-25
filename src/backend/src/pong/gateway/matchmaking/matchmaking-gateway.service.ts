@@ -6,15 +6,15 @@ import { GameMap } from '../../class/game-map/game-map';
 import { Player } from '../../class/player/player';
 import { Room } from '../../class/room/room';
 import { GameGateway } from '../game/game.gateway';
-import { GameGatewayService } from '../game/game-gateway.service';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 
 @Injectable()
 export class MatchmakingService {
   constructor(
-    @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway, private gameCoreService: GameCoreService,
+    @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway,
+    private gameCoreService: GameCoreService,
   ) {}
-  
+
   private logger: Logger = new Logger('GameMatchMakingGateway');
 
   isClientInGame(client: Socket): boolean {
@@ -39,24 +39,8 @@ export class MatchmakingService {
     return false;
   }
 
-  async generateGameRoom(clientPool: Socket[]) {
-    this.logger.log('Enough player to generate a game room');
-    const newRoomId: string = uuidv4();
-    const newGameMap: GameMap = new GameMap(525, 950, 'black');
-    const players: Player[] = [
-      new Player(newGameMap, clientPool.pop(), 1, 3, 'white'),
-      new Player(newGameMap, clientPool.pop(), 2, 3, 'white'),
-    ];
-    const newRoom: Room = new Room(players, newRoomId, newGameMap);
-    const ball: Ball = new Ball(newGameMap, 2, 'white', 6);
-
-    await players[0].socket.join(newRoomId);
-    await players[1].socket.join(newRoomId);
-    this.gameGateway.rooms.push(newRoom);
-    this.logger.log(
-      `Match between ${players[0].socket.id} & ${players[1].socket.id} in ${newRoomId}`,
-    );
-    this.gameGateway.server.to(newRoomId).emit(
+  private emitMatchFound(newRoom: Room, ball: Ball, players: Player[]) {
+    this.gameGateway.server.to(newRoom.uuid).emit(
       'matchFound',
       'A match has been found',
       {
@@ -75,8 +59,27 @@ export class MatchmakingService {
         playerTwoUsername: players[1].username,
       },
     );
+  }
+
+  async generateNormalGameRoom(clientPool: Socket[]) {
+    this.logger.log('Enough player to generate a game room');
+    const newGameMap: GameMap = new GameMap(525, 950, 'black');
+    const players: Player[] = [
+      new Player(newGameMap, clientPool.pop(), 1, 3, 'white'),
+      new Player(newGameMap, clientPool.pop(), 2, 3, 'white'),
+    ];
+    const newRoomId: string = uuidv4();
+    const newRoom: Room = new Room(players, newRoomId, newGameMap);
+    const ball: Ball = new Ball(newGameMap, 2, 'white', 6);
+
+    await players[0].socket.join(newRoomId);
+    await players[1].socket.join(newRoomId);
+    this.gameGateway.rooms.push(newRoom);
+    this.logger.log(
+      `Match between ${players[0].socket.id} & ${players[1].socket.id} in ${newRoomId}`,
+    );
+    this.emitMatchFound(newRoom, ball, players);
     this.gameCoreService.gameLoopInterval = this.gameCoreService.gameLoop(
-      players,
       newRoom,
       this.gameGateway.rooms,
       this.gameGateway.server,
