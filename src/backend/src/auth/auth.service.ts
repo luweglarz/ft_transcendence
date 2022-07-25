@@ -150,7 +150,7 @@ export class AuthService {
   async uploadAvatar(user: JwtPayload, image: Buffer) {
     try {
       await this.db.user.update({
-        data: { image: image },
+        data: { avatar: image },
         where: { username: user.username },
       });
     } catch (err) {
@@ -164,7 +164,7 @@ export class AuthService {
       const dbUser = await this.db.user.findFirst({
         where: { username: user.username },
       });
-      return dbUser.image
+      return dbUser.avatar;
     } catch (err) {
       console.log(`Error: ${this.uploadAvatar.name} failed.`);
       throw new InternalServerErrorException('Could not upload the avatar');

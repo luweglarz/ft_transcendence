@@ -3,8 +3,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 import { OAuthUser } from '../interface';
+import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
 import { SigninService } from '../signin/signin.service';
+import { SignoutService } from '../signout/signout.service';
 import { SignupService } from './signup.service';
 
 @Component({
@@ -33,9 +35,15 @@ export class SignUpComponent implements OnInit {
     private service: SignupService,
     private signin: SigninService,
     private avatar: AvatarService,
+    private signOut: SignoutService,
+    private jwt: JwtService,
   ) {}
 
   ngOnInit(): void {
+    if (this.jwt.isValid()) {
+      this.signOut.signOut();
+      window.location.reload(); // to clear the avatar
+    }
     this.route.queryParams.subscribe((params) => {
       if (params['type'] == 'oauth') {
         this.signUpType = 'oauth';

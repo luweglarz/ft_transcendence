@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { OAuthService } from '../oauth';
+import { SignoutService } from '../signout/signout.service';
 import { SigninService } from './signin.service';
 //import { environment } from 'src/environments/environment';
 
@@ -19,10 +20,11 @@ export class SignInComponent implements OnInit {
     private formBuilder: FormBuilder,
     private oauth: OAuthService,
     private service: SigninService,
+    private signOut: SignoutService,
   ) {}
 
   ngOnInit(): void {
-    //
+    this.signOut.signOut();
   }
 
   localSignIn() {

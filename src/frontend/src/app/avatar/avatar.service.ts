@@ -76,4 +76,9 @@ export class AvatarService {
         .subscribe();
     }
   }
+
+  clear() {
+    this.avatar.src = this.default_src;
+    this.avatar.file = undefined;
+  }
 }
