@@ -1,25 +1,3 @@
-<!-- <div class="popup-container" *ngIf="popupsService.profilPopup || popupsService.ladderPopup || popupsService.socialPopup"
-[ngClass]="collapseService.navCollapsed ? 'popup-nav-collapsed' : ''"
-[ngClass]="collapseService.chatCollapsed ? 'popup-chat-collapsed' : ''"
->
-  <div class="popup-window">
-    <div class="popup-header">
-      <button class="popup-close" (click)="closePopup()">
-        <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <path d="M26.6666 26.6666L5.33325 5.33325M26.6666 5.33325L5.33325 26.6666" stroke="white" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <h1 *ngIf="popupsService.profilPopup">Profil</h1>
-      <h1 *ngIf="popupsService.ladderPopup">Ladder</h1>
-      <h1 *ngIf="popupsService.socialPopup">Social</h1>
-    </div>
-    <div class="popup-content">
-      <app-profil *ngIf="popupsService.profilPopup"></app-profil>
-      <app-ladder *ngIf="popupsService.ladderPopup"></app-ladder>
-      <app-social *ngIf="popupsService.socialPopup"></app-social>
-    </div>
-  </div>
-</div> -->
 <div class="popup-container" *ngIf="popupsService.profilPopup || popupsService.ladderPopup || popupsService.socialPopup"
 [ngClass]="manageClassCollapse()"
 >

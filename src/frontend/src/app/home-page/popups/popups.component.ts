@@ -20,10 +20,10 @@ export class PopupsComponent implements OnInit {
 
   manageClassCollapse(): string {
     if (this.collapseService.navCollapsed == true && this.collapseService.chatCollapsed == true){
-      return ('popup-full-uncollapsed');
+      return ('popup-full-collapsed');
     }
     else if (this.collapseService.navCollapsed == false && this.collapseService.chatCollapsed == false){
-      return ('popup-full-collapsed');
+      return ('popup-full-uncollapsed');
     }
     else if (this.collapseService.navCollapsed == true && this.collapseService.chatCollapsed == false){
       return ('popup-nav-collapsed');
