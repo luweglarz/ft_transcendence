@@ -113,18 +113,7 @@ export class Ball {
   }
 
   resetBall(gameMap: GameMap) {
-    const xOldVelocity = this.xVelocity;
-    const yOldVelocity = this.yVelocity;
-
     this.x = this._mapCenter.x;
     this.y = Math.floor(Math.random() * gameMap.canvaHeight + 1);
-
-    this.xVelocity = 0;
-    this.yVelocity = 0;
-    this.speed = this._initialSpeed;
-    setTimeout(() => {
-      this.xVelocity = xOldVelocity;
-      this.yVelocity = yOldVelocity;
-    }, 500);
   }
 }
