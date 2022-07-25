@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import { Socket } from 'socket.io';
 import { GameMap } from './game-map';
 
@@ -24,6 +25,10 @@ export class Player {
         Math.round((gameMap.canvaHeight * 2) / 100) -
         this._height,
     );
+    const jwtService = new JwtService();
+    this._username = JSON.parse(
+      JSON.stringify(jwtService.decode(this._socket.handshake.auth.token)),
+    ).username;
   }
 
   private _x: number;
@@ -34,6 +39,7 @@ export class Player {
   private _height: number;
   private _borderCollisionUp: number;
   private _borderCollisionDown: number;
+  private _username: string;
 
   get x(): number {
     return this._x;
@@ -85,6 +91,10 @@ export class Player {
 
   get color(): string {
     return this._color;
+  }
+
+  get username(): string {
+    return this._username;
   }
 
   checkBorderCollision(): boolean {
