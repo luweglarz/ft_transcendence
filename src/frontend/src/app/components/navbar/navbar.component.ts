@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
   constructor(public avatar: AvatarService) {}
 
   ngOnInit(): void {
-    this.avatar.fetch();
+    //
   }
 
   toggleCollapse(): void {
