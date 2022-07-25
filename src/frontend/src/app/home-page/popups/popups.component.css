@@ -12,12 +12,31 @@
   transition: 0.3s;
 }
 
+.popup-full-collapsed {
+  left: 250px;
+  width: calc(100% - 250px);
+
+  height: calc(100% - 300px);
+}
+
+.popup-full-collapsed {
+  left: 80px;
+  width: calc(100% - 80px);
+
+  height: 100%;
+}
+
 .popup-nav-collapsed {
   left: 250px;
   width: calc(100% - 250px);
+
+  height: 100%;
 }
 
 .popup-chat-collapsed {
+  left: 80px;
+  width: calc(100% - 80px);
+
   height: calc(100% - 300px);
 }
 
