@@ -66,7 +66,7 @@ export class AuthService {
 
   async oauthSignIn(oauthUser: OAuthUserDto) {
     const user = await this.oauthFindUser(oauthUser);
-    this.logger.debug(`Sign in user: ${JSON.stringify(user, null, 2)}`);
+    this.logger.debug(`Sign in user: ${user.username}`);
     return this.signInSuccess(user);
   }
 

@@ -13,6 +13,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
+import { User } from './decorator';
 import {
   LocalSigninDto,
   LocalSignupDto,
@@ -40,14 +41,14 @@ export class AuthController {
 
   @Post('oauth42/signin')
   @UseGuards(OAuth2Guard)
-  async oauthSignIn(@Req() req: Request) {
-    return this.service.oauthSignIn(<OAuthUserDto>req.user);
+  async oauthSignIn(@User() user: OAuthUserDto) {
+    return this.service.oauthSignIn(user);
   }
 
   @Get('oauth42/signup-temp-token')
   @UseGuards(OAuth2Guard)
-  async oauthSignUpTempToken(@Req() req: Request) {
-    return this.service.oauthSignUpTempToken(<OAuthUserDto>req.user);
+  async oauthSignUpTempToken(@User() user: OAuthUserDto) {
+    return this.service.oauthSignUpTempToken(user);
   }
 
   @Post('oauth42/signup')
@@ -63,17 +64,20 @@ export class AuthController {
   @Post('avatar/upload')
   @UseGuards(JwtGuard)
   @UseInterceptors(FileInterceptor('avatar'))
-  editAvatar(@UploadedFile() avatar: Express.Multer.File, @Req() req: Request) {
-    this.service.uploadAvatar(<JwtPayload>req.user, avatar.buffer);
+  editAvatar(
+    @UploadedFile() avatar: Express.Multer.File,
+    @User() user: JwtPayload,
+  ) {
+    this.service.uploadAvatar(user, avatar.buffer);
   }
 
   @Get('avatar/download')
   @UseGuards(JwtGuard)
   async downloadAvatar(
-    @Req() req: Request,
+    @User() user: JwtPayload,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const image = await this.service.getAvatar(<JwtPayload>req.user);
+    const image = await this.service.getAvatar(user);
     res.set({
       'Content-Disposition': `inline; filename="avatar.jpg"`,
       'Content-Type': 'image/jpg',
