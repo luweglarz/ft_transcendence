@@ -1,0 +1,14 @@
+.profil-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  background-color: red;
+}
+
+.profil-header-box {
+  display: flex;
+  flex-direction: column;
+
+  background-color: yellow;
+}

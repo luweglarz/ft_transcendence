@@ -5,9 +5,6 @@
   position: fixed;
   z-index: 1;
   top: 0;
-  /* left: 80px;
-  width: calc(100% - 80px);
-  height: 100%; */
   overflow: auto;
   transition: 0.3s;
 }
@@ -63,8 +60,4 @@
   border-radius: 50%;
   background-color: transparent;
   border: none;
-}
-
-.popup-content {
-  background-color: green;
 }
