@@ -60,14 +60,14 @@ export class AuthController {
     return { client_id: this.client_id };
   }
 
-  @Post('upload/avatar')
+  @Post('avatar/upload')
   @UseGuards(JwtGuard)
   @UseInterceptors(FileInterceptor('avatar'))
   editAvatar(@UploadedFile() avatar: Express.Multer.File, @Req() req: Request) {
     this.service.uploadAvatar(<JwtPayload>req.user, avatar.buffer);
   }
 
-  @Get('download/avatar')
+  @Get('avatar/download')
   @UseGuards(JwtGuard)
   async downloadAvatar(
     @Req() req: Request,

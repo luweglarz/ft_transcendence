@@ -23,6 +23,5 @@ export class InfoComponent implements OnInit {
       .testToken()
       .then((status) => (this.backend_messagee = status.message));
     console.table(this.payload);
-    this.avatar.fetch();
   }
 }

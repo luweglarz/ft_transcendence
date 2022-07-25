@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Avatar } from './interface';
+import { JwtService } from '../auth/jwt';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,9 @@ export class AvatarService {
     file: undefined,
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private jwt: JwtService) {
+    this.fetch();
+  }
 
   get src() {
     return this.avatar.src;
@@ -24,19 +27,20 @@ export class AvatarService {
   }
 
   fetch() {
-    this.http
-      .get(`${environment.backend}/auth/download/avatar`, {
-        responseType: 'blob',
-      })
-      .subscribe({
-        next: (blob) => {
-          if (blob.size) {
-            this.update({ file: blob });
-            console.log(blob);
-          }
-        },
-        error: (err) => console.log(err),
-      });
+    if (this.jwt.isValid())
+      this.http
+        .get(`${environment.backend}/auth/avatar/download`, {
+          responseType: 'blob',
+        })
+        .subscribe({
+          next: (blob) => {
+            if (blob.size) {
+              this.update({ file: blob });
+              console.log(blob);
+            }
+          },
+          error: (err) => console.log(err),
+        });
   }
 
   update(data: Partial<Avatar>) {
@@ -68,7 +72,7 @@ export class AvatarService {
       const formData = new FormData();
       formData.append('avatar', this.avatar.file);
       this.http
-        .post(`${environment.backend}/auth/upload/avatar`, formData)
+        .post(`${environment.backend}/auth/avatar/upload`, formData)
         .subscribe();
     }
   }
