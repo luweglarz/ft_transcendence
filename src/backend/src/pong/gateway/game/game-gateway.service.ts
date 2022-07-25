@@ -54,4 +54,26 @@ export class GameGatewayService {
       },
     );
   }
+
+  emitMatchFound(server: Server, newRoom: Room, ball: Ball, players: Player[]) {
+    server.to(newRoom.uuid).emit(
+      'matchFound',
+      'A match has been found',
+      {
+        canvaHeight: newRoom.gameMap.canvaHeight,
+        canvaWidth: newRoom.gameMap.canvaWidth,
+        backgroundColor: newRoom.gameMap.backgroundColor,
+        ballRadius: ball.radius,
+        ballColor: ball.color,
+      },
+      {
+        height: players[0].height,
+        width: players[0].width,
+        playerOneColor: players[0].color,
+        playerTwoColor: players[1].color,
+        playerOneUsername: players[0].username,
+        playerTwoUsername: players[1].username,
+      },
+    );
+  }
 }
