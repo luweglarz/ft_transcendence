@@ -14,16 +14,16 @@ export class MatchmakingService {
     private gameComponent: GameComponent,
     private gameService: GameService,
   ) {
-    this.socket.once('matchmakingLeft', (msg: any) => {
+    this.socket.on('matchmakingLeft', (msg: any) => {
       console.log(msg);
     });
-    this.socket.once('error', (msg: string) => {
+    this.socket.on('error', (msg: string) => {
       console.log(msg);
     });
   }
 
   requestJoinNormalMatchMaking() {
-    this.socket.emit('joinNormalMatchmaking');
+    this.socket.emit('joinNormalMatchmaking', 'normal');
     this.socket.once('waitingForAMatch', (msg: any) => {
       console.log(msg);
     });

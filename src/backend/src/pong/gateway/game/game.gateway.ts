@@ -1,6 +1,7 @@
-import { forwardRef, Inject, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
@@ -13,7 +14,6 @@ import { Room } from '../../class/room/room';
 import { GameGatewayService } from './game-gateway.service';
 import { Player } from '../../class/player/player';
 import { JwtService } from '@nestjs/jwt';
-import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 
 @WebSocketGateway({ cors: true })
 export class GameGateway
@@ -22,15 +22,16 @@ export class GameGateway
   constructor(
     private gameGatewayService: GameGatewayService,
     private jwtService: JwtService,
-    @Inject(forwardRef(() => GameCoreService))
-    private gameCoreService: GameCoreService,
-  ) {}
+  ) {
+    this.logger = new Logger('GameGateway');
+    this._rooms = [];
+  }
 
   @WebSocketServer()
-  server: Server;
-  rooms: Room[] = [];
+  private _server: Server;
+  private _rooms: Room[];
 
-  private logger: Logger = new Logger('GameGateway');
+  private logger: Logger;
 
   afterInit() {
     this.logger.log('Init');
@@ -54,7 +55,7 @@ export class GameGateway
   }
 
   @SubscribeMessage('move')
-  movement(client: Socket, eventKey: string) {
+  movement(@ConnectedSocket() client: Socket, @MessageBody() eventKey: string) {
     try {
       const gameRoom: Room = this.gameGatewayService.findRoomId(
         this.rooms,
@@ -106,5 +107,13 @@ export class GameGateway
       }
     }
     client.emit('error', 'You are not in a game');
+  }
+
+  get rooms(): Room[] {
+    return this._rooms;
+  }
+
+  get server(): Server {
+    return this._server;
   }
 }

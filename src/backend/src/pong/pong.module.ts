@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { GameGateway } from './gateway/game/game.gateway';
 import { GameGatewayService } from './gateway/game/game-gateway.service';
 import { MatchmakingGateway } from './gateway/matchmaking/matchmaking.gateway';
-import { MatchmakingService } from './gateway/matchmaking/matchmaking-gateway.service';
+import { MatchmakingGatewayService } from './gateway/matchmaking/matchmaking-gateway.service';
 import { GameCoreService } from './service/game-core/game-core.service';
 
 @Module({
@@ -14,7 +14,7 @@ import { GameCoreService } from './service/game-core/game-core.service';
     GameGateway,
     GameGatewayService,
     MatchmakingGateway,
-    MatchmakingService,
+    MatchmakingGatewayService,
   ],
 })
 export class PongModule {}
