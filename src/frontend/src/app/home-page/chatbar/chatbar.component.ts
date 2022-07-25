@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { CollapseService } from 'src/app/collapse.service';
+import { CollapseService } from 'src/app/home-page/collapse.service';
 
 @Component({
   selector: 'app-chatbar',
@@ -18,11 +18,9 @@ export class ChatbarComponent implements OnInit {
 
   openChat() {
     this.collapseService.openChat();
-    console.log(this.collapseService.chatCollapsed);
   }
 
   closeChat() {
     this.collapseService.closeChat();
-    console.log(this.collapseService.chatCollapsed);
   }
 }

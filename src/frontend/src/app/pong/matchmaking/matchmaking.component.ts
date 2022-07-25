@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CollapseService } from 'src/app/collapse.service';
+import { CollapseService } from 'src/app/home-page/collapse.service';
 import { MatchmakingService } from './matchmaking.service';
 
 @Component({

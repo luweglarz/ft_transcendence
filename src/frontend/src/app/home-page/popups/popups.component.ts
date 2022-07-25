@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CollapseService } from 'src/app/collapse.service';
-import { PopupsService } from 'src/app/popups.service';
+import { CollapseService } from 'src/app/home-page/collapse.service';
+import { PopupsService } from 'src/app/home-page/popups.service';
 
 @Component({
   selector: 'app-popups',
