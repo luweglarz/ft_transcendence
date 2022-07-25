@@ -13,7 +13,7 @@ export class MatchmakingComponent {
     this.matchmakingService.requestJoinNormalMatchMaking();
   }
 
-  buttonRequestLeaveNormalMatchMaking() {
-    this.matchmakingService.requestLeaveNormalMatchMaking();
+  buttonRequestLeaveMatchMaking() {
+    this.matchmakingService.requestLeaveMatchMaking();
   }
 }
