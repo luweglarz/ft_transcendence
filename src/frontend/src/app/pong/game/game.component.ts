@@ -28,7 +28,7 @@ export class GameComponent implements OnInit {
       (winner: any, leaver?: any) => {
         clearInterval(this.gameService.keyEventsInterval);
         this.gameService.isInGame = false;
-        if (leaver != null || leaver != undefined)
+        if (leaver != null && leaver != undefined)
           console.log(`Player ${leaver.username} has left the game`);
         console.log(winner.username + ' Has won the game');
         this.router.navigate(['/']);
