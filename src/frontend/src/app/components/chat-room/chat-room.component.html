@@ -11,7 +11,7 @@
 
     <!--Messages-->
     <div class="mesgs">
-        <li *ngFor="let message of chatRoom.messages">
+        <li *ngFor="let message of (messages|async)">
             <p>{{message.content}}</p>
         </li>
     </div>
