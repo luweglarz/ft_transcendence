@@ -1,6 +1,19 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  StreamableFile,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
+import { User } from './decorator';
 import {
   LocalSigninDto,
   LocalSignupDto,
@@ -8,6 +21,7 @@ import {
   OAuthUserDto,
 } from './dto';
 import { JwtGuard, OAuth2Guard } from './guard';
+import { JwtPayload } from './interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -27,14 +41,14 @@ export class AuthController {
 
   @Post('oauth42/signin')
   @UseGuards(OAuth2Guard)
-  async oauthSignIn(@Req() req: Request) {
-    return this.service.oauthSignIn(<OAuthUserDto>req.user);
+  async oauthSignIn(@User() user: OAuthUserDto) {
+    return this.service.oauthSignIn(user);
   }
 
   @Get('oauth42/signup-temp-token')
   @UseGuards(OAuth2Guard)
-  async oauthSignUpTempToken(@Req() req: Request) {
-    return this.service.oauthSignUpTempToken(<OAuthUserDto>req.user);
+  async oauthSignUpTempToken(@User() user: OAuthUserDto) {
+    return this.service.oauthSignUpTempToken(user);
   }
 
   @Post('oauth42/signup')
@@ -45,6 +59,32 @@ export class AuthController {
   @Get('oauth42/client_id')
   getOAuthClientId() {
     return { client_id: this.client_id };
+  }
+
+  @Post('avatar/upload')
+  @UseGuards(JwtGuard)
+  @UseInterceptors(FileInterceptor('avatar'))
+  editAvatar(
+    @UploadedFile() avatar: Express.Multer.File,
+    @User() user: JwtPayload,
+  ) {
+    this.service.uploadAvatar(user, avatar.buffer);
+  }
+
+  @Get('avatar/download')
+  @UseGuards(JwtGuard)
+  async downloadAvatar(
+    @User() user: JwtPayload,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const image = await this.service.getAvatar(user);
+    res.set({
+      'Content-Disposition': `inline; filename="avatar.jpg"`,
+      'Content-Type': 'image/jpg',
+    });
+    if (image) {
+      return new StreamableFile(image);
+    } else return '';
   }
 
   //  ============================ Testing routes ============================  //

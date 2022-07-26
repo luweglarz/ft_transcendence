@@ -83,8 +83,13 @@ export class GameService {
       String(gameInfos.players[1].goals),
       (gameInfos.canvaWidth * 5) / 100 / 2 +
         gameInfos.canvaWidth / 2 +
-        gameInfos.canvaWidth / 4,
+        gameInfos.canvaWidth / 6,
       50,
     );
+  }
+
+  drawPlayersInfos(playerOneInfo: ElementRef, playerTwoInfo: ElementRef, players: Player[]){
+    playerOneInfo.nativeElement.innerHTML += players[0].username;
+    playerTwoInfo.nativeElement.innerHTML += players[1].username;
   }
 }

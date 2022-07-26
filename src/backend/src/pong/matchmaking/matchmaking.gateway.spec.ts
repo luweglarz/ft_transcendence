@@ -1,3 +1,4 @@
+import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameGateway } from '../game/game.gateway';
 import { GameService } from '../game/game.service';
@@ -15,6 +16,7 @@ describe('MatchmakingGateway', () => {
         GameService,
         GameGateway,
       ],
+      imports: [JwtModule],
     }).compile();
 
     gateway = module.get<MatchmakingGateway>(MatchmakingGateway);
