@@ -34,7 +34,7 @@
           </div>
         </div>
 
-      <div class="chatroom">
+      <div class="chatroom" *ngIf="selectedRoom">
         <app-chat-room [chatRoom]="selectedRoom"></app-chat-room>
       </div>
 

@@ -39,6 +39,7 @@ export class ChatbarComponent implements OnInit {
   }
 
   onSelectRoom(event: MatSelectionListChange) {
+    //console.log('MLT', JSON.parse(JSON.stringify(event.source.selectedOptions.selected[0].value)));
     this.selectedRoom = event.source.selectedOptions.selected[0].value;
   }
 
