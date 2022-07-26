@@ -1,12 +1,12 @@
-import { Room } from 'src/app/interface/room'
+import { Room } from 'src/app/interface/room';
 
 export interface Message {
-    id?:        number;
-    room?:      Room;
-    roomId?:    number;
-    //user?:    User;
-    userId?:    number;
-    content?:   String;
+  id?: number;
+  room?: Room;
+  roomId?: number;
+  //user?:    User;
+  userId?: number;
+  content?: string;
 }
 
 /*
