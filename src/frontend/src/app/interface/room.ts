@@ -1,24 +1,24 @@
-import  { Message } from 'src/app/interface/message'
+import { Message } from 'src/app/interface/message';
 
 export interface Room {
-    id?:        number;
-    createdAt?: Date;
-    updatedAt?: Date;
-    name?:      string;
-    password?:  string;
-    roomType?:   RoomType;
-    //users:    RoomUser[];
-    messages?:  Message[];
+  id?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  name?: string;
+  password?: string;
+  roomType?: RoomType;
+  //users:    RoomUser[];
+  messages?: Message[];
 }
 
 export interface RoomTab {
-  roomstab: Room[]
+  roomstab: Room[];
 }
 
 export enum RoomType {
-    PUBLIC = "PUBLIC",
-    PROTECTED = "PROTECTED",
-    PRIVATE = "PRIVATE"
+  PUBLIC = 'PUBLIC',
+  PROTECTED = 'PROTECTED',
+  PRIVATE = 'PRIVATE',
 }
 
 // prisma model

@@ -17,7 +17,7 @@ export class GameService {
   public keyPressed: string;
   public keyEventsInterval: any;
 
-  get socket(): AuthSocket{
+  get socket(): AuthSocket {
     return this._socket;
   }
 

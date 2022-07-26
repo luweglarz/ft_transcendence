@@ -4,15 +4,14 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   WebSocketServer,
-  MessageBody,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { RoomUserService } from './room-user/room-user.service';
 import { RoomService } from './room/room.service';
 import { MessageService } from './message/message.service';
-import { JwtService } from '@nestjs/jwt'
+import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
-import { Room, RoomType, User, RoomUser, Message } from '@prisma/client';
+import { Room } from '@prisma/client';
 
 @WebSocketGateway()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -26,32 +25,33 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private jwtService: JwtService,
     private prisma: DbService,
   ) {}
-  
- async handleConnection(socket: Socket) {
+
+  async handleConnection(socket: Socket) {
     console.log('client connected');
     try {
-      const clearToken = await this.jwtService.verifyAsync(socket.handshake.auth.token, {secret: process.env['JWT_SECRET']});
-      socket.data.user = await this.prisma.user.findUnique({where: {username: clearToken.username}})
+      const clearToken = await this.jwtService.verifyAsync(
+        socket.handshake.auth.token,
+        { secret: process.env['JWT_SECRET'] },
+      );
+      socket.data.user = await this.prisma.user.findUnique({
+        where: { username: clearToken.username },
+      });
     } catch (error) {
       console.log(error);
     }
     console.log(socket.data.user);
-    let rooms = await this.roomService.rooms({});
-    if (rooms.length > 0)
-      this.server.to(socket.id).emit('rooms', rooms);
+    const rooms = await this.roomService.rooms({});
+    if (rooms.length > 0) this.server.to(socket.id).emit('rooms', rooms);
     //this.server.to(socket.id).emit('testfgh');
     //console.log(await this.roomService.rooms({}));
   }
 
   async handleDisconnect(socket: Socket) {
-
+    socket.disconnect();
   }
 
   @SubscribeMessage('createRoom')
-  async createRoom(
-    socket: Socket,
-    room: Room
-  ) {
+  async createRoom(socket: Socket, room: Room) {
     if (room.roomType === 'PROTECTED' && !room.password) return 'Error';
     await this.roomService.createRoom({
       name: room.name,
@@ -68,7 +68,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('joinRoom')
   async joinRoom(socket: Socket, room: Room) {
     console.log(room);
-    this.roomService.joinRoom(room, await this.prisma.user.findUnique({where: {username: socket.data.user.username}}));
+    this.roomService.joinRoom(
+      room,
+      await this.prisma.user.findUnique({
+        where: { username: socket.data.user.username },
+      }),
+    );
     // needs emit once i can find how to identify user by connection to server
     // emmit room messages to new member of room
     console.log(room);
@@ -83,14 +88,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('addMessage')
   async addMessage(socket: Socket, message: string) {
     console.log(socket);
-    var parsed = JSON.parse(JSON.stringify(message));
+    const parsed = JSON.parse(JSON.stringify(message));
     console.log(parsed.room);
     await this.messageService.createMessage({
       content: parsed.content,
       //room: { connect: message.room },
-      room: {connect: {name: parsed.room.name}},
+      room: { connect: { name: parsed.room.name } },
       //roomId: message.roomId,
-      user: { connect: {username: socket.data.user.username} },
+      user: { connect: { username: socket.data.user.username } },
     });
     // needs emit once i can find how to identify user by connection to server
     // emmit new message to all members of the room
@@ -106,8 +111,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('getMsgs')
   async getMsgs(socket: Socket, roomId: number) {
-    console.log(roomId, await this.messageService.messages({where: {roomId: roomId}}));
-    this.server.to(socket.id).emit('msgs', await this.messageService.messages({where: {roomId: roomId}}));
+    console.log(
+      roomId,
+      await this.messageService.messages({ where: { roomId: roomId } }),
+    );
+    this.server
+      .to(socket.id)
+      .emit(
+        'msgs',
+        await this.messageService.messages({ where: { roomId: roomId } }),
+      );
   }
 
   @SubscribeMessage('getRooms')

@@ -18,19 +18,19 @@ import { ChatbarComponent } from './components/chatbar/chatbar.component';
 import { ChatRoomComponent } from './components/chat-room/chat-room.component';
 import { ChatMessageComponent } from './components/chat-message/chat-message.component';
 
-import { MatCardModule } from '@angular/material/card'
-import { MatListModule } from '@angular/material/list' 
-import { MatFormFieldModule} from '@angular/material/form-field'
-import { MatButtonModule } from '@angular/material/button'
-import { MatInputModule } from '@angular/material/input'
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog'
-import { MatSelectModule } from '@angular/material/select'
-import { MatPaginatorModule } from '@angular/material/paginator'
-import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room-create.component'
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room-create.component';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
-const config: SocketIoConfig = {url: 'http://localhost:3000', options: {}};
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
