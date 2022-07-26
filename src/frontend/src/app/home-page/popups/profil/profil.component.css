@@ -16,18 +16,26 @@
   width: 100%;
   border-radius: 1em;
   background-color: #1A202C;
+
+  padding: 20px;
 }
 
 .profil-header-box {
   display: flex;
   flex-direction: column;
+  align-items: center;
   color: white;
   font-size: large;
   font-weight: 700;
+
+  width: 20%;
+  margin-right: 20px;
+  margin-left: 20px;
 }
 
 .profil-header-avatar {
   border-radius: 100%;
+  margin-top: 16px;
 }
 
 .profil-header-line {
@@ -36,14 +44,14 @@
   align-items: center;
   justify-content: center;
   color: white;
+
 }
 
 /* Separator */
 .profil-separator {
   display: flex;
-  flex-direction: row;
-
-  background: blue;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .profil-win-counter {
@@ -52,13 +60,17 @@
   align-items: center;
   font-size: 20px;
   height: 32px;
+  width: fit-content;
+
+  background-color: orange;
 }
 
 .profil-win-logo {
   color: green;
   margin-right: 10px;
+  font-weight: bolder;
+  font-size: 24px;
 }
-
 
 .profil-loss-logo {
   color: red;
@@ -69,15 +81,11 @@
 
 .profil-history-title {
   font-size: 24px;
+
+  background-color: yellow;
 }
-
-
-
-
-
 
 /* History */
 .profil-history {
-  height:max-content;
   background-color: red;
 }
