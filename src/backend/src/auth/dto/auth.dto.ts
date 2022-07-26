@@ -56,14 +56,11 @@ export class OAuthUserDto {
 
   @IsUrl()
   image_url: string;
-
-  // @IsString()
-  // first_name: string;
-
-  // @IsString()
-  // last_name: string;
 }
 
+/*
+ * @brief Data sent in signup in OAuth mode
+ */
 export class OAuthSignUpDto {
   @IsString()
   @IsNotEmpty()

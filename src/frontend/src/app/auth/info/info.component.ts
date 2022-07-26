@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AvatarService } from 'src/app/avatar/avatar.service';
 import { JwtPayload, JwtService } from '../jwt';
 
 @Component({
@@ -12,7 +13,7 @@ export class InfoComponent implements OnInit {
   expiration = '';
   backend_messagee = '';
 
-  constructor(private jwt: JwtService) {}
+  constructor(private jwt: JwtService, public avatar: AvatarService) {}
 
   ngOnInit(): void {
     this.payload = this.jwt.getPayload();
