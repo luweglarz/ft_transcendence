@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { AvatarService } from 'src/app/avatar/avatar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -29,9 +30,7 @@ export class NavbarComponent implements OnInit {
   socialPopup = false;
   @Output() socialEvent = new EventEmitter<boolean>();
 
-  constructor() {
-    //
-  }
+  constructor(public avatar: AvatarService) {}
 
   ngOnInit(): void {
     //

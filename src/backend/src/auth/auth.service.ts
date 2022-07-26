@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -65,7 +66,7 @@ export class AuthService {
 
   async oauthSignIn(oauthUser: OAuthUserDto) {
     const user = await this.oauthFindUser(oauthUser);
-    this.logger.debug(`Sign in user: ${JSON.stringify(user, null, 2)}`);
+    this.logger.debug(`Sign in user: ${user.username}`);
     return this.signInSuccess(user);
   }
 
@@ -144,6 +145,30 @@ export class AuthService {
         `42's API sent incorrect data: ${errors[0]}`,
       );
     return user;
+  }
+
+  async uploadAvatar(user: JwtPayload, image: Buffer) {
+    try {
+      await this.db.user.update({
+        data: { avatar: image },
+        where: { username: user.username },
+      });
+    } catch (err) {
+      console.log(`Error: ${this.uploadAvatar.name} failed.`);
+      throw new InternalServerErrorException('Could not upload the avatar');
+    }
+  }
+
+  async getAvatar(user: JwtPayload) {
+    try {
+      const dbUser = await this.db.user.findFirst({
+        where: { username: user.username },
+      });
+      return dbUser.avatar;
+    } catch (err) {
+      console.log(`Error: ${this.uploadAvatar.name} failed.`);
+      throw new InternalServerErrorException('Could not upload the avatar');
+    }
   }
 
   //  =========================== PRIVATE Methods ============================  //
