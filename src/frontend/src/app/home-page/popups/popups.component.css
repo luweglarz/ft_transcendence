@@ -61,3 +61,8 @@
   background-color: transparent;
   border: none;
 }
+
+.popup-content{
+  background-color: yellow;
+  margin: 20px;
+}
