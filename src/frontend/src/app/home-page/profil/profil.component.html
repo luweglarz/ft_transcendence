@@ -3,20 +3,40 @@
   <div class="profil-header">
     <!-- Avatar & Username -->
     <div class="profil-header-box">
+      <img class="profil-header-avatar" src="assets/images/default-avatar.png" height="128px" width="128px">
       <p> {{ username }} </p>
     </div>
 
     <!-- Rank & ELo -->
     <div class="profil-header-box">
-      <p> {{ rank }} </p>
-      <p> {{ elo }} </p>
+      <h3>Ranking :</h3>
+
+      <div class="profil-header-line">
+        <img src="assets/images/rank.png" height="32px" width="32px">
+        <p> {{ rank }} </p>
+      </div>
+
+      <div class="profil-header-line">
+        <img src="assets/images/elo.png" height="32px" width="32px">
+        <p> {{ elo }} </p>
+      </div>
     </div>
 
     <!-- Win/Loss Streaks -->
     <div class="profil-header-box">
-      <p>{{ winStreak }} </p>
-      <p>{{ lossStreak }} </p>
+      <h3>Largest streak :</h3>
+
+      <div class="profil-header-line">
+        <img src="assets/images/win-streak.png" height="32px" width="32px">
+        <p>{{ winStreak }} </p>
+      </div>
+
+      <div class="profil-header-line">
+        <img src="assets/images/loss-streak.png" height="32px" width="32px">
+        <p>{{ lossStreak }} </p>
+      </div>
     </div>
+
   </div>
 
   <div class="profil-history">
