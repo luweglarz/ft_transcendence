@@ -11,17 +11,16 @@ datasource db {
 }
 
 model User {
-  id          Int        @id @default(autoincrement())
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  username    String     @unique
-  email       String?    @unique
-  password    String?
-  image       Bytes?
-   authType  AuthType @default(LOCAL)
-  
-  roomUser    RoomUser? //useless but needed for table relation
-  message     Message[]  //useless but needed for table relation
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  username  String     @unique
+  email     String?    @unique
+  password  String?
+  avatar    Bytes?
+  authType  AuthType   @default(LOCAL)
+  RoomUser  RoomUser[]
+  Message   Message[]
 }
 
 enum AuthType {
@@ -29,46 +28,45 @@ enum AuthType {
   OAUTH42
 }
 
-enum  Role {
+enum Role {
   USER
   ADMIN
   OWNER
 }
 
-enum  RoomType {
+enum RoomType {
   PUBLIC
   PROTECTED
   PRIVATE
 }
 
 model RoomUser {
-  user        User      @relation(fields: [userId], references: [id])
-  userId      Int       @id
-  socketId    String? //probably nned to be moved to User
-  room        Room[]  //probably useless
-  role        Role
-  isBanned    Boolean   @default(false)
-  isMuted     Boolean   @default(false)
-  timeOut     DateTime?
+  user     User      @relation(fields: [userId], references: [id])
+  userId   Int       @id
+  socketId String? //probably nned to be moved to User
+  room     Room[] //probably useless
+  role     Role
+  isBanned Boolean   @default(false)
+  isMuted  Boolean   @default(false)
+  timeOut  DateTime?
 }
 
 model Message {
-  id          Int       @id @default(autoincrement())
-  room        Room      @relation(fields: [roomId], references: [id])
-  roomId      Int
-  user        User      @relation(fields: [userId], references: [id])
-  userId      Int
-  content     String
+  id      Int    @id @default(autoincrement())
+  room    Room   @relation(fields: [roomId], references: [id])
+  roomId  Int
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
+  content String
 }
 
 model Room {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  name        String    @unique
-  password    String?
-  roomType    RoomType
-  users       RoomUser[]
-  messages    Message[]
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  name      String     @unique
+  password  String?
+  roomType  RoomType
+  users     RoomUser[]
+  messages  Message[]
 }
-
