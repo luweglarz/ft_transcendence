@@ -31,9 +31,22 @@ export class RoomService {
     });
   }
 
-  async createRoom(data: Prisma.RoomCreateInput): Promise<Room> {
+  async createRoom(room: Room, userId: number): Promise<Room> {
     return this.prisma.room.create({
-      data,
+      data: {
+        name: room.name,
+        password: room.password,
+        roomType: room.roomType,
+        users: {
+          connectOrCreate: {
+            where: { userId: userId },
+            create: {
+              user: { connect: { id: userId } },
+              role: 'OWNER',
+            },
+          },
+        },
+      },
     });
   }
 
