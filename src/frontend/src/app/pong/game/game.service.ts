@@ -1,5 +1,5 @@
 import { ElementRef, Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
+import { AuthSocket } from 'src/app/class/auth-socket';
 import { Ball } from '../class/ball';
 import { Game } from '../class/game';
 import { Player } from '../class/player';
@@ -8,7 +8,7 @@ import { Player } from '../class/player';
   providedIn: 'root',
 })
 export class GameService {
-  constructor(private socket: Socket) {
+  constructor(private _socket: AuthSocket) {
     this.isInGame = false;
     this.keyPressed = '';
   }
@@ -17,9 +17,13 @@ export class GameService {
   public keyPressed: string;
   public keyEventsInterval: any;
 
-  requestLeaveNormalGame() {
+  get socket(): AuthSocket {
+    return this._socket;
+  }
+
+  requestLeaveGame() {
     this.isInGame = false;
-    this.socket.emit('leaveNormalGame');
+    this.socket.emit('leaveGame');
   }
 
   sendKeyEvents() {
@@ -79,8 +83,17 @@ export class GameService {
       String(gameInfos.players[1].goals),
       (gameInfos.canvaWidth * 5) / 100 / 2 +
         gameInfos.canvaWidth / 2 +
-        gameInfos.canvaWidth / 4,
+        gameInfos.canvaWidth / 6,
       50,
     );
+  }
+
+  drawPlayersInfos(
+    playerOneInfo: ElementRef,
+    playerTwoInfo: ElementRef,
+    players: Player[],
+  ) {
+    playerOneInfo.nativeElement.innerHTML += players[0].username;
+    playerTwoInfo.nativeElement.innerHTML += players[1].username;
   }
 }

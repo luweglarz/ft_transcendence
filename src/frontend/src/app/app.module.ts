@@ -1,30 +1,28 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoginComponent } from './pages/login/login.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+import { RouterModule } from '@angular/router';
+import { PongModule } from './pong/pong.module';
+import { AuthModule, JwtInterceptor } from './auth';
+import { AppComponent } from './app.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './home-page/home/home.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './home-page/navbar/navbar.component';
 import { ProfilComponent } from './home-page/popups/profil/profil.component';
 import { LadderComponent } from './home-page/popups/ladder/ladder.component';
 import { SocialComponent } from './home-page/popups/social/social.component';
 import { ChatbarComponent } from './home-page/chatbar/chatbar.component';
-import { PongModule } from './pong/pong.module';
-import { RouterModule } from '@angular/router';
+import { SocketIoModule } from 'ngx-socket-io';
 import { PopupsComponent } from './home-page/popups/popups.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     NotFoundComponent,
     HomeComponent,
-    RegisterComponent,
     NavbarComponent,
     ProfilComponent,
     LadderComponent,
@@ -41,8 +39,12 @@ import { PopupsComponent } from './home-page/popups/popups.component';
     ReactiveFormsModule,
     PongModule,
     HttpClientModule,
+    AuthModule,
+    SocketIoModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

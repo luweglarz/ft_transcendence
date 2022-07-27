@@ -5,7 +5,12 @@ DOCKER_VOLUME_LS= $(shell docker volume ls -q)
 all: build
 
 set_local_env:
-#	$(eval DB_PASSWORD=$(shell head -c 10 /dev/urandom | base64))
+	$(eval OAUTH_42_CLIENT_ID=$(shell bash -c 'read -p "OAUTH client ID: " secret; echo $$secret'))
+	$(eval OAUTH_42_CLIENT_SECRET=$(shell bash -c 'read -s -p "OAUTH client secret (hidden): " secret; echo $$secret; echo >&2'))
+	$(eval JWT_SECRET=$(shell head -c 21 /dev/urandom | base64))
+	@echo "OAUTH_42_CLIENT_ID='$(OAUTH_42_CLIENT_ID)'" > .env
+	@echo "OAUTH_42_CLIENT_SECRET='$(OAUTH_42_CLIENT_SECRET)'" >> .env
+	@echo "JWT_SECRET='$(JWT_SECRET)'" >> .env
 	@cat src/postgres/dev.env src/backend/env/docker-compose.dev.env > src/backend/.env
 	@perl -i -pe 's/DB_HOST=.*/DB_HOST="localhost"/' src/backend/.env
 	@echo "`tput setaf 2`⚙ Local dev environment generated."

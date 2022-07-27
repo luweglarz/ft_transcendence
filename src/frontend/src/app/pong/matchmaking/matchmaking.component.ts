@@ -42,8 +42,8 @@ export class MatchmakingComponent {
     this.startTimer(this.originalQueue);
   }
 
-  buttonRequestLeaveNormalMatchMaking() {
-    this.matchmakingService.requestLeaveNormalMatchMaking();
+  buttonRequestLeaveMatchMaking() {
+    this.matchmakingService.requestLeaveMatchMaking();
     this.originalQueue = false;
     this.clearTimer();
   }

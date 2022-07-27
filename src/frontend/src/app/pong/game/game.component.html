@@ -1,6 +1,10 @@
-<div>
-  <p align="center">
-      <canvas id="canvas-container" #gameCanvas ></canvas>
-  </p>
-  <button (click)="buttonRequestLeaveNormalGame()">Leave game</button>
+<div id="game-container" align="center">
+    <div #playersInfo id= "players-info">
+        <p style="text-align:left;">
+            <span #playerOneInfo></span>
+            <span #playerTwoInfo style="float:right;"></span>
+        </p>
+    </div>
+    <canvas id="canvas-container" #gameCanvas ></canvas>
 </div>
+<button (click)="buttonRequestLeaveGame()">Leave game</button>

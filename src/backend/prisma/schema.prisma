@@ -17,5 +17,11 @@ model User {
   username  String   @unique
   email     String?  @unique
   password  String?
-  image     Bytes?
+  avatar    Bytes?
+  authType  AuthType @default(LOCAL)
+}
+
+enum AuthType {
+  LOCAL
+  OAUTH42
 }
