@@ -9,7 +9,7 @@
     <p *ngIf="!originalQueue">Player(s) in this mode : {{ this.nbPlayersOriginal }}</p>
     <p *ngIf="originalQueue">Time in queue : {{ this.secInQueue }}s</p>
     <button class="matchmaking-btn" *ngIf="!originalQueue" (click)="buttonRequestJoinNormalMatchMaking()">Join queue</button>
-    <button class="matchmaking-btn" *ngIf="originalQueue" (click)="buttonRequestLeaveNormalMatchMaking()">Quit queue</button>
+    <button class="matchmaking-btn" *ngIf="originalQueue" (click)="buttonRequestLeaveMatchMaking()">Quit queue</button>
   </div>
 <!--
   <div class="matchmaking-card">

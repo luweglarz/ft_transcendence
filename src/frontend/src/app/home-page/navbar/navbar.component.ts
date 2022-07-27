@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { AvatarService } from 'src/app/avatar/avatar.service';
 import { CollapseService } from 'src/app/home-page/collapse.service';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
 
@@ -10,7 +11,7 @@ import { PopupsService } from 'src/app/home-page/popups/popups.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public collapseService: CollapseService, public popupsService: PopupsService) {
+  constructor(public avatar: AvatarService, public collapseService: CollapseService, public popupsService: PopupsService) {
     //
   }
 
