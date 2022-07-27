@@ -38,12 +38,9 @@ export class RoomService {
         password: room.password,
         roomType: room.roomType,
         users: {
-          connectOrCreate: {
-            where: { userId: userId },
-            create: {
-              user: { connect: { id: userId } },
-              role: 'OWNER',
-            },
+          create: {
+            user: { connect: { id: userId } },
+            role: 'OWNER',
           },
         },
       },
