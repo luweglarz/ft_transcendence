@@ -3,8 +3,8 @@
   <div class="profil-header">
     <!-- Avatar & Username -->
     <div class="profil-header-box">
-      <img class="profil-header-avatar" src="assets/images/default-avatar.png" height="128px" width="128px">
-      <p> {{ username }} </p>
+      <img class="profil-header-avatar" [src]="avatar.src" height="128px" width="128px">
+      <p> {{ jwtService.getPayload()?.username }} </p>
     </div>
 
     <!-- Rank & ELo -->
