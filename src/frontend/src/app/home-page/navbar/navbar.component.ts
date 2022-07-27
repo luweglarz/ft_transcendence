@@ -28,7 +28,6 @@ export class NavbarComponent implements OnInit {
   /* NAVBAR COLLAPSE */
   openSidenav(){
     this.collapseService.openNav();
-    console.log(this.jwtService.getPayload()?.username)
   }
 
   closeSidenav() {
