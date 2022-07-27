@@ -14,7 +14,7 @@
       <a class="sidenav-nav-link">
         <img class="sidenav-link-avatar" [src]="avatar.src" height="32px" width="32px" alt="User avatar">
         <span class="sidenav-link-text" *ngIf="collapseService.navCollapsed">
-          username
+          {{ jwtService.getPayload()?.username }}
         </span>
       </a>
     </li>
