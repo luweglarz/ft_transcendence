@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtService } from 'src/app/auth/jwt';
+import { AvatarService } from 'src/app/avatar/avatar.service';
 
 @Component({
   selector: 'app-profil',
@@ -16,7 +18,7 @@ export class ProfilComponent implements OnInit {
   lossStreak: number = 0;
 
 
-  constructor() {
+  constructor(public jwtService: JwtService, public avatar: AvatarService) {
     //
   }
 
