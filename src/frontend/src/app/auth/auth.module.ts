@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SignInComponent } from './signin';
 import { SignUpComponent } from './signup';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { OauthComponent } from './oauth';
+import { OauthCallbackComponent } from './oauth';
 import { SignOutComponent } from './signout/signout.component';
 import { RouterModule } from '@angular/router';
 import { OAuthService } from './oauth';
@@ -15,7 +15,7 @@ import { JwtModule } from './jwt';
   declarations: [
     SignInComponent,
     SignUpComponent,
-    OauthComponent,
+    OauthCallbackComponent,
     SignOutComponent,
     InfoComponent,
   ],
@@ -27,7 +27,7 @@ import { JwtModule } from './jwt';
     AvatarModule,
     JwtModule,
   ],
-  exports: [SignInComponent, SignUpComponent, OauthComponent],
+  exports: [SignInComponent, SignUpComponent, OauthCallbackComponent],
   providers: [OAuthService],
 })
 export class AuthModule {}
