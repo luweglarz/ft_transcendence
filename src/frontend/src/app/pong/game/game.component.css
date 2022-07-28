@@ -1,6 +1,16 @@
+.container {
+  height: calc(100% - 58px);
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.container-collapsed {
+  height: calc(100% - 320px);
+}
+
 #game-container {
-    height: auto;
-    width: auto;
+  height: auto;
+  width: auto;
  }
 
  canvas {
