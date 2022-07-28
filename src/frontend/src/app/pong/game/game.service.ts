@@ -21,9 +21,9 @@ export class GameService {
     return this._socket;
   }
 
-  requestLeaveNormalGame() {
+  requestLeaveGame() {
     this.isInGame = false;
-    this.socket.emit('leaveNormalGame');
+    this.socket.emit('leaveGame');
   }
 
   sendKeyEvents() {
@@ -88,7 +88,11 @@ export class GameService {
     );
   }
 
-  drawPlayersInfos(playerOneInfo: ElementRef, playerTwoInfo: ElementRef, players: Player[]){
+  drawPlayersInfos(
+    playerOneInfo: ElementRef,
+    playerTwoInfo: ElementRef,
+    players: Player[],
+  ) {
     playerOneInfo.nativeElement.innerHTML += players[0].username;
     playerTwoInfo.nativeElement.innerHTML += players[1].username;
   }

@@ -5,9 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
-import { Socket } from 'ngx-socket-io';
-import { AuthSocket } from 'src/app/class/auth-socket';
+import { CollapseService } from 'src/app/home-page/collapse.service';
 import { Game } from '../class/game';
 import { GameService } from './game.service';
 
@@ -18,20 +16,23 @@ import { GameService } from './game.service';
 })
 export class GameComponent implements OnInit {
   constructor(
+    public collapseService: CollapseService,
     private gameService: GameService,
-    private router: Router,
     public game: Game,
   ) {}
 
   ngOnInit() {
     this.gameService.sendKeyEvents();
-    this.gameService.socket.on('gameFinished', (winner: any, leaver?: any) => {
-      clearInterval(this.gameService.keyEventsInterval);
-      this.gameService.isInGame = false;
-      if (leaver != null) console.log(`Player ${leaver.username} has left the game`);
-      console.log(winner.username + ' Has won the game');
-      this.router.navigate(['/']);
-    });
+    this.gameService.socket.once(
+      'gameFinished',
+      (winner: any, leaver?: any) => {
+        clearInterval(this.gameService.keyEventsInterval);
+        this.gameService.isInGame = false;
+        if (leaver != null && leaver != undefined)
+          console.log(`Player ${leaver.username} has left the game`);
+        console.log(winner.username + ' Has won the game');
+      },
+    );
   }
 
   /** Get the #gameCanvas reference with ViewChild decorator. */
@@ -50,8 +51,12 @@ export class GameComponent implements OnInit {
 
   /** Lifecycle hook called after component's view has been initialized. */
   ngAfterViewInit() {
-    this.playersInfo.nativeElement.style.width=this.game.canvaWidth + "px";
-    this.gameService.drawPlayersInfos(this.playerOneInfo, this.playerTwoInfo, this.game.players);
+    this.playersInfo.nativeElement.style.width = this.game.canvaWidth + 'px';
+    this.gameService.drawPlayersInfos(
+      this.playerOneInfo,
+      this.playerTwoInfo,
+      this.game.players,
+    );
     this.gameContext = this.gameCanvas.nativeElement.getContext('2d');
     this.gameCanvas.nativeElement.width = this.game.canvaWidth;
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;
@@ -93,7 +98,7 @@ export class GameComponent implements OnInit {
       this.gameService.keyPressed = 'stop';
   }
 
-  buttonRequestLeaveNormalGame() {
-    this.gameService.requestLeaveNormalGame();
+  buttonRequestLeaveGame() {
+    this.gameService.requestLeaveGame();
   }
 }
