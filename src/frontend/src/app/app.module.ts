@@ -9,25 +9,11 @@ import { PongModule } from './pong/pong.module';
 import { AuthModule, JwtInterceptor } from './auth';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { HomeComponent } from './pages/home/home.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { ProfilComponent } from './components/profil/profil.component';
-import { LadderComponent } from './components/ladder/ladder.component';
-import { SocialComponent } from './components/social/social.component';
-import { ChatbarComponent } from './components/chatbar/chatbar.component';
 import { SocketIoModule } from 'ngx-socket-io';
+import { HomePageModule } from './home-page/home-page.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NotFoundComponent,
-    HomeComponent,
-    NavbarComponent,
-    ProfilComponent,
-    LadderComponent,
-    SocialComponent,
-    ChatbarComponent,
-  ],
+  declarations: [AppComponent, NotFoundComponent],
   imports: [
     RouterModule,
     BrowserModule,
@@ -39,6 +25,7 @@ import { SocketIoModule } from 'ngx-socket-io';
     HttpClientModule,
     AuthModule,
     SocketIoModule,
+    HomePageModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

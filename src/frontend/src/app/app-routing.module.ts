@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SignUpComponent, SignInComponent } from './auth';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { HomeComponent } from './pages/home/home.component';
-import { GameComponent } from './pong/game/game.component';
-import { IsInGameGuard } from './pong/game/is-in-game.guard';
+import { HomeComponent } from './home-page/home/home.component';
 import { OauthComponent } from './auth/oauth/oauth.component';
 import { SignOutComponent } from './auth/signout/signout.component';
 import { InfoComponent } from './auth/info/info.component';
@@ -39,11 +37,6 @@ const routes: Routes = [
         component: InfoComponent,
       },
     ],
-  },
-  {
-    path: 'game',
-    component: GameComponent,
-    canActivate: [IsInGameGuard],
   },
   {
     path: 'not-found',

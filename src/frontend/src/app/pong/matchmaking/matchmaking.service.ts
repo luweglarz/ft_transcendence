@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthSocket } from 'src/app/class/auth-socket';
+import { NotificationService } from 'src/app/home-page/notification.service';
 import { GameComponent } from '../game/game.component';
 import { GameService } from '../game/game.service';
 
@@ -10,9 +10,9 @@ import { GameService } from '../game/game.service';
 export class MatchmakingService {
   constructor(
     private socket: AuthSocket,
-    private router: Router,
     private gameComponent: GameComponent,
     private gameService: GameService,
+    public notificationService: NotificationService,
   ) {
     this.socket.on('matchmakingLeft', (msg: any) => {
       console.log(msg);
@@ -30,6 +30,8 @@ export class MatchmakingService {
     this.socket.once(
       'matchFound',
       (msg: any, gameMapInfo: any, playersInfo: any) => {
+        this.notificationService.gameFound();
+
         this.gameComponent.game.players[0].height = playersInfo.height;
         this.gameComponent.game.players[0].width = playersInfo.width;
         this.gameComponent.game.players[1].height = playersInfo.height;
@@ -46,7 +48,6 @@ export class MatchmakingService {
         this.gameComponent.game.backgroundColor = gameMapInfo.backgroundColor;
         this.gameService.isInGame = true;
         this.gameComponent.game.ball.radius = gameMapInfo.ballRadius;
-        this.router.navigate(['game']);
         console.log(msg);
       },
     );

@@ -1,0 +1,88 @@
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  color: white;
+  font-size: 20px;
+}
+
+/* Header */
+.profil-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  border-radius: 1em;
+  background-color: #1A202C;
+
+  padding: 20px;
+}
+
+.profil-header-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-size: large;
+  font-weight: 700;
+
+  width: 20%;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.profil-header-avatar {
+  border-radius: 100%;
+  margin-top: 16px;
+}
+
+.profil-header-line {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+
+}
+
+/* Separator */
+.profil-separator {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profil-win-counter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 20px;
+  height: 32px;
+  width: fit-content;
+}
+
+.profil-win-logo {
+  color: green;
+  margin-right: 10px;
+  font-weight: bolder;
+  font-size: 24px;
+}
+
+.profil-loss-logo {
+  color: red;
+  margin-left: 10px;
+  font-weight: bolder;
+  font-size: 24px;
+}
+
+.profil-history-title {
+  font-size: 24px;
+}
+
+/* History */
+.profil-history {
+  background-color: red;
+}

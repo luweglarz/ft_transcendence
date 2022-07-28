@@ -1,38 +1,33 @@
+/* Container */
 .sidenav {
   background-color: #2c3649;
-  transition: all 0.3s ease;
   position: fixed;
   z-index: 1;
   top: 0;
   width: 80px;
   height: 100%;
   float: left;
+
+  transition: all 0.3s;
+  overflow: hidden;
 }
 
 .sidenav-collapsed {
   width: 250px;
 }
 
-/* HEADER */
-.sidenav .sidenav-header {
+/* Header */
+.sidenav-header {
   display: flex;
   align-items: center;
   width: 100%;
   height: 20%;
 }
 
-.sidenav .sidenav-header .logo {
-  background-color: transparent;
-  width: 64px;
-  height: 64px;
+.sidenav-header .logo {
   border-radius: 6px;
-  cursor: pointer;
+  padding-left: 8px;
   border: none;
-}
-
-.sidenav .sidenav-header .logo svg {
-  fill: white;
-  padding-left: 3px;
 }
 
 .sidenav .sidenav-header .logo-text {
@@ -43,17 +38,7 @@
   color: #fff;
 }
 
-.sidenav .sidenav-header .btn-close {
-  margin-left: auto;
-  cursor: pointer;
-  border-radius: 50%;
-  background-color: transparent;
-  border: none;
-  position: absolute;
-  top: 21px;
-  left: 196px;
-}
-
+/* Content */
 .sidenav-nav {
   list-style: none;
   padding-left: 16px;
@@ -64,18 +49,6 @@
   align-items: center;
   justify-content: center;
   height: 60%;
-}
-
-.sidenav-settings {
-  list-style: none;
-  padding-left: 16px;
-  padding-right: 16px;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 20%;
 }
 
 .sidenav-nav-item {
@@ -90,7 +63,6 @@
   height: 3rem;
   color: white;
   border-radius: 0.625rem;
-  transition: all 0.3s ease;
 }
 
 .sidenav-nav-item .sidenav-nav-link .sidenav-link-avatar {
@@ -99,8 +71,10 @@
   border-radius: 100%;
   margin: 8px 8px;
 }
+
 .sidenav-nav-item .sidenav-nav-link .sidenav-link-icon {
   width: 32px;
+  min-width: 32px;
   height: 32px;
   margin: 8px 8px;
   fill: white;
@@ -114,6 +88,7 @@
   font-weight: bold;
 }
 
+/* Link transitions */
 .sidenav-nav-item:hover .sidenav-nav-link {
     background-color: #44526F;
 }
@@ -128,4 +103,17 @@
 
 .sidenav-nav-item:active .sidenav-nav-link .sidenav-link-icon {
   fill: #1A202C;
+}
+
+/* Footer */
+.sidenav-footer {
+  list-style: none;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 20%;
 }
