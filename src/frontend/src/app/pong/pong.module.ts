@@ -10,6 +10,6 @@ import { AuthSocket } from '../class/auth-socket';
   declarations: [MatchmakingComponent, GameComponent],
   imports: [CommonModule],
   providers: [GameService, MatchmakingService, GameComponent, AuthSocket],
-  exports: [MatchmakingComponent],
+  exports: [MatchmakingComponent, GameComponent],
 })
 export class PongModule {}

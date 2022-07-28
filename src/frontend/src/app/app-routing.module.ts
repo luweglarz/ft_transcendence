@@ -41,11 +41,6 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'game',
-    component: GameComponent,
-    canActivate: [IsInGameGuard],
-  },
-  {
     path: 'not-found',
     component: NotFoundComponent,
   },
