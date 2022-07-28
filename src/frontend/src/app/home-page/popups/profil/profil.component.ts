@@ -8,15 +8,13 @@ import { AvatarService } from 'src/app/avatar/avatar.service';
   styleUrls: ['./profil.component.css'],
 })
 export class ProfilComponent implements OnInit {
-
-  username: string = 'username';
-  rank: number = 1;
-  elo: number = 0;
-  win: number = 0;
-  loss: number = 0;
-  winStreak: number = 0;
-  lossStreak: number = 0;
-
+  username = 'username';
+  rank = 1;
+  elo = 0;
+  win = 0;
+  loss = 0;
+  winStreak = 0;
+  lossStreak = 0;
 
   constructor(public jwtService: JwtService, public avatar: AvatarService) {
     //

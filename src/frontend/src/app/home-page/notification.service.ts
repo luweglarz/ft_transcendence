@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
-
   //Audio
-  gameFoundSound: HTMLAudioElement = new Audio('assets/sounds/notification.mp3');
+  gameFoundSound: HTMLAudioElement = new Audio(
+    'assets/sounds/notification.mp3',
+  );
 
   //Notifications
-  msgNotification: number = 0;
+  msgNotification = 0;
 
-  constructor(private title:Title) { }
+  constructor(private title: Title) {}
 
   //Message
-  updateTitle(){
-    if (this.msgNotification != 0){
-      return ('(' + this.msgNotification + ') 42Pong');
-    }
-    else {
-      return ('42Pong');
+  updateTitle() {
+    if (this.msgNotification != 0) {
+      return '(' + this.msgNotification + ') 42Pong';
+    } else {
+      return '42Pong';
     }
   }
 
@@ -30,6 +30,6 @@ export class NotificationService {
     this.title.setTitle('Game is starting..');
     setTimeout(() => {
       this.title.setTitle(this.updateTitle());
-    } , 3000);
+    }, 3000);
   }
 }
