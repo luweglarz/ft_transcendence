@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { CollapseService } from 'src/app/home-page/collapse.service';
 import { Game } from '../class/game';
 import { GameService } from './game.service';
 
@@ -16,8 +16,8 @@ import { GameService } from './game.service';
 })
 export class GameComponent implements OnInit {
   constructor(
+    public collapseService: CollapseService,
     private gameService: GameService,
-    private router: Router,
     public game: Game,
   ) {}
 
@@ -31,7 +31,6 @@ export class GameComponent implements OnInit {
         if (leaver != null && leaver != undefined)
           console.log(`Player ${leaver.username} has left the game`);
         console.log(winner.username + ' Has won the game');
-        this.router.navigate(['/']);
       },
     );
   }

@@ -1,19 +1,19 @@
-<div class="chatbar">
+<div class="chatbar" [ngClass]=" collapseService.chatCollapsed ? 'chatbar-collapsed' : ''">
 
   <div class="chatbar-header">
-    <button class="btn-collapse" (click)="openChat()" *ngIf="!chatCollapsed">
+    <button class="btn-collapse" (click)="openChat()" *ngIf="!collapseService.chatCollapsed">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M2.43918 17.0457C2.72047 17.3269 3.10193 17.4849 3.49968 17.4849C3.89743 17.4849 4.27889 17.3269 4.56018 17.0457L11.9852 9.62068L19.4102 17.0457C19.6931 17.3189 20.072 17.4701 20.4653 17.4667C20.8586 17.4633 21.2348 17.3055 21.5129 17.0274C21.791 16.7493 21.9488 16.3731 21.9522 15.9798C21.9556 15.5865 21.8044 15.2076 21.5312 14.9247L13.0457 6.43918C12.7644 6.15797 12.3829 6 11.9852 6C11.5874 6 11.206 6.15797 10.9247 6.43918L2.43918 14.9247C2.15797 15.206 2 15.5874 2 15.9852C2 16.3829 2.15797 16.7644 2.43918 17.0457Z" fill="white" stroke="white" stroke-width="2"/>
       </svg>
     </button>
-    <button class="btn-collapse" (click)="closeChat()" *ngIf="chatCollapsed">
+    <button class="btn-collapse" (click)="closeChat()" *ngIf="collapseService.chatCollapsed">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M2.45401 7.93967C2.7353 7.65846 3.11676 7.50049 3.51451 7.50049C3.91226 7.50049 4.29372 7.65846 4.57501 7.93967L12 15.3647L19.425 7.93967C19.7079 7.66643 20.0868 7.51524 20.4801 7.51866C20.8734 7.52207 21.2496 7.67983 21.5277 7.95794C21.8059 8.23605 21.9636 8.61227 21.967 9.00557C21.9704 9.39886 21.8192 9.77776 21.546 10.0607L13.0605 18.5462C12.7792 18.8274 12.3978 18.9853 12 18.9853C11.6023 18.9853 11.2208 18.8274 10.9395 18.5462L2.45401 10.0607C2.1728 9.77938 2.01483 9.39791 2.01483 9.00017C2.01483 8.60242 2.1728 8.22096 2.45401 7.93967Z" fill="white" stroke="white" stroke-width="2"/>
       </svg>
     </button>
   </div>
 
-  <div class="chatbar-content" *ngIf="chatCollapsed">
+  <div class="chatbar-content" *ngIf="collapseService.chatCollapsed">
 
   </div>
 </div>
