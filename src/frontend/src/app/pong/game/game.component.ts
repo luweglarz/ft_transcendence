@@ -31,7 +31,7 @@ export class GameComponent implements OnInit {
         if (leaver != null && leaver != undefined)
           console.log(`Player ${leaver.username} has left the game`);
         console.log(winner.username + ' Has won the game');
-        this.router.navigate(['/']);
+        //this.router.navigate(['/']);
       },
     );
   }

@@ -51,7 +51,7 @@ export class MatchmakingService {
         this.gameComponent.game.backgroundColor = gameMapInfo.backgroundColor;
         this.gameService.isInGame = true;
         this.gameComponent.game.ball.radius = gameMapInfo.ballRadius;
-        this.router.navigate(['game']);
+        //this.router.navigate(['game']);
         console.log(msg);
       },
     );

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CollapseService } from 'src/app/home-page/collapse.service';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
+import { GameService } from 'src/app/pong/game/game.service';
 
 @Component({
   selector: 'app-home',
@@ -9,6 +10,7 @@ import { PopupsService } from 'src/app/home-page/popups/popups.service';
 })
 export class HomeComponent implements OnInit {
   constructor(
+    public gameService: GameService,
     public collapseService: CollapseService,
     public popupsService: PopupsService,
   ) {
