@@ -55,8 +55,9 @@ export class RoomService {
         id: room.id,
       },
       data: {
-        users: {
-          create: { user: { connect: nuser }, role: 'USER' }, ////need to check if it doesn't erase previous info
+        users: { create: { user: { connect: {id: nuser.id }}, role: 'OWNER' }
+        //users: {
+         // create: { user: { connect: nuser }, role: 'USER' }, ////need to check if it doesn't erase previous info
         },
       },
     });

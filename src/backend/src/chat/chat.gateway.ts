@@ -12,6 +12,8 @@ import { MessageService } from './message/message.service';
 import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
 import { Room } from '@prisma/client';
+import { JwtGuard } from 'src/auth/guard';
+import { UseGuards } from '@nestjs/common';
 
 @WebSocketGateway()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -33,13 +35,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         socket.handshake.auth.token,
         { secret: process.env['JWT_SECRET'] },
       );
+      if (!clearToken)
+        return ;
       socket.data.user = await this.prisma.user.findUnique({
         where: { username: clearToken.username },
       });
     } catch (error) {
       console.log(error);
+      socket.disconnect();
     }
-    console.log(socket.data.user);
+    console.log('fgh', socket.data.user);
     const rooms = await this.roomService.rooms({});
     if (rooms.length > 0) this.server.to(socket.id).emit('rooms', rooms);
     //this.server.to(socket.id).emit('testfgh');
