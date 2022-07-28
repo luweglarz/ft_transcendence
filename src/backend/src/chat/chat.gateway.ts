@@ -52,6 +52,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   async handleDisconnect(socket: Socket) {
+    //need cleanup of roomusers
     socket.disconnect();
   }
 
@@ -63,6 +64,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // emit new room to all connected user
     //this.server.to(socket.id).emit('rooms', this.roomService.rooms({}));
     this.getRooms(socket);
+    this.getRoomUsers(socket, room.id);
   }
 
   @SubscribeMessage('joinRoom')
@@ -78,6 +80,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // emmit room messages to new member of room
     console.log(room);
     this.getMsgs(socket, room.id);
+    this.getRoomUsers(socket, room.id);
   }
 
   @SubscribeMessage('leaveRoom')
@@ -107,24 +110,47 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     //console.log(parsed.room);
     //this.server.to(socket.id).emit('rooms', [JSON.parse(JSON.stringify(parsed.room))]);
     this.getMsgs(socket, parsed.room.id);
+    this.getRoomUsers(socket, parsed.room.id);
   }
 
   @SubscribeMessage('getMsgs')
   async getMsgs(socket: Socket, roomId: number) {
-    console.log(
-      roomId,
-      await this.messageService.messages({ where: { roomId: roomId } }),
-    );
+    let messages = JSON.parse(JSON.stringify(await this.messageService.messages({where: {roomId: roomId}})));
+    let count: number = 0;
+    for (let roomUser of messages) {
+      count++;
+    }
+    let i: number = 0;
+    while (i < count) {
+      messages[i].username = (await this.prisma.user.findUnique({where: {id: messages[i].userId}})).username;
+      i++;
+    }
+    console.log('fgh', messages);
     this.server
       .to(socket.id)
       .emit(
         'msgs',
-        await this.messageService.messages({ where: { roomId: roomId } }),
+        messages,
       );
   }
 
   @SubscribeMessage('getRooms')
   async getRooms(socket: Socket) {
     this.server.to(socket.id).emit('rooms', await this.roomService.rooms({}));
+  }
+
+  async getRoomUsers(socket: Socket, roomId: number) {
+    let roomUsers = JSON.parse(JSON.stringify(await this.roomUserService.roomUsers({where: {roomId: roomId}})));
+    let count: number = 0;
+    for (let roomUser of roomUsers) {
+      count++;
+    }
+    let i: number = 0;
+    while (i < count) {
+      roomUsers[i].username = (await this.prisma.user.findUnique({where: {id: roomUsers[i].userId}})).username;
+      i++;
+    }
+    console.log('fgh', roomUsers);
+    this.server.to(socket.id).emit('roomUsers', roomUsers)
   }
 }

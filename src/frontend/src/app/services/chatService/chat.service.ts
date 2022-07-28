@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 //import { Socket } from 'ngx-socket-io';
 import { AuthSocket } from 'src/app/class/auth-socket';
-import { Room, RoomTab } from 'src/app/interface/room';
+import { Room } from 'src/app/interface/room';
 import { Observable } from 'rxjs';
 import { Message } from 'src/app/interface/message';
+import { RoomUser } from 'src/app/interface/roomUser';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,10 @@ export class ChatService {
 
   getMsgs(): Observable<Message[]> {
     return this.socket.fromEvent<Message[]>('msgs');
+  }
+
+  getRoomUsers(): Observable<RoomUser[]> {
+    return this.socket.fromEvent<RoomUser[]>('roomUsers');
   }
 
   openChat() {

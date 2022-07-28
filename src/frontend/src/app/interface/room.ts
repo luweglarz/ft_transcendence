@@ -1,4 +1,5 @@
 import { Message } from 'src/app/interface/message';
+//import { RoomUser } from 'src/app/interface/roomUser';
 
 export interface Room {
   id?: number;
@@ -9,10 +10,6 @@ export interface Room {
   roomType?: RoomType;
   //users:    RoomUser[];
   messages?: Message[];
-}
-
-export interface RoomTab {
-  roomstab: Room[];
 }
 
 export enum RoomType {

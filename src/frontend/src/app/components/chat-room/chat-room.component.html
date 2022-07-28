@@ -1,9 +1,10 @@
-<div *ngIf="chatRoom">
+<div *ngIf="(chatRoom | json) != ({} | json)">
     <div style="height: 125px;">
         <span style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
         <h2>{{chatRoom.name}}</h2>
         </span>
-        <span>
+        <span *ngFor="let roomUser of (roomUsers | async)">
+            {{roomUser.username}}
             <!--Users-->
         </span>
     </div>
@@ -12,7 +13,7 @@
     <!--Messages-->
     <div class="mesgs">
         <li *ngFor="let message of (messages|async)">
-            <p>{{message.content}}</p>
+            <app-chat-message [message]="message" [roomUsers]="roomUsers"></app-chat-message>
         </li>
     </div>
 
