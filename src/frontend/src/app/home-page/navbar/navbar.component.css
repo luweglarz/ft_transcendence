@@ -1,0 +1,119 @@
+/* Container */
+.sidenav {
+  background-color: #2c3649;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  float: left;
+
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+.sidenav-collapsed {
+  width: 250px;
+}
+
+/* Header */
+.sidenav-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 20%;
+}
+
+.sidenav-header .logo {
+  border-radius: 6px;
+  padding-left: 8px;
+  border: none;
+}
+
+.sidenav .sidenav-header .logo-text {
+  margin-left: 1.5rem;
+  font-size: 52px;
+  font-weight: 700;
+  font-family: 'Passero One', cursive;
+  color: #fff;
+}
+
+/* Content */
+.sidenav-nav {
+  list-style: none;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60%;
+}
+
+.sidenav-nav-item {
+  width: 100%;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+ .sidenav-nav-item .sidenav-nav-link {
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  color: white;
+  border-radius: 0.625rem;
+}
+
+.sidenav-nav-item .sidenav-nav-link .sidenav-link-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  margin: 8px 8px;
+}
+
+.sidenav-nav-item .sidenav-nav-link .sidenav-link-icon {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  margin: 8px 8px;
+  fill: white;
+}
+
+.sidenav-nav-item .sidenav-nav-link .sidenav-link-text {
+  margin-left: 12px;
+  color: white;
+  font-family: Roboto, sans-serif;
+  font-size: large;
+  font-weight: bold;
+}
+
+/* Link transitions */
+.sidenav-nav-item:hover .sidenav-nav-link {
+    background-color: #44526F;
+}
+
+.sidenav-nav-item:active .sidenav-nav-link {
+  background-color: white;
+}
+
+.sidenav-nav-item:active .sidenav-nav-link .sidenav-link-text {
+  color: #1A202C;
+}
+
+.sidenav-nav-item:active .sidenav-nav-link .sidenav-link-icon {
+  fill: #1A202C;
+}
+
+/* Footer */
+.sidenav-footer {
+  list-style: none;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 20%;
+}
