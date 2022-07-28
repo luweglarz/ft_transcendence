@@ -1,20 +1,19 @@
-
 export interface RoomUser {
-    roomUserId?:    number;
-    userId?:        number;
-    roomId?:        number;
-    username?:      string;
-    role?:          Role;
-    isBanned?:      Boolean;
-    isMuted?:       Boolean;
-    timeOut?:       Date;
+  roomUserId?: number;
+  userId?: number;
+  roomId?: number;
+  username?: string;
+  role?: Role;
+  isBanned?: boolean;
+  isMuted?: boolean;
+  timeOut?: Date;
 }
 
 export enum Role {
-    USER = 'USER',
-    ADMIN = 'ADMIN',
-    OWNER = 'OWNER',
-  }
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+  OWNER = 'OWNER',
+}
 
 /*
 model RoomUser {

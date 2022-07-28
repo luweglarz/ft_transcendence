@@ -20,7 +20,11 @@ export class ChatbarComponent implements OnInit {
   rooms: Observable<Room[]> = this.chatService.getRooms();
   selectedRoom: Room = {};
 
-  constructor(private chatService: ChatService, public dialog: MatDialog, public collapseService: CollapseService) {
+  constructor(
+    private chatService: ChatService,
+    public dialog: MatDialog,
+    public collapseService: CollapseService,
+  ) {
     //
   }
 
