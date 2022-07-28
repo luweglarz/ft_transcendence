@@ -1,1 +1,1 @@
-export * from './avatar.interface'
+export * from './avatar.interface';

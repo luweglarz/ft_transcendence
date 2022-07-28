@@ -9,7 +9,6 @@ import { GameService } from '../game/game.service';
   providedIn: 'root',
 })
 export class MatchmakingService {
-
   constructor(
     private socket: AuthSocket,
     private router: Router,

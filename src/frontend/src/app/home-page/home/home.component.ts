@@ -8,8 +8,10 @@ import { PopupsService } from 'src/app/home-page/popups/popups.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-
-  constructor(public collapseService: CollapseService, public popupsService: PopupsService) {
+  constructor(
+    public collapseService: CollapseService,
+    public popupsService: PopupsService,
+  ) {
     //
   }
 

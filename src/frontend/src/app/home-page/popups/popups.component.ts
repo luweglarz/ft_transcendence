@@ -1,17 +1,20 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CollapseService } from 'src/app/home-page/collapse.service';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
 
 @Component({
   selector: 'app-popups',
   templateUrl: './popups.component.html',
-  styleUrls: ['./popups.component.css']
+  styleUrls: ['./popups.component.css'],
 })
 export class PopupsComponent implements OnInit {
-
-  constructor(public collapseService: CollapseService, public popupsService: PopupsService) { }
+  constructor(
+    public collapseService: CollapseService,
+    public popupsService: PopupsService,
+  ) {}
 
   ngOnInit(): void {
+    //
   }
 
   closePopup() {
@@ -19,18 +22,27 @@ export class PopupsComponent implements OnInit {
   }
 
   manageClassCollapse(): string {
-    if (this.collapseService.navCollapsed == true && this.collapseService.chatCollapsed == true){
-      return ('popup-full-collapsed');
+    if (
+      this.collapseService.navCollapsed == true &&
+      this.collapseService.chatCollapsed == true
+    ) {
+      return 'popup-full-collapsed';
+    } else if (
+      this.collapseService.navCollapsed == false &&
+      this.collapseService.chatCollapsed == false
+    ) {
+      return 'popup-full-uncollapsed';
+    } else if (
+      this.collapseService.navCollapsed == true &&
+      this.collapseService.chatCollapsed == false
+    ) {
+      return 'popup-nav-collapsed';
+    } else if (
+      this.collapseService.navCollapsed == false &&
+      this.collapseService.chatCollapsed == true
+    ) {
+      return 'popup-chat-collapsed';
     }
-    else if (this.collapseService.navCollapsed == false && this.collapseService.chatCollapsed == false){
-      return ('popup-full-uncollapsed');
-    }
-    else if (this.collapseService.navCollapsed == true && this.collapseService.chatCollapsed == false){
-      return ('popup-nav-collapsed');
-    }
-    else if (this.collapseService.navCollapsed == false && this.collapseService.chatCollapsed == true){
-      return ('popup-chat-collapsed');
-    }
-    return ('');
+    return '';
   }
 }

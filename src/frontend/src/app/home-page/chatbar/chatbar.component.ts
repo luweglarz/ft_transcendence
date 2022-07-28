@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CollapseService } from 'src/app/home-page/collapse.service';
 
 @Component({
@@ -7,7 +7,6 @@ import { CollapseService } from 'src/app/home-page/collapse.service';
   styleUrls: ['./chatbar.component.css'],
 })
 export class ChatbarComponent implements OnInit {
-
   constructor(public collapseService: CollapseService) {
     //
   }

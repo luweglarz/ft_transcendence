@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 import { CollapseService } from 'src/app/home-page/collapse.service';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
@@ -11,13 +11,12 @@ import { JwtService } from 'src/app/auth/jwt';
   animations: [],
 })
 export class NavbarComponent implements OnInit {
-
   constructor(
     public jwtService: JwtService,
     public avatar: AvatarService,
     public collapseService: CollapseService,
-    public popupsService: PopupsService
-    ) {
+    public popupsService: PopupsService,
+  ) {
     //
   }
 
@@ -26,7 +25,7 @@ export class NavbarComponent implements OnInit {
   }
 
   /* NAVBAR COLLAPSE */
-  openSidenav(){
+  openSidenav() {
     this.collapseService.openNav();
   }
 
@@ -48,5 +47,4 @@ export class NavbarComponent implements OnInit {
   openSocial() {
     this.popupsService.openSocial();
   }
-
 }
