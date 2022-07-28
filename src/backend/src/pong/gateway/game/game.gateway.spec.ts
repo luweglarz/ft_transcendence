@@ -5,6 +5,8 @@ import { GameGateway } from './game.gateway';
 import { GameGatewayService } from './game-gateway.service';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { MatchmakingGatewayService } from '../matchmaking/matchmaking-gateway.service';
+import { DbService } from 'src/db/db.service';
+import { GameDbService } from 'src/pong/service/game-db/game-db.service';
 
 describe('GameGateway', () => {
   let gateway: GameGateway;
@@ -17,6 +19,8 @@ describe('GameGateway', () => {
         GameGatewayService,
         MatchmakingGatewayService,
         GameCoreService,
+        DbService,
+        GameDbService,
       ],
       imports: [JwtModule],
     }).compile();

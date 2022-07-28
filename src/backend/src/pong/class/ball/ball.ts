@@ -115,5 +115,6 @@ export class Ball {
   resetBall(gameMap: GameMap) {
     this.x = this._mapCenter.x;
     this.y = Math.floor(Math.random() * gameMap.canvaHeight + 1);
+    this.speed = this._initialSpeed;
   }
 }

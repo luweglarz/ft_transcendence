@@ -11,17 +11,30 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  username  String   @unique
-  email     String?  @unique
-  password  String?
-  avatar    Bytes?
-  authType  AuthType @default(LOCAL)
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  username   String       @unique
+  email      String?      @unique
+  password   String?
+  avatar     Bytes?
+  authType   AuthType     @default(LOCAL)
+  wins       Game[]       @relation("Winner")
+  loses      Game[]       @relation("Loser")
 }
 
 enum AuthType {
   LOCAL
   OAUTH42
+}
+
+model Game {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime       @default(now())
+  winner      User          @relation("Winner", fields: [winnerId], references: [id])
+  winnerId    Int
+  winnerGoals Int
+  loser       User          @relation("Loser", fields: [loserId], references: [id])
+  loserId     Int
+  loserGoals  Int
 }
