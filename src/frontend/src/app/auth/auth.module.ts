@@ -4,12 +4,12 @@ import { SignInComponent } from './signin';
 import { SignUpComponent } from './signup';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OauthComponent } from './oauth';
-import { JwtService } from './jwt';
 import { SignOutComponent } from './signout/signout.component';
 import { RouterModule } from '@angular/router';
-import { OAuthService } from './oauth/oauth.service';
-import { InfoComponent } from './info/info.component';
-import { AvatarModule } from '../avatar/avatar.module';
+import { OAuthService } from './oauth';
+import { InfoComponent } from './info';
+import { AvatarModule } from '../avatar';
+import { JwtModule } from './jwt';
 
 @NgModule({
   declarations: [
@@ -25,8 +25,9 @@ import { AvatarModule } from '../avatar/avatar.module';
     ReactiveFormsModule,
     RouterModule,
     AvatarModule,
+    JwtModule,
   ],
   exports: [SignInComponent, SignUpComponent, OauthComponent],
-  providers: [JwtService, OAuthService],
+  providers: [OAuthService],
 })
 export class AuthModule {}
