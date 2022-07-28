@@ -38,13 +38,10 @@ export class GameGatewayService {
     leaver?: string,
   ) {
     if (leaver != undefined)
-    server
-      .to(roomUuid)
-      .emit('gameFinished', { username: winner }, { username: leaver });
-    else
-    server
-    .to(roomUuid)
-    .emit('gameFinished', { username: winner });
+      server
+        .to(roomUuid)
+        .emit('gameFinished', { username: winner }, { username: leaver });
+    else server.to(roomUuid).emit('gameFinished', { username: winner });
   }
 
   emitGameUpdate(server: Server, gameRoom: Room, ball: Ball) {
