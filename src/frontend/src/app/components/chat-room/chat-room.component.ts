@@ -10,6 +10,7 @@ import { Message } from 'src/app/interface/message';
 import { Room } from 'src/app/interface/room';
 import { ChatService } from 'src/app/services/chatService/chat.service';
 import { Observable } from 'rxjs';
+import { RoomUser } from 'src/app/interface/roomUser';
 
 @Component({
   selector: 'app-chat-room',
@@ -20,6 +21,7 @@ export class ChatRoomComponent implements OnChanges {
   @Input() chatRoom: Room = {};
   chatMessage: FormControl = new FormControl(null, [Validators.required]);
   messages: Observable<Message[]> = this.chatService.getMsgs();
+  roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
 
   constructor(private chatService: ChatService) {}
 
