@@ -14,10 +14,7 @@ import { HomePageModule } from './home-page/home-page.module';
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NotFoundComponent,
-  ],
+  declarations: [AppComponent, NotFoundComponent],
   imports: [
     RouterModule,
     BrowserModule,
