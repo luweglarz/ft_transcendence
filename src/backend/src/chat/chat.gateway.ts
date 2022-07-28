@@ -12,8 +12,6 @@ import { MessageService } from './message/message.service';
 import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
 import { Room } from '@prisma/client';
-import { JwtGuard } from 'src/auth/guard';
-import { UseGuards } from '@nestjs/common';
 
 @WebSocketGateway()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -35,8 +33,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         socket.handshake.auth.token,
         { secret: process.env['JWT_SECRET'] },
       );
-      if (!clearToken)
-        return ;
+      if (!clearToken) return;
       socket.data.user = await this.prisma.user.findUnique({
         where: { username: clearToken.username },
       });
@@ -115,23 +112,24 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('getMsgs')
   async getMsgs(socket: Socket, roomId: number) {
-    let messages = JSON.parse(JSON.stringify(await this.messageService.messages({where: {roomId: roomId}})));
-    let count: number = 0;
-    for (let roomUser of messages) {
+    const messages = JSON.parse(
+      JSON.stringify(
+        await this.messageService.messages({ where: { roomId: roomId } }),
+      ),
+    );
+    let count = 0;
+    for (const roomUser of messages) {
       count++;
     }
-    let i: number = 0;
+    let i = 0;
     while (i < count) {
-      messages[i].username = (await this.prisma.user.findUnique({where: {id: messages[i].userId}})).username;
+      messages[i].username = (
+        await this.prisma.user.findUnique({ where: { id: messages[i].userId } })
+      ).username;
       i++;
     }
     console.log('fgh', messages);
-    this.server
-      .to(socket.id)
-      .emit(
-        'msgs',
-        messages,
-      );
+    this.server.to(socket.id).emit('msgs', messages);
   }
 
   @SubscribeMessage('getRooms')
@@ -140,17 +138,25 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   async getRoomUsers(socket: Socket, roomId: number) {
-    let roomUsers = JSON.parse(JSON.stringify(await this.roomUserService.roomUsers({where: {roomId: roomId}})));
-    let count: number = 0;
-    for (let roomUser of roomUsers) {
+    const roomUsers = JSON.parse(
+      JSON.stringify(
+        await this.roomUserService.roomUsers({ where: { roomId: roomId } }),
+      ),
+    );
+    let count = 0;
+    for (const roomUser of roomUsers) {
       count++;
     }
-    let i: number = 0;
+    let i = 0;
     while (i < count) {
-      roomUsers[i].username = (await this.prisma.user.findUnique({where: {id: roomUsers[i].userId}})).username;
+      roomUsers[i].username = (
+        await this.prisma.user.findUnique({
+          where: { id: roomUsers[i].userId },
+        })
+      ).username;
       i++;
     }
     console.log('fgh', roomUsers);
-    this.server.to(socket.id).emit('roomUsers', roomUsers)
+    this.server.to(socket.id).emit('roomUsers', roomUsers);
   }
 }
