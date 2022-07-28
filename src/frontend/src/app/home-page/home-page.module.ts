@@ -12,6 +12,8 @@ import { PongModule } from '../pong/pong.module';
 import { ProfilComponent } from './popups/profil/profil.component';
 import { LadderComponent } from './popups/ladder/ladder.component';
 import { SocialComponent } from './popups/social/social.component';
+import { MatchHistoryComponent } from './popups/profil/match-history/match-history.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,8 +24,9 @@ import { SocialComponent } from './popups/social/social.component';
     ProfilComponent,
     LadderComponent,
     SocialComponent,
+    MatchHistoryComponent,
   ],
   providers: [CollapseService, PopupsService, NotificationService, GameService],
-  imports: [CommonModule, PongModule],
+  imports: [CommonModule, PongModule, HttpClientModule],
 })
 export class HomePageModule {}
