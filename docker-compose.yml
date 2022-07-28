@@ -24,7 +24,7 @@ services:
       - 5555:5555 # prisma studio
       - 9229:9229 # debug
     env_file:
-      - ./src/postgres/dev.env
+      - ./src/backend/env/postgres.dev.env
     environment:
       TZ: "Europe/Paris"
       OAUTH_42_CLIENT_ID: ${OAUTH_42_CLIENT_ID}
@@ -54,16 +54,13 @@ services:
     restart: on-failure
   
   postgres:
-    build: 
-      context: ./src/postgres/docker
-      dockerfile: Dockerfile
-    image: transcendence/postgres
+    image: postgres:13.1
     container_name: postgres
     networks:
       transcendence_network:
         aliases: [ transcendence.postgres ]
     env_file:
-      - ./src/postgres/dev.env
+      - ./src/backend/env/postgres.dev.env
     environment:
       TZ: "Europe/Paris"
     restart: on-failure
