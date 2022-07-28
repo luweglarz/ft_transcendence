@@ -41,9 +41,9 @@ enum RoomType {
 }
 
 model RoomUser {
+  roomUserId Int         @id @default(autoincrement())
   user     User      @relation(fields: [userId], references: [id])
   userId   Int
-  socketId String? //probably nned to be moved to User
   room     Room      @relation(fields: [roomId], references: [id])
   roomId   Int
   role     Role
@@ -51,7 +51,6 @@ model RoomUser {
   isMuted  Boolean   @default(false)
   timeOut  DateTime?
 
-  @@id([userId, roomId])
 }
 
 model Message {
