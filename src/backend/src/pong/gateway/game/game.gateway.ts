@@ -97,7 +97,13 @@ export class GameGateway
               element.socket.handshake.auth.token ==
               client.handshake.auth.token,
           );
-          this.gameCoreService.gameFinished(this.server, room.uuid, winner, leaver, true);
+          this.gameCoreService.gameFinished(
+            this.server,
+            room.uuid,
+            winner,
+            leaver,
+            true,
+          );
           clearInterval(room.gameLoopInterval);
           this.gameGatewayService.clearRoom(room, this.rooms);
           this.logger.log(`player ${leaver} has left the game ${room.uuid}`);

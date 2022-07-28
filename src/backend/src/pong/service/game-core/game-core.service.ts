@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Server } from 'socket.io';
 import { Ball } from 'src/pong/class/ball/ball';
 import { GameMap } from 'src/pong/class/game-map/game-map';
@@ -10,24 +10,30 @@ import { GameDbService } from '../game-db/game-db.service';
 @Injectable()
 export class GameCoreService {
   constructor(
-    private gameGatewayService: GameGatewayService, private gameDbService: GameDbService
+    private gameGatewayService: GameGatewayService,
+    private gameDbService: GameDbService,
   ) {}
 
-  gameFinished(server: Server, gameRoomUuid: string, winner: Player, loser: Player, gameLeft: boolean){
+  gameFinished(
+    server: Server,
+    gameRoomUuid: string,
+    winner: Player,
+    loser: Player,
+    gameLeft: boolean,
+  ) {
     this.gameDbService.pushGameDb(winner, loser);
-    if (gameLeft === false){
+    if (gameLeft === false) {
       this.gameGatewayService.emitGameFinished(
         server,
         gameRoomUuid,
         winner.username,
       );
-    }
-    else if (gameLeft === true){
+    } else if (gameLeft === true) {
       this.gameGatewayService.emitGameFinished(
         server,
         gameRoomUuid,
         winner.username,
-        loser.username
+        loser.username,
       );
     }
   }
@@ -66,7 +72,7 @@ export class GameCoreService {
       this.gameFinished(server, gameRoomUuid, players[0], players[1], false);
       return true;
     } else if (players[1].goals == 11) {
-      this.gameFinished(server, gameRoomUuid, players[1], players[0], false)
+      this.gameFinished(server, gameRoomUuid, players[1], players[0], false);
       return true;
     }
     return false;
