@@ -30,6 +30,7 @@ enum AuthType {
 
 model Game {
   id          Int           @id @default(autoincrement())
+  createdAt   DateTime       @default(now())
   winner      User          @relation("Winner", fields: [winnerId], references: [id])
   winnerId    Int
   winnerGoals Int
