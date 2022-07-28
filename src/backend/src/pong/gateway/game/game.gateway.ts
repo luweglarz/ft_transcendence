@@ -14,6 +14,8 @@ import { Room } from '../../class/room/room';
 import { GameGatewayService } from './game-gateway.service';
 import { Player } from '../../class/player/player';
 import { JwtService } from '@nestjs/jwt';
+import { GameDbService } from 'src/pong/service/game-db/game-db.service';
+import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 
 @WebSocketGateway({ cors: true })
 export class GameGateway
@@ -21,6 +23,8 @@ export class GameGateway
 {
   constructor(
     private gameGatewayService: GameGatewayService,
+    private gameDbService: GameDbService,
+    private gameCoreService: GameCoreService,
     private jwtService: JwtService,
   ) {
     this.logger = new Logger('GameGateway');
@@ -75,8 +79,8 @@ export class GameGateway
 
   @SubscribeMessage('leaveGame')
   leaveGame(@ConnectedSocket() client: Socket) {
-    let winner: string;
-    let leaver: string;
+    let winner: Player;
+    let leaver: Player;
 
     for (const room of this.rooms) {
       for (const player of room.players) {
@@ -87,18 +91,13 @@ export class GameGateway
             (element) =>
               element.socket.handshake.auth.token !=
               client.handshake.auth.token,
-          ).username;
+          );
           leaver = room.players.find(
             (element) =>
               element.socket.handshake.auth.token ==
               client.handshake.auth.token,
-          ).username;
-          this.gameGatewayService.emitGameFinished(
-            this.server,
-            room.uuid,
-            winner,
-            leaver,
           );
+          this.gameCoreService.gameFinished(this.server, room.uuid, winner, leaver, true);
           clearInterval(room.gameLoopInterval);
           this.gameGatewayService.clearRoom(room, this.rooms);
           this.logger.log(`player ${leaver} has left the game ${room.uuid}`);
