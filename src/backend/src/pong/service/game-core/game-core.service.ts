@@ -1,18 +1,42 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Server } from 'socket.io';
 import { Ball } from 'src/pong/class/ball/ball';
 import { GameMap } from 'src/pong/class/game-map/game-map';
 import { Player } from 'src/pong/class/player/player';
 import { Room } from 'src/pong/class/room/room';
 import { GameGatewayService } from 'src/pong/gateway/game/game-gateway.service';
-import { GameGateway } from 'src/pong/gateway/game/game.gateway';
+import { GameDbService } from '../game-db/game-db.service';
 
 @Injectable()
 export class GameCoreService {
   constructor(
-    @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway,
     private gameGatewayService: GameGatewayService,
+    private gameDbService: GameDbService,
   ) {}
+
+  gameFinished(
+    server: Server,
+    gameRoomUuid: string,
+    winner: Player,
+    loser: Player,
+    gameLeft: boolean,
+  ) {
+    this.gameDbService.pushGameDb(winner, loser);
+    if (gameLeft === false) {
+      this.gameGatewayService.emitGameFinished(
+        server,
+        gameRoomUuid,
+        winner.username,
+      );
+    } else if (gameLeft === true) {
+      this.gameGatewayService.emitGameFinished(
+        server,
+        gameRoomUuid,
+        winner.username,
+        loser.username,
+      );
+    }
+  }
 
   private playersMovement(players: Player[]) {
     if (players[0].checkBorderCollision()) {
@@ -45,18 +69,10 @@ export class GameCoreService {
     gameRoomUuid: string,
   ): boolean {
     if (players[0].goals == 11) {
-      this.gameGatewayService.emitGameFinished(
-        server,
-        gameRoomUuid,
-        players[0].username,
-      );
+      this.gameFinished(server, gameRoomUuid, players[0], players[1], false);
       return true;
     } else if (players[1].goals == 11) {
-      this.gameGatewayService.emitGameFinished(
-        server,
-        gameRoomUuid,
-        players[1].username,
-      );
+      this.gameFinished(server, gameRoomUuid, players[1], players[0], false);
       return true;
     }
     return false;
