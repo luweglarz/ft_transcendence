@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 import { OAuthUser } from '../interface';
 import { JwtService } from '../jwt';
-import { OAuthService } from '../oauth';
 import { SigninService } from '../signin/signin.service';
 import { SignoutService } from '../signout/signout.service';
 import { SignupService } from './signup.service';
@@ -16,22 +15,28 @@ import { SignupService } from './signup.service';
 })
 export class SignUpComponent implements OnInit {
   signUpType?: 'local' | 'oauth';
+  image_url = '/assets/images/default-avatar.png';
+  // Oauth specific
   token?: string;
   oAuthUser?: OAuthUser;
-  image_url = '/assets/images/default-avatar.png';
 
-  registerForm = this.formBuilder.group({
+  registerForm?: FormGroup;
+
+  localForm = this.formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
     email: ['', Validators.required],
     twoFactors: [false, Validators.required],
   });
 
+  oauthForm = this.formBuilder.group({
+    username: ['', Validators.required],
+    twoFactors: [false, Validators.required],
+  });
+
   constructor(
     private formBuilder: FormBuilder,
-    private oauth: OAuthService,
     private route: ActivatedRoute,
-    private router: Router,
     private service: SignupService,
     private signin: SigninService,
     private avatar: AvatarService,
@@ -47,25 +52,27 @@ export class SignUpComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params['type'] == 'oauth') {
         this.signUpType = 'oauth';
+        this.registerForm = this.oauthForm;
         this.token = <string>params['jwt'];
         this.oAuthUser = this.service.getOAuthUserData(this.token);
         this.registerForm.patchValue({ username: this.oAuthUser.login });
         this.image_url = this.oAuthUser.image_url;
       } else if (params['type'] == 'local') {
         this.signUpType = 'local';
+        this.registerForm = this.localForm;
       }
     });
   }
 
   get twoFactors() {
-    return this.registerForm.value.twoFactors;
+    return this.registerForm?.value.twoFactors;
   }
 
   signUp() {
     if (this.signUpType) {
       const signUpStatus$ = this.service.postSignUpData(
         this.signUpType,
-        this.registerForm.value,
+        this.registerForm?.value,
         this.token,
       );
       signUpStatus$.subscribe((response: any) => {
@@ -73,16 +80,5 @@ export class SignUpComponent implements OnInit {
         this.avatar.backendUpload();
       });
     }
-  }
-
-  oAuthSignUp() {
-    this.oauth.authorize('signup');
-  }
-
-  localSignUp() {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { type: 'local' },
-    });
   }
 }
