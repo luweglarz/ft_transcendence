@@ -16,7 +16,8 @@ export class GameCoreService {
 
   gameFinished(
     server: Server,
-    gameRoomUuid: string,
+    gameRoom: Room,
+    rooms: Room[],
     winner: Player,
     loser: Player,
     gameLeft: boolean,
@@ -25,17 +26,19 @@ export class GameCoreService {
     if (gameLeft === false) {
       this.gameGatewayService.emitGameFinished(
         server,
-        gameRoomUuid,
+        gameRoom.uuid,
         winner.username,
       );
     } else if (gameLeft === true) {
       this.gameGatewayService.emitGameFinished(
         server,
-        gameRoomUuid,
+        gameRoom.uuid,
         winner.username,
         loser.username,
       );
     }
+    clearInterval(gameRoom.gameLoopInterval);
+    this.gameGatewayService.clearRoom(gameRoom, rooms);
   }
 
   private playersMovement(players: Player[]) {
@@ -63,19 +66,13 @@ export class GameCoreService {
     ball.y += ball.yVelocity * ball.speed;
   }
 
-  private checkWinner(
-    server: Server,
-    players: Player[],
-    gameRoomUuid: string,
-  ): boolean {
-    if (players[0].goals == 11) {
-      this.gameFinished(server, gameRoomUuid, players[0], players[1], false);
-      return true;
-    } else if (players[1].goals == 11) {
-      this.gameFinished(server, gameRoomUuid, players[1], players[0], false);
-      return true;
-    }
-    return false;
+  private checkWinner(players: Player[]): Player {
+    if (players[0].goals == 11)
+      return players[0];
+    else if (players[1].goals == 11) 
+      return players[1];
+    else
+      return undefined;
   }
 
   private checkGoal(ball: Ball, gameMap: GameMap, players: Player[]): Player {
@@ -94,6 +91,8 @@ export class GameCoreService {
     }, 3000);
 
     const interval = setInterval(() => {
+      let winner: Player;
+
       this.playersMovement(gameRoom.players);
       this.ballMovement(gameRoom.ball, gameRoom.players);
       if (
@@ -106,10 +105,9 @@ export class GameCoreService {
         scorer.goals++;
         gameRoom.ball.resetBall(gameRoom.gameMap);
       }
-      if (this.checkWinner(server, gameRoom.players, gameRoom.uuid) == true) {
-        this.gameGatewayService.clearRoom(gameRoom, rooms);
-        clearInterval(interval);
-      }
+      winner = this.checkWinner(gameRoom.players);
+      if (winner != undefined)
+        this.gameFinished(server, gameRoom, rooms, winner, gameRoom.players.find( (element => { element.username != winner.username})), false);
       this.gameGatewayService.emitGameUpdate(server, gameRoom, gameRoom.ball);
     }, 5);
     return interval;
