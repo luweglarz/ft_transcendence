@@ -67,12 +67,9 @@ export class GameCoreService {
   }
 
   private checkWinner(players: Player[]): Player {
-    if (players[0].goals == 11)
-      return players[0];
-    else if (players[1].goals == 11) 
-      return players[1];
-    else
-      return undefined;
+    if (players[0].goals == 11) return players[0];
+    else if (players[1].goals == 11) return players[1];
+    else return undefined;
   }
 
   private checkGoal(ball: Ball, gameMap: GameMap, players: Player[]): Player {
@@ -91,8 +88,6 @@ export class GameCoreService {
     }, 3000);
 
     const interval = setInterval(() => {
-      let winner: Player;
-
       this.playersMovement(gameRoom.players);
       this.ballMovement(gameRoom.ball, gameRoom.players);
       if (
@@ -105,9 +100,13 @@ export class GameCoreService {
         scorer.goals++;
         gameRoom.ball.resetBall(gameRoom.gameMap);
       }
-      winner = this.checkWinner(gameRoom.players);
-      if (winner != undefined)
-        this.gameFinished(server, gameRoom, rooms, winner, gameRoom.players.find( (element => { element.username != winner.username})), false);
+      const winner: Player = this.checkWinner(gameRoom.players);
+      if (winner != undefined) {
+        const loser: Player = gameRoom.players.find(
+          (element) => element.username != winner.username,
+        );
+        this.gameFinished(server, gameRoom, rooms, winner, loser, false);
+      }
       this.gameGatewayService.emitGameUpdate(server, gameRoom, gameRoom.ball);
     }, 5);
     return interval;

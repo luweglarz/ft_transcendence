@@ -14,7 +14,6 @@ import { Room } from '../../class/room/room';
 import { GameGatewayService } from './game-gateway.service';
 import { Player } from '../../class/player/player';
 import { JwtService } from '@nestjs/jwt';
-import { GameDbService } from 'src/pong/service/game-db/game-db.service';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 
 @WebSocketGateway({ cors: true })
@@ -23,7 +22,6 @@ export class GameGateway
 {
   constructor(
     private gameGatewayService: GameGatewayService,
-    private gameDbService: GameDbService,
     private gameCoreService: GameCoreService,
     private jwtService: JwtService,
   ) {
