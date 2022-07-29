@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { ComponentFactoryResolver, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { JwtService } from 'src/app/auth/jwt';
 
  interface Game {
    id: number;
@@ -26,36 +26,47 @@ import { Observable } from 'rxjs';
 })
 export class MatchHistoryService {
 
-  nbWins = 0;
-  nbLoses = 0;
-
+  nbWins: number = 0;
+  nbLoses: number = 0;
+  nbGames: number = 0;
   gameHistory: Array<Game> = [];
-  nbGames = 0;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private jwtService: JwtService) {
+    this.generateUserHistory('ugtheven');
   }
 
-  generateHistory() {
-
-  }
-
-  testButton() {
-    //WINS
-    this.http.get<WinHistory>('http://localhost:3000/game/wins\?username\=ugtheven').subscribe(data => {
+  retrieveWonGames(username: string) {
+    this.http.get<WinHistory>('http://localhost:3000/game/wins\?username\=' + username).subscribe(data => {
       this.nbWins = data.wins.length;
+      this.nbGames += this.nbWins;
       for (let i = 0; i < this.nbWins; i++){
         this.gameHistory.push(data.wins[i])
       }
+    }, error => {
+      console.log('ERROR: getting wins');
     })
-    //LOSES
-    this.http.get<LoseHistory>('http://localhost:3000/game/loses\?username\=ugtheven').subscribe(data => {
+  }
+
+  retrieveLostGames(username: string) {
+    this.http.get<LoseHistory>('http://localhost:3000/game/loses\?username\=' + username).subscribe(data => {
       this.nbLoses = data.loses.length;
+      this.nbGames += this.nbLoses;
       for (let i = 0; i < this.nbLoses; i++){
         this.gameHistory.push(data.loses[i])
       }
+    }, error => {
+      console.log('ERROR: getting loses');
     })
-    this.nbGames = this.gameHistory.length;
+  }
+
+  generateUserHistory(username: string) {
+    this.retrieveWonGames(username);
+    this.retrieveLostGames(username);
+  }
+
+  testButton() {
     //OUTPUT
+    console.log('Username: ', this.jwtService.getPayload()?.username);
     console.log('Nombre de parties: ', this.nbGames);
     console.log('Nombre de victoires: ', this.nbWins);
     console.log('Nombre de defaites: ', this.nbLoses);
