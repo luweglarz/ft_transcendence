@@ -76,6 +76,7 @@ export class MatchHistoryService {
   generateUserHistory(username: string) {
     this.retrieveWonGames(username);
     this.retrieveLostGames(username);
+    this.sortHistory();
   }
 
   //UPDATE HISTORY
@@ -85,7 +86,8 @@ export class MatchHistoryService {
       for (let i = 0; i < data.wins.length; i++){
         tmp.push(data.wins[i])
       }
-      console.log(tmp.filter((game) => game.id > this.nbGames));
+      //console.log(tmp.filter((game) => game.id > this.nbGames));
+      tmp = tmp.filter((game) => game.id > this.nbGames);
       this.nbGames += tmp.length;
       for (let i = 0; i < tmp.length; i++){
         this.gameHistory.push(tmp[i])
@@ -101,7 +103,8 @@ export class MatchHistoryService {
       for (let i = 0; i < data.loses.length; i++){
         tmp.push(data.loses[i])
       }
-      console.log(tmp.filter((game) => game.id > this.nbGames));
+      //console.log(tmp.filter((game) => game.id > this.nbGames));
+      tmp = tmp.filter((game) => game.id > this.nbGames);
       this.nbGames += tmp.length;
       for (let i = 0; i < tmp.length; i++){
         this.gameHistory.push(tmp[i])
@@ -115,6 +118,7 @@ export class MatchHistoryService {
   updateUserHistory(username: string) {
     this.updateWinHistory(username);
     this.updateLoseHistory(username);
+    this.sortHistory();
   }
 
   testButton() {
@@ -122,8 +126,7 @@ export class MatchHistoryService {
     console.log('Nombre de parties: ', this.nbGames);
     console.log('Nombre de victoires: ', this.nbWins);
     console.log('Nombre de defaites: ', this.nbLoses);
-    console.log(this.gameHistory);
-
     this.updateUserHistory('ugtheven');
+    console.log(this.gameHistory);
   }
 }
