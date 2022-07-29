@@ -1,67 +1,64 @@
 // We might want to seed our databse in the future
-
+import * as argon from 'argon2';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 
-const users = [
-    {
-        username: 'lucas',
-        email: 'lucas@mail.com',
-        password: 'lucas',
-    },
-    {
-        username: 'ugo',
-        email: 'ugo@mail.com',
-        password: 'ugo',
-    },
-    {
-        username: 'jeremy',
-        email: 'jeremy@mail.com',
-        password: 'jeremy',
-    },
-    {
-        username: 'matthieu',
-        email: 'matthieu@mail.com',
-        password: 'matthieu',
-    },
-  ];
+interface User{
+  username: string;
+  email: string;
+  password: string;
+}
 
-  async function createGames(){
-    let winner;
-    let loser;
-
-    for ( let i = 0; i < 10; i++){
-        winner = await  prisma.user.findUnique({
-            where: { username: users[Math.floor(Math.random() * 4)].username },
-        });
-        loser = winner;
-        while (loser.id === winner.id){
-          loser = await  prisma.user.findUnique({
-              where: { username: users[Math.floor(Math.random() * 4)].username },
-          });
-        }
-        await prisma.game.create({
-            data: {
-              winner: {
-                connect: { id: winner.id },
-              },
-              winnerGoals: 11,
-              loser: {
-                connect: { id: loser.id },
-              },
-              loserGoals: Math.floor(Math.random() * 11),
-            },
-          });
+async function createUser(user: User){
+  const hashedPassword = await argon.hash(user.password);
+  await prisma.user.create({
+    data: {
+      username: user.username,
+      email: user.email,
+      password: hashedPassword
     }
-  }
+  })
+}
 
-  
-async function main(){
-  await prisma.user.createMany({
-    data: users,
+async function createGame(users: User[]) {
+  let winner = await  prisma.user.findUnique({
+    where: { username: users[Math.floor(Math.random() * 4)].username },
+  });;
+  let loser = winner;
+  while (loser.id === winner.id){
+    loser = await  prisma.user.findUnique({
+      where: { username: users[Math.floor(Math.random() * 4)].username },
+    });
+  }
+  await prisma.game.create({
+    data: {
+      winner: {
+        connect: { id: winner.id },
+      },
+      winnerGoals: 11,
+      loser: {
+        connect: { id: loser.id },
+      },
+      loserGoals: Math.floor(Math.random() * 11),
+    },
   });
-  await createGames();
+}
+  
+function main(){
+  const users: User[] = [ 
+    {username: 'lucas', email: 'lucas@mail.com', password: 'lucas'}, 
+    {username: 'ugo', email: 'ugo@mail.com', password: 'ugo'}, 
+    {username: 'matthieu', email: 'matthieu@mail.com', password: 'matthieu'},
+    {username: 'jeremy', email: 'jeremy@mail.com', password: 'jeremy'},
+  ]
+  console.log("users:" , users.length);
+  for (let i = 0; i < users.length;i++){
+    createUser(users[i]);
+  }
+  for (let i: number = 0; i < 10;i++){
+    createGame(users);
+  }
 }
 
 main();
