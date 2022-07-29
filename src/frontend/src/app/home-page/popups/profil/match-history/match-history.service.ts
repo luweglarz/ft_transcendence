@@ -35,6 +35,20 @@ export class MatchHistoryService {
     this.generateUserHistory('ugtheven');
   }
 
+  //UTILS
+  sortHistory() {
+    this.gameHistory.sort((n1, n2) => {
+      if (n1.id > n2.id) {
+        return 1;
+      }
+      if (n1.id < n2.id) {
+        return -1;
+      }
+      return 0;
+    })
+  }
+
+  //GENERATE HISTORY
   retrieveWonGames(username: string) {
     this.http.get<WinHistory>('http://localhost:3000/game/wins\?username\=' + username).subscribe(data => {
       this.nbWins = data.wins.length;
@@ -64,12 +78,52 @@ export class MatchHistoryService {
     this.retrieveLostGames(username);
   }
 
+  //UPDATE HISTORY
+  updateWinHistory(username: string) {
+    this.http.get<WinHistory>('http://localhost:3000/game/wins\?username\=' + username).subscribe(data => {
+      var tmp: Array<Game> = [];
+      for (let i = 0; i < data.wins.length; i++){
+        tmp.push(data.wins[i])
+      }
+      console.log(tmp.filter((game) => game.id > this.nbGames));
+      this.nbGames += tmp.length;
+      for (let i = 0; i < tmp.length; i++){
+        this.gameHistory.push(tmp[i])
+      }
+    }, error => {
+      console.log('ERROR: getting wins');
+    })
+  }
+
+  updateLoseHistory(username: string) {
+    this.http.get<LoseHistory>('http://localhost:3000/game/loses\?username\=' + username).subscribe(data => {
+      var tmp: Array<Game> = [];
+      for (let i = 0; i < data.loses.length; i++){
+        tmp.push(data.loses[i])
+      }
+      console.log(tmp.filter((game) => game.id > this.nbGames));
+      this.nbGames += tmp.length;
+      for (let i = 0; i < tmp.length; i++){
+        this.gameHistory.push(tmp[i])
+      }
+    }, error => {
+      console.log('ERROR: getting wins');
+    })
+  }
+
+
+  updateUserHistory(username: string) {
+    this.updateWinHistory(username);
+    this.updateLoseHistory(username);
+  }
+
   testButton() {
-    //OUTPUT
     console.log('Username: ', this.jwtService.getPayload()?.username);
     console.log('Nombre de parties: ', this.nbGames);
     console.log('Nombre de victoires: ', this.nbWins);
     console.log('Nombre de defaites: ', this.nbLoses);
     console.log(this.gameHistory);
+
+    this.updateUserHistory('ugtheven');
   }
 }
