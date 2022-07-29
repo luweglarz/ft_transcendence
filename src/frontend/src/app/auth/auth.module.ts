@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SignInComponent } from './signin';
-import { SignUpComponent } from './signup';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OauthCallbackComponent } from './oauth';
 import { SignOutComponent } from './signout/signout.component';
@@ -9,11 +8,11 @@ import { RouterModule } from '@angular/router';
 import { InfoComponent } from './info';
 import { AvatarModule } from '../avatar';
 import { JwtModule } from './jwt';
+import { SignupModule } from './signup/signup.module';
 
 @NgModule({
   declarations: [
     SignInComponent,
-    SignUpComponent,
     OauthCallbackComponent,
     SignOutComponent,
     InfoComponent,
@@ -25,7 +24,8 @@ import { JwtModule } from './jwt';
     RouterModule,
     AvatarModule,
     JwtModule,
+    SignupModule,
   ],
-  exports: [SignInComponent, SignUpComponent, OauthCallbackComponent],
+  exports: [SignInComponent, OauthCallbackComponent],
 })
 export class AuthModule {}
