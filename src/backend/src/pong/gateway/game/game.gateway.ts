@@ -99,13 +99,12 @@ export class GameGateway
           );
           this.gameCoreService.gameFinished(
             this.server,
-            room.uuid,
+            room,
+            this.rooms,
             winner,
             leaver,
             true,
           );
-          clearInterval(room.gameLoopInterval);
-          this.gameGatewayService.clearRoom(room, this.rooms);
           this.logger.log(`player ${leaver} has left the game ${room.uuid}`);
           return;
         }
