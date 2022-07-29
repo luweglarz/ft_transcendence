@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OauthCallbackComponent } from './oauth';
 import { SignOutComponent } from './signout/signout.component';
 import { RouterModule } from '@angular/router';
-import { OAuthService } from './oauth';
 import { InfoComponent } from './info';
 import { AvatarModule } from '../avatar';
 import { JwtModule } from './jwt';
@@ -28,6 +27,5 @@ import { JwtModule } from './jwt';
     JwtModule,
   ],
   exports: [SignInComponent, SignUpComponent, OauthCallbackComponent],
-  providers: [OAuthService],
 })
 export class AuthModule {}
