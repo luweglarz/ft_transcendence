@@ -13,12 +13,10 @@ import { JwtService } from 'src/app/auth/jwt';
 
  interface WinHistory {
     wins: Array<Game>;
-    nbWins: number;
  }
 
  interface LoseHistory {
   loses: Array<Game>;
-  nbWins: number;
 }
 
 @Injectable({
@@ -32,7 +30,7 @@ export class MatchHistoryService {
   gameHistory: Array<Game> = [];
 
   constructor(private http: HttpClient, private jwtService: JwtService) {
-    this.generateUserHistory('ugtheven');
+    //this.retrieveUserHistory('ugtheven');
   }
 
   //UTILS
@@ -48,35 +46,54 @@ export class MatchHistoryService {
     })
   }
 
-  //GENERATE HISTORY
-  retrieveWonGames(username: string) {
+  //RETRIEVE WIN LOSES COUNTER
+  retrieveWinCounter(username: string): number{
+    let nbWins: number = -1;
     this.http.get<WinHistory>('http://localhost:3000/game/wins\?username\=' + username).subscribe(data => {
-      this.nbWins = data.wins.length;
-      this.nbGames += this.nbWins;
-      for (let i = 0; i < this.nbWins; i++){
-        this.gameHistory.push(data.wins[i])
-      }
-    }, error => {
-      console.log('ERROR: getting wins');
+      nbWins = data.wins.length;
+      return (nbWins);
     })
+    return (nbWins);
   }
 
-  retrieveLostGames(username: string) {
+  retrieveLoseCounter(username: string): number{
+    let nbLoses: number = -1;
     this.http.get<LoseHistory>('http://localhost:3000/game/loses\?username\=' + username).subscribe(data => {
-      this.nbLoses = data.loses.length;
-      this.nbGames += this.nbLoses;
-      for (let i = 0; i < this.nbLoses; i++){
-        this.gameHistory.push(data.loses[i])
-      }
-    }, error => {
-      console.log('ERROR: getting loses');
+      nbLoses = data.loses.length;
+      return (nbLoses);
     })
+    return (nbLoses);
   }
 
-  generateUserHistory(username: string) {
-    this.retrieveWonGames(username);
-    this.retrieveLostGames(username);
-    this.sortHistory();
+  //RETRIEVE USER HISTORY
+  retrieveWonGames(username: string): Array<Game> {
+    let winHistory: Array<Game> = [];
+    this.http.get<WinHistory>('http://localhost:3000/game/wins\?username\=' + username).subscribe(data => {
+      for (let i = 0; i < data.wins.length; i++){
+        winHistory.push(data.wins[i])
+      }
+      return (winHistory);
+    })
+    return (winHistory);
+  }
+
+  retrieveLostGames(username: string): Array<Game> {
+    let loseHistory: Array<Game> = [];
+    this.http.get<LoseHistory>('http://localhost:3000/game/loses\?username\=' + username).subscribe(data => {
+      for (let i = 0; i < data.loses.length; i++){
+        loseHistory.push(data.loses[i])
+      }
+      return (loseHistory);
+    })
+    return (loseHistory);
+  }
+
+  retrieveUserHistory(username: string): Array<Game> {
+    let winHistory: Array<Game> = this.retrieveWonGames(username);
+    let loseHistory: Array<Game> = this.retrieveLostGames(username);
+    let gameHistory: Array<Game> = [...winHistory, ...loseHistory];
+    //this.sortHistory();
+    return (gameHistory);
   }
 
   //UPDATE HISTORY
@@ -86,7 +103,6 @@ export class MatchHistoryService {
       for (let i = 0; i < data.wins.length; i++){
         tmp.push(data.wins[i])
       }
-      //console.log(tmp.filter((game) => game.id > this.nbGames));
       tmp = tmp.filter((game) => game.id > this.nbGames);
       this.nbGames += tmp.length;
       for (let i = 0; i < tmp.length; i++){
@@ -103,7 +119,6 @@ export class MatchHistoryService {
       for (let i = 0; i < data.loses.length; i++){
         tmp.push(data.loses[i])
       }
-      //console.log(tmp.filter((game) => game.id > this.nbGames));
       tmp = tmp.filter((game) => game.id > this.nbGames);
       this.nbGames += tmp.length;
       for (let i = 0; i < tmp.length; i++){
@@ -121,12 +136,20 @@ export class MatchHistoryService {
     this.sortHistory();
   }
 
+
+
+  //DEBUG
   testButton() {
     console.log('Username: ', this.jwtService.getPayload()?.username);
     console.log('Nombre de parties: ', this.nbGames);
-    console.log('Nombre de victoires: ', this.nbWins);
-    console.log('Nombre de defaites: ', this.nbLoses);
-    this.updateUserHistory('ugtheven');
-    console.log(this.gameHistory);
+    //console.log('Nombre de victoires: ', this.nbWins);
+    //console.log('Nombre de defaites: ', this.nbLoses);
+    console.log('Nombre de victoires: ', this.retrieveWinCounter('ugtheven'));
+    console.log('Nombre de defaites: ', this.retrieveLoseCounter('ugtheven'));
+    //this.updateUserHistory('ugtheven');
+    console.log('Win History', this.retrieveWonGames('ugtheven'));
+    console.log('Loss History', this.retrieveLostGames('ugtheven'));
+    //console.log('Game History', this.gameHistory);
+    console.log('Game History', this.retrieveUserHistory('ugtheven'));
   }
 }
