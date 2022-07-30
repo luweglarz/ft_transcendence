@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
 import { AvatarService } from 'src/app/avatar/avatar.service';
+import { MatchHistoryService } from './match-history/match-history.service';
 
 @Component({
   selector: 'app-profil',
@@ -16,7 +17,7 @@ export class ProfilComponent implements OnInit {
   winStreak = 0;
   lossStreak = 0;
 
-  constructor(public jwtService: JwtService, public avatar: AvatarService) {
+  constructor(public jwtService: JwtService, public avatar: AvatarService, public matchHistoryService: MatchHistoryService) {
     //
   }
 
