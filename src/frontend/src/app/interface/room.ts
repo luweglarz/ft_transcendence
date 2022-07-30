@@ -8,7 +8,7 @@ export interface Room {
   name?: string;
   password?: string;
   roomType?: RoomType;
-  //users:    RoomUser[];
+  //roomUsers?:    RoomUser[];
   messages?: Message[];
 }
 

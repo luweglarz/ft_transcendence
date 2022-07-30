@@ -66,16 +66,24 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('joinRoom')
   async joinRoom(socket: Socket, room: Room) {
-    console.log(room);
-    this.roomService.joinRoom(
-      room,
+    console.log('joinRoommsg', room);
+    console.log(
+      'nuser',
       await this.prisma.user.findUnique({
         where: { username: socket.data.user.username },
       }),
     );
+    this.roomService.joinRoom(
+      room,
+      (
+        await this.prisma.user.findUnique({
+          where: { username: socket.data.user.username },
+        })
+      ).id,
+    );
     // needs emit once i can find how to identify user by connection to server
     // emmit room messages to new member of room
-    console.log(room);
+    //console.log(room);
     this.getMsgs(socket, room.id);
     this.getRoomUsers(socket, room.id);
   }

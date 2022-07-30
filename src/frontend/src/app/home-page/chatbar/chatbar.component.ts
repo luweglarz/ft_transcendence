@@ -40,6 +40,7 @@ export class ChatbarComponent implements OnInit {
 
   closeChat() {
     this.chatCollapsed = false;
+    this.selectedRoom = {};
     this.collapseService.closeChat();
   }
 

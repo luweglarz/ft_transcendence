@@ -10,7 +10,6 @@ import { RoomUser } from 'src/app/interface/roomUser';
 })
 export class ChatMessageComponent /*implements OnInit*/ {
   @Input() message: Message = {};
-  @Input() roomUsers: Observable<RoomUser[]> = new Observable<RoomUser[]>();
   //constructor() {}
   //ngOnInit(): void {}
   //findUser(message: Message): RoomUser {
