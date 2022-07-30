@@ -4,6 +4,8 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Message } from 'src/app/interface/message';
@@ -19,6 +21,9 @@ import { RoomUser } from 'src/app/interface/roomUser';
 })
 export class ChatRoomComponent implements OnChanges {
   @Input() chatRoom: Room = {};
+  @ViewChild('mesgs') private scrollContainer: ElementRef = new ElementRef(
+    'mesgs',
+  );
   chatMessage: FormControl = new FormControl(null, [Validators.required]);
   messages: Observable<Message[]> = this.chatService.getMsgs();
   roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
@@ -43,6 +48,10 @@ export class ChatRoomComponent implements OnChanges {
       roomId: this.chatRoom.id,
     });
     this.chatMessage.reset();
+    try {
+      this.scrollContainer.nativeElement.scrollTop =
+        this.scrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
     //console.log(this.chatRoom);
   }
 }

@@ -38,16 +38,18 @@ export class RoomService {
         password: room.password,
         roomType: room.roomType,
         users: {
-          create: {
-            user: { connect: { id: userId } },
-            role: 'OWNER',
-          },
+          create: [
+            {
+              user: { connect: { id: userId } },
+              role: 'OWNER',
+            },
+          ],
         },
       },
     });
   }
 
-  async joinRoom(room: Room, nuser: User) {
+  async joinRoom(room: Room, userId: number) {
     //var roomUser = {user: {connect: nuser}, role: 'USER' };
     //room.users.push({user: {connect: nuser}, role: 'USER' });
     this.prisma.room.update({
@@ -56,7 +58,12 @@ export class RoomService {
       },
       data: {
         users: {
-          create: { user: { connect: { id: nuser.id } }, role: 'OWNER' },
+          create: [
+            {
+              user: { connect: { id: userId } },
+              role: 'USER',
+            },
+          ],
           //users: {
           // create: { user: { connect: nuser }, role: 'USER' }, ////need to check if it doesn't erase previous info
         },

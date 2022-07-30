@@ -1,3 +1,11 @@
 li {
     list-style-type: none;
 }
+
+.mesgs {
+    overflow: scroll;
+    overflow-x: hidden;
+    padding: 0;
+    height: 250px;
+    width: 350px;
+}

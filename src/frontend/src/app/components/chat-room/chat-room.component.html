@@ -11,9 +11,9 @@
 
 
     <!--Messages-->
-    <div class="mesgs">
+    <div class="mesgs" #msgs>
         <li *ngFor="let message of (messages|async)">
-            <app-chat-message [message]="message" [roomUsers]="roomUsers"></app-chat-message>
+            <app-chat-message [message]="message"></app-chat-message>
         </li>
     </div>
 
