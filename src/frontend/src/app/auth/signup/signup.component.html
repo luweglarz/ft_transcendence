@@ -14,6 +14,10 @@
       <div class="field-register">
         <label>Choose your username:</label>
         <input formControlName="username" placeholder="Username" name="username">
+        <div *ngIf="username.invalid && (username?.dirty || username.touched)" class="alert">
+          <div *ngIf="username.errors?.['required']"> Username is required. </div>
+          <div *ngIf="username.errors?.['maxlength']"> Username too long (42 char max). </div>
+        </div>
       </div>
 
       <!-- Local Signup specific fields: password / email -->
@@ -22,11 +26,20 @@
         <div class="field-register">
           <label>Password: </label>
           <input formControlName="password" placeholder="Password" name="password" type="password">
+          <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert">
+            <div *ngIf="password.errors?.['required']"> Password is required. </div>
+            <div *ngIf="password.errors?.['maxlength']"> Password too long (42 char max). </div>
+            <div *ngIf="password.errors?.['minlength']"> Password too short (4 char min). </div>
+          </div>
         </div>
         <!-- Email field -->
         <div class="field-register">
           <label>Email: </label>
           <input formControlName="email" placeholder="Email" name="email">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert">
+            <div *ngIf="email.errors?.['required']"> Email is required. </div>
+            <div *ngIf="email.errors?.['email']"> Enter a valid email. </div>
+          </div>
         </div>
       </ng-container>
 

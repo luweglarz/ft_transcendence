@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 import { OAuthUser } from '../interface';
@@ -37,6 +42,19 @@ export class SignUpComponent implements OnInit {
     twoFactors: [false, Validators.required],
   });
 
+  get username() {
+    return this.registerForm?.get('username') as FormControl;
+  }
+  get password() {
+    return this.registerForm?.get('password') as FormControl;
+  }
+  get email() {
+    return this.registerForm?.get('email') as FormControl;
+  }
+  get twoFactors() {
+    return this.registerForm?.get('twoFactors') as FormControl;
+  }
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -65,10 +83,6 @@ export class SignUpComponent implements OnInit {
         this.registerForm = this.localForm;
       }
     });
-  }
-
-  get twoFactors() {
-    return this.registerForm?.value.twoFactors;
   }
 
   signUp() {
