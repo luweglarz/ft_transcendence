@@ -23,14 +23,17 @@ export class SignUpComponent implements OnInit {
   registerForm?: FormGroup;
 
   localForm = this.formBuilder.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
-    email: ['', Validators.required],
+    username: ['', [Validators.required, Validators.maxLength(42)]],
+    password: [
+      '',
+      [Validators.required, Validators.minLength(4), Validators.maxLength(42)],
+    ],
+    email: ['', [Validators.required, Validators.email]],
     twoFactors: [false, Validators.required],
   });
 
   oauthForm = this.formBuilder.group({
-    username: ['', Validators.required],
+    username: ['', [Validators.required, Validators.maxLength(42)]],
     twoFactors: [false, Validators.required],
   });
 
