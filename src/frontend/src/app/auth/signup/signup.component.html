@@ -14,7 +14,7 @@
       <div class="field-register">
         <label>Choose your username:</label>
         <input formControlName="username" placeholder="Username" name="username">
-        <div *ngIf="username.invalid && (username?.dirty || username.touched)" class="alert">
+        <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert">
           <div *ngIf="username.errors?.['required']"> Username is required. </div>
           <div *ngIf="username.errors?.['maxlength']"> Username too long (42 char max). </div>
         </div>
@@ -58,8 +58,8 @@
       </button>
 
       <!-- Debug -->
-      <p>State: {{registerForm.status}}</p>
-      <p>Value: {{registerForm.value | json}}</p>
+      <!-- <p>State: {{registerForm.status}}</p> -->
+      <!-- <p>Value: {{registerForm.value | json}}</p> -->
 
     </form>
 

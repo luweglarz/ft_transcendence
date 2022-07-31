@@ -38,6 +38,25 @@
   width: 90%;
 }
 
+/* FORMS */
+.field-signin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.field-signin input {
+  width: 80%;
+  height: 32px;
+  text-align: center;
+  border-radius: 5px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
 /*
   BUTTON
 */
@@ -63,27 +82,44 @@
   fill: white;
 }
 
-.btn-login:hover {
+.btn-login:enabled:hover {
   background-color: #44526f;
   font-size: large;
   font-weight: bold;
 }
 
-.btn-login:active {
+.btn-login:enabled:active {
   background-color: white;
   font-size: large;
   font-weight: bold;
   color: #1a202c;
 }
 
-.btn-login:active p {
+.btn-login:enabled:active p {
   color: #1a202c;
 }
 
-.btn-login:active .icon-login {
+.btn-login:enabled:active .icon-login {
   fill: #1a202c;
 }
 
+.btn-login[disabled] {
+  color: white;
+  background-color: #aaaaaa;
+  cursor: default;
+}
 a {
   color: white;
+}
+
+/* VALIDATION */
+.alert {
+  color: #7d283c;
+  background-color: rgba(245, 206, 215, 0.8);
+  display: flex;
+  width: 100%;
+  padding: 8px;
+  border-radius: 0px 0px 3px 3px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
