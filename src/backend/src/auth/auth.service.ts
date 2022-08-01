@@ -54,7 +54,11 @@ export class AuthService {
     const user = await this.db.user.findUnique({
       where: { username: dto.username },
     });
-    if (user && (await argon.verify(user.password, dto.password))) {
+    if (user && user.authType != 'LOCAL')
+      throw new ForbiddenException(
+        'Local authentication not set up for the current user',
+      );
+    else if (user && (await argon.verify(user.password, dto.password))) {
       return this.signInSuccess(user);
     } else throw new ForbiddenException('Credentials incorrect');
   }
