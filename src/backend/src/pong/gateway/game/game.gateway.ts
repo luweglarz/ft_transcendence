@@ -15,14 +15,16 @@ import { GameGatewayService } from './game-gateway.service';
 import { Player } from '../../class/player/player';
 import { JwtService } from '@nestjs/jwt';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
+import { MatchmakingGatewayService } from 'src/pong/gateway/matchmaking/matchmaking-gateway.service';
 
-@WebSocketGateway({ cors: true, path:'/pong'})
+@WebSocketGateway({ cors: true, path: '/pong' })
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   constructor(
     private gameGatewayService: GameGatewayService,
     private gameCoreService: GameCoreService,
+    private matchMakingService: MatchmakingGatewayService,
     private jwtService: JwtService,
   ) {
     this.logger = new Logger('GameGateway');
@@ -51,8 +53,8 @@ export class GameGateway
     }
   }
 
-  handleDisconnect(client: Socket) {
-    this.leaveGame(client);
+  handleDisconnect(@ConnectedSocket() client: Socket) {
+    if (this.matchMakingService.isClientInGame(client)) this.leaveGame(client);
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
@@ -104,7 +106,9 @@ export class GameGateway
             true,
           );
           client.disconnect();
-          this.logger.log(`player ${leaver.username} has left the game ${room.uuid}`);
+          this.logger.log(
+            `player ${leaver.username} has left the game ${room.uuid}`,
+          );
           return;
         }
       }
