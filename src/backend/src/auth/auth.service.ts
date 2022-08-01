@@ -165,6 +165,11 @@ export class AuthService {
     }
   }
 
+  async alreadyExists(field: string, value: string) {
+    const exists = await this.db.user.findFirst({ where: { [field]: value } });
+    return exists ? true : false;
+  }
+
   //  =========================== PRIVATE Methods ============================  //
 
   private async createUser(data: Prisma.UserCreateInput) {
