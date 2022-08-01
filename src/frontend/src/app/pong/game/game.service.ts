@@ -1,14 +1,14 @@
 import { ElementRef, Injectable } from '@angular/core';
-import { AuthSocket } from 'src/app/class/auth-socket';
 import { Ball } from '../class/ball';
 import { Game } from '../class/game';
+import { GameSocket } from '../class/game-socket';
 import { Player } from '../class/player';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
-  constructor(private _socket: AuthSocket) {
+  constructor(private _socket: GameSocket) {
     this.isInGame = false;
     this.keyPressed = '';
   }
@@ -17,7 +17,7 @@ export class GameService {
   public keyPressed: string;
   public keyEventsInterval: any;
 
-  get socket(): AuthSocket {
+  get socket(): GameSocket {
     return this._socket;
   }
 
