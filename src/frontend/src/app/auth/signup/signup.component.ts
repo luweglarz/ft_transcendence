@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 import { OAuthUser } from '../interface';
 import { JwtService } from '../jwt';
+import { OAuthService } from '../oauth';
 import { SigninService } from '../signin/signin.service';
 import { SignoutService } from '../signout/signout.service';
 import { SignupService } from './signup.service';
@@ -77,6 +78,7 @@ export class SignUpComponent implements OnInit {
     private signOut: SignoutService,
     private jwt: JwtService,
     private validators: ValidatorBuilderService,
+    private oauth: OAuthService,
   ) {}
 
   ngOnInit(): void {
@@ -89,7 +91,7 @@ export class SignUpComponent implements OnInit {
         this.signUpType = 'oauth';
         this.registerForm = this.oauthForm;
         this.token = <string>params['jwt'];
-        this.oAuthUser = this.service.getOAuthUserData(this.token);
+        this.oAuthUser = this.oauth.getOAuthUserData(this.token);
         this.registerForm.patchValue({ username: this.oAuthUser.login });
         this.image_url = this.oAuthUser.image_url;
       } else if (params['type'] == 'local') {
