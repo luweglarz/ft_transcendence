@@ -29,16 +29,20 @@ export class SignUpComponent implements OnInit {
   registerForm?: FormGroup;
 
   localForm = this.formBuilder.group({
-    username: new FormControl('', {
+    username: this.formBuilder.control('', {
       validators: [Validators.required, Validators.maxLength(42)],
       asyncValidators: this.validators.isAvailable('username'),
-      updateOn: 'blur',
+      updateOn: 'change',
     }),
     password: [
       '',
       [Validators.required, Validators.minLength(4), Validators.maxLength(42)],
     ],
-    email: ['', [Validators.required, Validators.email]],
+    email: this.formBuilder.control('', {
+      validators: [Validators.required, Validators.email],
+      asyncValidators: this.validators.isAvailable('email'),
+      updateOn: 'change',
+    }),
     twoFactors: [false, Validators.required],
   });
 
@@ -46,7 +50,7 @@ export class SignUpComponent implements OnInit {
     username: new FormControl('', {
       validators: [Validators.required, Validators.maxLength(42)],
       asyncValidators: this.validators.isAvailable('username'),
-      updateOn: 'blur',
+      updateOn: 'change',
     }),
     twoFactors: [false, Validators.required],
   });

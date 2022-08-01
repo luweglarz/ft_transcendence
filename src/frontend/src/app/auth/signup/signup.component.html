@@ -41,6 +41,7 @@
           <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert">
             <div *ngIf="email.errors?.['required']"> Email is required. </div>
             <div *ngIf="email.errors?.['email']"> Enter a valid email. </div>
+            <div *ngIf="email.errors?.['fieldAvailable']"> Email `{{email.value}}` is unavailable. </div>
           </div>
         </div>
       </ng-container>
