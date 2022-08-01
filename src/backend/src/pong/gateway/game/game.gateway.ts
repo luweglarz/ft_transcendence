@@ -16,7 +16,7 @@ import { Player } from '../../class/player/player';
 import { JwtService } from '@nestjs/jwt';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({ cors: true, path:'/pong'})
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -103,7 +103,8 @@ export class GameGateway
             leaver,
             true,
           );
-          this.logger.log(`player ${leaver} has left the game ${room.uuid}`);
+          client.disconnect();
+          this.logger.log(`player ${leaver.username} has left the game ${room.uuid}`);
           return;
         }
       }
