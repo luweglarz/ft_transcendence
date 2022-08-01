@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -17,7 +17,10 @@ export class SigninService {
     private http: HttpClient,
   ) {}
 
-  signIn(data: { type: 'oauth'; code: string } | { type: 'local'; form: any }) {
+  signIn(
+    data: { type: 'oauth'; code: string } | { type: 'local'; form: any },
+    state?: { failure: boolean; reason: string },
+  ) {
     let url: string;
     let payload: any;
 
@@ -31,7 +34,8 @@ export class SigninService {
 
     this.http.post<{ jwt: string }>(url, payload).subscribe({
       next: (response) => this.signInSuccess(response.jwt),
-      error: (err) => this.signInFailure(err, payload),
+      error: (err: HttpErrorResponse) =>
+        this.signInFailure(err, payload, state),
     });
   }
 
@@ -43,8 +47,16 @@ export class SigninService {
     this.jwt.logPayload();
   }
 
-  signInFailure(err: any, form: any) {
-    console.log(err);
+  signInFailure(
+    err: HttpErrorResponse,
+    form: any,
+    state?: { failure: boolean; reason: string },
+  ) {
+    console.error(err);
     console.table(form);
+    if (state) {
+      state.failure = true;
+      if ('message' in err.error) state.reason = err.error.message;
+    }
   }
 }
