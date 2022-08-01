@@ -2,8 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
-  Req,
   Res,
   StreamableFile,
   UploadedFile,
@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { User } from './decorator';
 import {
@@ -85,6 +85,22 @@ export class AuthController {
     if (image) {
       return new StreamableFile(image);
     } else return '';
+  }
+
+  @Get('exists/username/:username')
+  async usernameAlreadyExists(@Param('username') username: string) {
+    return {
+      username: username,
+      exists: await this.service.alreadyExists('username', username),
+    };
+  }
+
+  @Get('exists/email/:email')
+  async emailAlreadyExists(@Param('email') email: string) {
+    return {
+      email: email,
+      exists: await this.service.alreadyExists('email', email),
+    };
   }
 
   //  ============================ Testing routes ============================  //
