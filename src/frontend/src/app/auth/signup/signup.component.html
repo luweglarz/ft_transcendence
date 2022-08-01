@@ -17,7 +17,7 @@
         <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert">
           <div *ngIf="username.errors?.['required']"> Username is required. </div>
           <div *ngIf="username.errors?.['maxlength']"> Username too long (42 char max). </div>
-          <div *ngIf="username.errors?.['fieldAvailable']"> Username `{{username.value}}` is unavailable. </div>
+          <div *ngIf="username.errors?.['isAvailable']"> Username `{{username.value}}` is unavailable. </div>
           <!-- <div *ngIf="username.errors"> {{username.errors | json}} </div> -->
         </div>
       </div>
@@ -41,7 +41,7 @@
           <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert">
             <div *ngIf="email.errors?.['required']"> Email is required. </div>
             <div *ngIf="email.errors?.['email']"> Enter a valid email. </div>
-            <div *ngIf="email.errors?.['fieldAvailable']"> Email `{{email.value}}` is unavailable. </div>
+            <div *ngIf="email.errors?.['isAvailable']"> Email `{{email.value}}` is unavailable. </div>
           </div>
         </div>
       </ng-container>

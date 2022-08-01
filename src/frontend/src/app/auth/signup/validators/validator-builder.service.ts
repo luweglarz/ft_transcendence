@@ -28,11 +28,10 @@ export class ValidatorBuilderService {
           take(1),
           tap((value) => console.log(value)),
           map(
-            (value) =>
-              value?.exists ? { fieldAvailable: 'unavailable' } : null,
-            // note: can't use {fieldAvailable: false},
-            // because we want to test `if (username.errors.fieldAvailable)
-            // and *ngIf="'fieldAvailable' in username.errors" works but unfortunately logs an error
+            (value) => (value?.exists ? { isAvailable: 'unavailable' } : null),
+            // note: can't use {isAvailable: false},
+            // because we want to test `if (username.errors.isAvailable)
+            // and *ngIf="'isAvailable' in username.errors" works but unfortunately logs an error
           ),
         );
       return check$;
