@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
-import { Room, Prisma, User, Message } from '@prisma/client';
+import { Room, Prisma, Message } from '@prisma/client';
 
 @Injectable()
 export class RoomService {
+  private readonly logger = new Logger(RoomService.name);
+
   constructor(private prisma: DbService) {}
 
   async room(
@@ -50,25 +52,22 @@ export class RoomService {
   }
 
   async joinRoom(room: Room, userId: number) {
-    //var roomUser = {user: {connect: nuser}, role: 'USER' };
-    //room.users.push({user: {connect: nuser}, role: 'USER' });
-    this.prisma.room.update({
-      where: {
-        id: room.id,
-      },
-      data: {
-        users: {
-          create: [
-            {
-              user: { connect: { id: userId } },
-              role: 'USER',
-            },
-          ],
-          //users: {
-          // create: { user: { connect: nuser }, role: 'USER' }, ////need to check if it doesn't erase previous info
-        },
-      },
+    const existingRoomUser = await this.prisma.roomUser.findFirst({
+      where: { roomId: room.id, userId: userId },
     });
+    if (existingRoomUser) {
+      this.logger.debug(
+        `user ${userId} already in room ${room.name}:${room.id}`,
+      );
+    } else {
+      return this.prisma.roomUser.create({
+        data: {
+          user: { connect: { id: userId } },
+          role: 'USER',
+          room: { connect: { id: room.id } },
+        },
+      });
+    }
   }
 
   async addMessage(room: Room, nMessage: Message) {

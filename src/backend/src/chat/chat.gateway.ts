@@ -12,11 +12,13 @@ import { MessageService } from './message/message.service';
 import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
 import { Room } from '@prisma/client';
+import { Logger } from '@nestjs/common';
 
 @WebSocketGateway()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
+  private readonly logger = new Logger(ChatGateway.name);
 
   constructor(
     private roomService: RoomService,
@@ -67,20 +69,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('joinRoom')
   async joinRoom(socket: Socket, room: Room) {
     console.log('joinRoommsg', room);
-    console.log(
-      'nuser',
-      await this.prisma.user.findUnique({
-        where: { username: socket.data.user.username },
-      }),
+    const user = await this.prisma.user.findUnique({
+      where: { username: socket.data.user.username },
+    });
+    this.logger.debug(
+      `${user.username} is trying to join room ${room.id}:${room.name}`,
     );
-    this.roomService.joinRoom(
-      room,
-      (
-        await this.prisma.user.findUnique({
-          where: { username: socket.data.user.username },
-        })
-      ).id,
-    );
+    try {
+      await this.roomService.joinRoom(room, user.id);
+    } catch (error) {
+      this.logger.error(error);
+    }
     // needs emit once i can find how to identify user by connection to server
     // emmit room messages to new member of room
     //console.log(room);
