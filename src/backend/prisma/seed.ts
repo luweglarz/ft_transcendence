@@ -45,19 +45,18 @@ async function createGame(users: User[]) {
   });
 }
   
-function main(){
+async function main(){
   const users: User[] = [ 
     {username: 'lucas', email: 'lucas@mail.com', password: 'lucas'}, 
     {username: 'ugo', email: 'ugo@mail.com', password: 'ugo'}, 
     {username: 'matthieu', email: 'matthieu@mail.com', password: 'matthieu'},
     {username: 'jeremy', email: 'jeremy@mail.com', password: 'jeremy'},
   ]
-  console.log("users:" , users.length);
   for (let i = 0; i < users.length;i++){
-    createUser(users[i]);
+    await createUser(users[i]);
   }
   for (let i: number = 0; i < 10;i++){
-    createGame(users);
+    await createGame(users);
   }
 }
 
