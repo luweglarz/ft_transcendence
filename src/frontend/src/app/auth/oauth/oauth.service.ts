@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { SigninService } from '../signin/signin.service';
-import { SignupService } from '../signup/signup.service';
+import jwtDecode from 'jwt-decode';
+import { OAuthJwtPayload } from '../interface';
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +16,12 @@ export class OAuthService {
   private readonly redirect_uri = encodeURI(
     `${environment.frontend}/auth/oauth42/callback`,
   );
+  private readonly oauth_temp_token_url = `${environment.backend}/auth/oauth42/signup-temp-token`;
 
   constructor(
     private http: HttpClient,
-    private signup: SignupService,
     private signin: SigninService,
+    private router: Router,
   ) {}
 
   /*
@@ -41,13 +43,39 @@ export class OAuthService {
   oauthCallback(route: ActivatedRoute) {
     route.queryParams.subscribe((params) => {
       if (params['code']) {
-        if (params['state'] == 'signup')
-          this.signup.getTempToken(params['code']);
+        if (params['state'] == 'signup') this.getTempToken(params['code']);
         else if (params['state'] == 'signin')
           this.signin.signIn({ type: 'oauth', code: params['code'] });
       } else {
         console.warn('"code" or "state" query param is missing.');
       }
     });
+  }
+
+  /*
+   * @brief exchange oauth code against a temporary token which:
+   * - holds data if 42's authentication is successful
+   * - is certified by our backend
+   *  On success redirect to the signup page.
+   */
+  getTempToken(code: string) {
+    this.http
+      .get<{ jwt: string }>(`${this.oauth_temp_token_url}?code=${code}`)
+      .subscribe({
+        next: (response) => {
+          this.router.navigate(['/auth/signup'], {
+            queryParams: { type: 'oauth', jwt: response.jwt },
+            replaceUrl: true, // prevent going back to the callback page
+          });
+        },
+        error: (err) => console.error(err),
+      });
+  }
+
+  /*
+   * @brief extract data from the temporary token
+   */
+  getOAuthUserData(token: string) {
+    return jwtDecode<OAuthJwtPayload>(token).oAuthUser;
   }
 }
