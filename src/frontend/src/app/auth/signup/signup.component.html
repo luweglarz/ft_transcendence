@@ -17,6 +17,8 @@
         <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert">
           <div *ngIf="username.errors?.['required']"> Username is required. </div>
           <div *ngIf="username.errors?.['maxlength']"> Username too long (42 char max). </div>
+          <div *ngIf="username.errors?.['fieldAvailable']"> Username `{{username.value}}` is unavailable. </div>
+          <!-- <div *ngIf="username.errors"> {{username.errors | json}} </div> -->
         </div>
       </div>
 
