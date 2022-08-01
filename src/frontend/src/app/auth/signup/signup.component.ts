@@ -12,6 +12,7 @@ import { JwtService } from '../jwt';
 import { SigninService } from '../signin/signin.service';
 import { SignoutService } from '../signout/signout.service';
 import { SignupService } from './signup.service';
+import { ValidatorBuilderService } from './validators/validator-builder.service';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +29,11 @@ export class SignUpComponent implements OnInit {
   registerForm?: FormGroup;
 
   localForm = this.formBuilder.group({
-    username: ['', [Validators.required, Validators.maxLength(42)]],
+    username: new FormControl('', {
+      validators: [Validators.required, Validators.maxLength(42)],
+      asyncValidators: this.validators.isAvailable('username'),
+      updateOn: 'blur',
+    }),
     password: [
       '',
       [Validators.required, Validators.minLength(4), Validators.maxLength(42)],
@@ -38,7 +43,11 @@ export class SignUpComponent implements OnInit {
   });
 
   oauthForm = this.formBuilder.group({
-    username: ['', [Validators.required, Validators.maxLength(42)]],
+    username: new FormControl('', {
+      validators: [Validators.required, Validators.maxLength(42)],
+      asyncValidators: this.validators.isAvailable('username'),
+      updateOn: 'blur',
+    }),
     twoFactors: [false, Validators.required],
   });
 
@@ -63,6 +72,7 @@ export class SignUpComponent implements OnInit {
     private avatar: AvatarService,
     private signOut: SignoutService,
     private jwt: JwtService,
+    private validators: ValidatorBuilderService,
   ) {}
 
   ngOnInit(): void {

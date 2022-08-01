@@ -14,7 +14,9 @@ export class SelectComponent implements OnInit {
     private router: Router,
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //
+  }
 
   localSignUp() {
     this.router.navigate([], {
