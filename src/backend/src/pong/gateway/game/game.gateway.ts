@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { forwardRef, Inject, Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -15,7 +15,7 @@ import { GameGatewayService } from './game-gateway.service';
 import { Player } from '../../class/player/player';
 import { JwtService } from '@nestjs/jwt';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
-import { MatchmakingGatewayService } from 'src/pong/gateway/matchmaking/matchmaking-gateway.service';
+import { MatchmakingGatewayService } from '../matchmaking/matchmaking-gateway.service';
 
 @WebSocketGateway({ cors: true, path: '/pong' })
 export class GameGateway
@@ -24,7 +24,8 @@ export class GameGateway
   constructor(
     private gameGatewayService: GameGatewayService,
     private gameCoreService: GameCoreService,
-    private matchMakingService: MatchmakingGatewayService,
+    @Inject(forwardRef(() => MatchmakingGatewayService))
+    private matchmakingService: MatchmakingGatewayService,
     private jwtService: JwtService,
   ) {
     this.logger = new Logger('GameGateway');
@@ -54,7 +55,7 @@ export class GameGateway
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
-    if (this.matchMakingService.isClientInGame(client)) this.leaveGame(client);
+    if (this.matchmakingService.isClientInGame(client)) this.leaveGame(client);
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
