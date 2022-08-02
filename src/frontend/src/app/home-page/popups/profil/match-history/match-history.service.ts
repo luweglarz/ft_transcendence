@@ -68,7 +68,12 @@ export class MatchHistoryService {
     let nbWins = await this.retrieveWinCounter(username);
     let nbLoses = await this.retrieveLoseCounter(username);
     return new Promise(resolve => {
-      resolve (Math.round((nbWins / nbLoses) * 1000));
+      if (nbWins === 0 && nbLoses === 0)
+        resolve(0);
+      else if (nbWins != 0 && nbLoses === 0)
+        resolve (nbWins * 350);
+      else
+        resolve (Math.round((nbWins / nbLoses) * 1000));
     });
   }
 
@@ -77,48 +82,42 @@ export class MatchHistoryService {
     return new Promise(resolve => {
       let biggestSpan: number = 0;
       let actualSpan: number = 0;
-      let isInSpan: boolean = false;
-      for (let i = 0; i < winHistory.length - 1; i++){
-        if (winHistory[i].id === winHistory[i + 1].id - 1 && isInSpan === false && actualSpan === 0){
+      if (winHistory.length == 1)
+        resolve(1);
+      for (let i = 1; i < winHistory.length; i++){
+        if (winHistory[i - 1].id === winHistory[i].id - 1 && actualSpan === 0)
           actualSpan = 2;
-          isInSpan = true;
-        }
-        else if (winHistory[i].id === winHistory[i + 1].id - 1 && isInSpan === true)
+        else if (winHistory[i - 1].id === winHistory[i].id - 1 && actualSpan != 0)
           actualSpan++;
-        else if (winHistory[i].id != winHistory[i + 1].id - 1 && isInSpan === true){
+        else if (winHistory[i - 1].id != winHistory[i].id - 1 && actualSpan != 0){
           if (actualSpan > biggestSpan)
             biggestSpan = actualSpan;
           actualSpan = 0;
         }
       }
-      if (actualSpan > biggestSpan)
-      biggestSpan = actualSpan;
-      resolve (biggestSpan);
+      resolve (actualSpan > biggestSpan ? actualSpan: biggestSpan);
     });
   }
 
   async retrieveLoseStreak(username: string): Promise<number>{
-    let LoseHistory: Array<Game> = await this.retrieveLostGames(username);
+    let loseHistory: Array<Game> = await this.retrieveLostGames(username);
     return new Promise(resolve => {
       let biggestSpan: number = 0;
       let actualSpan: number = 0;
-      let isInSpan: boolean = false;
-      for (let i = 0; i < LoseHistory.length - 1; i++){
-        if (LoseHistory[i].id === LoseHistory[i + 1].id - 1 && isInSpan === false && actualSpan === 0){
+      if (loseHistory.length == 1)
+        resolve(1);
+      for (let i = 1; i < loseHistory.length; i++){
+        if (loseHistory[i - 1].id === loseHistory[i].id - 1 && actualSpan === 0)
           actualSpan = 2;
-          isInSpan = true;
-        }
-        else if (LoseHistory[i].id === LoseHistory[i + 1].id - 1 && isInSpan === true)
+        else if (loseHistory[i - 1].id === loseHistory[i].id - 1 && actualSpan != 0)
           actualSpan++;
-        else if (LoseHistory[i].id != LoseHistory[i + 1].id - 1 && isInSpan === true){
+        else if (loseHistory[i - 1].id != loseHistory[i].id - 1 && actualSpan != 0){
           if (actualSpan > biggestSpan)
             biggestSpan = actualSpan;
           actualSpan = 0;
         }
       }
-      if (actualSpan > biggestSpan)
-      biggestSpan = actualSpan;
-      resolve (biggestSpan);
+      resolve (actualSpan > biggestSpan ? actualSpan: biggestSpan);
     });
   }
 

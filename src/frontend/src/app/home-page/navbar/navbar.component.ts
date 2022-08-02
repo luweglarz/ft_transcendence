@@ -11,6 +11,7 @@ import { JwtService } from 'src/app/auth/jwt';
   animations: [],
 })
 export class NavbarComponent implements OnInit {
+
   constructor(
     public jwtService: JwtService,
     public avatar: AvatarService,
@@ -34,8 +35,8 @@ export class NavbarComponent implements OnInit {
   }
 
   /* PROFIL POP UP */
-  openProfil() {
-    this.popupsService.openProfil();
+  openProfil(username: string) {
+    this.popupsService.openProfil(username);
   }
 
   /* LADDER POP UP */
