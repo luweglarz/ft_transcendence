@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
+import { AvatarService } from 'src/app/avatar/avatar.service';
 
 interface Game {
   id: number;
@@ -22,7 +23,7 @@ interface LoseHistory {
 @Injectable({
   providedIn: 'root'
 })
-export class MatchHistoryService {
+export class ProfilInfoService {
 
   username: string = '';
   nbGames: number = 0;
@@ -35,7 +36,7 @@ export class MatchHistoryService {
   loseHistory: Array<Game> = [];
   gameHistory: Array<Game> = [];
 
-  constructor(private http: HttpClient, private jwtService: JwtService) {
+  constructor(private http: HttpClient, private jwtService: JwtService, public avatar: AvatarService) {
     this.loadUserProfil('ugtheven');
   }
 

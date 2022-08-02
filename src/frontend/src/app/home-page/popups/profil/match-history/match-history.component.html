@@ -1,7 +1,7 @@
 <div class="container">
   <div class="history-container">
     <ul>
-      <li class="history-item" *ngFor="let game of matchHistoryService.gameHistory" [ngClass]="game.winnerId === 1 ? 'win': 'loss'">
+      <li class="history-item" *ngFor="let game of profilInfoService.gameHistory" [ngClass]="game.winnerId === 1 ? 'win': 'loss'">
         <p>{{ game.id }}</p>
 
         <p>{{ game.winnerId }}</p>
@@ -13,5 +13,5 @@
     </ul>
   </div>
 </div>
-<button (click)="matchHistoryService.testUgtheven()"></button>
-<button (click)="matchHistoryService.testUsertest()"></button>
+<button (click)="profilInfoService.testUgtheven()"></button>
+<button (click)="profilInfoService.testUsertest()"></button>

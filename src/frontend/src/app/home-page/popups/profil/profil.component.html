@@ -3,7 +3,7 @@
   <div class="profil-header">
     <!-- Avatar & Username -->
     <div class="profil-header-box">
-      <img class="profil-header-avatar" [src]="avatar.src" height="128px" width="128px">
+      <img class="profil-header-avatar" [src]="profilInfoService.avatar.src" height="128px" width="128px">
       <p> {{ jwtService.getPayload()?.username }} </p>
     </div>
 
@@ -13,12 +13,13 @@
       <!-- Rank -->
       <div class="profil-header-line">
         <img src="assets/images/rank.png" height="32px" width="32px">
+        <!-- Need to retrieve rank from ladderboard -->
         <p> 0 </p>
       </div>
       <!-- Elo score -->
       <div class="profil-header-line">
         <img src="assets/images/elo.png" height="32px" width="32px">
-        <p> {{ matchHistoryService.score }} </p>
+        <p> {{ profilInfoService.score }} </p>
       </div>
     </div>
 
@@ -28,12 +29,12 @@
       <!-- Largest win streak -->
       <div class="profil-header-line">
         <img src="assets/images/win-streak.png" height="32px" width="32px">
-        <p>{{ matchHistoryService.winStreak }} </p>
+        <p>{{ profilInfoService.winStreak }} </p>
       </div>
       <!-- Largest win streak -->
       <div class="profil-header-line">
         <img src="assets/images/loss-streak.png" height="32px" width="32px">
-        <p>{{ matchHistoryService.loseStreak }} </p>
+        <p>{{ profilInfoService.loseStreak }} </p>
       </div>
     </div>
   </div>
@@ -43,7 +44,7 @@
 
     <div class="profil-win-counter">
       <p class="profil-win-logo">W</p>
-      <p> {{ matchHistoryService.nbWins }} / {{ matchHistoryService.nbLoses }} </p>
+      <p> {{ profilInfoService.nbWins }} / {{ profilInfoService.nbLoses }} </p>
       <p class="profil-loss-logo">L</p>
     </div>
 

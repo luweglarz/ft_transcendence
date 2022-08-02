@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
 import { AvatarService } from 'src/app/avatar/avatar.service';
-import { MatchHistoryService } from './match-history/match-history.service';
+import { ProfilInfoService } from './profil-info.service';
 
 @Component({
   selector: 'app-profil',
@@ -10,7 +10,7 @@ import { MatchHistoryService } from './match-history/match-history.service';
 })
 export class ProfilComponent implements OnInit {
 
-  constructor(public jwtService: JwtService, public avatar: AvatarService, public matchHistoryService: MatchHistoryService) {
+  constructor(public jwtService: JwtService, public profilInfoService: ProfilInfoService) {
     //
   }
 
