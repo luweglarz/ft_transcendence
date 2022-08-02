@@ -25,6 +25,7 @@ import { ChatRoomComponent } from '../components/chat-room/chat-room.component';
 import { ChatMessageComponent } from '../components/chat-message/chat-message.component';
 import { ChatRoomCreateComponent } from '../components/chat-room-create/chat-room-create.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatPaginatorModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
 })
 export class HomePageModule {}

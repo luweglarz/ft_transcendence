@@ -57,7 +57,7 @@
   cursor: pointer;
 }
 
- .sidenav-nav-item .sidenav-nav-link {
+.sidenav-nav-item .sidenav-nav-link {
   display: flex;
   align-items: center;
   height: 3rem;
@@ -90,7 +90,7 @@
 
 /* Link transitions */
 .sidenav-nav-item:hover .sidenav-nav-link {
-    background-color: #44526F;
+  background-color: #44526f;
 }
 
 .sidenav-nav-item:active .sidenav-nav-link {
@@ -98,11 +98,11 @@
 }
 
 .sidenav-nav-item:active .sidenav-nav-link .sidenav-link-text {
-  color: #1A202C;
+  color: #1a202c;
 }
 
 .sidenav-nav-item:active .sidenav-nav-link .sidenav-link-icon {
-  fill: #1A202C;
+  fill: #1a202c;
 }
 
 /* Footer */
@@ -116,4 +116,9 @@
   align-items: center;
   justify-content: center;
   height: 20%;
+}
+
+/* Other */
+a {
+  text-decoration: none;
 }

@@ -12,6 +12,6 @@ export class SignOutComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.signOut();
-    this.router.navigate(['/auth/signin']);
+    this.router.navigate(['/auth/signin'], { replaceUrl: true });
   }
 }
