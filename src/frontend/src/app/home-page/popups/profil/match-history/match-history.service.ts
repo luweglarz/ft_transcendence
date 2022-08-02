@@ -24,7 +24,19 @@ interface LoseHistory {
 })
 export class MatchHistoryService {
 
+  username: string = '';
+  nbGames: number = 0;
+  nbWins: number = 0;
+  nbLoses: number = 0;
+  score: number = 0;
+  winStreak: number = 0;
+  loseStreak: number = 0;
+  winHistory: Array<Game> = [];
+  loseHistory: Array<Game> = [];
+  gameHistory: Array<Game> = [];
+
   constructor(private http: HttpClient, private jwtService: JwtService) {
+    this.loadUserProfil('ugtheven');
   }
 
   //RETRIEVE WIN LOSES COUNTER
@@ -49,6 +61,64 @@ export class MatchHistoryService {
     let nbLoses = await this.retrieveLoseCounter(username);
     return new Promise(resolve => {
       resolve (nbWins + nbLoses);
+    });
+  }
+
+  async retrieveScore(username: string): Promise<number>{
+    let nbWins = await this.retrieveWinCounter(username);
+    let nbLoses = await this.retrieveLoseCounter(username);
+    return new Promise(resolve => {
+      resolve (Math.round((nbWins / nbLoses) * 1000));
+    });
+  }
+
+  async retrieveWinStreak(username: string): Promise<number>{
+    let winHistory: Array<Game> = await this.retrieveWonGames(username);
+    return new Promise(resolve => {
+      let biggestSpan: number = 0;
+      let actualSpan: number = 0;
+      let isInSpan: boolean = false;
+      for (let i = 0; i < winHistory.length - 1; i++){
+        if (winHistory[i].id === winHistory[i + 1].id - 1 && isInSpan === false && actualSpan === 0){
+          actualSpan = 2;
+          isInSpan = true;
+        }
+        else if (winHistory[i].id === winHistory[i + 1].id - 1 && isInSpan === true)
+          actualSpan++;
+        else if (winHistory[i].id != winHistory[i + 1].id - 1 && isInSpan === true){
+          if (actualSpan > biggestSpan)
+            biggestSpan = actualSpan;
+          actualSpan = 0;
+        }
+      }
+      if (actualSpan > biggestSpan)
+      biggestSpan = actualSpan;
+      resolve (biggestSpan);
+    });
+  }
+
+  async retrieveLoseStreak(username: string): Promise<number>{
+    let LoseHistory: Array<Game> = await this.retrieveLostGames(username);
+    return new Promise(resolve => {
+      let biggestSpan: number = 0;
+      let actualSpan: number = 0;
+      let isInSpan: boolean = false;
+      for (let i = 0; i < LoseHistory.length - 1; i++){
+        if (LoseHistory[i].id === LoseHistory[i + 1].id - 1 && isInSpan === false && actualSpan === 0){
+          actualSpan = 2;
+          isInSpan = true;
+        }
+        else if (LoseHistory[i].id === LoseHistory[i + 1].id - 1 && isInSpan === true)
+          actualSpan++;
+        else if (LoseHistory[i].id != LoseHistory[i + 1].id - 1 && isInSpan === true){
+          if (actualSpan > biggestSpan)
+            biggestSpan = actualSpan;
+          actualSpan = 0;
+        }
+      }
+      if (actualSpan > biggestSpan)
+      biggestSpan = actualSpan;
+      resolve (biggestSpan);
     });
   }
 
@@ -92,22 +162,28 @@ export class MatchHistoryService {
     return (gameHistory);
   }
 
+  async loadUserProfil(username: string) {
+    this.nbGames = await this.retrieveGameCounter(username);
+    this.nbWins = await this.retrieveWinCounter(username);
+    this.nbLoses = await this.retrieveLoseCounter(username);
+    this.score = await this.retrieveScore(username);
+    this.winStreak = await this.retrieveWinStreak(username);
+    this.loseStreak = await this.retrieveLoseStreak(username);
+    this.winHistory = await this.retrieveWonGames(username);
+    this.loseHistory = await this.retrieveLostGames(username);
+    this.gameHistory = await this.retrieveUserHistory(username);
+  }
+
   //DEBUG
   async testButton() {
-    console.log('Username: ', this.jwtService.getPayload()?.username);
-
-    const nbWins = await this.retrieveWinCounter('ugtheven');
-    const nbLoses = await this.retrieveLoseCounter('ugtheven');
-    const nbGames = await this.retrieveGameCounter('ugtheven');
-    console.log('Nombre de victoires: ', nbWins);
-    console.log('Nombre de defaites: ', nbLoses);
-    console.log('Nombre de defaites: ', nbGames);
-
-    const winHistory: Array<Game> = await this.retrieveWonGames('ugtheven');
-    const loseHistory: Array<Game> = await this.retrieveLostGames('ugtheven');
-    const gameHistory: Array<Game> = await this.retrieveUserHistory('ugtheven');
-    console.log(winHistory);
-    console.log(loseHistory);
-    console.log(gameHistory);
+    console.log('Nombre de victoires: ', this.nbWins);
+    console.log('Nombre de defaites: ', this.nbLoses);
+    console.log('Nombre de games: ', this.nbGames);
+    console.log('Score: ', this.score);
+    console.log('Win Streak: ', this.winStreak);
+    console.log('Lose Streak: ', this.loseStreak);
+    console.log('Win History: ', this.winHistory);
+    console.log('Lose History: ', this.loseHistory);
+    console.log('Game History: ', this.gameHistory);
   }
 }
