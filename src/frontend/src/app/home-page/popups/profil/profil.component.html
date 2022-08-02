@@ -18,7 +18,7 @@
       <!-- Elo score -->
       <div class="profil-header-line">
         <img src="assets/images/elo.png" height="32px" width="32px">
-        <p> {{ elo }} </p>
+        <p> {{ matchHistoryService.score }} </p>
       </div>
     </div>
 
@@ -28,12 +28,12 @@
       <!-- Largest win streak -->
       <div class="profil-header-line">
         <img src="assets/images/win-streak.png" height="32px" width="32px">
-        <p>{{ winStreak }} </p>
+        <p>{{ matchHistoryService.winStreak }} </p>
       </div>
       <!-- Largest win streak -->
       <div class="profil-header-line">
         <img src="assets/images/loss-streak.png" height="32px" width="32px">
-        <p>{{ lossStreak }} </p>
+        <p>{{ matchHistoryService.loseStreak }} </p>
       </div>
     </div>
   </div>
@@ -43,8 +43,7 @@
 
     <div class="profil-win-counter">
       <p class="profil-win-logo">W</p>
-      <p> {{ win }} / {{ loss }} </p>
-      <!-- <p> {{ matchHistoryService.retrieveWinCounter('ugtheven') }} / {{ matchHistoryService.retrieveLoseCounter('ugtheven') }} </p> -->
+      <p> {{ matchHistoryService.nbWins }} / {{ matchHistoryService.nbLoses }} </p>
       <p class="profil-loss-logo">L</p>
     </div>
 
