@@ -10,8 +10,9 @@ import { AppComponent } from './app.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HomePageModule } from './home-page/home-page.module';
+import { environment } from 'src/environments/environment';
 
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+const config: SocketIoConfig = { url: environment.backend, options: {} };
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent],
