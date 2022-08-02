@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -27,7 +27,7 @@ export class SignUpComponent implements OnInit {
   token?: string;
   oAuthUser?: OAuthUser;
 
-  registerForm?: FormGroup;
+  registerForm?: UntypedFormGroup;
 
   localForm = this.formBuilder.group({
     username: this.formBuilder.control('', {
@@ -48,7 +48,7 @@ export class SignUpComponent implements OnInit {
   });
 
   oauthForm = this.formBuilder.group({
-    username: new FormControl('', {
+    username: new UntypedFormControl('', {
       validators: [Validators.required, Validators.maxLength(42)],
       asyncValidators: this.validators.isAvailable('username'),
       updateOn: 'change',
@@ -57,20 +57,20 @@ export class SignUpComponent implements OnInit {
   });
 
   get username() {
-    return this.registerForm?.get('username') as FormControl;
+    return this.registerForm?.get('username') as UntypedFormControl;
   }
   get password() {
-    return this.registerForm?.get('password') as FormControl;
+    return this.registerForm?.get('password') as UntypedFormControl;
   }
   get email() {
-    return this.registerForm?.get('email') as FormControl;
+    return this.registerForm?.get('email') as UntypedFormControl;
   }
   get twoFactors() {
-    return this.registerForm?.get('twoFactors') as FormControl;
+    return this.registerForm?.get('twoFactors') as UntypedFormControl;
   }
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private service: SignupService,
     private signin: SigninService,
