@@ -29,10 +29,8 @@ export class MatchmakingGatewayService {
           JSON.parse(
             JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
           ).username === player.username
-        ) {
-          client.emit('error', 'You are already in a game');
+        )
           return true;
-        }
       }
     }
     return false;

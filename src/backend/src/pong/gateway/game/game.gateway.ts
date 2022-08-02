@@ -38,6 +38,7 @@ export class GameGateway
 
   afterInit() {
     this.logger.log('Init');
+    console.log('connected sockets: ', this.server.allSockets.length);
   }
 
   handleConnection(client: Socket) {
@@ -57,6 +58,10 @@ export class GameGateway
 
   @SubscribeMessage('move')
   movement(@ConnectedSocket() client: Socket, @MessageBody() eventKey: string) {
+    if (this.matchmakingService.isClientInGame(client) === false) {
+      client.disconnect();
+      return;
+    }
     try {
       const gameRoom: Room = this.gameGatewayService.findRoomId(
         this.rooms,
