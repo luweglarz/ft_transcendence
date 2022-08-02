@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatchHistoryService } from './match-history.service';
+import { ProfilInfoService } from '../profil-info.service';
 
 @Component({
   selector: 'app-match-history',
@@ -8,7 +8,7 @@ import { MatchHistoryService } from './match-history.service';
 })
 export class MatchHistoryComponent implements OnInit {
 
-  constructor(public matchHistoryService: MatchHistoryService) { }
+  constructor(public profilInfoService: ProfilInfoService) { }
 
   ngOnInit(): void {
   }

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MatchHistoryService } from './match-history.service';
+import { ProfilInfoService } from '../profil-info.service';
 
-describe('MatchHistoryService', () => {
-  let service: MatchHistoryService;
+describe('ProfilInfoService', () => {
+  let service: ProfilInfoService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MatchHistoryService);
+    service = TestBed.inject(ProfilInfoService);
   });
 
   it('should be created', () => {
