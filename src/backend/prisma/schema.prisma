@@ -21,6 +21,8 @@ model User {
   authType  AuthType   @default(LOCAL)
   RoomUser  RoomUser[]
   Message   Message[]
+  wins       Game[]       @relation("Winner")
+  loses      Game[]       @relation("Loser")
 }
 
 enum AuthType {
@@ -71,4 +73,15 @@ model Room {
   roomType  RoomType
   users     RoomUser[]
   messages  Message[]
+}
+
+model Game {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  winner      User          @relation("Winner", fields: [winnerId], references: [id])
+  winnerId    Int
+  winnerGoals Int
+  loser       User          @relation("Loser", fields: [loserId], references: [id])
+  loserId     Int
+  loserGoals  Int
 }

@@ -8,6 +8,7 @@ import { GameGateway } from '../game/game.gateway';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { GameMap } from 'src/pong/class/game-map/game-map';
 import { GameGatewayService } from '../game/game-gateway.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class MatchmakingGatewayService {
@@ -15,6 +16,7 @@ export class MatchmakingGatewayService {
     @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway,
     private gameCoreService: GameCoreService,
     private gameGatewayService: GameGatewayService,
+    private jwtService: JwtService,
   ) {}
 
   private logger: Logger = new Logger('GameMatchMakingGateway');
@@ -23,7 +25,10 @@ export class MatchmakingGatewayService {
     for (const room of this.gameGateway.rooms) {
       for (const player of room.players) {
         if (
-          player.socket.handshake.auth.token === client.handshake.auth.token
+          player.socket.handshake.auth.token === client.handshake.auth.token ||
+          JSON.parse(
+            JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
+          ).username === player.username
         ) {
           client.emit('error', 'You are already in a game');
           return true;
@@ -35,8 +40,18 @@ export class MatchmakingGatewayService {
 
   isClientInMatchmaking(client: Socket, clientPools: Socket[][]): boolean {
     for (const pool of clientPools) {
-      for (const clientToken of pool) {
-        if (clientToken.handshake.auth.token === client.handshake.auth.token)
+      for (const clientPool of pool) {
+        if (
+          clientPool.handshake.auth.token === client.handshake.auth.token ||
+          JSON.parse(
+            JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
+          ).username ===
+            JSON.parse(
+              JSON.stringify(
+                this.jwtService.decode(clientPool.handshake.auth.token),
+              ),
+            ).username
+        )
           return true;
       }
     }
