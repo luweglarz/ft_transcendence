@@ -7,6 +7,7 @@ import { MatchmakingGatewayService } from './gateway/matchmaking/matchmaking-gat
 import { GameCoreService } from './service/game-core/game-core.service';
 import { GameDbService } from './service/game-db/game-db.service';
 import { GameController } from './controller/game/game.controller';
+import { DbService } from 'src/db/db.service';
 
 @Module({
   controllers: [GameController],
@@ -19,6 +20,7 @@ import { GameController } from './controller/game/game.controller';
     MatchmakingGatewayService,
     GameDbService,
     GameController,
+    DbService,
   ],
 })
 export class PongModule {}

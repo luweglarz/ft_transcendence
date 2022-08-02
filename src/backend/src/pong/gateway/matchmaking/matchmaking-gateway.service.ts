@@ -29,10 +29,8 @@ export class MatchmakingGatewayService {
           JSON.parse(
             JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
           ).username === player.username
-        ) {
-          client.emit('error', 'You are already in a game');
+        )
           return true;
-        }
       }
     }
     return false;
@@ -80,6 +78,7 @@ export class MatchmakingGatewayService {
           );
           this.logger.log(`A client has left the matchmaking: ${client.id}`);
           client.emit('matchmakingLeft', 'You have left the matchmaking');
+          client.disconnect();
           return;
         }
       }
