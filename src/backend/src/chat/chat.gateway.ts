@@ -14,7 +14,7 @@ import { DbService } from 'src/db/db.service';
 import { Room } from '@prisma/client';
 import { Logger } from '@nestjs/common';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;

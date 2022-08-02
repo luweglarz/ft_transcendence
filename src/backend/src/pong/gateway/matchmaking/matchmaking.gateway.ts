@@ -8,7 +8,7 @@ import {
 import { Socket } from 'socket.io';
 import { MatchmakingGatewayService } from './matchmaking-gateway.service';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({ cors: true, path: '/pong' })
 export class MatchmakingGateway {
   constructor(private matchmakingGatewayService: MatchmakingGatewayService) {
     this.normalClientPool = [];
