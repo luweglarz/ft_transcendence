@@ -33,7 +33,7 @@ export class RoomService {
     });
   }
 
-  async createRoom(room: Room, userId: number): Promise<Room> {
+  async createRoom(room: Room, userId: number, socketId: string): Promise<Room> {
     return this.prisma.room.create({
       data: {
         name: room.name,
@@ -44,6 +44,7 @@ export class RoomService {
             {
               user: { connect: { id: userId } },
               role: 'OWNER',
+              socketId: socketId,
             },
           ],
         },
@@ -51,7 +52,7 @@ export class RoomService {
     });
   }
 
-  async joinRoom(room: Room, userId: number) {
+  async joinRoom(room: Room, userId: number, socketId: string) {
     const existingRoomUser = await this.prisma.roomUser.findFirst({
       where: { roomId: room.id, userId: userId },
     });
@@ -65,6 +66,7 @@ export class RoomService {
           user: { connect: { id: userId } },
           role: 'USER',
           room: { connect: { id: room.id } },
+          socketId: socketId,
         },
       });
     }

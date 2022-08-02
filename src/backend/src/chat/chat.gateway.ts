@@ -19,11 +19,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
   private readonly logger = new Logger(ChatGateway.name);
+  private connectedUsers: string[] = [];
 
   constructor(
     private roomService: RoomService,
     private roomUserService: RoomUserService,
-    private messageService: MessageService, //private connectedUsers:   {[userId: number]: Socket}
+    private messageService: MessageService,
     private jwtService: JwtService,
     private prisma: DbService,
   ) {}
@@ -35,16 +36,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         socket.handshake.auth.token,
         { secret: process.env['JWT_SECRET'] },
       );
+      this.logger.debug('why tho', clearToken);
       if (!clearToken) return;
       socket.data.user = await this.prisma.user.findUnique({
         where: { username: clearToken.username },
       });
     } catch (error) {
-      console.log(error);
+      this.logger.error(error);
       socket.disconnect();
+      return ;
     }
-    console.log('fgh', socket.data.user);
+    if (socket.data.user == null) {
+      socket.disconnect();
+      return ;
+    }
     const rooms = await this.roomService.rooms({});
+    this.connectedUsers.push(socket.id);
     if (rooms.length > 0) this.server.to(socket.id).emit('rooms', rooms);
     //this.server.to(socket.id).emit('testfgh');
     //console.log(await this.roomService.rooms({}));
@@ -52,13 +59,29 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleDisconnect(socket: Socket) {
     //need cleanup of roomusers
+    this.logger.debug(socket.id);
+    delete this.connectedUsers[socket.id];
+    //await this.prisma.roomUser.deleteMany({where: {socketId: socket.id}});
+    let roomUsers = await this.roomUserService.roomUsers({where: {socketId: socket.id } });
+    for (let roomUser of roomUsers) {
+      this.logger.debug('in handle disco', roomUser);
+      let otherRoomUser = await this.roomUserService.roomUsers({where: {roomId: roomUser.roomId}});
+      this.logger.debug('otherroomuser', otherRoomUser.length);
+      if (otherRoomUser.length == 1) {
+        await this.prisma.message.deleteMany({where: {roomId: roomUser.roomId}});
+        await this.prisma.roomUser.delete({where: {roomUserId: roomUser.roomUserId}});
+        await this.prisma.room.delete({where: {id: roomUser.roomId}});
+      }
+    }
+
+    await this.prisma.roomUser.deleteMany({where: {socketId: socket.id}});
     socket.disconnect();
   }
 
   @SubscribeMessage('createRoom')
   async createRoom(socket: Socket, room: Room) {
     if (room.roomType === 'PROTECTED' && !room.password) return 'Error';
-    await this.roomService.createRoom(room, socket.data.user.id);
+    await this.roomService.createRoom(room, socket.data.user.id, socket.id);
     // needs emit once i can find how to identify user by connection to server
     // emit new room to all connected user
     //this.server.to(socket.id).emit('rooms', this.roomService.rooms({}));
@@ -76,7 +99,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       `${user.username} is trying to join room ${room.id}:${room.name}`,
     );
     try {
-      await this.roomService.joinRoom(room, user.id);
+      await this.roomService.joinRoom(room, user.id, socket.id);
     } catch (error) {
       this.logger.error(error);
     }
@@ -136,12 +159,19 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       i++;
     }
     console.log('fgh', messages);
-    this.server.to(socket.id).emit('msgs', messages);
+    let roomUsers = await this.roomUserService.roomUsers({where: {roomId: roomId } });
+    for (let roomuser of roomUsers) {
+      this.server.to(roomuser.socketId).emit('msgs', messages);
+    }
+    //this.server.to(socket.id).emit('msgs', messages);
   }
 
   @SubscribeMessage('getRooms')
   async getRooms(socket: Socket) {
-    this.server.to(socket.id).emit('rooms', await this.roomService.rooms({}));
+    //this.server.to(socket.id).emit('rooms', await this.roomService.rooms({}));
+    for (let connectedUser of this.connectedUsers) {
+      this.server.to(connectedUser).emit('rooms', await this.roomService.rooms({}));
+    }
   }
 
   async getRoomUsers(socket: Socket, roomId: number) {
