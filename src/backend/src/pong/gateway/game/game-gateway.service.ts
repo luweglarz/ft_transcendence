@@ -41,11 +41,12 @@ export class GameGatewayService {
     roomToClear.players[1].socket.disconnect();
   }
 
-  checkJwtToken(@ConnectedSocket() client: Socket) {
+  checkJwtToken(@ConnectedSocket() client: Socket): boolean {
     try {
       this.jwtService.verify(client.handshake.auth.token, {
         secret: process.env['JWT_SECRET'],
       });
+      return true;
     } catch (error) {
       this.logger.debug(error);
       client.disconnect();

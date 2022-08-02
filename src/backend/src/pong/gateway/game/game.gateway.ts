@@ -42,13 +42,13 @@ export class GameGateway
   }
 
   handleConnection(client: Socket) {
-    this.gameGatewayService.checkJwtToken(client);
-    this.logger.log(`Client connected: ${client.id}`);
+    if(this.gameGatewayService.checkJwtToken(client))
+      this.logger.log(`Client connected: ${client.id}`);
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
     if (this.matchmakingService.isClientInGame(client)) this.leaveGame(client);
-    this.logger.log(`Client disconnected: ${client.id}`);
+      this.logger.log(`Client disconnected: ${client.id}`);
   }
 
   @SubscribeMessage('*')
