@@ -1,2 +1,2 @@
-export * from './oauth.component';
+export * from './oauth-callback.component';
 export * from './oauth.service';

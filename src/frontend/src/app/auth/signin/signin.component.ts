@@ -3,7 +3,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { OAuthService } from '../oauth';
 import { SignoutService } from '../signout/signout.service';
 import { SigninService } from './signin.service';
-//import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +10,8 @@ import { SigninService } from './signin.service';
   styleUrls: ['./signin.component.css'],
 })
 export class SignInComponent implements OnInit {
+  state = { failure: false, reason: '' };
+
   signInForm = this.formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
@@ -28,7 +29,10 @@ export class SignInComponent implements OnInit {
   }
 
   localSignIn() {
-    this.service.signIn({ type: 'local', form: this.signInForm.value });
+    this.service.signIn(
+      { type: 'local', form: this.signInForm.value },
+      this.state,
+    );
   }
 
   oAuthSignIn() {
