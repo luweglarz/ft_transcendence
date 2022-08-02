@@ -1,21 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SignInComponent } from './signin';
-import { SignUpComponent } from './signup';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { OauthComponent } from './oauth';
-import { JwtService } from './jwt';
+import { OauthCallbackComponent } from './oauth';
 import { SignOutComponent } from './signout/signout.component';
 import { RouterModule } from '@angular/router';
-import { OAuthService } from './oauth/oauth.service';
-import { InfoComponent } from './info/info.component';
-import { AvatarModule } from '../avatar/avatar.module';
+import { InfoComponent } from './info';
+import { AvatarModule } from '../avatar';
+import { JwtModule } from './jwt';
+import { SignupModule } from './signup/signup.module';
 
 @NgModule({
   declarations: [
     SignInComponent,
-    SignUpComponent,
-    OauthComponent,
+    OauthCallbackComponent,
     SignOutComponent,
     InfoComponent,
   ],
@@ -25,8 +23,9 @@ import { AvatarModule } from '../avatar/avatar.module';
     ReactiveFormsModule,
     RouterModule,
     AvatarModule,
+    JwtModule,
+    SignupModule,
   ],
-  exports: [SignInComponent, SignUpComponent, OauthComponent],
-  providers: [JwtService, OAuthService],
+  exports: [SignInComponent, OauthCallbackComponent],
 })
 export class AuthModule {}

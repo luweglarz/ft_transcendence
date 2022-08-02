@@ -54,7 +54,11 @@ export class AuthService {
     const user = await this.db.user.findUnique({
       where: { username: dto.username },
     });
-    if (user && (await argon.verify(user.password, dto.password))) {
+    if (user && user.authType != 'LOCAL')
+      throw new ForbiddenException(
+        'Local authentication not set up for the current user',
+      );
+    else if (user && (await argon.verify(user.password, dto.password))) {
       return this.signInSuccess(user);
     } else throw new ForbiddenException('Credentials incorrect');
   }
@@ -128,13 +132,7 @@ export class AuthService {
     if (!data)
       throw new ForbiddenException('Could not fetch user with 42 OAuth2 API');
     const user = new OAuthUserDto();
-    for (const key of [
-      'login',
-      'email',
-      'image_url',
-      // 'first_name',
-      // 'last_name',
-    ]) {
+    for (const key of ['login', 'email', 'image_url']) {
       user[key] = data[key];
     }
     const errors = await validate(user, {
@@ -169,6 +167,11 @@ export class AuthService {
       console.log(`Error: ${this.uploadAvatar.name} failed.`);
       throw new InternalServerErrorException('Could not upload the avatar');
     }
+  }
+
+  async alreadyExists(field: string, value: string) {
+    const exists = await this.db.user.findFirst({ where: { [field]: value } });
+    return exists ? true : false;
   }
 
   //  =========================== PRIVATE Methods ============================  //
