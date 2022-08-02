@@ -175,7 +175,21 @@ export class MatchHistoryService {
   }
 
   //DEBUG
-  async testButton() {
+  async testUgtheven() {
+    await this.loadUserProfil('ugtheven');
+    console.log('Nombre de victoires: ', this.nbWins);
+    console.log('Nombre de defaites: ', this.nbLoses);
+    console.log('Nombre de games: ', this.nbGames);
+    console.log('Score: ', this.score);
+    console.log('Win Streak: ', this.winStreak);
+    console.log('Lose Streak: ', this.loseStreak);
+    console.log('Win History: ', this.winHistory);
+    console.log('Lose History: ', this.loseHistory);
+    console.log('Game History: ', this.gameHistory);
+  }
+
+  async testUsertest() {
+    await this.loadUserProfil('usertest');
     console.log('Nombre de victoires: ', this.nbWins);
     console.log('Nombre de defaites: ', this.nbLoses);
     console.log('Nombre de games: ', this.nbGames);

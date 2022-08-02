@@ -1,1 +1,15 @@
-<button (click)="matchHistoryService.testButton()"></button>
+<div class="container">
+  <div class="history-container">
+    <ul>
+      <li class="history-item" *ngFor="let game of matchHistoryService.gameHistory">
+        <p>{{ game.id }}</p>
+
+        <p>{{ game.winnerId }}</p>
+        <p>{{ game.winnerGoals }}</p>
+
+        <p>{{ game.loserId }}</p>
+        <p>{{ game.loserGoals }}</p>
+      </li>
+    </ul>
+  </div>
+</div>
