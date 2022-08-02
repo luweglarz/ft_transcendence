@@ -21,8 +21,8 @@ model User {
   authType  AuthType   @default(LOCAL)
   RoomUser  RoomUser[]
   Message   Message[]
-  wins       Game[]       @relation("Winner")
-  loses      Game[]       @relation("Loser")
+  wins      Game[]     @relation("Winner")
+  loses     Game[]     @relation("Loser")
 }
 
 enum AuthType {
@@ -43,15 +43,15 @@ enum RoomType {
 }
 
 model RoomUser {
-  roomUserId Int         @id @default(autoincrement())
-  user     User      @relation(fields: [userId], references: [id])
-  userId   Int
-  room     Room      @relation(fields: [roomId], references: [id])
-  roomId   Int
-  role     Role
-  isBanned Boolean   @default(false)
-  isMuted  Boolean   @default(false)
-  timeOut  DateTime?
+  roomUserId Int       @id @default(autoincrement())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     Int
+  room       Room      @relation(fields: [roomId], references: [id])
+  roomId     Int
+  role       Role
+  isBanned   Boolean   @default(false)
+  isMuted    Boolean   @default(false)
+  timeOut    DateTime?
 
 }
 
@@ -76,12 +76,12 @@ model Room {
 }
 
 model Game {
-  id          Int           @id @default(autoincrement())
-  createdAt   DateTime      @default(now())
-  winner      User          @relation("Winner", fields: [winnerId], references: [id])
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  winner      User     @relation("Winner", fields: [winnerId], references: [id])
   winnerId    Int
   winnerGoals Int
-  loser       User          @relation("Loser", fields: [loserId], references: [id])
+  loser       User     @relation("Loser", fields: [loserId], references: [id])
   loserId     Int
   loserGoals  Int
 }
