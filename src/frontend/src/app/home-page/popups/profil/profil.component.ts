@@ -9,13 +9,6 @@ import { MatchHistoryService } from './match-history/match-history.service';
   styleUrls: ['./profil.component.css'],
 })
 export class ProfilComponent implements OnInit {
-  username = 'username';
-  rank = 1;
-  elo = 0;
-  win = 0;
-  loss = 0;
-  winStreak = 0;
-  lossStreak = 0;
 
   constructor(public jwtService: JwtService, public avatar: AvatarService, public matchHistoryService: MatchHistoryService) {
     //

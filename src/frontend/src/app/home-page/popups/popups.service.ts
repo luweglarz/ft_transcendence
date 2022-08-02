@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { JwtService } from 'src/app/auth/jwt';
+import { MatchHistoryService } from './profil/match-history/match-history.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PopupsService {
-  constructor() {
+  constructor(public matchHistoryService: MatchHistoryService, public jwtService: JwtService) {
     this.profilPopup = false;
     this.ladderPopup = false;
     this.socialPopup = false;
@@ -14,7 +16,8 @@ export class PopupsService {
   public ladderPopup;
   public socialPopup;
 
-  openProfil() {
+  openProfil(username: string) {
+    this.matchHistoryService.loadUserProfil(username);
     this.profilPopup = true;
     this.ladderPopup = false;
     this.socialPopup = false;
