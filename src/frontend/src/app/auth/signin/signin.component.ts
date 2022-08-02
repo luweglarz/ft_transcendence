@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { OAuthService } from '../oauth';
 import { SignoutService } from '../signout/signout.service';
 import { SigninService } from './signin.service';
@@ -18,7 +18,7 @@ export class SignInComponent implements OnInit {
   });
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private oauth: OAuthService,
     private service: SigninService,
     private signOut: SignoutService,
