@@ -62,7 +62,6 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  cursor: pointer;
   font-size: large;
   font-weight: bold;
   border-radius: 8px;
@@ -74,18 +73,22 @@
   transition: all 0.3s;
 }
 
+.button-register:enabled {
+  cursor: pointer;
+}
+
 .btn-register .icon-register {
   fill: white;
   stroke: white;
 }
 
-.btn-register:hover {
+.btn-register:hover:enabled {
   background-color: #44526f;
   font-size: large;
   font-weight: bold;
 }
 
-.btn-register:active {
+.btn-register:active:enabled {
   background-color: white;
   font-size: large;
   font-weight: bold;
@@ -93,13 +96,19 @@
   color: #1a202c;
 }
 
-.btn-register:active p {
+.btn-register:active:enabled p {
   color: #1a202c;
 }
 
-.btn-register:active .icon-register {
+.btn-register:active:enabled .icon-register {
   fill: #1a202c;
   stroke: #1a202c;
+}
+
+.btn-register[disabled] {
+  color: white;
+  background-color: #aaaaaa;
+  cursor: default;
 }
 
 /* CHECKBOX */
@@ -129,4 +138,16 @@
 
 a {
   color: white;
+}
+
+/* VALIDATION */
+.alert {
+  color: #7d283c;
+  background-color: rgba(245, 206, 215, 0.8);
+  display: flex;
+  width: 100%;
+  padding: 8px;
+  border-radius: 0px 0px 3px 3px;
+  padding-left: 12px;
+  padding-right: 12px;
 }

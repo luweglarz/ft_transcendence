@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SignUpComponent, SignInComponent } from './auth';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './home-page/home/home.component';
-import { OauthComponent } from './auth/oauth/oauth.component';
+import { OauthCallbackComponent } from './auth/oauth/oauth-callback.component';
 import { SignOutComponent } from './auth/signout/signout.component';
 import { InfoComponent } from './auth/info/info.component';
 
@@ -30,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'oauth42/callback',
-        component: OauthComponent,
+        component: OauthCallbackComponent,
       },
       {
         path: 'info',
