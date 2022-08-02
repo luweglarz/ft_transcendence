@@ -13,7 +13,6 @@ import { Socket, Server } from 'socket.io';
 import { Room } from '../../class/room/room';
 import { GameGatewayService } from './game-gateway.service';
 import { Player } from '../../class/player/player';
-import { JwtService } from '@nestjs/jwt';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { MatchmakingGatewayService } from '../matchmaking/matchmaking-gateway.service';
 
@@ -26,7 +25,6 @@ export class GameGateway
     private gameCoreService: GameCoreService,
     @Inject(forwardRef(() => MatchmakingGatewayService))
     private matchmakingService: MatchmakingGatewayService,
-    private jwtService: JwtService,
   ) {
     this.logger = new Logger('GameGateway');
     this._rooms = [];
@@ -43,20 +41,18 @@ export class GameGateway
   }
 
   handleConnection(client: Socket) {
-    try {
-      this.jwtService.verify(client.handshake.auth.token, {
-        secret: process.env['JWT_SECRET'],
-      });
-      this.logger.log(`Client connected: ${client.id}`);
-    } catch (error) {
-      this.logger.debug(error);
-      client.disconnect();
-    }
+    this.gameGatewayService.checkJwtToken(client);
+    this.logger.log(`Client connected: ${client.id}`);
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
     if (this.matchmakingService.isClientInGame(client)) this.leaveGame(client);
     this.logger.log(`Client disconnected: ${client.id}`);
+  }
+
+  @SubscribeMessage('*')
+  socketMiddleware(@ConnectedSocket() client: Socket) {
+    this.gameGatewayService.checkJwtToken(client);
   }
 
   @SubscribeMessage('move')

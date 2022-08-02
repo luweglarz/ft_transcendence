@@ -50,6 +50,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
+    "socketio-wildcard": "^2.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -62,6 +63,7 @@
     "@types/node": "^16.0.0",
     "@types/passport-jwt": "^3.0.6",
     "@types/passport-oauth2": "^1.4.11",
+    "@types/socketio-wildcard": "^2.0.4",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",

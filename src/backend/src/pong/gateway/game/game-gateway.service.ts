@@ -1,4 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { ConnectedSocket } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { Ball } from 'src/pong/class/ball/ball';
 import { Player } from '../../class/player/player';
@@ -6,6 +8,12 @@ import { Room } from '../../class/room/room';
 
 @Injectable()
 export class GameGatewayService {
+  constructor(private jwtService: JwtService) {
+    this.logger = new Logger('GameGateway');
+  }
+
+  private logger: Logger;
+
   findRoomId(rooms: Room[], client: Socket): Room {
     for (const room of rooms) {
       for (const player of room.players) {
@@ -31,6 +39,17 @@ export class GameGatewayService {
     );
     roomToClear.players[0].socket.disconnect();
     roomToClear.players[1].socket.disconnect();
+  }
+
+  checkJwtToken(@ConnectedSocket() client: Socket) {
+    try {
+      this.jwtService.verify(client.handshake.auth.token, {
+        secret: process.env['JWT_SECRET'],
+      });
+    } catch (error) {
+      this.logger.debug(error);
+      client.disconnect();
+    }
   }
 
   emitGameFinished(
