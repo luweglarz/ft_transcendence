@@ -11,8 +11,6 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HomePageModule } from './home-page/home-page.module';
 
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
-
 @NgModule({
   declarations: [AppComponent, NotFoundComponent],
   imports: [
@@ -22,7 +20,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     BrowserAnimationsModule,
     PongModule,
     HttpClientModule,
-    SocketIoModule.forRoot(config),
     AuthModule,
     SocketIoModule,
     HomePageModule,
