@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HomePageModule } from './home-page/home-page.module';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent],
