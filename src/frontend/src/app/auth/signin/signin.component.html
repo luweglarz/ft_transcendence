@@ -5,6 +5,7 @@
       <img src="/assets/images/Logo.png" alt="42Pong logo">
     </div>
     <p>Please sign in with your 42's intranet account to play.</p>
+
     <!-- Auth button -->
     <button class="btn-login" (click)="oAuthSignIn()">
       <p>Sign in with</p>
@@ -15,7 +16,10 @@
         <path d="M22.282 15.122C21.072 16.3296 20.0816 17.32 20.0816 17.325C20.0816 17.3287 21.0745 17.3313 22.2883 17.33L24.4937 17.3262L24.4975 15.1258C24.4988 13.917 24.4962 12.9266 24.4912 12.9279C24.485 12.9279 23.4908 13.9158 22.282 15.122Z"/>
       </svg>
     </button>
+
     <p>OR</p>
+
+    <!-- Local Signin -->
     <form [formGroup]="signInForm" (ngSubmit)="localSignIn()" (keydown.meta.enter)="localSignIn()" class="form-signin">
       <!-- Username field -->
       <div class="field-signin">
@@ -25,10 +29,15 @@
       <div class="field-signin">
         <input formControlName="password" placeholder="Password" name="password" type="password">
       </div>
-      <button class="btn-login">
+      <button class="btn-login" [disabled]="signInForm.invalid">
         <p>Sign in locally</p>
       </button>
     </form>
+
+    <div *ngIf="state.failure" class="alert">
+      <p>Error: {{state.reason}}</p>
+    </div>
+
     <p>No account ? Sign up <a [routerLink]="['/auth/signup']">here</a></p>
   </div>
 </div>
