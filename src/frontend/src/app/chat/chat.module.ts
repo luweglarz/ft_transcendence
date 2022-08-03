@@ -9,10 +9,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';
-import { ChatRoomComponent } from './chat-room/chat-room.component';
-import { ChatMessageComponent } from './chat-message/chat-message.component';
-import { ChatRoomCreateComponent } from './chat-room-create/chat-room-create.component';
-import { ChatMainComponent } from './chat-main/chat-main.component';
+import { ChatRoomComponent } from './components/chat-room/chat-room.component';
+import { ChatMessageComponent } from './components/chat-message/chat-message.component';
+import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room-create.component';
+import { ChatMainComponent } from './components/chat-main/chat-main.component';
 import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
