@@ -11,7 +11,7 @@ set_local_env:
 	@echo "OAUTH_42_CLIENT_ID='$(OAUTH_42_CLIENT_ID)'" > .env
 	@echo "OAUTH_42_CLIENT_SECRET='$(OAUTH_42_CLIENT_SECRET)'" >> .env
 	@echo "JWT_SECRET='$(JWT_SECRET)'" >> .env
-	@cat src/postgres/dev.env src/backend/env/docker-compose.dev.env > src/backend/.env
+	@cat src/backend/env/postgres.dev.env src/backend/env/docker-compose.dev.env > src/backend/.env
 	@perl -i -pe 's/DB_HOST=.*/DB_HOST="localhost"/' src/backend/.env
 	@echo "`tput setaf 2`⚙ Local dev environment generated."
 

@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { forwardRef, Inject, Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -13,17 +13,18 @@ import { Socket, Server } from 'socket.io';
 import { Room } from '../../class/room/room';
 import { GameGatewayService } from './game-gateway.service';
 import { Player } from '../../class/player/player';
-import { JwtService } from '@nestjs/jwt';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
+import { MatchmakingGatewayService } from '../matchmaking/matchmaking-gateway.service';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({ cors: true, path: '/pong' })
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   constructor(
     private gameGatewayService: GameGatewayService,
     private gameCoreService: GameCoreService,
-    private jwtService: JwtService,
+    @Inject(forwardRef(() => MatchmakingGatewayService))
+    private matchmakingService: MatchmakingGatewayService,
   ) {
     this.logger = new Logger('GameGateway');
     this._rooms = [];
@@ -37,27 +38,30 @@ export class GameGateway
 
   afterInit() {
     this.logger.log('Init');
+    console.log('connected sockets: ', this.server.allSockets.length);
   }
 
   handleConnection(client: Socket) {
-    try {
-      this.jwtService.verify(client.handshake.auth.token, {
-        secret: process.env['JWT_SECRET'],
-      });
+    if (this.gameGatewayService.checkJwtToken(client))
       this.logger.log(`Client connected: ${client.id}`);
-    } catch (error) {
-      this.logger.debug(error);
-      client.disconnect();
-    }
   }
 
-  handleDisconnect(client: Socket) {
-    this.leaveGame(client);
+  handleDisconnect(@ConnectedSocket() client: Socket) {
+    if (this.matchmakingService.isClientInGame(client)) this.leaveGame(client);
     this.logger.log(`Client disconnected: ${client.id}`);
+  }
+
+  @SubscribeMessage('*')
+  socketMiddleware(@ConnectedSocket() client: Socket) {
+    this.gameGatewayService.checkJwtToken(client);
   }
 
   @SubscribeMessage('move')
   movement(@ConnectedSocket() client: Socket, @MessageBody() eventKey: string) {
+    if (this.matchmakingService.isClientInGame(client) === false) {
+      client.disconnect();
+      return;
+    }
     try {
       const gameRoom: Room = this.gameGatewayService.findRoomId(
         this.rooms,
@@ -103,7 +107,10 @@ export class GameGateway
             leaver,
             true,
           );
-          this.logger.log(`player ${leaver} has left the game ${room.uuid}`);
+          client.disconnect();
+          this.logger.log(
+            `player ${leaver.username} has left the game ${room.uuid}`,
+          );
           return;
         }
       }
