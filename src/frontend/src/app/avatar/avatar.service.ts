@@ -32,7 +32,7 @@ export class AvatarService {
   fetch() {
     if (this.jwt.isValid())
       this.http
-        .get(`${environment.backend}/auth/avatar/download`, {
+        .get(`${environment.backend}/users/${this.jwt?.username}/avatar`, {
           responseType: 'blob',
         })
         .subscribe({
@@ -77,9 +77,7 @@ export class AvatarService {
     if (this.avatar.file) {
       const formData = new FormData();
       formData.append('avatar', this.avatar.file);
-      this.http
-        .post(`${environment.backend}/auth/avatar/upload`, formData)
-        .subscribe();
+      this.http.post(`${environment.backend}/me/avatar`, formData).subscribe();
     }
   }
 
