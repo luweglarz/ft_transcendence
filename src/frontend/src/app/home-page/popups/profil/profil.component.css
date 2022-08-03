@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 100%;
   color: white;
   font-size: 20px;
 }
@@ -48,11 +49,14 @@
 }
 
 /* Separator */
-.profil-separator {
+.profil-history {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  background-color: black;
 }
 
 .profil-win-counter {
@@ -79,10 +83,7 @@
 }
 
 .profil-history-title {
+  width: 100%;
   font-size: 24px;
-}
-
-/* History */
-.profil-history {
-  background-color: red;
+  text-align: center;
 }
