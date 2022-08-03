@@ -77,13 +77,13 @@ export class AuthController {
     @User() user: JwtPayload,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const image = await this.service.getAvatar(user);
-    res.set({
-      'Content-Disposition': `inline; filename="avatar.jpg"`,
-      'Content-Type': 'image/jpg',
-    });
-    if (image) {
-      return new StreamableFile(image);
+    const avatar = await this.service.getAvatar(user);
+    if (avatar) {
+      res.set({
+        'Content-Disposition': `inline; filename="avatar.jpg"`,
+        'Content-Type': avatar.mimeType,
+      });
+      return new StreamableFile(avatar.image);
     } else return '';
   }
 

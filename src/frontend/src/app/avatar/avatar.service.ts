@@ -34,7 +34,7 @@ export class AvatarService {
         })
         .subscribe({
           next: (blob) => {
-            if (blob.size) {
+            if (blob?.size) {
               this.update({ file: blob });
               console.log(blob);
             }
