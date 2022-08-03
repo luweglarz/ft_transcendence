@@ -8,12 +8,12 @@
         <p>ugtheven</p>
       </div>
 
-      <p class="history-item-score">{{ game.winnerGoals }}</p>
-
-      <img *ngIf="game.winnerId === 1" src="/assets/images/vs-win.png" alt="">
-      <img *ngIf="game.winnerId != 1" src="/assets/images/vs-lose.png" alt="">
-
-      <p class="history-item-score">{{ game.loserGoals }}</p>
+      <div class="history-item-scoreboard">
+        <p class="history-item-score">{{ game.winnerGoals }}</p>
+        <img *ngIf="game.winnerId === 1" src="/assets/images/vs-win.png" alt="">
+        <img *ngIf="game.winnerId != 1" src="/assets/images/vs-lose.png" alt="">
+        <p class="history-item-score">{{ game.loserGoals }}</p>
+      </div>
 
       <div class="history-item-player">
         <!-- <p>{{ game.loserId }}</p> -->
