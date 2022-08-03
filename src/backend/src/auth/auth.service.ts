@@ -147,9 +147,10 @@ export class AuthService {
 
   async uploadAvatar(user: JwtPayload, image: Buffer) {
     try {
-      await this.db.user.update({
-        data: { avatar: image },
-        where: { username: user.username },
+      await this.db.avatar.upsert({
+        where: { userId: user.sub },
+        create: { userId: user.sub, image: image, mimeType: 'image/jpg' },
+        update: { image: image, mimeType: 'image/jpg' },
       });
     } catch (err) {
       console.log(`Error: ${this.uploadAvatar.name} failed.`);
@@ -159,13 +160,13 @@ export class AuthService {
 
   async getAvatar(user: JwtPayload) {
     try {
-      const dbUser = await this.db.user.findFirst({
-        where: { username: user.username },
+      const avatar = await this.db.avatar.findFirst({
+        where: { userId: user.sub },
       });
-      return dbUser.avatar;
+      return avatar?.image;
     } catch (err) {
       console.log(`Error: ${this.uploadAvatar.name} failed.`);
-      throw new InternalServerErrorException('Could not upload the avatar');
+      throw new InternalServerErrorException('Could not download the avatar');
     }
   }
 
