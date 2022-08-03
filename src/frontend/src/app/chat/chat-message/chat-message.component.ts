@@ -1,4 +1,4 @@
-import { Message } from 'src/app/interface/message';
+import { Message } from 'src/app/chat/interface/message';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
