@@ -163,7 +163,7 @@ export class AuthService {
       const avatar = await this.db.avatar.findFirst({
         where: { userId: user.sub },
       });
-      return avatar?.image;
+      return avatar;
     } catch (err) {
       console.log(`Error: ${this.uploadAvatar.name} failed.`);
       throw new InternalServerErrorException('Could not download the avatar');
