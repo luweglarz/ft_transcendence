@@ -12,9 +12,6 @@ import { PongModule } from '../pong/pong.module';
 import { ProfilComponent } from './popups/profil/profil.component';
 import { LadderComponent } from './popups/ladder/ladder.component';
 import { SocialComponent } from './popups/social/social.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ChatModule } from '../chat/chat.module';
 
@@ -29,15 +26,6 @@ import { ChatModule } from '../chat/chat.module';
     SocialComponent,
   ],
   providers: [CollapseService, PopupsService, NotificationService, GameService],
-  imports: [
-    CommonModule,
-    PongModule,
-    MatCardModule,
-    MatListModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    ChatModule,
-  ],
+  imports: [CommonModule, PongModule, RouterModule, ChatModule],
 })
 export class HomePageModule {}
