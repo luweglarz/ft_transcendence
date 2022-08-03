@@ -1,7 +1,7 @@
 .history-content {
   display: flex;
   justify-content: center;
-  height: 90%;
+  height: 70%;
   width: 650px;
   border-radius: 1em;
   overflow-y: auto;
@@ -11,7 +11,7 @@
 
 .history-items {
   width: 100%;
-  height: 100%;
+  height: fit-content;
 }
 
 .history-item {
@@ -22,7 +22,7 @@
   width: 100%;
   height: 64px;
   border-radius: 1em;
-  margin: 8px;
+  margin: 2px;
 
   background-color: #44526F;
 }
@@ -43,6 +43,8 @@
   height: 48px;
   width: 48px;
   border-radius: 100%;
+  margin-left: 6px;
+  margin-right: 6px;
 }
 
 .history-item-score {
