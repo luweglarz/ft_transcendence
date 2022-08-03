@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AvatarService } from 'src/app/avatar/avatar.service';
 import { ProfilInfoService } from '../profil-info.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { ProfilInfoService } from '../profil-info.service';
 })
 export class MatchHistoryComponent implements OnInit {
 
-  constructor(public profilInfoService: ProfilInfoService) { }
+  constructor(public profilInfoService: ProfilInfoService, public avatar: AvatarService) { }
 
   ngOnInit(): void {
   }
