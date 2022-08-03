@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { AvatarService } from 'src/app/avatar/avatar.service';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
 
@@ -15,9 +16,13 @@ export class SigninService {
     private jwt: JwtService,
     private router: Router,
     private http: HttpClient,
+    private avatar: AvatarService,
   ) {}
 
-  signIn(data: { type: 'oauth'; code: string } | { type: 'local'; form: any }) {
+  signIn(
+    data: { type: 'oauth'; code: string } | { type: 'local'; form: any },
+    state?: { failure: boolean; reason: string },
+  ) {
     let url: string;
     let payload: any;
 
@@ -31,20 +36,33 @@ export class SigninService {
 
     this.http.post<{ jwt: string }>(url, payload).subscribe({
       next: (response) => this.signInSuccess(response.jwt),
-      error: (err) => this.signInFailure(err, payload),
+      error: (err: HttpErrorResponse) =>
+        this.signInFailure(err, payload, state),
     });
   }
 
+  /*
+   * @Brief store the access token, fetch the avatar and redirect to home page
+   */
   signInSuccess(token: string) {
     this.jwt.setToken(token);
+    this.avatar.fetch();
     this.router.navigate(['/'], {
       replaceUrl: true,
     });
     this.jwt.logPayload();
   }
 
-  signInFailure(err: any, form: any) {
-    console.log(err);
+  signInFailure(
+    err: HttpErrorResponse,
+    form: any,
+    state?: { failure: boolean; reason: string },
+  ) {
+    console.error(err);
     console.table(form);
+    if (state) {
+      state.failure = true;
+      if ('message' in err.error) state.reason = err.error.message;
+    }
   }
 }

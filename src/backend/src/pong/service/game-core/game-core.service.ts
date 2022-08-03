@@ -23,20 +23,19 @@ export class GameCoreService {
     gameLeft: boolean,
   ) {
     this.gameDbService.pushGameDb(winner, loser);
-    if (gameLeft === false) {
+    if (gameLeft === false)
       this.gameGatewayService.emitGameFinished(
         server,
         gameRoom.uuid,
         winner.username,
       );
-    } else if (gameLeft === true) {
+    else if (gameLeft === true)
       this.gameGatewayService.emitGameFinished(
         server,
         gameRoom.uuid,
         winner.username,
         loser.username,
       );
-    }
     clearInterval(gameRoom.gameLoopInterval);
     this.gameGatewayService.clearRoom(gameRoom, rooms);
   }

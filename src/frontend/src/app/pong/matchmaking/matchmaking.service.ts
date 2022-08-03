@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AuthSocket } from 'src/app/class/auth-socket';
 import { NotificationService } from 'src/app/home-page/notification.service';
+import { GameSocket } from '../class/game-socket';
 import { GameComponent } from '../game/game.component';
 import { GameService } from '../game/game.service';
 
@@ -16,7 +16,7 @@ export class MatchmakingService {
   timer = 0;
 
   constructor(
-    private socket: AuthSocket,
+    private socket: GameSocket,
     private gameComponent: GameComponent,
     private gameService: GameService,
     public notificationService: NotificationService,
@@ -49,6 +49,7 @@ export class MatchmakingService {
 
   //Matchmaking
   requestJoinNormalMatchMaking() {
+    this.socket.connect();
     this.socket.emit('joinNormalMatchmaking', 'normal');
     this.socket.once('waitingForAMatch', (msg: any) => {
       console.log(msg);
@@ -58,7 +59,6 @@ export class MatchmakingService {
       'matchFound',
       (msg: any, gameMapInfo: any, playersInfo: any) => {
         this.notificationService.gameFound();
-
         this.gameComponent.game.players[0].height = playersInfo.height;
         this.gameComponent.game.players[0].width = playersInfo.width;
         this.gameComponent.game.players[1].height = playersInfo.height;
