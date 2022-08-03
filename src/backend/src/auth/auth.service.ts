@@ -2,7 +2,6 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -143,31 +142,6 @@ export class AuthService {
         `42's API sent incorrect data: ${errors[0]}`,
       );
     return user;
-  }
-
-  async uploadAvatar(user: JwtPayload, image: Buffer) {
-    try {
-      await this.db.avatar.upsert({
-        where: { userId: user.sub },
-        create: { userId: user.sub, image: image, mimeType: 'image/jpg' },
-        update: { image: image, mimeType: 'image/jpg' },
-      });
-    } catch (err) {
-      console.log(`Error: ${this.uploadAvatar.name} failed.`);
-      throw new InternalServerErrorException('Could not upload the avatar');
-    }
-  }
-
-  async getAvatar(user: JwtPayload) {
-    try {
-      const avatar = await this.db.avatar.findFirst({
-        where: { userId: user.sub },
-      });
-      return avatar;
-    } catch (err) {
-      console.log(`Error: ${this.uploadAvatar.name} failed.`);
-      throw new InternalServerErrorException('Could not download the avatar');
-    }
   }
 
   async alreadyExists(field: string, value: string) {
