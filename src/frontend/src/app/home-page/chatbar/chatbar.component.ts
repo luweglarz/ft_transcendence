@@ -1,12 +1,11 @@
 import { CollapseService } from 'src/app/home-page/collapse.service';
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { lastValueFrom, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ChatService } from 'src/app/services/chatService/chat.service';
 import { Room } from 'src/app/interface/room';
-import { RoomType } from 'src/app/interface/room';
 import { MatSelectionListChange } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
-import { ChatRoomCreateComponent } from 'src/app/components/chat-room-create/chat-room-create.component';
+import { ChatRoomCreateComponent } from 'src/app/chat/chat-room-create/chat-room-create.component';
 
 @Component({
   selector: 'app-chatbar',

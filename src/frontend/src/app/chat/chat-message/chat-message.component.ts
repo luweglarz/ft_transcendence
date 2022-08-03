@@ -1,7 +1,5 @@
 import { Message } from 'src/app/interface/message';
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { RoomUser } from 'src/app/interface/roomUser';
 
 @Component({
   selector: 'app-chat-message',
