@@ -12,17 +12,21 @@ import { MatListModule } from '@angular/material/list';
 import { ChatRoomComponent } from './chat-room/chat-room.component';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
 import { ChatRoomCreateComponent } from './chat-room-create/chat-room-create.component';
+import { ChatMainComponent } from './chat-main/chat-main.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
     ChatRoomComponent,
     ChatMessageComponent,
     ChatRoomCreateComponent,
+    ChatMainComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCardModule,
     MatListModule,
     MatFormFieldModule,
     MatButtonModule,
@@ -32,6 +36,11 @@ import { ChatRoomCreateComponent } from './chat-room-create/chat-room-create.com
     MatSelectModule,
     MatPaginatorModule,
   ],
-  exports: [ChatRoomComponent, ChatMessageComponent, ChatRoomCreateComponent],
+  exports: [
+    ChatRoomComponent,
+    ChatMessageComponent,
+    ChatRoomCreateComponent,
+    ChatMainComponent,
+  ],
 })
 export class ChatModule {}
