@@ -48,13 +48,13 @@ export class GameSocket extends Socket {
   }
 
   onMatchmakingLeft() {
-    this.on('matchmakingLeft', (msg: any) => {
+    this.once('matchmakingLeft', (msg: any) => {
       console.log(msg);
     });
   }
 
-  onWaitingForAmatch(stopWatch: StopWatch) {
-    this.on('waitingForAMatch', (msg: any) => {
+  onWaitingForAMatch(stopWatch: StopWatch) {
+    this.once('waitingForAMatch', (msg: any) => {
       stopWatch.startTimer();
       console.log(msg);
     });
