@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { AvatarService } from 'src/app/avatar/avatar.service';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
 
@@ -15,6 +16,7 @@ export class SigninService {
     private jwt: JwtService,
     private router: Router,
     private http: HttpClient,
+    private avatar: AvatarService,
   ) {}
 
   signIn(
@@ -39,8 +41,12 @@ export class SigninService {
     });
   }
 
+  /*
+   * @Brief store the access token, fetch the avatar and redirect to home page
+   */
   signInSuccess(token: string) {
     this.jwt.setToken(token);
+    this.avatar.fetch();
     this.router.navigate(['/'], {
       replaceUrl: true,
     });

@@ -26,15 +26,18 @@ export class AvatarService {
     return this.avatar.file;
   }
 
+  /*
+   * @brief GET avatar from backend, then update this.avatar (src and file)
+   */
   fetch() {
     if (this.jwt.isValid())
       this.http
-        .get(`${environment.backend}/auth/avatar/download`, {
+        .get(`${environment.backend}/users/${this.jwt?.username}/avatar`, {
           responseType: 'blob',
         })
         .subscribe({
           next: (blob) => {
-            if (blob.size) {
+            if (blob?.size) {
               this.update({ file: blob });
               console.log(blob);
             }
@@ -43,6 +46,9 @@ export class AvatarService {
         });
   }
 
+  /*
+   * @brief update this.avatar (src AND file) from partial avatar (src OR file)
+   */
   update(data: Partial<Avatar>) {
     if (data.src) {
       this.avatar.src = data.src;
@@ -71,12 +77,13 @@ export class AvatarService {
     if (this.avatar.file) {
       const formData = new FormData();
       formData.append('avatar', this.avatar.file);
-      this.http
-        .post(`${environment.backend}/auth/avatar/upload`, formData)
-        .subscribe();
+      this.http.post(`${environment.backend}/me/avatar`, formData).subscribe();
     }
   }
 
+  /*
+   * @brief reset this.avatar (src and file) to the default values
+   */
   clear() {
     this.avatar.src = this.default_src;
     this.avatar.file = undefined;
