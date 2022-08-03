@@ -41,6 +41,9 @@ export class SigninService {
     });
   }
 
+  /*
+   * @Brief store the access token, fetch the avatar and redirect to home page
+   */
   signInSuccess(token: string) {
     this.jwt.setToken(token);
     this.avatar.fetch();

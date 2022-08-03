@@ -26,6 +26,9 @@ export class AvatarService {
     return this.avatar.file;
   }
 
+  /*
+   * @brief GET avatar from backend, then update this.avatar (src and file)
+   */
   fetch() {
     if (this.jwt.isValid())
       this.http
@@ -43,6 +46,9 @@ export class AvatarService {
         });
   }
 
+  /*
+   * @brief update this.avatar (src AND file) from partial avatar (src OR file)
+   */
   update(data: Partial<Avatar>) {
     if (data.src) {
       this.avatar.src = data.src;
@@ -77,6 +83,9 @@ export class AvatarService {
     }
   }
 
+  /*
+   * @brief reset this.avatar (src and file) to the default values
+   */
   clear() {
     this.avatar.src = this.default_src;
     this.avatar.file = undefined;
