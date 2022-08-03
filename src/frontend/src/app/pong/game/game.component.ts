@@ -23,16 +23,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.gameService.sendKeyEvents();
-    this.gameService.socket.once(
-      'gameFinished',
-      (winner: any, leaver?: any) => {
-        clearInterval(this.gameService.keyEventsInterval);
-        this.gameService.isInGame = false;
-        if (leaver != null && leaver != undefined)
-          console.log(`Player ${leaver.username} has left the game`);
-        console.log(winner.username + ' Has won the game');
-      },
-    );
+    this.gameService.socket.onGameFinished(this.gameService);
   }
 
   /** Get the #gameCanvas reference with ViewChild decorator. */
@@ -57,22 +48,12 @@ export class GameComponent implements OnInit {
       this.playerTwoInfo,
       this.game.players,
     );
+
     this.gameContext = this.gameCanvas.nativeElement.getContext('2d');
     this.gameCanvas.nativeElement.width = this.game.canvaWidth;
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;
-    this.gameService.socket.on(
-      'gameUpdate',
-      (player1Pos: any, player2Pos: any, ballPos: any, score: any) => {
-        this.game.players[0].x = player1Pos.x;
-        this.game.players[0].y = player1Pos.y;
-        this.game.players[1].x = player2Pos.x;
-        this.game.players[1].y = player2Pos.y;
-        this.game.ball.x = ballPos.x;
-        this.game.ball.y = ballPos.y;
-        this.game.players[0].goals = score.playerOneGoals;
-        this.game.players[1].goals = score.playerTwoGoals;
-      },
-    );
+
+    this.gameService.socket.onGameUpdate(this.gameService, this.game);
     requestAnimationFrame(this.gameLoop);
   }
 
