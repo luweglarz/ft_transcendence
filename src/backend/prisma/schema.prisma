@@ -17,12 +17,19 @@ model User {
   username  String     @unique
   email     String?    @unique
   password  String?
-  avatar    Bytes?
   authType  AuthType   @default(LOCAL)
+  avatar    Avatar?
   RoomUser  RoomUser[]
   Message   Message[]
   wins      Game[]     @relation("Winner")
   loses     Game[]     @relation("Loser")
+}
+
+model Avatar {
+  userId   Int    @id
+  user     User   @relation(fields: [userId], references: [id])
+  mimeType String
+  image    Bytes
 }
 
 enum AuthType {
@@ -52,7 +59,6 @@ model RoomUser {
   isBanned   Boolean   @default(false)
   isMuted    Boolean   @default(false)
   timeOut    DateTime?
-
 }
 
 model Message {
