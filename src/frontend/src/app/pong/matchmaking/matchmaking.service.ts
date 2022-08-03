@@ -19,10 +19,6 @@ export class MatchmakingService {
     this.socket.on('error', (msg: string) => {
       console.log(msg);
     });
-    this.socket.on('waitingForAMatch', (msg: any) => {
-      this._stopWatch.startTimer();
-      console.log(msg);
-    });
   }
 
   private _stopWatch: StopWatch;
@@ -34,6 +30,20 @@ export class MatchmakingService {
   requestJoinNormalMatchMaking() {
     this.socket.connect();
     this.socket.emit('joinNormalMatchmaking', 'normal');
+    this.socket.onWaitingForAMatch(this.stopWatch);
+    this.socket.onMatchFound(
+      this.notificationService,
+      this.gameComponent,
+      this.gameService,
+      this._stopWatch,
+    );
+    this.socket.onMatchmakingLeft();
+  }
+
+  requestJoinCustomGamemodeMatchamking() {
+    this.socket.connect();
+    this.socket.emit('joinCustomGamemodeMatchamking', 'custom');
+    this.socket.onWaitingForAMatch(this.stopWatch);
     this.socket.onMatchFound(
       this.notificationService,
       this.gameComponent,

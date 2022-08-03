@@ -17,6 +17,10 @@ export class MatchmakingComponent {
     this.matchmakingService.requestJoinNormalMatchMaking();
   }
 
+  buttonRequestJoinCustomGamemodeMatchamking() {
+    this.matchmakingService.requestJoinCustomGamemodeMatchamking();
+  }
+
   buttonRequestLeaveMatchMaking() {
     this.matchmakingService.requestLeaveMatchMaking();
   }
