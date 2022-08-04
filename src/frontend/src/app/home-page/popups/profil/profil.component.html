@@ -3,7 +3,7 @@
   <div class="profil-header">
     <!-- Avatar & Username -->
     <div class="profil-header-box">
-      <img class="profil-header-avatar" [src]="avatar.src" height="128px" width="128px">
+      <img avatar class="profil-header-avatar" height="128px" width="128px">
       <p> {{ jwtService.getPayload()?.username }} </p>
     </div>
 
