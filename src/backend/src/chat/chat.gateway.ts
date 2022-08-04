@@ -112,7 +112,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('leaveRoom')
   async leaveRoom(socket: Socket, room: Room) {
+    this.logger.debug(room);
+    let roomUsers = await this.roomUserService.roomUsers({where: {socketId: socket.id, roomId: room.id } });
+    for (let roomUser of roomUsers) {
+     this.logger.debug('in handle disco', roomUser);
+      let otherRoomUser = await this.roomUserService.roomUsers({where: {roomId: roomUser.roomId}});
+      this.logger.debug('otherroomuser', otherRoomUser.length);
+      if (otherRoomUser.length == 1) {
+        await this.prisma.message.deleteMany({where: {roomId: roomUser.roomId}});
+        await this.prisma.roomUser.delete({where: {roomUserId: roomUser.roomUserId}});
+        await this.prisma.room.delete({where: {id: roomUser.roomId}});
+      }
+    }
+    await this.prisma.roomUser.deleteMany({where: {socketId: socket.id, roomId: room.id}});
+    /*let roomUsers = await this.roomUserService.roomUsers({where: {userId: socket.data.user.id}});
+    for (let roomUser of roomUsers) {
+      this.logger.debug(roomUser);
+      if (roomUser.roomId == room.id)
+      this.logger.debug('inif', roomUser);
+    }*/
     this.server.to(socket.id).emit('msgs', []);
+    this.getRooms(socket);
   }
 
   @SubscribeMessage('addMessage')

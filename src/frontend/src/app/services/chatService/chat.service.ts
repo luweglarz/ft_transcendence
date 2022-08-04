@@ -35,7 +35,7 @@ export class ChatService {
   }
 
   leaveRoom(room: Room) {
-    this.socket.emit('leaveRoom', room.id);
+    this.socket.emit('leaveRoom', room);
   }
 
   createRoom(room: Room) {

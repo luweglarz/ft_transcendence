@@ -1,24 +1,27 @@
 <h1 mat-dialog-title>Create Room</h1>
 <mat-dialog-content>
-    <mat-form-field appearance="fill">
-        <mat-label>Room name</mat-label>
-        <input matInput [(ngModel)]="data.name"  required>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>Room type</mat-label>
-        <mat-select [(ngModel)]="data.roomType">
-            <mat-option *ngFor="let roomType of roomTypes" [value]="roomType" aria-required>
-                {{roomType}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <div *ngIf="data.roomType == 'PROTECTED'">
+    <form #userForm="ngForm" (ngSubmit)="onSend(userForm)">
         <mat-form-field appearance="fill">
-            <mat-label>Room password</mat-label>
-            <input matInput [(ngModel)]="data.password" required>
+            <mat-label>Room name</mat-label>
+            <input matInput [(ngModel)]="data.name" type="text" name="roomName" ngModel required>
         </mat-form-field>
-    </div>
-    <div matDialogActions>
-    <button mat-button (click)="create()" cdkFocusInitial>Ok</button>
-</div>
+        <mat-form-field appearance="fill">
+            <mat-label>Room type</mat-label>
+            <mat-select [(ngModel)]="data.roomType" name="roomType" ngModel required>
+                <mat-option *ngFor="let roomType of roomTypes" [value]="roomType" aria-required>
+                    {{roomType}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div *ngIf="data.roomType == 'PROTECTED'">
+            <mat-form-field appearance="fill">
+               <mat-label>Room password</mat-label>
+                <input matInput [(ngModel)]="data.password" name="roomPassword" ngModel required>
+            </mat-form-field>
+        </div>
+    <mat-dialog-actions>
+        <button mat-button mat-dialog-close="no">Cancel</button>
+        <button type="submit" mat-button>Create</button>
+    </mat-dialog-actions>
+</form>
 </mat-dialog-content>

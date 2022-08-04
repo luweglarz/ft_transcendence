@@ -33,8 +33,13 @@ export class ChatRoomComponent implements OnChanges {
   //ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['chatRoom'].previousValue)
+    if (changes['chatRoom'].previousValue !== undefined
+    && changes['chatRoom'].previousValue.name !== undefined
+    && changes['chatRoom'].previousValue.id !== changes['chatRoom'].currentValue.id) {
+      console.log('previous room', changes['chatRoom'].previousValue);
+      console.log('current room', changes['chatRoom'].currentValue);
       this.chatService.leaveRoom(changes['chatRoom'].previousValue);
+    }
     if (this.chatRoom.id) {
       console.log(`Join room: ${this.chatRoom.name}`);
       this.chatService.joinRoom(this.chatRoom);

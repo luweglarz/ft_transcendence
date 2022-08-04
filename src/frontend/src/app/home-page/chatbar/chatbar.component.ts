@@ -57,6 +57,12 @@ export class ChatbarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       //this.roomCreate = result;
+      //console.log(result);
+      //if (result !== undefined) {
+      //  if (result !== 'no') {
+       //   this.chatService.createRoom(result);
+       // }
+      //}
     });
   }
 }
