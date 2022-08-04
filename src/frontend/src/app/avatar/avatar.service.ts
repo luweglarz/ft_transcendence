@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Avatar } from './interface';
 import { JwtService } from '../auth/jwt';
-import { catchError, map, of } from 'rxjs';
+import { catchError, map, of, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AvatarService {
   readonly default_src = '/assets/images/default-avatar.png';
+  readonly uploaded = new Subject<boolean>();
   private avatar: Avatar = {
     src: this.default_src,
     file: undefined,
@@ -75,7 +76,9 @@ export class AvatarService {
     if (this.avatar.file) {
       const formData = new FormData();
       formData.append('avatar', this.avatar.file);
-      this.http.post(`${environment.backend}/me/avatar`, formData).subscribe();
+      this.http
+        .post(`${environment.backend}/me/avatar`, formData)
+        .subscribe((_) => this.uploaded.next(true));
     }
   }
 
