@@ -15,9 +15,7 @@ export class AvatarService {
     file: undefined,
   };
 
-  constructor(private http: HttpClient, private jwt: JwtService) {
-    this.fetch();
-  }
+  constructor(private http: HttpClient, private jwt: JwtService) {}
 
   get src() {
     return this.avatar.src;
@@ -28,17 +26,15 @@ export class AvatarService {
   }
 
   get me() {
-    return this.user(this.jwt.username);
+    return this.user(this.jwt.isValid() ? this.jwt.username : undefined);
   }
 
   user(username?: string) {
-    if (this.jwt.isValid()) {
-      if (!username) username = this.jwt.username;
+    if (username) {
       return this.http
         .get(`${environment.backend}/users/${username}/has-avatar`)
         .pipe(
           map((hasAvatar) => {
-            console.log(hasAvatar);
             return Boolean(hasAvatar)
               ? `${environment.backend}/users/${username}/avatar`
               : this.default_src;
@@ -46,26 +42,6 @@ export class AvatarService {
           catchError((_) => of(this.default_src)),
         );
     } else return of(this.default_src);
-  }
-
-  /*
-   * @brief GET avatar from backend, then update this.avatar (src and file)
-   */
-  fetch() {
-    if (this.jwt.isValid())
-      this.http
-        .get(`${environment.backend}/users/${this.jwt?.username}/avatar`, {
-          responseType: 'blob',
-        })
-        .subscribe({
-          next: (blob) => {
-            if (blob?.size) {
-              this.update({ file: blob });
-              console.log(blob);
-            }
-          },
-          error: (err) => console.log(err),
-        });
   }
 
   /*
