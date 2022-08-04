@@ -26,6 +26,10 @@ export class ChatService {
     return this.socket.fromEvent<RoomUser[]>('roomUsers');
   }
 
+  getCreatedRoom(): Observable<Room> {
+    return this.socket.fromEvent<Room>('createdRoom');
+  }
+
   openChat() {
     this.socket.emit('getRooms');
   }
