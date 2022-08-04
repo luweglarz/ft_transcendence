@@ -1,6 +1,6 @@
 <div class="container">
   <div class="avatar-preview">
-    <img class="avatar" [src]="avatar.src">
+    <img avatar class="avatar" />
   </div>
 	<div class="card" *ngIf="payload">
 		<h1>User infos</h1>
@@ -25,4 +25,17 @@
 	<div class="card" *ngIf="!payload">
 		<p>User not logged in 🙁 (no token found locally).</p>
 	</div>
+</div>
+<div>
+	<h2>Users</h2>
+	<table>
+	<tr>
+			<th>User</th>
+			<th>Avatar</th>
+		</tr>
+		<tr *ngFor="let username of users">
+			<td>{{username}}</td>
+			<td><img avatar [username]="username" alt=""></td>
+		</tr>
+	</table>
 </div>

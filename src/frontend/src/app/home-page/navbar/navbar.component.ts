@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { AvatarService } from 'src/app/avatar/avatar.service';
+import { Component } from '@angular/core';
 import { CollapseService } from 'src/app/home-page/collapse.service';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
 import { JwtService } from 'src/app/auth/jwt';
@@ -10,19 +9,12 @@ import { JwtService } from 'src/app/auth/jwt';
   styleUrls: ['./navbar.component.css'],
   animations: [],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   constructor(
     public jwtService: JwtService,
-    public avatar: AvatarService,
     public collapseService: CollapseService,
     public popupsService: PopupsService,
-  ) {
-    //
-  }
-
-  ngOnInit(): void {
-    //
-  }
+  ) {}
 
   /* NAVBAR COLLAPSE */
   openSidenav() {

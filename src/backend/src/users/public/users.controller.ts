@@ -1,32 +1,27 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Res,
-  StreamableFile,
-  UseGuards,
-} from '@nestjs/common';
-import { JwtGuard } from 'src/auth/guard';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { AvatarService } from '../services/avatar/avatar.service';
+import { UsersService } from '../services/users/users.service';
 
-@Controller('users/:username')
-@UseGuards(JwtGuard)
+@Controller('users')
 export class UsersController {
-  constructor(private avatar: AvatarService) {}
+  constructor(private service: UsersService, private avatar: AvatarService) {}
 
-  @Get('avatar')
+  @Get('')
+  async listUsers() {
+    return this.service.listUsers();
+  }
+
+  @Get(':username/has-avatar')
+  async hasAvatar(@Param('username') username: string) {
+    return this.avatar.hasAvatar(username);
+  }
+
+  @Get(':username/avatar')
   async downloadAvatar(
     @Param('username') username: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const avatar = await this.avatar.getAvatar(username);
-    if (avatar) {
-      res.set({
-        'Content-Disposition': `inline; filename="avatar.jpg"`,
-        'Content-Type': avatar.mimeType,
-      });
-      return new StreamableFile(avatar.image);
-    } else return '';
+    return this.avatar.getResponse(username, res);
   }
 }

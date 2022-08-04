@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AvatarService } from '../avatar.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { AvatarService } from '../avatar.service';
   templateUrl: './avatar-upload.component.html',
   styleUrls: ['./avatar-upload.component.css'],
 })
-export class AvatarUploadComponent implements OnInit {
+export class AvatarUploadComponent implements OnInit, OnDestroy {
   @Input() default_src = this.avatar.default_src;
 
   constructor(public readonly avatar: AvatarService) {}
@@ -14,6 +14,9 @@ export class AvatarUploadComponent implements OnInit {
   ngOnInit(): void {
     if (this.default_src != this.avatar.default_src)
       this.avatar.update({ src: this.default_src });
+  }
+  ngOnDestroy(): void {
+    this.avatar.clear();
   }
 
   processUpload(upload: HTMLInputElement) {

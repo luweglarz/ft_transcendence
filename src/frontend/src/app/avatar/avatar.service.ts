@@ -3,20 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Avatar } from './interface';
 import { JwtService } from '../auth/jwt';
+import { catchError, map, of, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AvatarService {
   readonly default_src = '/assets/images/default-avatar.png';
+  readonly uploaded = new Subject<boolean>();
   private avatar: Avatar = {
     src: this.default_src,
     file: undefined,
   };
 
-  constructor(private http: HttpClient, private jwt: JwtService) {
-    this.fetch();
-  }
+  constructor(private http: HttpClient, private jwt: JwtService) {}
 
   get src() {
     return this.avatar.src;
@@ -26,24 +26,23 @@ export class AvatarService {
     return this.avatar.file;
   }
 
-  /*
-   * @brief GET avatar from backend, then update this.avatar (src and file)
-   */
-  fetch() {
-    if (this.jwt.isValid())
-      this.http
-        .get(`${environment.backend}/users/${this.jwt?.username}/avatar`, {
-          responseType: 'blob',
-        })
-        .subscribe({
-          next: (blob) => {
-            if (blob?.size) {
-              this.update({ file: blob });
-              console.log(blob);
-            }
-          },
-          error: (err) => console.log(err),
-        });
+  get me() {
+    return this.user(this.jwt.isValid() ? this.jwt.username : undefined);
+  }
+
+  user(username?: string) {
+    if (username) {
+      return this.http
+        .get(`${environment.backend}/users/${username}/has-avatar`)
+        .pipe(
+          map((hasAvatar) => {
+            return Boolean(hasAvatar)
+              ? `${environment.backend}/users/${username}/avatar`
+              : this.default_src;
+          }),
+          catchError((_) => of(this.default_src)),
+        );
+    } else return of(this.default_src);
   }
 
   /*
@@ -77,7 +76,10 @@ export class AvatarService {
     if (this.avatar.file) {
       const formData = new FormData();
       formData.append('avatar', this.avatar.file);
-      this.http.post(`${environment.backend}/me/avatar`, formData).subscribe();
+      this.http
+        .post(`${environment.backend}/me/avatar`, formData)
+        // setTimeout: let time to the db to process the upload (especially for large image)
+        .subscribe((_) => setTimeout(() => this.uploaded.next(true), 1000));
     }
   }
 

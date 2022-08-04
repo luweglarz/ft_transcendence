@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AvatarService } from 'src/app/avatar/avatar.service';
+import { environment } from 'src/environments/environment';
 import { JwtPayload, JwtService } from '../jwt';
 
 @Component({
@@ -12,8 +14,13 @@ export class InfoComponent implements OnInit {
   is_valid = false;
   expiration = '';
   backend_messagee = '';
+  users: string[] = [];
 
-  constructor(private jwt: JwtService, public avatar: AvatarService) {}
+  constructor(
+    private jwt: JwtService,
+    public avatar: AvatarService,
+    private http: HttpClient,
+  ) {}
 
   ngOnInit(): void {
     this.payload = this.jwt.getPayload();
@@ -23,5 +30,8 @@ export class InfoComponent implements OnInit {
       .testToken()
       .then((status) => (this.backend_messagee = status.message));
     console.table(this.payload);
+    this.http
+      .get<string[]>(`${environment.backend}/users`)
+      .subscribe((users) => (this.users = users));
   }
 }
