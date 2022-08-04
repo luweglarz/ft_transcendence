@@ -5,7 +5,7 @@ import { AvatarService } from '../services/avatar/avatar.service';
 import { UsersService } from '../services/users/users.service';
 
 @Controller('users')
-// @UseGuards(JwtGuard)
+// @UseGuards(JwtGuard) // TODO: enable later
 export class UsersController {
   constructor(private service: UsersService, private avatar: AvatarService) {}
 
