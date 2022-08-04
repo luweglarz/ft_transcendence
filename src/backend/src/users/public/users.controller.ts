@@ -9,13 +9,19 @@ import {
 import { JwtGuard } from 'src/auth/guard';
 import { Response } from 'express';
 import { AvatarService } from '../services/avatar/avatar.service';
+import { UsersService } from '../services/users/users.service';
 
-@Controller('users/:username')
+@Controller('users')
 @UseGuards(JwtGuard)
 export class UsersController {
-  constructor(private avatar: AvatarService) {}
+  constructor(private service: UsersService, private avatar: AvatarService) {}
 
-  @Get('avatar')
+  @Get('')
+  async listUsers() {
+    return this.service.listUsers();
+  }
+
+  @Get(':username/avatar')
   async downloadAvatar(
     @Param('username') username: string,
     @Res({ passthrough: true }) res: Response,
