@@ -1,20 +1,21 @@
 .history-content {
-  display: flex;
-  justify-content: center;
-  height: 65%;
-  width: 750px;
+  height: 100%;
+  width: 100%;
   border-radius: 1em;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
 }
 
 .history-items {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: 90%;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
   height: fit-content;
+  margin: 0px;
+  padding: 0px;
 }
 
 .history-item {
@@ -22,10 +23,10 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 750px;
   height: 64px;
   border-radius: 1em;
-  margin: 4px;
+  margin: 2px;
   transition: 0.3s;
   background-color: #44526F;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
@@ -43,20 +44,13 @@
   width: 30%;
   height: 64px;
   border-radius: 1em;
-  transition: 0.3s;
   background-color: #1A202C;
-}
-
-.history-item:hover .history-item-player {
-  background-color:#44526F;
 }
 
 .history-item-avatar {
   height: 48px;
   width: 48px;
   border-radius: 100%;
-  margin-left: 6px;
-  margin-right: 6px;
 }
 
 .history-item-scoreboard {

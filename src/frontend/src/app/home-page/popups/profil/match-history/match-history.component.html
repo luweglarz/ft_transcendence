@@ -4,18 +4,21 @@
       <!-- <p>{{ game.id }}</p> -->
       <div class="history-item-player">
         <img class="history-item-avatar" [src]="avatar.src" height="48px" width="48px" alt="">
+        <!-- Need to resolve username by id-->
         <!-- <p>{{ game.winnerId }}</p> -->
         <p>ugtheven</p>
       </div>
 
       <div class="history-item-scoreboard">
         <p class="history-item-score">{{ game.winnerGoals }}</p>
+        <!-- Need to resolve username by id-->
         <img *ngIf="game.winnerId === 1" src="/assets/images/vs-win.png" alt="">
         <img *ngIf="game.winnerId != 1" src="/assets/images/vs-lose.png" alt="">
         <p class="history-item-score">{{ game.loserGoals }}</p>
       </div>
 
       <div class="history-item-player">
+        <!-- Need to resolve username by id-->
         <!-- <p>{{ game.loserId }}</p> -->
         <p>usertest</p>
         <img class="history-item-avatar" [src]="avatar.src" height="48px" width="48px" alt="">
@@ -23,5 +26,5 @@
     </li>
   </ul>
 </div>
-<button (click)="profilInfoService.testUgtheven()"></button>
-<button (click)="profilInfoService.testUsertest()"></button>
+<!-- <button (click)="profilInfoService.testUgtheven()"></button>
+<button (click)="profilInfoService.testUsertest()"></button> -->
