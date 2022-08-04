@@ -6,7 +6,7 @@ export class UsersService {
   constructor(private db: DbService) {}
 
   async listUsers() {
-    const users = await this.db.user.findMany();
+    const users = await this.db.user.findMany({ select: { username: true } });
     return users.map((user) => user.username);
   }
 }
