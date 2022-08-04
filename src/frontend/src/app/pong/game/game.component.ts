@@ -53,7 +53,7 @@ export class GameComponent implements OnInit {
     this.gameCanvas.nativeElement.width = this.game.canvaWidth;
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;
 
-    this.gameService.socket.onGameUpdate(this.gameService, this.game);
+    this.gameService.socket.onGameUpdate(this.game);
     requestAnimationFrame(this.gameLoop);
   }
 

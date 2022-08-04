@@ -29,7 +29,7 @@ export class MatchmakingService {
 
   requestJoinNormalMatchMaking() {
     this.socket.connect();
-    this.socket.emit('joinNormalMatchmaking', 'normal');
+    this.socket.emit('joinMatchmaking', 'normal');
     this.socket.onWaitingForAMatch(this.stopWatch);
     this.socket.onMatchFound(
       this.notificationService,
@@ -42,7 +42,7 @@ export class MatchmakingService {
 
   requestJoinCustomGamemodeMatchamking() {
     this.socket.connect();
-    this.socket.emit('joinCustomGamemodeMatchamking', 'custom');
+    this.socket.emit('joinMatchmaking', 'custom');
     this.socket.onWaitingForAMatch(this.stopWatch);
     this.socket.onMatchFound(
       this.notificationService,
