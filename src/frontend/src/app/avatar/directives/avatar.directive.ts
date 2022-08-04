@@ -14,9 +14,16 @@ export class AvatarDirective implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.username)
-      this.service.me.subscribe((src) => (this.img.src = src));
-    else
-      this.service.user(this.username).subscribe((src) => (this.img.src = src));
+    if (!this.username) {
+      this.service.me.subscribe(this.updateSrc);
+      this.service.uploaded.subscribe((_) =>
+        this.service.me.subscribe(this.updateSrc),
+      );
+    } else this.service.user(this.username).subscribe(this.updateSrc);
   }
+
+  updateSrc = (src: string) => {
+    console.debug('Avatar updated!');
+    this.img.src = src;
+  };
 }
