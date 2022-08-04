@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Avatar } from './interface';
 import { JwtService } from '../auth/jwt';
+import { catchError, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,27 @@ export class AvatarService {
 
   get file() {
     return this.avatar.file;
+  }
+
+  get me() {
+    return this.user(this.jwt.username);
+  }
+
+  user(username?: string) {
+    if (this.jwt.isValid()) {
+      if (!username) username = this.jwt.username;
+      return this.http
+        .get(`${environment.backend}/users/${username}/has-avatar`)
+        .pipe(
+          map((hasAvatar) => {
+            console.log(hasAvatar);
+            return Boolean(hasAvatar)
+              ? `${environment.backend}/users/${username}/avatar`
+              : this.default_src;
+          }),
+          catchError((_) => of(this.default_src)),
+        );
+    } else return of(this.default_src);
   }
 
   /*

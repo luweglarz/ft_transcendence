@@ -14,6 +14,7 @@ import { LadderComponent } from './popups/ladder/ladder.component';
 import { SocialComponent } from './popups/social/social.component';
 import { RouterModule } from '@angular/router';
 import { ChatModule } from '../chat/chat.module';
+import { AvatarModule } from '../avatar';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,6 @@ import { ChatModule } from '../chat/chat.module';
     SocialComponent,
   ],
   providers: [CollapseService, PopupsService, NotificationService, GameService],
-  imports: [CommonModule, PongModule, RouterModule, ChatModule],
+  imports: [CommonModule, PongModule, RouterModule, ChatModule, AvatarModule],
 })
 export class HomePageModule {}
