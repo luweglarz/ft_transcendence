@@ -7,12 +7,12 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { Message } from 'src/app/interface/message';
-import { Room } from 'src/app/interface/room';
-import { ChatService } from 'src/app/services/chatService/chat.service';
+import { UntypedFormControl, Validators } from '@angular/forms';
+import { Message } from 'src/app/chat/interface/message';
+import { Room } from 'src/app/chat/interface/room';
+import { ChatService } from 'src/app/chat/chatService/chat.service';
 import { Observable } from 'rxjs';
-import { RoomUser } from 'src/app/interface/roomUser';
+import { RoomUser } from 'src/app/chat/interface/roomUser';
 
 @Component({
   selector: 'app-chat-room',
@@ -24,7 +24,9 @@ export class ChatRoomComponent implements OnChanges {
   @ViewChild('mesgs') private scrollContainer: ElementRef = new ElementRef(
     'mesgs',
   );
-  chatMessage: FormControl = new FormControl(null, [Validators.required]);
+  chatMessage: UntypedFormControl = new UntypedFormControl(null, [
+    Validators.required,
+  ]);
   messages: Observable<Message[]> = this.chatService.getMsgs();
   roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
 

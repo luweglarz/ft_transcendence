@@ -1,17 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Res,
-  StreamableFile,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Response } from 'express';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from './decorator';
 import {
@@ -21,7 +8,6 @@ import {
   OAuthUserDto,
 } from './dto';
 import { JwtGuard, OAuth2Guard } from './guard';
-import { JwtPayload } from './interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -59,32 +45,6 @@ export class AuthController {
   @Get('oauth42/client_id')
   getOAuthClientId() {
     return { client_id: this.client_id };
-  }
-
-  @Post('avatar/upload')
-  @UseGuards(JwtGuard)
-  @UseInterceptors(FileInterceptor('avatar'))
-  editAvatar(
-    @UploadedFile() avatar: Express.Multer.File,
-    @User() user: JwtPayload,
-  ) {
-    this.service.uploadAvatar(user, avatar.buffer);
-  }
-
-  @Get('avatar/download')
-  @UseGuards(JwtGuard)
-  async downloadAvatar(
-    @User() user: JwtPayload,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const image = await this.service.getAvatar(user);
-    res.set({
-      'Content-Disposition': `inline; filename="avatar.jpg"`,
-      'Content-Type': 'image/jpg',
-    });
-    if (image) {
-      return new StreamableFile(image);
-    } else return '';
   }
 
   @Get('exists/username/:username')
