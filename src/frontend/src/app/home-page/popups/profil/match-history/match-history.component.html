@@ -1,30 +1,23 @@
+<button (click)="profilInfoService.debug()"></button>
 <div class="history-content">
   <ul class="history-items">
-    <li class="history-item" *ngFor="let game of profilInfoService.gameHistory">
-      <!-- <p>{{ game.id }}</p> -->
+    <li class="history-item" *ngFor="let game of profilInfoService.gameHistory.slice().reverse()">
       <div class="history-item-player">
-        <img class="history-item-avatar" avatar username="ugtheven" height="48px" width="48px" alt="">
-        <!-- Need to resolve username by id-->
-        <!-- <p>{{ game.winnerId }}</p> -->
-        <p>ugtheven</p>
+        <img class="history-item-avatar" avatar username="{{ profilInfoService.getUsernameById(game.winnerId) }}" height="48px" width="48px" alt="">
+        <p>{{ profilInfoService.getUsernameById(game.winnerId) }}</p>
       </div>
 
       <div class="history-item-scoreboard">
         <p class="history-item-score">{{ game.winnerGoals }}</p>
-        <!-- Need to resolve username by id-->
-        <img *ngIf="game.winnerId === 1" src="/assets/images/vs-win.png" alt="">
-        <img *ngIf="game.winnerId != 1" src="/assets/images/vs-lose.png" alt="">
+        <img *ngIf="profilInfoService.getUsernameById(game.winnerId) === username" src="/assets/images/vs-win.png" alt="">
+        <img *ngIf="profilInfoService.getUsernameById(game.winnerId) != username" src="/assets/images/vs-lose.png" alt="">
         <p class="history-item-score">{{ game.loserGoals }}</p>
       </div>
 
       <div class="history-item-player">
-        <!-- Need to resolve username by id-->
-        <!-- <p>{{ game.loserId }}</p> -->
-        <p>usertest</p>
-        <img class="history-item-avatar" avatar username="usertest" height="48px" width="48px" alt="">
+        <p>{{ profilInfoService.getUsernameById(game.loserId) }}</p>
+        <img class="history-item-avatar" avatar username="{{ profilInfoService.getUsernameById(game.loserId) }}" height="48px" width="48px" alt="">
       </div>
     </li>
   </ul>
 </div>
-<button (click)="profilInfoService.testUgtheven()"></button>
-<button (click)="profilInfoService.testUsertest()"></button>

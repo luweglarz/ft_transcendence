@@ -20,11 +20,17 @@ interface LoseHistory {
   loses: Array<Game>;
 }
 
+interface User{
+  username: string,
+  id: number,
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ProfilInfoService {
 
+  users: Array<User> = [];
   username: string = '';
   nbGames: number = 0;
   nbWins: number = 0;
@@ -37,7 +43,20 @@ export class ProfilInfoService {
   gameHistory: Array<Game> = [];
 
   constructor(private http: HttpClient, private jwtService: JwtService, public avatar: AvatarService) {
-    this.loadUserProfil('ugtheven');
+    this.http.get<Array<string>>('http://localhost:3000/users/').subscribe(data => {
+      for (let i = 0; i < data.length; i++){
+        this.users.push({username: data[i], id: i - 1});
+      }
+    });
+    let tmp = this.jwtService.getPayload()?.username;
+    if (tmp != undefined)
+      this.username = tmp;
+    console.log(tmp);
+    this.loadUserProfil(this.username);
+  }
+
+  getUsernameById(id: number): string{
+    return (this.users[id - 1].username);
   }
 
   //RETRIEVE WIN LOSES COUNTER
@@ -74,8 +93,8 @@ export class ProfilInfoService {
       return new Promise(resolve => {
       let biggestSpan: number = 0;
       let actualSpan: number = 1;
-      if (winHistory.length == 1)
-        resolve(1);
+      if (winHistory.length == 0 || winHistory.length == 1)
+        resolve(winHistory.length == 0 ? 0 : 1);
       for (let i = 1; i < winHistory.length; i++){
         if (winHistory[i - 1].id === winHistory[i].id - 1 && actualSpan === 1)
           actualSpan = 2;
@@ -95,8 +114,8 @@ export class ProfilInfoService {
     return new Promise(resolve => {
       let biggestSpan: number = 0;
       let actualSpan: number = 1;
-      if (loseHistory.length == 1)
-        resolve(1);
+      if (loseHistory.length == 0 || loseHistory.length == 1)
+        resolve(loseHistory.length == 0 ? 0 : 1);
       for (let i = 1; i < loseHistory.length; i++){
         if (loseHistory[i - 1].id === loseHistory[i].id - 1 && actualSpan === 1)
           actualSpan = 2;
@@ -161,30 +180,8 @@ export class ProfilInfoService {
     this.score = await this.retrieveScore(username, this.nbWins, this.nbLoses);
   }
 
-  //DEBUG
-  async testUgtheven() {
-    await this.loadUserProfil('ugtheven');
-    console.log('Nombre de victoires: ', this.nbWins);
-    console.log('Nombre de defaites: ', this.nbLoses);
-    console.log('Nombre de games: ', this.nbGames);
-    console.log('Score: ', this.score);
-    console.log('Win Streak: ', this.winStreak);
-    console.log('Lose Streak: ', this.loseStreak);
-    console.log('Win History: ', this.winHistory);
-    console.log('Lose History: ', this.loseHistory);
-    console.log('Game History: ', this.gameHistory);
-  }
-
-  async testUsertest() {
-    await this.loadUserProfil('usertest');
-    console.log('Nombre de victoires: ', this.nbWins);
-    console.log('Nombre de defaites: ', this.nbLoses);
-    console.log('Nombre de games: ', this.nbGames);
-    console.log('Score: ', this.score);
-    console.log('Win Streak: ', this.winStreak);
-    console.log('Lose Streak: ', this.loseStreak);
-    console.log('Win History: ', this.winHistory);
-    console.log('Lose History: ', this.loseHistory);
-    console.log('Game History: ', this.gameHistory);
+  debug() {
+    console.log(this.winHistory);
+    console.log(this.loseHistory);
   }
 }
