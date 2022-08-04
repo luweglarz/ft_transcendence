@@ -22,7 +22,7 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
 
   //ngOnInit(): void {}
 
-  create() {
+  /*create() {
     console.log('call create');
     this.dialogRef.close();
     console.log(this.data);
@@ -33,19 +33,18 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
     ) {
       this.chatService.createRoom(this.data);
     }
-  }
+  }*/
 
   onSend(userForm: NgForm) {
     if (userForm.status === 'INVALID')
       return ;
     let data = userForm.value;
     console.log(data);
-    this.dialogRef.close();
+    this.dialogRef.close('yes');
     this.chatService.createRoom(this.data);
   }
 
   onNoClick(): void {
-    let data = 'no';
-    this.dialogRef.close();
+    this.dialogRef.close('no');
   }
 }

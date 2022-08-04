@@ -81,12 +81,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('createRoom')
   async createRoom(socket: Socket, room: Room) {
     if (room.roomType === 'PROTECTED' && !room.password) return 'Error';
-    await this.roomService.createRoom(room, socket.data.user.id, socket.id);
+    let nr = await this.roomService.createRoom(room, socket.data.user.id, socket.id);
     // needs emit once i can find how to identify user by connection to server
     // emit new room to all connected user
     //this.server.to(socket.id).emit('rooms', this.roomService.rooms({}));
     this.getRooms(socket);
     this.getRoomUsers(socket, room.id);
+    this.logger.debug('new room in, create room pls', nr);
+    this.server.to(socket.id).emit('createdRoom', nr);
   }
 
   @SubscribeMessage('joinRoom')
