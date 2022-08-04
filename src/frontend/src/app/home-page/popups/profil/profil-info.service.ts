@@ -40,10 +40,20 @@ export class ProfilInfoService {
     this.loadUserProfil('ugtheven');
   }
 
+  //RETRIEVE USER AVATAR
+  async retrieveUserAvatar(username: string){
+    return new Promise(resolve => {
+      this.http.get<WinHistory>('http://localhost:3000/users/:' + username).subscribe(data => {
+        console.log(data);
+        resolve (data);
+      })
+    });
+  }
+
   //RETRIEVE WIN LOSES COUNTER
   async retrieveWinCounter(username: string):Promise<number>{
     return new Promise(resolve => {
-      this.http.get<WinHistory>('http://localhost:3000/game/wins\?username\=' + username).subscribe(data => {
+      this.http.get<WinHistory>('http://localhost:3000/game/wins?username=' + username).subscribe(data => {
         resolve (data.wins.length);
       })
     });
@@ -51,7 +61,7 @@ export class ProfilInfoService {
 
   async retrieveLoseCounter(username: string): Promise<number>{
     return new Promise(resolve => {
-      this.http.get<LoseHistory>('http://localhost:3000/game/loses\?username\=' + username).subscribe(data => {
+      this.http.get<LoseHistory>('http://localhost:3000/game/loses?username=' + username).subscribe(data => {
         resolve (data.loses.length);
       })
     });
@@ -186,6 +196,7 @@ export class ProfilInfoService {
     console.log('Win History: ', this.winHistory);
     console.log('Lose History: ', this.loseHistory);
     console.log('Game History: ', this.gameHistory);
+    this.retrieveUserAvatar('ugtheven');
   }
 
   async testUsertest() {
