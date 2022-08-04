@@ -23,7 +23,6 @@ export class AvatarDirective implements AfterViewInit {
   }
 
   updateSrc = (src: string) => {
-    console.debug('Avatar updated!');
     this.img.src = src;
   };
 }
