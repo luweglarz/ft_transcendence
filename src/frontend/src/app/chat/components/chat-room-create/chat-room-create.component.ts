@@ -1,14 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Room } from 'src/app/interface/room';
-import { RoomType } from 'src/app/interface/room';
-import { ChatService } from 'src/app/services/chatService/chat.service';
+import { Room } from 'src/app/chat/interface/room';
+import { RoomType } from 'src/app/chat/interface/room';
+import { ChatService } from 'src/app/chat/chatService/chat.service';
 
 @Component({
   selector: 'app-chat-room-create',
