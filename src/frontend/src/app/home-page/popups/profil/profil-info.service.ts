@@ -40,44 +40,26 @@ export class ProfilInfoService {
     this.loadUserProfil('ugtheven');
   }
 
-  //RETRIEVE USER AVATAR
-  async retrieveUserAvatar(username: string){
-    return new Promise(resolve => {
-      this.http.get<WinHistory>('http://localhost:3000/users/:' + username).subscribe(data => {
-        console.log(data);
-        resolve (data);
-      })
-    });
-  }
-
   //RETRIEVE WIN LOSES COUNTER
-  async retrieveWinCounter(username: string):Promise<number>{
+  async retrieveWinCounter(username: string, winHistory: Array<Game>):Promise<number>{
     return new Promise(resolve => {
-      this.http.get<WinHistory>('http://localhost:3000/game/wins?username=' + username).subscribe(data => {
-        resolve (data.wins.length);
-      })
+      resolve (winHistory.length);
     });
   }
 
-  async retrieveLoseCounter(username: string): Promise<number>{
+  async retrieveLoseCounter(username: string, loseHistory: Array<Game>): Promise<number>{
     return new Promise(resolve => {
-      this.http.get<LoseHistory>('http://localhost:3000/game/loses?username=' + username).subscribe(data => {
-        resolve (data.loses.length);
-      })
+      resolve (loseHistory.length);
     });
   }
 
-  async retrieveGameCounter(username: string): Promise<number>{
-    let nbWins = await this.retrieveWinCounter(username);
-    let nbLoses = await this.retrieveLoseCounter(username);
+  async retrieveGameCounter(username: string, nbWins: number, nbLoses: number): Promise<number>{
     return new Promise(resolve => {
       resolve (nbWins + nbLoses);
     });
   }
 
-  async retrieveScore(username: string): Promise<number>{
-    let nbWins = await this.retrieveWinCounter(username);
-    let nbLoses = await this.retrieveLoseCounter(username);
+  async retrieveScore(username: string, nbWins:number, nbLoses: number): Promise<number>{
     return new Promise(resolve => {
       if (nbWins === 0 && nbLoses === 0)
         resolve(0);
@@ -88,44 +70,42 @@ export class ProfilInfoService {
     });
   }
 
-  async retrieveWinStreak(username: string): Promise<number>{
-    let winHistory: Array<Game> = await this.retrieveWonGames(username);
-    return new Promise(resolve => {
+    async retrieveWinStreak(username: string, winHistory: Array<Game>): Promise<number>{
+      return new Promise(resolve => {
       let biggestSpan: number = 0;
-      let actualSpan: number = 0;
+      let actualSpan: number = 1;
       if (winHistory.length == 1)
         resolve(1);
       for (let i = 1; i < winHistory.length; i++){
-        if (winHistory[i - 1].id === winHistory[i].id - 1 && actualSpan === 0)
+        if (winHistory[i - 1].id === winHistory[i].id - 1 && actualSpan === 1)
           actualSpan = 2;
-        else if (winHistory[i - 1].id === winHistory[i].id - 1 && actualSpan != 0)
+        else if (winHistory[i - 1].id === winHistory[i].id - 1 && actualSpan != 1)
           actualSpan++;
-        else if (winHistory[i - 1].id != winHistory[i].id - 1 && actualSpan != 0){
+        else if (winHistory[i - 1].id != winHistory[i].id - 1 && actualSpan != 1){
           if (actualSpan > biggestSpan)
             biggestSpan = actualSpan;
-          actualSpan = 0;
+          actualSpan = 1;
         }
       }
       resolve (actualSpan > biggestSpan ? actualSpan: biggestSpan);
     });
   }
 
-  async retrieveLoseStreak(username: string): Promise<number>{
-    let loseHistory: Array<Game> = await this.retrieveLostGames(username);
+  async retrieveLoseStreak(username: string, loseHistory: Array<Game>): Promise<number>{
     return new Promise(resolve => {
       let biggestSpan: number = 0;
-      let actualSpan: number = 0;
+      let actualSpan: number = 1;
       if (loseHistory.length == 1)
         resolve(1);
       for (let i = 1; i < loseHistory.length; i++){
-        if (loseHistory[i - 1].id === loseHistory[i].id - 1 && actualSpan === 0)
+        if (loseHistory[i - 1].id === loseHistory[i].id - 1 && actualSpan === 1)
           actualSpan = 2;
-        else if (loseHistory[i - 1].id === loseHistory[i].id - 1 && actualSpan != 0)
+        else if (loseHistory[i - 1].id === loseHistory[i].id - 1 && actualSpan != 1)
           actualSpan++;
-        else if (loseHistory[i - 1].id != loseHistory[i].id - 1 && actualSpan != 0){
+        else if (loseHistory[i - 1].id != loseHistory[i].id - 1 && actualSpan != 1){
           if (actualSpan > biggestSpan)
             biggestSpan = actualSpan;
-          actualSpan = 0;
+          actualSpan = 1;
         }
       }
       resolve (actualSpan > biggestSpan ? actualSpan: biggestSpan);
@@ -153,35 +133,32 @@ export class ProfilInfoService {
     });
   }
 
-  async retrieveUserHistory(username: string): Promise<Array<Game>> {
-    let winHistory: Array<Game> = await this.retrieveWonGames(username);
-    let loseHistory: Array<Game> = await this.retrieveLostGames(username);
-    let gameHistory: Array<Game> = winHistory.concat(loseHistory);
-
-    //Sorting
-    gameHistory.sort((n1, n2) => {
-      if (n1.id > n2.id) {
-        return 1;
-      }
-      if (n1.id < n2.id) {
-        return -1;
-      }
-      return 0;
+  async retrieveUserHistory(username: string, winHistory: Array<Game>, loseHistory: Array<Game>): Promise<Array<Game>> {
+    let gameHistory = winHistory.concat(loseHistory);
+    return new Promise(resolve => {
+      gameHistory.sort((n1, n2) => {
+        if (n1.id > n2.id) {
+          return 1;
+        }
+        if (n1.id < n2.id) {
+          return -1;
+        }
+        return 0;
+      })
+      resolve (gameHistory);
     })
-
-    return (gameHistory);
   }
 
   async loadUserProfil(username: string) {
-    this.nbGames = await this.retrieveGameCounter(username);
-    this.nbWins = await this.retrieveWinCounter(username);
-    this.nbLoses = await this.retrieveLoseCounter(username);
-    this.score = await this.retrieveScore(username);
-    this.winStreak = await this.retrieveWinStreak(username);
-    this.loseStreak = await this.retrieveLoseStreak(username);
     this.winHistory = await this.retrieveWonGames(username);
     this.loseHistory = await this.retrieveLostGames(username);
-    this.gameHistory = await this.retrieveUserHistory(username);
+    this.gameHistory = await this.retrieveUserHistory(username, this.winHistory, this.loseHistory);
+    this.winStreak = await this.retrieveWinStreak(username, this.winHistory);
+    this.loseStreak = await this.retrieveLoseStreak(username, this.loseHistory);
+    this.nbWins = await this.retrieveWinCounter(username, this.winHistory);
+    this.nbLoses = await this.retrieveLoseCounter(username, this.loseHistory);
+    this.nbGames = await this.retrieveGameCounter(username, this.nbWins, this.nbLoses);
+    this.score = await this.retrieveScore(username, this.nbWins, this.nbLoses);
   }
 
   //DEBUG
@@ -196,7 +173,6 @@ export class ProfilInfoService {
     console.log('Win History: ', this.winHistory);
     console.log('Lose History: ', this.loseHistory);
     console.log('Game History: ', this.gameHistory);
-    this.retrieveUserAvatar('ugtheven');
   }
 
   async testUsertest() {
