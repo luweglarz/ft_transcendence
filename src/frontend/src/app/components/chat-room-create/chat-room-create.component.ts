@@ -3,6 +3,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  NgForm,
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -17,6 +18,7 @@ import { ChatService } from 'src/app/services/chatService/chat.service';
 })
 export class ChatRoomCreateComponent /*implements OnInit*/ {
   roomTypes = Object.values(RoomType);
+
 
   constructor(
     public dialogRef: MatDialogRef<ChatRoomCreateComponent>,
@@ -39,7 +41,17 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
     }
   }
 
+  onSend(userForm: NgForm) {
+    if (userForm.status === 'INVALID')
+      return ;
+    let data = userForm.value;
+    console.log(data);
+    this.dialogRef.close();
+    this.chatService.createRoom(this.data);
+  }
+
   onNoClick(): void {
+    let data = 'no';
     this.dialogRef.close();
   }
 }
