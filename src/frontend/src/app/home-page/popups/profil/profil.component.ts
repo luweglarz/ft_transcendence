@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
-import { AvatarService } from 'src/app/avatar/avatar.service';
 import { ProfilInfoService } from './profil-info.service';
 
 @Component({

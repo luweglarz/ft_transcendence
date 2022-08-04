@@ -1,4 +1,4 @@
-import { Message } from 'src/app/interface/message';
+import { Message } from 'src/app/chat/interface/message';
 //import { RoomUser } from 'src/app/interface/roomUser';
 
 export interface Room {

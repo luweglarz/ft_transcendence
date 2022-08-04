@@ -13,9 +13,9 @@
     <!-- Need to get the username from jwtService to open the profil-->
     <li class="sidenav-nav-item" (click)="openProfil('ugtheven')">
       <a class="sidenav-nav-link">
-        <img class="sidenav-link-avatar" [src]="avatar.src" height="32px" width="32px" alt="User avatar">
+        <img avatar class="sidenav-link-avatar" height="32px" width="32px" alt="User avatar">
         <span class="sidenav-link-text" *ngIf="collapseService.navCollapsed">
-          {{ jwtService.getPayload()?.username }}
+          {{ jwtService.username }}
         </span>
       </a>
     </li>
