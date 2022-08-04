@@ -1,8 +1,30 @@
+/* firefox */
+.scroller {
+  width: 300px;
+  height: 100px;
+}
+
+/* Safari, Chrome, IE */
+ ::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1A202C;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #44526F;
+}
+
+/* History */
 .history-content {
   height: 100%;
   width: 100%;
   border-radius: 1em;
   overflow-y: scroll;
+  scrollbar-color: #44526F #1a202c;
+  scrollbar-width: thin;
   overflow-x: hidden;
 }
 
