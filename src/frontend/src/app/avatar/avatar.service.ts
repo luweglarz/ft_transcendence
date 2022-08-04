@@ -78,7 +78,8 @@ export class AvatarService {
       formData.append('avatar', this.avatar.file);
       this.http
         .post(`${environment.backend}/me/avatar`, formData)
-        .subscribe((_) => this.uploaded.next(true));
+        // setTimeout: let time to the db to process the upload (especially for large image)
+        .subscribe((_) => setTimeout(() => this.uploaded.next(true), 1000));
     }
   }
 
