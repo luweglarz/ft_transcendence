@@ -11,7 +11,6 @@ export class SignoutService {
   signOut() {
     const username = this.jwt.getPayload()?.username;
     this.jwt.clearToken();
-    this.avatar.clear();
     if (username) console.log(`${username} successfully signed out`);
   }
 }

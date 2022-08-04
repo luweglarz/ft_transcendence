@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  StreamableFile,
+} from '@nestjs/common';
+import { Response } from 'express';
 import { JwtPayload } from 'src/auth/interfaces';
 import { DbService } from 'src/db/db.service';
 
@@ -19,15 +24,31 @@ export class AvatarService {
     }
   }
 
-  async getAvatar(username: string) {
-    try {
-      const avatar = await this.db.avatar.findFirst({
-        where: { user: { username: username } },
-      });
-      return avatar;
-    } catch (err) {
-      console.log(`Error: ${this.uploadAvatar.name} failed.`);
-      throw new InternalServerErrorException('Could not download the avatar');
-    }
+  async getResponse(username: string, res: Response) {
+    const avatar = await this.findAvatar(username);
+    if (avatar) return this.fileResponse(avatar.image, avatar.mimeType, res);
+    else return '';
+  }
+
+  async hasAvatar(username: string) {
+    const query = await this.db.avatar.aggregate({
+      _count: { userId: true },
+      where: { user: { username: username } },
+    });
+    const exist = query._count.userId;
+    // console.log(`${username} avatar count: ${exist}`);
+    return exist;
+  }
+
+  async findAvatar(username: string) {
+    const avatar = await this.db.avatar.findFirst({
+      where: { user: { username: username } },
+    });
+    return avatar;
+  }
+
+  fileResponse(file: Buffer, contentType: string, res: Response) {
+    res.type(contentType);
+    return new StreamableFile(file);
   }
 }
