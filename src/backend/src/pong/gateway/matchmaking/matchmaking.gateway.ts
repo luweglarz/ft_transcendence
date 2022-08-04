@@ -14,19 +14,21 @@ export class MatchmakingGateway {
     this.normalClientPool = [];
     this.pools = [];
     this.pools.push(this.normalClientPool);
+    this.pools.push(this.customClientPool);
     this.logger = new Logger('GameMatchMakingGateway');
   }
 
   private pools: Socket[][];
   private normalClientPool: Socket[] = [];
+  private customClientPool: Socket[] = [];
   private logger: Logger;
 
   afterInit() {
     this.logger.log('Init');
   }
 
-  @SubscribeMessage('joinNormalMatchmaking')
-  joinNormalMatchMaking(
+  @SubscribeMessage('joinMatchmaking')
+  joinMatchmaking(
     @ConnectedSocket() client: Socket,
     @MessageBody() gameType: string,
   ) {
