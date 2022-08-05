@@ -43,17 +43,16 @@ export class ProfilInfoService {
   gameHistory: Array<Game> = [];
 
   constructor(private http: HttpClient, private jwtService: JwtService, public avatar: AvatarService) {
+    //Users
     this.http.get<Array<string>>('http://localhost:3000/users/').subscribe(data => {
-      for (let i = 0; i < data.length; i++){
+      for (let i = 0; i < data.length; i++)
         this.users.push({username: data[i], id: i + 1});
-        console.log(this.users[i]);
-      }
     });
     let tmp = this.jwtService.getPayload()?.username;
+    //Me
     if (tmp != undefined)
       this.username = tmp;
     console.log(tmp);
-    this.loadUserProfil(this.username);
   }
 
   getUsernameById(id: number): string{
@@ -170,8 +169,11 @@ export class ProfilInfoService {
   }
 
   async loadUserProfil(username: string) {
+    console.log('LOADING ', username, ' PROFIL');
     this.winHistory = await this.retrieveWonGames(username);
+    console.log('Win History: ', this.winHistory);
     this.loseHistory = await this.retrieveLostGames(username);
+    console.log('Lose History: ', this.loseHistory);
     this.gameHistory = await this.retrieveUserHistory(username, this.winHistory, this.loseHistory);
     this.winStreak = await this.retrieveWinStreak(username, this.winHistory);
     this.loseStreak = await this.retrieveLoseStreak(username, this.loseHistory);
