@@ -33,7 +33,11 @@ export class RoomService {
     });
   }
 
-  async createRoom(room: Room, userId: number, socketId: string): Promise<Room> {
+  async createRoom(
+    room: Room,
+    userId: number,
+    socketId: string,
+  ): Promise<Room> {
     return await this.prisma.room.create({
       data: {
         name: room.name,
