@@ -10,7 +10,7 @@ export class AuthUtilsController {
   async usernameAlreadyExists(@Param('username') username: string) {
     return {
       username: username,
-      exists: await this.service.alreadyExists('username', username),
+      exists: await this.service.usernameExists(username),
     };
   }
 
@@ -18,7 +18,7 @@ export class AuthUtilsController {
   async emailAlreadyExists(@Param('email') email: string) {
     return {
       email: email,
-      exists: await this.service.alreadyExists('email', email),
+      exists: await this.service.emailExists(email),
     };
   }
 

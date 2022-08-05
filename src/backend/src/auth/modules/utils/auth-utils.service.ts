@@ -26,9 +26,16 @@ export class AuthUtilsService {
     };
   }
 
-  async alreadyExists(field: string, value: string) {
-    const exists = await this.db.user.findFirst({ where: { [field]: value } });
-    return exists ? true : false;
+  async usernameExists(username: string) {
+    return await this.db.user.count({
+      where: { username: username },
+    });
+  }
+
+  async emailExists(email: string) {
+    return await this.db.auth.count({
+      where: { email: email },
+    });
   }
 
   async createUser(data: Prisma.UserCreateInput) {

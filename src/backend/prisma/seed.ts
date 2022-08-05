@@ -3,31 +3,29 @@ import * as argon from 'argon2';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-
-interface User{
+interface User {
   username: string;
   email: string;
   password: string;
 }
 
-async function createUser(user: User){
+async function createUser(user: User) {
   const hashedPassword = await argon.hash(user.password);
   await prisma.user.create({
     data: {
       username: user.username,
-      email: user.email,
-      password: hashedPassword
-    }
-  })
+      auth: { create: { email: user.email, password: hashedPassword } },
+    },
+  });
 }
 
 async function createGame(users: User[]) {
-  let winner = await  prisma.user.findUnique({
+  const winner = await prisma.user.findUnique({
     where: { username: users[Math.floor(Math.random() * 4)].username },
-  });;
+  });
   let loser = winner;
-  while (loser.id === winner.id){
-    loser = await  prisma.user.findUnique({
+  while (loser.id === winner.id) {
+    loser = await prisma.user.findUnique({
       where: { username: users[Math.floor(Math.random() * 4)].username },
     });
   }
@@ -44,18 +42,18 @@ async function createGame(users: User[]) {
     },
   });
 }
-  
-async function main(){
-  const users: User[] = [ 
-    {username: 'lucas', email: 'lucas@mail.com', password: 'lucas'}, 
-    {username: 'ugo', email: 'ugo@mail.com', password: 'ugo'}, 
-    {username: 'matthieu', email: 'matthieu@mail.com', password: 'matthieu'},
-    {username: 'jeremy', email: 'jeremy@mail.com', password: 'jeremy'},
-  ]
-  for (let i = 0; i < users.length;i++){
+
+async function main() {
+  const users: User[] = [
+    { username: 'lucas', email: 'lucas@mail.com', password: 'lucas' },
+    { username: 'ugo', email: 'ugo@mail.com', password: 'ugo' },
+    { username: 'matthieu', email: 'matthieu@mail.com', password: 'matthieu' },
+    { username: 'jeremy', email: 'jeremy@mail.com', password: 'jeremy' },
+  ];
+  for (let i = 0; i < users.length; i++) {
     await createUser(users[i]);
   }
-  for (let i: number = 0; i < 10;i++){
+  for (let i = 0; i < 10; i++) {
     await createGame(users);
   }
 }
