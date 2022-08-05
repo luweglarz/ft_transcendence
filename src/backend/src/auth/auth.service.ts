@@ -9,12 +9,8 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import * as argon from 'argon2';
 import { DbErrorCode } from 'src/db/errors';
 import { DbService } from 'src/db/db.service';
-import {
-  LocalSigninDto,
-  LocalSignupDto,
-  OAuthSignUpDto,
-  OAuthUserDto,
-} from './dto';
+import { LocalSigninDto, LocalSignupDto } from './local/dto';
+import { OAuthSignUpDto, OAuthUserDto } from './oauth/dto';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { validate } from 'class-validator';
