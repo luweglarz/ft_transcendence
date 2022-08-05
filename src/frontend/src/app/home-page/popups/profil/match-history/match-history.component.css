@@ -15,13 +15,11 @@
 .history-content {
   height: 100%;
   width: 100%;
-  border-radius: 1em;
   overflow-y:scroll;
   scrollbar-color: #44526F #1a202c;
   scrollbar-width: thin;
-  overflow-x: hidden;
 
-
+  background-color: yellow;
 }
 
 .history-items {
@@ -34,6 +32,8 @@
   height: fit-content;
   margin: 0px;
   padding: 0px;
+
+  background-color: aqua;
 }
 
 .history-item {
@@ -41,7 +41,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 750px;
+  width: 100%;
   height: 64px;
   border-radius: 1em;
   margin: 2px;
