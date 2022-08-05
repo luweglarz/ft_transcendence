@@ -12,4 +12,8 @@ export class JwtAuthService {
       secret: process.env['JWT_SECRET'],
     });
   }
+
+  refreshToken() {
+    return { message: 'Refresh tokens' };
+  }
 }
