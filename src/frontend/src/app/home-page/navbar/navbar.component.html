@@ -11,7 +11,7 @@
   <ul class="sidenav-nav">
     <!-- Profil -->
     <!-- Need to get the username from jwtService to open the profil-->
-    <li class="sidenav-nav-item" (click)="openProfil('ugtheven')">
+    <li class="sidenav-nav-item" (click)="openProfil(username)">
       <a class="sidenav-nav-link">
         <img avatar class="sidenav-link-avatar" height="32px" width="32px" alt="User avatar">
         <span class="sidenav-link-text" *ngIf="collapseService.navCollapsed">

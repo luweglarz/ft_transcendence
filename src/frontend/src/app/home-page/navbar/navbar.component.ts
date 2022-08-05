@@ -10,11 +10,18 @@ import { JwtService } from 'src/app/auth/jwt';
   animations: [],
 })
 export class NavbarComponent {
+
+  username = '';
+
   constructor(
     public jwtService: JwtService,
     public collapseService: CollapseService,
     public popupsService: PopupsService,
-  ) {}
+  ) {
+    let tmp = this.jwtService.getPayload()?.username;
+    if (tmp != undefined)
+      this.username = tmp;
+  }
 
   /* NAVBAR COLLAPSE */
   openSidenav() {
