@@ -1,4 +1,4 @@
-import { OAuthUserDto } from '../oauth/dto';
+import { OAuthUserDto } from '../../oauth/dto';
 
 export interface JwtPayload {
   sub: number; // user id
