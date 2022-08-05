@@ -18,7 +18,7 @@
     </div>
 
     <!--Add Mesaage-->
-    <div style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
+    <div *ngIf="(roomUsers | async)?.length" style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
         <mat-form-field style="width: 350px;">
             <input matInput [formControl]="chatMessage" type="text">
         </mat-form-field>
