@@ -53,6 +53,17 @@ export class CustomGame implements GameMode {
     );
   }
 
+  private reduceScorerSize(scorer: Player) {
+    scorer.height -= (5 * 110) / 100;
+    scorer.width -= (1 * 110) / 100;
+    scorer.borderCollisionUp = Math.round((this.canvaHeight * 2) / 100);
+    scorer.borderCollisionDown = Math.round(
+      this.canvaHeight -
+        Math.round((this.canvaHeight * 2) / 100) -
+        scorer.height,
+    );
+  }
+
   gameLoop(
     gameRoom: Room,
     rooms: Room[],
@@ -73,7 +84,7 @@ export class CustomGame implements GameMode {
       gameCoreService.ballMovement(gameRoom);
       if ((scorer = gameCoreService.checkGoal(gameRoom)) != undefined) {
         scorer.goals++;
-        scorer.height -= 5;
+        this.reduceScorerSize(scorer);
         this.ball.resetBall(this);
       }
       winner = gameCoreService.checkWinner(gameRoom);

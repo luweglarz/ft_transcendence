@@ -63,8 +63,14 @@ export class GameSocket extends Socket {
   onGameUpdate(game: Game) {
     this.on(
       'gameUpdate',
-      (player1Pos: any, player2Pos: any, ballPos: any, score: any, playerHeights?: any, playerWidth?: any) => {
-        console.log(playerHeights.player1Height, playerHeights.player2Height, playerHeights.player1Width , playerHeights.player1Width);
+      (
+        player1Pos: any,
+        player2Pos: any,
+        ballPos: any,
+        score: any,
+        playerHeights?: any,
+        playerWidth?: any,
+      ) => {
         game.players[0].x = player1Pos.x;
         game.players[0].y = player1Pos.y;
         game.players[1].x = player2Pos.x;
@@ -73,12 +79,12 @@ export class GameSocket extends Socket {
         game.ball.y = ballPos.y;
         game.players[0].goals = score.playerOneGoals;
         game.players[1].goals = score.playerTwoGoals;
-        if (playerHeights != undefined && playerWidth != undefined){
+        if (playerHeights != undefined && playerWidth != undefined) {
           game.players[0].height = playerHeights.player1Height;
           game.players[1].height = playerHeights.player2Height;
           game.players[0].width = playerWidth.player1Width;
           game.players[1].width = playerWidth.player2Width;
-      }
+        }
       },
     );
   }
