@@ -38,9 +38,12 @@ export class ChatRoomComponent implements OnChanges {
   //ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['chatRoom'].previousValue !== undefined
-    && changes['chatRoom'].previousValue.name !== undefined
-    && changes['chatRoom'].previousValue.id !== changes['chatRoom'].currentValue.id) {
+    if (
+      changes['chatRoom'].previousValue !== undefined &&
+      changes['chatRoom'].previousValue.name !== undefined &&
+      changes['chatRoom'].previousValue.id !==
+        changes['chatRoom'].currentValue.id
+    ) {
       console.log('previous room', changes['chatRoom'].previousValue);
       console.log('current room', changes['chatRoom'].currentValue);
       this.chatService.leaveRoom(changes['chatRoom'].previousValue);
@@ -48,7 +51,7 @@ export class ChatRoomComponent implements OnChanges {
     if (this.chatRoom.id) {
       console.log(`Join room: ${this.chatRoom.name}`);
       //if (this.chatRoom.roomType !== 'PROTECTED')
-        this.chatService.joinRoom(this.chatRoom); //trigger join room on sed password for protected
+      this.chatService.joinRoom(this.chatRoom); //trigger join room on sed password for protected
     }
     this.roomUsers = this.chatService.getRoomUsers();
     this.messages = this.chatService.getMsgs();

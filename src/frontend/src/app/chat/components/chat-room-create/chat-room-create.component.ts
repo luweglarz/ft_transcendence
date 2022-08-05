@@ -13,7 +13,6 @@ import { ChatService } from 'src/app/chat/chatService/chat.service';
 export class ChatRoomCreateComponent /*implements OnInit*/ {
   roomTypes = Object.values(RoomType);
 
-
   constructor(
     public dialogRef: MatDialogRef<ChatRoomCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Room,
@@ -36,9 +35,8 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
   }*/
 
   onSend(userForm: NgForm) {
-    if (userForm.status === 'INVALID')
-      return ;
-    let data = userForm.value;
+    if (userForm.status === 'INVALID') return;
+    const data = userForm.value;
     console.log(data);
     this.dialogRef.close('yes');
     this.chatService.createRoom(this.data);

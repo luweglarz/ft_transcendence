@@ -45,11 +45,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     } catch (error) {
       this.logger.error(error);
       socket.disconnect();
-      return ;
+      return;
     }
     if (socket.data.user == null) {
       socket.disconnect();
-      return ;
+      return;
     }
     const rooms = await this.roomService.rooms({});
     this.connectedUsers.push(socket.id);
@@ -63,19 +63,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.debug(socket.id);
     delete this.connectedUsers[socket.id];
     //await this.prisma.roomUser.deleteMany({where: {socketId: socket.id}});
-    let roomUsers = await this.roomUserService.roomUsers({where: {socketId: socket.id } });
-    for (let roomUser of roomUsers) {
+    const roomUsers = await this.roomUserService.roomUsers({
+      where: { socketId: socket.id },
+    });
+    for (const roomUser of roomUsers) {
       this.logger.debug('in handle disco', roomUser);
-      let otherRoomUser = await this.roomUserService.roomUsers({where: {roomId: roomUser.roomId}});
+      const otherRoomUser = await this.roomUserService.roomUsers({
+        where: { roomId: roomUser.roomId },
+      });
       this.logger.debug('otherroomuser', otherRoomUser.length);
       if (otherRoomUser.length == 1) {
-        await this.prisma.message.deleteMany({where: {roomId: roomUser.roomId}});
-        await this.prisma.roomUser.delete({where: {roomUserId: roomUser.roomUserId}});
-        await this.prisma.room.delete({where: {id: roomUser.roomId}});
+        await this.prisma.message.deleteMany({
+          where: { roomId: roomUser.roomId },
+        });
+        await this.prisma.roomUser.delete({
+          where: { roomUserId: roomUser.roomUserId },
+        });
+        await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
     }
 
-    await this.prisma.roomUser.deleteMany({where: {socketId: socket.id}});
+    await this.prisma.roomUser.deleteMany({ where: { socketId: socket.id } });
     socket.disconnect();
   }
 
@@ -85,9 +93,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (room.roomType === 'PROTECTED') {
       room.password = await argon.hash(room.password);
     }
-    let nr = await this.roomService.createRoom(room, socket.data.user.id, socket.id);
-    if (nr.roomType === 'PROTECTED')
-      nr.password = '';
+    const nr = await this.roomService.createRoom(
+      room,
+      socket.data.user.id,
+      socket.id,
+    );
+    if (nr.roomType === 'PROTECTED') nr.password = '';
     // needs emit once i can find how to identify user by connection to server
     // emit new room to all connected user
     //this.server.to(socket.id).emit('rooms', this.roomService.rooms({}));
@@ -105,21 +116,29 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.debug(
       `${user.username} is trying to join room ${room.id}:${room.name}`,
     );
-    let findusers = await this.roomUserService.roomUsers({where: {roomId: room.id}});
-    for (let finduser of findusers) {
+    const findusers = await this.roomUserService.roomUsers({
+      where: { roomId: room.id },
+    });
+    for (const finduser of findusers) {
       if (finduser.userId === user.id) {
         this.getMsgs(socket, room.id);
         this.getRoomUsers(socket, room.id);
       }
     }
     try {
-      if (room.roomType === 'PROTECTED'
-      && await argon.verify((await this.roomService.room({id: room.id})).password, room.password)) {
+      if (
+        room.roomType === 'PROTECTED' &&
+        (await argon.verify(
+          (
+            await this.roomService.room({ id: room.id })
+          ).password,
+          room.password,
+        ))
+      ) {
         await this.roomService.joinRoom(room, user.id, socket.id);
         this.getMsgs(socket, room.id);
         this.getRoomUsers(socket, room.id);
-      }
-      else if (room.roomType !== 'PROTECTED') {
+      } else if (room.roomType !== 'PROTECTED') {
         await this.roomService.joinRoom(room, user.id, socket.id);
         this.getMsgs(socket, room.id);
         this.getRoomUsers(socket, room.id);
@@ -135,18 +154,28 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('leaveRoom')
   async leaveRoom(socket: Socket, room: Room) {
     this.logger.debug(room);
-    let roomUsers = await this.roomUserService.roomUsers({where: {socketId: socket.id, roomId: room.id } });
-    for (let roomUser of roomUsers) {
-     this.logger.debug('in handle disco', roomUser);
-      let otherRoomUser = await this.roomUserService.roomUsers({where: {roomId: roomUser.roomId}});
+    const roomUsers = await this.roomUserService.roomUsers({
+      where: { socketId: socket.id, roomId: room.id },
+    });
+    for (const roomUser of roomUsers) {
+      this.logger.debug('in handle disco', roomUser);
+      const otherRoomUser = await this.roomUserService.roomUsers({
+        where: { roomId: roomUser.roomId },
+      });
       this.logger.debug('otherroomuser', otherRoomUser.length);
       if (otherRoomUser.length == 1) {
-        await this.prisma.message.deleteMany({where: {roomId: roomUser.roomId}});
-        await this.prisma.roomUser.delete({where: {roomUserId: roomUser.roomUserId}});
-        await this.prisma.room.delete({where: {id: roomUser.roomId}});
+        await this.prisma.message.deleteMany({
+          where: { roomId: roomUser.roomId },
+        });
+        await this.prisma.roomUser.delete({
+          where: { roomUserId: roomUser.roomUserId },
+        });
+        await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
     }
-    await this.prisma.roomUser.deleteMany({where: {socketId: socket.id, roomId: room.id}});
+    await this.prisma.roomUser.deleteMany({
+      where: { socketId: socket.id, roomId: room.id },
+    });
     /*let roomUsers = await this.roomUserService.roomUsers({where: {userId: socket.data.user.id}});
     for (let roomUser of roomUsers) {
       this.logger.debug(roomUser);
@@ -163,9 +192,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     console.log(socket);
     const parsed = JSON.parse(JSON.stringify(message));
     console.log(parsed);
-    let finduser = await this.roomUserService.roomUsers({where: {roomId: parsed.room.id, socketId: socket.id}});
-    if (finduser.length < 1)
-      return ;
+    const finduser = await this.roomUserService.roomUsers({
+      where: { roomId: parsed.room.id, socketId: socket.id },
+    });
+    if (finduser.length < 1) return;
     await this.messageService.createMessage({
       content: parsed.content,
       //room: { connect: message.room },
@@ -205,8 +235,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       i++;
     }
     console.log('fgh', messages);
-    let roomUsers = await this.roomUserService.roomUsers({where: {roomId: roomId } });
-    for (let roomuser of roomUsers) {
+    const roomUsers = await this.roomUserService.roomUsers({
+      where: { roomId: roomId },
+    });
+    for (const roomuser of roomUsers) {
       this.server.to(roomuser.socketId).emit('msgs', messages);
     }
     //this.server.to(socket.id).emit('msgs', messages);
@@ -215,12 +247,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('getRooms')
   async getRooms(socket: Socket) {
     //this.server.to(socket.id).emit('rooms', await this.roomService.rooms({}));
-    let rooms = await this.roomService.rooms({});
-    for (let room of rooms) {
-      if (room.roomType == 'PROTECTED')
-        room.password = '';
+    const rooms = await this.roomService.rooms({});
+    for (const room of rooms) {
+      if (room.roomType == 'PROTECTED') room.password = '';
     }
-    for (let connectedUser of this.connectedUsers) {
+    for (const connectedUser of this.connectedUsers) {
       this.server.to(connectedUser).emit('rooms', rooms);
     }
   }
