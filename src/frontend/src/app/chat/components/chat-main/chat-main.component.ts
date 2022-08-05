@@ -39,7 +39,6 @@ export class ChatMainComponent implements OnInit, OnDestroy {
         if (result !== 'no') {
           console.log('result'); // selectedroom must become the newly created room
           this.chatService.getCreatedRoom().subscribe((result) => {
-            //delay(30000);
             console.log('result');
             this.selectedRoom = result;
           });

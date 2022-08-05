@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
 import { Room } from '@prisma/client';
 import { Logger } from '@nestjs/common';
+import * as argon from 'argon2';
 
 @WebSocketGateway({ cors: true })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -81,13 +82,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('createRoom')
   async createRoom(socket: Socket, room: Room) {
     if (room.roomType === 'PROTECTED' && !room.password) return 'Error';
+    if (room.roomType === 'PROTECTED') {
+      room.password = await argon.hash(room.password);
+    }
     let nr = await this.roomService.createRoom(room, socket.data.user.id, socket.id);
+    if (nr.roomType === 'PROTECTED')
+      nr.password = '';
     // needs emit once i can find how to identify user by connection to server
     // emit new room to all connected user
     //this.server.to(socket.id).emit('rooms', this.roomService.rooms({}));
-    this.getRooms(socket);
-    this.getRoomUsers(socket, room.id);
-    this.logger.debug('new room in, create room pls', nr);
+    await this.getRooms(socket);
+    await this.getRoomUsers(socket, room.id);
     this.server.to(socket.id).emit('createdRoom', nr);
   }
 
@@ -100,16 +105,31 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.debug(
       `${user.username} is trying to join room ${room.id}:${room.name}`,
     );
+    let findusers = await this.roomUserService.roomUsers({where: {roomId: room.id}});
+    for (let finduser of findusers) {
+      if (finduser.userId === user.id) {
+        this.getMsgs(socket, room.id);
+        this.getRoomUsers(socket, room.id);
+      }
+    }
     try {
-      await this.roomService.joinRoom(room, user.id, socket.id);
+      if (room.roomType === 'PROTECTED'
+      && await argon.verify((await this.roomService.room({id: room.id})).password, room.password)) {
+        await this.roomService.joinRoom(room, user.id, socket.id);
+        this.getMsgs(socket, room.id);
+        this.getRoomUsers(socket, room.id);
+      }
+      else if (room.roomType !== 'PROTECTED') {
+        await this.roomService.joinRoom(room, user.id, socket.id);
+        this.getMsgs(socket, room.id);
+        this.getRoomUsers(socket, room.id);
+      }
     } catch (error) {
       this.logger.error(error);
     }
     // needs emit once i can find how to identify user by connection to server
     // emmit room messages to new member of room
     //console.log(room);
-    this.getMsgs(socket, room.id);
-    this.getRoomUsers(socket, room.id);
   }
 
   @SubscribeMessage('leaveRoom')
@@ -134,6 +154,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.logger.debug('inif', roomUser);
     }*/
     this.server.to(socket.id).emit('msgs', []);
+    this.server.to(socket.id).emit('roomUsers', []);
     this.getRooms(socket);
   }
 
@@ -141,7 +162,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async addMessage(socket: Socket, message: string) {
     console.log(socket);
     const parsed = JSON.parse(JSON.stringify(message));
-    console.log(parsed.room);
+    console.log(parsed);
+    let finduser = await this.roomUserService.roomUsers({where: {roomId: parsed.room.id, socketId: socket.id}});
+    if (finduser.length < 1)
+      return ;
     await this.messageService.createMessage({
       content: parsed.content,
       //room: { connect: message.room },
@@ -191,8 +215,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('getRooms')
   async getRooms(socket: Socket) {
     //this.server.to(socket.id).emit('rooms', await this.roomService.rooms({}));
+    let rooms = await this.roomService.rooms({});
+    for (let room of rooms) {
+      if (room.roomType == 'PROTECTED')
+        room.password = '';
+    }
     for (let connectedUser of this.connectedUsers) {
-      this.server.to(connectedUser).emit('rooms', await this.roomService.rooms({}));
+      this.server.to(connectedUser).emit('rooms', rooms);
     }
   }
 

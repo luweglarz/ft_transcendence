@@ -46,6 +46,7 @@ export class ChatRoomComponent implements OnChanges {
       console.log(`Join room: ${this.chatRoom.name}`);
       this.chatService.joinRoom(this.chatRoom);
     }
+    this.roomUsers = this.chatService.getRoomUsers();
     this.messages = this.chatService.getMsgs();
   }
 
