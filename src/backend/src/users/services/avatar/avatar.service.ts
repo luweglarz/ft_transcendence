@@ -4,7 +4,7 @@ import {
   StreamableFile,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { JwtPayload } from 'src/auth/jwt/interfaces';
+import { JwtPayload } from 'src/auth/modules/jwt/interfaces';
 import { DbService } from 'src/db/db.service';
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { User } from '../decorator';
+import { User } from '../../decorators';
 import { OAuthUserDto, OAuthSignUpDto } from './dto';
 import { OAuth2Guard } from './guard';
 import { OauthService } from './oauth.service';

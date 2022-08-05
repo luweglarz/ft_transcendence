@@ -1,7 +1,7 @@
 import { Routes } from '@nestjs/core';
-import { LocalAuthModule } from './local/local-auth.module';
-import { OauthModule } from './oauth/oauth.module';
-import { AuthUtilsModule } from './utils/auth-utils.module';
+import { LocalAuthModule } from './modules/local/local-auth.module';
+import { OauthModule } from './modules/oauth/oauth.module';
+import { AuthUtilsModule } from './modules/utils/auth-utils.module';
 
 export const routes: Routes = [
   {
