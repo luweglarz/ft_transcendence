@@ -32,7 +32,7 @@ export class ChatMainComponent implements OnInit, OnDestroy {
       data: {},
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       //this.roomCreate = result;
     });
   }

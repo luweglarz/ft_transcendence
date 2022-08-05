@@ -6,7 +6,10 @@ import { ProfilInfoService } from './profil/profil-info.service';
   providedIn: 'root',
 })
 export class PopupsService {
-  constructor(public profilInfoService: ProfilInfoService, public jwtService: JwtService) {
+  constructor(
+    public profilInfoService: ProfilInfoService,
+    public jwtService: JwtService,
+  ) {
     this.profilPopup = false;
     this.ladderPopup = false;
     this.socialPopup = false;

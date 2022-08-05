@@ -16,8 +16,6 @@ export class MatchmakingComponent {
     public collapseService: CollapseService,
   ) {}
 
-
-
   buttonRequestJoinNormalMatchMaking() {
     this.matchmakingService.requestJoinNormalMatchMaking();
     this.originalQueue = true;
