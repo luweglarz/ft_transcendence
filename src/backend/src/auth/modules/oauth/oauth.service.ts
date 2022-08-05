@@ -45,11 +45,12 @@ export class OauthService {
   }
 
   async oauthFindUser(apiUser: OAuthUserDto) {
-    const user = await this.db.user.findUnique({
+    const authInfo = await this.db.auth.findUnique({
       where: { email: apiUser.email },
+      include: { user: true },
     });
-    if (!user) throw new ForbiddenException('Unknown user');
-    else return user;
+    if (!authInfo) throw new ForbiddenException('Unknown user');
+    else return authInfo.user;
   }
 
   async oauthCreateUser(dto: OAuthSignUpDto) {
@@ -62,8 +63,7 @@ export class OauthService {
     const payload = <OAuthJwtPayload>this.jwt.decode(dto.jwt);
     const user = await this.authUtils.createUser({
       username: dto.username,
-      email: payload.oAuthUser.email,
-      authType: 'OAUTH42',
+      auth: { create: { email: payload.oAuthUser.email, authType: 'OAUTH42' } },
     });
     return user;
   }

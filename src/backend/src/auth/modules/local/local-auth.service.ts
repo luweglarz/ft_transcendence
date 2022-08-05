@@ -16,8 +16,12 @@ export class LocalAuthService {
     const pwdHash = await argon.hash(dto.password);
     const user = await this.auth.createUser({
       username: dto.username,
-      email: dto.email,
-      password: pwdHash,
+      auth: {
+        create: {
+          email: dto.email,
+          password: pwdHash,
+        },
+      },
     });
     this.logger.log(`User '${user.username}' successfully signed up!`);
     return this.auth.signInSuccess(user);
@@ -29,12 +33,13 @@ export class LocalAuthService {
   async localSignIn(dto: LocalSigninDto) {
     const user = await this.db.user.findUnique({
       where: { username: dto.username },
+      include: { auth: true },
     });
-    if (user && user.authType != 'LOCAL')
+    if (user && user.auth.authType != 'LOCAL')
       throw new ForbiddenException(
         'Local authentication not set up for the current user',
       );
-    else if (user && (await argon.verify(user.password, dto.password))) {
+    else if (user && (await argon.verify(user.auth.password, dto.password))) {
       return this.auth.signInSuccess(user);
     } else throw new ForbiddenException('Credentials incorrect');
   }
