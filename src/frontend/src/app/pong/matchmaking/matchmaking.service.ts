@@ -8,7 +8,6 @@ import { GameService } from '../game/game.service';
   providedIn: 'root',
 })
 export class MatchmakingService {
-
   //Timer
   msInQueue = 0;
   secInQueue = 0;
@@ -33,11 +32,11 @@ export class MatchmakingService {
   //startTimer(queueBool: boolean) {
   startTimer() {
     //if (queueBool === true) {
-      const startTime = Date.now() - (this.msInQueue || 0);
-      this.timer = setInterval(() => {
-        this.msInQueue = Date.now() - startTime;
-        if (this.msInQueue / 1000 >= this.secInQueue) this.secInQueue++;
-      });
+    const startTime = Date.now() - (this.msInQueue || 0);
+    this.timer = setInterval(() => {
+      this.msInQueue = Date.now() - startTime;
+      if (this.msInQueue / 1000 >= this.secInQueue) this.secInQueue++;
+    });
     //} else clearInterval(this.timer);
   }
 

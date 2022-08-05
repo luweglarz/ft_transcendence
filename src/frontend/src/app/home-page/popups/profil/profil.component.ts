@@ -8,8 +8,10 @@ import { ProfilInfoService } from './profil-info.service';
   styleUrls: ['./profil.component.css'],
 })
 export class ProfilComponent implements OnInit {
-
-  constructor(public jwtService: JwtService, public profilInfoService: ProfilInfoService) {
+  constructor(
+    public jwtService: JwtService,
+    public profilInfoService: ProfilInfoService,
+  ) {
     //
   }
 

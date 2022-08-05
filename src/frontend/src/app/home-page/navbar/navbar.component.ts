@@ -10,7 +10,6 @@ import { JwtService } from 'src/app/auth/jwt';
   animations: [],
 })
 export class NavbarComponent {
-
   username = '';
 
   constructor(
@@ -18,9 +17,8 @@ export class NavbarComponent {
     public collapseService: CollapseService,
     public popupsService: PopupsService,
   ) {
-    let tmp = this.jwtService.getPayload()?.username;
-    if (tmp != undefined)
-      this.username = tmp;
+    const tmp = this.jwtService.getPayload()?.username;
+    if (tmp != undefined) this.username = tmp;
   }
 
   /* NAVBAR COLLAPSE */

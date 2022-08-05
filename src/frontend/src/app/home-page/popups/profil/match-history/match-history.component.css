@@ -18,8 +18,6 @@
   overflow-y:scroll;
   scrollbar-color: #44526F #1a202c;
   scrollbar-width: thin;
-
-  background-color: yellow;
 }
 
 .history-items {
@@ -32,8 +30,6 @@
   height: fit-content;
   margin: 0px;
   padding: 0px;
-
-  background-color: aqua;
 }
 
 .history-item {
