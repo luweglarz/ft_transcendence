@@ -16,7 +16,7 @@
         <div *ngIf="data.roomType == 'PROTECTED'">
             <mat-form-field appearance="fill">
                <mat-label>Room password</mat-label>
-                <input matInput [(ngModel)]="data.password" name="roomPassword" ngModel required>
+                <input matInput [(ngModel)]="data.password" name="roomPassword" type="password" ngModel required>
             </mat-form-field>
         </div>
     <mat-dialog-actions>
