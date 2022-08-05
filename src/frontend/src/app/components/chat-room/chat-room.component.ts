@@ -24,7 +24,9 @@ export class ChatRoomComponent implements OnChanges {
   @ViewChild('mesgs') private scrollContainer: ElementRef = new ElementRef(
     'mesgs',
   );
-  chatMessage: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
+  chatMessage: UntypedFormControl = new UntypedFormControl(null, [
+    Validators.required,
+  ]);
   messages: Observable<Message[]> = this.chatService.getMsgs();
   roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
 

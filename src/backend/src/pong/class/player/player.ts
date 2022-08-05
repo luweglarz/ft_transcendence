@@ -105,6 +105,14 @@ export class Player {
     return this._username;
   }
 
+  set borderCollisionUp(newBorderCollisionUp: number) {
+    this._borderCollisionUp = newBorderCollisionUp;
+  }
+
+  set borderCollisionDown(newBorderCollisionDown: number) {
+    this._borderCollisionDown = newBorderCollisionDown;
+  }
+
   checkBorderCollision(): boolean {
     if (this.velocity == -1 && this.y <= this._borderCollisionUp) {
       this.y = this._borderCollisionUp;
