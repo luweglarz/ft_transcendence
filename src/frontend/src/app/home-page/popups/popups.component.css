@@ -8,6 +8,8 @@
   top: 0;
   overflow: auto;
   transition: 0.3s;
+
+  overflow: hidden;
 }
 
 .popup-full-collapsed {
@@ -64,6 +66,6 @@
 }
 
 .popup-content{
-  height: 40%;
+  height: 90%;
   width: 100%;
 }
