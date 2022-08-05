@@ -13,15 +13,15 @@
 
 /* History */
 .history-content {
-  height: 70%;
+  height: 100%;
   width: 100%;
   border-radius: 1em;
-  overflow-y: scroll;
+  overflow-y:scroll;
   scrollbar-color: #44526F #1a202c;
   scrollbar-width: thin;
   overflow-x: hidden;
 
-  background-color: red;
+
 }
 
 .history-items {
