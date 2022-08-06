@@ -8,7 +8,10 @@ import { JwtService } from '../../auth/jwt';
 })
 export class ChatSocket extends Socket {
   constructor(jwtService: JwtService) {
-    super({ url: environment.backend, options: { autoConnect: false, path: environment.socketChatPath } });
+    super({
+      url: environment.backend,
+      options: { autoConnect: false, path: environment.socketChatPath },
+    });
     this.ioSocket.auth = { token: jwtService.getToken() };
   }
 }
