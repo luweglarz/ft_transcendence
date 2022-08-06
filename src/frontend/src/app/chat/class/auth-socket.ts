@@ -6,9 +6,9 @@ import { JwtService } from '../../auth/jwt';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthSocket extends Socket {
+export class ChatSocket extends Socket {
   constructor(jwtService: JwtService) {
-    super({ url: environment.backend, options: {} });
+    super({ url: environment.backend, options: { autoConnect: false, path: environment.socketChatPath } });
     this.ioSocket.auth = { token: jwtService.getToken() };
   }
 }

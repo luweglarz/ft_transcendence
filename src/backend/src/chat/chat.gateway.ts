@@ -15,7 +15,7 @@ import { Room } from '@prisma/client';
 import { Logger } from '@nestjs/common';
 import * as argon from 'argon2';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({ cors: true, path: '/chat' })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
@@ -103,8 +103,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // emit new room to all connected user
     //this.server.to(socket.id).emit('rooms', this.roomService.rooms({}));
     await this.getRooms(socket);
-    await this.getRoomUsers(socket, room.id);
     this.server.to(socket.id).emit('createdRoom', nr);
+    await this.getRoomUsers(socket, room.id);
   }
 
   @SubscribeMessage('joinRoom')

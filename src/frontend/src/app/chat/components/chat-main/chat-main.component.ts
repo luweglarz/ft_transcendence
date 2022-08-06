@@ -13,6 +13,7 @@ import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.co
 })
 export class ChatMainComponent implements OnInit, OnDestroy {
   rooms: Observable<Room[]> = this.chatService.getRooms();
+  createdRoom: Promise<Room> = this.chatService.getCreatedRoomFirst();
   selectedRoom: Room = {};
 
   constructor(private chatService: ChatService, public dialog: MatDialog) {}
@@ -38,10 +39,16 @@ export class ChatMainComponent implements OnInit, OnDestroy {
       if (result !== undefined) {
         if (result !== 'no') {
           console.log('result'); // selectedroom must become the newly created room
-          this.chatService.getCreatedRoom().subscribe((result) => {
-            console.log('result');
-            this.selectedRoom = result;
+          this.chatService.getCreatedRoom().subscribe((resultRoom) => {
+            console.log('Roomresult');
+            this.selectedRoom = resultRoom;
           });
+          if (this.selectedRoom.id === undefined) {
+            this.createdRoom.then((resultRoom) => {
+              console.log('Roomresult');
+              this.selectedRoom = resultRoom;
+            });
+          }
           console.log(this.selectedRoom);
         }
       }

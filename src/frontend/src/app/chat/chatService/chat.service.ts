@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 //import { Socket } from 'ngx-socket-io';
-import { AuthSocket } from 'src/app/chat/class/auth-socket';
+import { ChatSocket } from 'src/app/chat/class/auth-socket';
 import { Room } from 'src/app/chat/interface/room';
 import { Observable } from 'rxjs';
 import { Message } from 'src/app/chat/interface/message';
@@ -10,8 +10,8 @@ import { RoomUser } from 'src/app/chat/interface/roomUser';
   providedIn: 'root',
 })
 export class ChatService {
-  constructor(private socket: AuthSocket) {
-    this.socket.on('testfgh', () => console.log('testfgh reçu'));
+  constructor(private socket: ChatSocket) {
+    this.socket.connect();
   }
 
   getRooms(): Observable<Room[]> {
@@ -28,6 +28,10 @@ export class ChatService {
 
   getCreatedRoom(): Observable<Room> {
     return this.socket.fromEvent<Room>('createdRoom');
+  }
+
+  getCreatedRoomFirst(): Promise<Room> {
+    return this.socket.fromOneTimeEvent<Room>('createdRoom');
   }
 
   openChat() {
