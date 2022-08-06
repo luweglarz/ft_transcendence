@@ -2,7 +2,6 @@ import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { DbErrorCode } from 'src/db/errors';
 import { DbService } from 'src/db/db.service';
-import { JwtPayload } from '../jwt/interfaces';
 import { Prisma, User } from '@prisma/client';
 import { JwtAuthService } from '../jwt/jwt-auth.service';
 
@@ -19,7 +18,7 @@ export class AuthUtilsService {
     this.logger.log(`User '${user.username}' successfully signed in!`);
     return {
       message: `${user.username} successfully signed in!`,
-      jwt: await this.jwt.signToken(<JwtPayload>{
+      jwt: await this.jwt.signAccessToken({
         sub: user.id,
         username: user.username,
       }),
