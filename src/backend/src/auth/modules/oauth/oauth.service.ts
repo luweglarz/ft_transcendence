@@ -5,7 +5,6 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { validate } from 'class-validator';
 import { lastValueFrom } from 'rxjs';
 import { DbService } from 'src/db/db.service';
@@ -19,7 +18,6 @@ export class OauthService {
   private readonly logger = new Logger(OauthService.name);
   constructor(
     private db: DbService,
-    private jwt: JwtService,
     private jwtAuth: JwtAuthService,
     private readonly httpService: HttpService,
     private authUtils: AuthUtilsService,
@@ -35,15 +33,6 @@ export class OauthService {
     return this.authUtils.signInSuccess(user);
   }
 
-  async oauthSignUpTempToken(user: OAuthUserDto) {
-    return {
-      jwt: await this.jwtAuth.signToken(<OAuthJwtPayload>{
-        state: 'incomplete',
-        oAuthUser: user,
-      }),
-    };
-  }
-
   async oauthFindUser(apiUser: OAuthUserDto) {
     const authInfo = await this.db.auth.findUnique({
       where: { email: apiUser.email },
@@ -54,13 +43,9 @@ export class OauthService {
   }
 
   async oauthCreateUser(dto: OAuthSignUpDto) {
-    if (
-      !(await this.jwt.verifyAsync(dto.jwt, {
-        secret: process.env['JWT_SECRET'],
-      }))
-    )
+    if (!(await this.jwtAuth.verifyTempToken(dto.jwt)))
       throw new ForbiddenException('Invalid temp jwt token');
-    const payload = <OAuthJwtPayload>this.jwt.decode(dto.jwt);
+    const payload = this.jwtAuth.decode<OAuthJwtPayload>(dto.jwt);
     const user = await this.authUtils.createUser({
       username: dto.username,
       auth: { create: { email: payload.oAuthUser.email, authType: 'OAUTH42' } },

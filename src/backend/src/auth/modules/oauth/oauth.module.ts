@@ -6,11 +6,10 @@ import { DbModule } from 'src/db/db.module';
 import { HttpModule } from '@nestjs/axios';
 import { JwtAuthModule } from '../jwt/jwt-auth.module';
 import { OAuth2Strategy } from './strategy';
-import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   providers: [OauthService, OAuth2Strategy],
   controllers: [OauthController],
-  imports: [AuthUtilsModule, DbModule, HttpModule, JwtAuthModule, JwtModule],
+  imports: [AuthUtilsModule, DbModule, HttpModule, JwtAuthModule],
 })
 export class OauthModule {}
