@@ -1,19 +1,18 @@
-import { HttpModule } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DbService } from 'src/db/db.service';
-import { AuthService } from './auth.service';
+import { JwtAuthService } from '../jwt/jwt-auth.service';
+import { AuthUtilsService } from './auth-utils.service';
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('AuthUtilsService', () => {
+  let service: AuthUtilsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService, DbService, JwtService],
-      imports: [HttpModule],
+      providers: [AuthUtilsService, DbService, JwtAuthService, JwtService],
     }).compile();
 
-    service = module.get<AuthService>(AuthService);
+    service = module.get<AuthUtilsService>(AuthUtilsService);
   });
 
   it('should be defined', () => {

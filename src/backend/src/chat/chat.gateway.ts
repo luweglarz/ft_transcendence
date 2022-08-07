@@ -9,11 +9,11 @@ import { Socket, Server } from 'socket.io';
 import { RoomUserService } from './room-user/room-user.service';
 import { RoomService } from './room/room.service';
 import { MessageService } from './message/message.service';
-import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
 import { Room } from '@prisma/client';
 import { Logger } from '@nestjs/common';
 import * as argon from 'argon2';
+import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 
 @WebSocketGateway({ cors: true, path: '/chat' })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -25,17 +25,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private roomService: RoomService,
     private roomUserService: RoomUserService,
-    private messageService: MessageService,
-    private jwtService: JwtService,
+    private messageService: MessageService, //private connectedUsers:   {[userId: number]: Socket}
+    private jwt: JwtAuthService,
     private prisma: DbService,
   ) {}
 
   async handleConnection(socket: Socket) {
     console.log('client connected');
     try {
-      const clearToken = await this.jwtService.verifyAsync(
+      const clearToken = await this.jwt.verifyAccessToken(
         socket.handshake.auth.token,
-        { secret: process.env['JWT_SECRET'] },
       );
       this.logger.debug('why tho', clearToken);
       if (!clearToken) return;
