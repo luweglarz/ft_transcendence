@@ -1,14 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, StrategyOptions, VerifyCallback } from 'passport-oauth2';
-import { AuthService } from '../auth.service';
+import { OauthService } from '../oauth.service';
 
 @Injectable()
 export class OAuth2Strategy extends PassportStrategy(Strategy, 'oauth2') {
   private readonly logger = new Logger(OAuth2Strategy.name);
 
   // @doc http://www.passportjs.org/packages/passport-oauth2/
-  constructor(private readonly authService: AuthService) {
+  constructor(private readonly authService: OauthService) {
     super(<StrategyOptions>{
       authorizationURL: 'https://api.intra.42.fr/oauth/authorize',
       tokenURL: 'https://api.intra.42.fr/oauth/token',

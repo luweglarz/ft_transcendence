@@ -7,7 +7,6 @@ import { SignOutComponent } from './signout/signout.component';
 import { RouterModule } from '@angular/router';
 import { InfoComponent } from './info';
 import { AvatarModule } from '../avatar';
-import { JwtModule } from './jwt';
 import { SignupModule } from './signup/signup.module';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { SignupModule } from './signup/signup.module';
     ReactiveFormsModule,
     RouterModule,
     AvatarModule,
-    JwtModule,
     SignupModule,
   ],
   exports: [SignInComponent, OauthCallbackComponent],

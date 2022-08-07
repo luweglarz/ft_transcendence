@@ -7,6 +7,7 @@ import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { MatchmakingGatewayService } from './matchmaking-gateway.service';
 import { DbService } from 'src/db/db.service';
 import { GameDbService } from 'src/pong/service/game-db/game-db.service';
+import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 
 describe('MatchmakingGatewayService', () => {
   let service: MatchmakingGatewayService;
@@ -21,6 +22,7 @@ describe('MatchmakingGatewayService', () => {
         GameCoreService,
         DbService,
         GameDbService,
+        JwtAuthService,
       ],
       imports: [JwtModule],
     }).compile();

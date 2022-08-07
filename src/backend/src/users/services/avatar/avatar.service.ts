@@ -4,7 +4,7 @@ import {
   StreamableFile,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { JwtPayload } from 'src/auth/interfaces';
+import { JwtPayload } from 'src/auth/modules/jwt/interfaces';
 import { DbService } from 'src/db/db.service';
 
 @Injectable()
@@ -31,13 +31,9 @@ export class AvatarService {
   }
 
   async hasAvatar(username: string) {
-    const query = await this.db.avatar.aggregate({
-      _count: { userId: true },
+    return await this.db.avatar.count({
       where: { user: { username: username } },
     });
-    const exist = query._count.userId;
-    // console.log(`${username} avatar count: ${exist}`);
-    return exist;
   }
 
   async findAvatar(username: string) {
