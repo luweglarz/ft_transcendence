@@ -6,9 +6,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { User } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
-import { JwtPayload } from 'src/auth/interfaces';
+import { User, JwtGuard } from 'src/auth';
+import { JwtPayload } from 'src/auth/modules/jwt/interfaces';
 import { AvatarService } from '../services/avatar/avatar.service';
 
 @Controller('me')

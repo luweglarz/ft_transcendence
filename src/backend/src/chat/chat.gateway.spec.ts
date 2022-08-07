@@ -1,5 +1,6 @@
-import { JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
+import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { DbService } from 'src/db/db.service';
 import { ChatGateway } from './chat.gateway';
 import { MessageService } from './message/message.service';
@@ -16,9 +17,10 @@ describe('ChatGateway', () => {
         DbService,
         RoomUserService,
         MessageService,
-        JwtService,
+        JwtAuthService,
         RoomService,
       ],
+      imports: [JwtModule],
     }).compile();
 
     gateway = module.get<ChatGateway>(ChatGateway);
