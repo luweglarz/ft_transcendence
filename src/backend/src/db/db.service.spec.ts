@@ -16,25 +16,33 @@ describe('DbClientService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should create a user', async () => {
+  it('should create and delete a user', async () => {
+    // Create
     await service.user.create({
       data: {
         username: 'Monkey D. Luffy',
-        email: 'luffy@mugirawa.jp',
+        auth: { create: { email: 'luffy@mugirawa.jp' } },
       },
     });
-    let user = await service.user.findFirst({
+
+    // Find
+    const user = await service.user.findFirst({
       where: { username: 'Monkey D. Luffy' },
+      include: { auth: true },
     });
-    expect(user.email).toBe('luffy@mugirawa.jp');
+    expect(user.auth.email).toBe('luffy@mugirawa.jp');
+
+    // Delete
     await service.user.delete({
       where: {
         username: 'Monkey D. Luffy',
       },
     });
-    user = await service.user.findFirst({
+
+    // Not found
+    const deletedUser = await service.user.findFirst({
       where: { username: 'Monkey D. Luffy' },
     });
-    expect(user).toBe(null);
+    expect(deletedUser).toBe(null);
   });
 });

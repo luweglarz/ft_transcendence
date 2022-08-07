@@ -4,11 +4,11 @@ import { ChatController } from './chat.controller';
 import { RoomService } from './room/room.service';
 import { RoomUserService } from './room-user/room-user.service';
 import { MessageService } from './message/message.service';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtAuthModule } from 'src/auth/modules/jwt/jwt-auth.module';
 
 @Module({
   providers: [ChatGateway, RoomService, RoomUserService, MessageService],
   controllers: [ChatController],
-  imports: [JwtModule],
+  imports: [JwtAuthModule],
 })
 export class ChatModule {}
