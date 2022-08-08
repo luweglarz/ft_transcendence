@@ -70,6 +70,7 @@ export class GameSocket extends Socket {
         score: any,
         playerHeights?: any,
         playerWidth?: any,
+        playersCd?: any,
       ) => {
         game.players[0].x = player1Pos.x;
         game.players[0].y = player1Pos.y;
@@ -84,6 +85,10 @@ export class GameSocket extends Socket {
           game.players[1].height = playerHeights.player2Height;
           game.players[0].width = playerWidth.player1Width;
           game.players[1].width = playerWidth.player2Width;
+        }
+        if (playersCd != undefined) {
+          game.players[0].boostCd = playersCd.player1Cd;
+          game.players[1].boostCd = playersCd.player2Cd;
         }
       },
     );

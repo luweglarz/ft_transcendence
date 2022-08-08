@@ -65,16 +65,21 @@ export class GameComponent implements OnInit {
     this.gameService.drawPaddle(this.gameContext, this.game.players[1]);
     this.gameService.drawBall(this.gameContext, this.game.ball);
     this.gameService.drawScore(this.gameContext, this.game);
+    this.gameService.drawBoost(
+      this.playerOneInfo,
+      this.playerTwoInfo,
+      this.game.players,
+    );
     requestAnimationFrame(this.gameLoop);
   };
 
   @HostListener('document:keydown', ['$event'])
-  movement(event: KeyboardEvent) {
+  keyEvent(event: KeyboardEvent) {
     this.gameService.keyPressed = event.key;
   }
 
   @HostListener('document:keyup', ['$event'])
-  movementUp(event: KeyboardEvent) {
+  stopKeyLoop(event: KeyboardEvent) {
     if (event.key == this.gameService.keyPressed)
       this.gameService.keyPressed = 'stop';
   }
