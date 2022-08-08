@@ -34,7 +34,7 @@ export class NormalGame implements GameMode {
 
   emitGameUpdate(server: Server, gameRoom: Room, ball: Ball) {
     server.to(gameRoom.uuid).emit(
-      'gameUpdate',
+      'normalGameUpdate',
       { x: gameRoom.players[0].x, y: gameRoom.players[0].y },
       { x: gameRoom.players[1].x, y: gameRoom.players[1].y },
       { x: ball.x, y: ball.y },

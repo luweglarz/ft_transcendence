@@ -1,8 +1,8 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { Ball } from '../class/ball';
-import { Game } from '../class/game';
 import { GameSocket } from '../class/game-socket';
 import { Player } from '../class/player';
+import { GameMode } from '../interface/game-mode';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class GameService {
     this.keyPressed = '';
   }
 
-  public isInGame;
+  public isInGame: boolean;
   public keyPressed: string;
   public keyEventsInterval: any;
 
@@ -41,12 +41,12 @@ export class GameService {
     );
   }
 
-  fillBackground(gameContext: any, gameInfos: Game) {
+  fillBackground(gameContext: any, gameInfos: GameMode) {
     gameContext.fillStyle = gameInfos.backgroundColor;
     gameContext.fillRect(0, 0, gameInfos.canvaWidth, gameInfos.canvaHeight);
   }
 
-  drawMiddleline(gameContext: any, gameInfos: Game) {
+  drawMiddleline(gameContext: any, gameInfos: GameMode) {
     gameContext.lineWidth = 5;
     gameContext.beginPath();
     gameContext.moveTo(Math.round(gameInfos.canvaWidth / 2), 0);
@@ -71,7 +71,7 @@ export class GameService {
     gameContext.stroke();
   }
 
-  drawScore(gameContext: any, gameInfos: Game) {
+  drawScore(gameContext: any, gameInfos: GameMode) {
     gameContext.beginPath();
     gameContext.font = '50px impact';
     gameContext.fillText(

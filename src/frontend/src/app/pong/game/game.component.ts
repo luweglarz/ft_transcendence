@@ -6,7 +6,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CollapseService } from 'src/app/home-page/collapse.service';
-import { Game } from '../class/game';
+import { GameMode } from '../interface/game-mode';
+import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { GameService } from './game.service';
 
 @Component({
@@ -18,13 +19,17 @@ export class GameComponent implements OnInit {
   constructor(
     public collapseService: CollapseService,
     private gameService: GameService,
-    public game: Game,
-  ) {}
+    private matchmakingService: MatchmakingService,
+  ) {
+    this.game = matchmakingService.game;
+  }
 
   ngOnInit() {
     this.gameService.sendKeyEvents();
     this.gameService.socket.onGameFinished(this.gameService);
   }
+
+  private game: GameMode;
 
   /** Get the #gameCanvas reference with ViewChild decorator. */
   @ViewChild('gameCanvas')
@@ -53,7 +58,7 @@ export class GameComponent implements OnInit {
     this.gameCanvas.nativeElement.width = this.game.canvaWidth;
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;
 
-    this.gameService.socket.onGameUpdate(this.game);
+    this.game.onGameUpdate(this.gameService.socket);
     requestAnimationFrame(this.gameLoop);
   }
 
