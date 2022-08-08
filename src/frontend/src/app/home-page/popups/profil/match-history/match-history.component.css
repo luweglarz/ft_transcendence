@@ -28,20 +28,22 @@
   height: 100%;
   width: 100%;
 
-  background-color: yellow;
 }
 
 .history-items {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 100%;
-  height: 250px;
+  width: 90%;
+  height: 45%;
 
   overflow-y:scroll;
   overflow-x: hidden;
   scrollbar-color: #44526F #1a202c;
   scrollbar-width: thin;
+
+  margin-right: 2%;
+  border-radius: 1em;
 }
 
 .history-item {
