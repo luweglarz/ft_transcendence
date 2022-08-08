@@ -6,24 +6,20 @@
       <img avatar class="profil-header-avatar" height="128px" width="128px">
       <p> {{ profilInfoService.username }} </p>
     </div>
-
     <!-- Rank & ELo -->
     <div class="profil-header-box">
       <h3>Ranking :</h3>
       <!-- Rank -->
       <div class="profil-header-line">
         <img src="assets/images/rank.png" height="32px" width="32px">
-        <!-- Need to retrieve rank from ladderboard -->
         <p> 0 </p>
       </div>
-      <!-- Elo score -->
+      <!-- Score -->
       <div class="profil-header-line">
         <img src="assets/images/elo.png" height="32px" width="32px">
         <p> {{ profilInfoService.score }} </p>
       </div>
     </div>
-
-    <!-- Win/Loss Streaks -->
     <div class="profil-header-box">
       <h3>Largest streak :</h3>
       <!-- Largest win streak -->
@@ -39,16 +35,13 @@
     </div>
   </div>
 
-    <!-- Win/Loss counter -->
-  <div class="profil-counter">
-    <div class="profil-win-counter">
-      <p class="profil-win-logo">W</p>
-      <p> {{ profilInfoService.nbWins }} / {{ profilInfoService.nbLoses }} </p>
-      <p class="profil-loss-logo">L</p>
-    </div>
+  <!-- Win/Loss counter -->
+  <div class="profil-win-counter">
+    <p class="profil-win-logo">W</p>
+    <p> {{ profilInfoService.nbWins }} / {{ profilInfoService.nbLoses }} </p>
+    <p class="profil-loss-logo">L</p>
   </div>
 
-  <div class="profil-history">
-    <app-match-history></app-match-history>
-  </div>
+  <!-- Match History -->
+  <app-match-history></app-match-history>
 </div>
