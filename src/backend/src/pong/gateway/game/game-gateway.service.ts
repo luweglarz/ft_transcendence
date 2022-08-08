@@ -2,6 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConnectedSocket } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
+import { CustomGame } from 'src/pong/class/game-mode/custom-game/custom-game';
+import { NormalGame } from 'src/pong/class/game-mode/normal-game/normal-game';
+import { GameMode } from 'src/pong/interface/game-mode.interface';
 import { Player } from '../../class/player/player';
 import { Room } from '../../class/room/room';
 
@@ -65,10 +68,17 @@ export class GameGatewayService {
     else server.to(roomUuid).emit('gameFinished', { username: winner });
   }
 
+  private getGameMode(game: GameMode): string {
+    if (game instanceof NormalGame) return 'normal';
+    else if (game instanceof CustomGame) return 'custom';
+    return 'ranked';
+  }
+
   emitMatchFound(server: Server, newRoom: Room) {
     server.to(newRoom.uuid).emit(
       'matchFound',
       'A match has been found',
+      this.getGameMode(newRoom.gameMode),
       {
         canvaHeight: newRoom.gameMode.canvaHeight,
         canvaWidth: newRoom.gameMode.canvaWidth,

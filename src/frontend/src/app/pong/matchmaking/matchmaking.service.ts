@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { NotificationService } from 'src/app/home-page/notification.service';
 import { GameSocket } from '../class/game-socket';
 import { StopWatch } from '../class/stop-watch';
-import { GameComponent } from '../game/game.component';
 import { GameService } from '../game/game.service';
+import { GameMode } from '../interface/game-mode';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,6 @@ import { GameService } from '../game/game.service';
 export class MatchmakingService {
   constructor(
     private socket: GameSocket,
-    private gameComponent: GameComponent,
     private gameService: GameService,
     public notificationService: NotificationService,
   ) {
@@ -22,6 +21,7 @@ export class MatchmakingService {
   }
 
   private _stopWatch: StopWatch;
+  public game!: GameMode;
 
   get stopWatch(): StopWatch {
     return this._stopWatch;
@@ -33,8 +33,8 @@ export class MatchmakingService {
     this.socket.onWaitingForAMatch(this.stopWatch);
     this.socket.onMatchFound(
       this.notificationService,
-      this.gameComponent,
       this.gameService,
+      this,
       this._stopWatch,
     );
     this.socket.onMatchmakingLeft();
@@ -46,8 +46,8 @@ export class MatchmakingService {
     this.socket.onWaitingForAMatch(this.stopWatch);
     this.socket.onMatchFound(
       this.notificationService,
-      this.gameComponent,
       this.gameService,
+      this,
       this._stopWatch,
     );
     this.socket.onMatchmakingLeft();
