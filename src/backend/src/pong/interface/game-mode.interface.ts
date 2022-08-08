@@ -15,7 +15,7 @@ export interface GameMode {
     rooms: Room[],
     server: Server,
     gameCoreService: GameCoreService,
-  ): any;
+  ): void;
   emitGameUpdate(server: Server, gameRoom: Room, ball: Ball): void;
-  movementHandler(eventKey: string, player: Player);
+  movementHandler(eventKey: string, player: Player): void;
 }

@@ -59,24 +59,27 @@ export class CustomGame implements GameMode {
     );
   }
 
+  paddleSpeedBoost(player: Player) {
+    player.boostCd = this.boostCd;
+    player.speed *= 1.5;
+    setTimeout(() => {
+      player.speed = player.initialSpeed;
+      const cdInterval = setInterval(() => {
+        player.boostCd -= 1;
+        if (player.boostCd <= 0) {
+          player.boostCd = 0;
+          clearInterval(cdInterval);
+        }
+      }, 1);
+    }, this.boostDuration);
+  }
+
   movementHandler(eventKey: string, player: Player) {
-    console.log('playerspeed ' + player.username + ': ' + player.speed);
     if (eventKey == 'ArrowDown') player.velocity = 1;
     else if (eventKey == 'ArrowUp') player.velocity = -1;
-    else if (eventKey == ' ' && player.boostCd === 0) {
-      player.boostCd = this.boostCd;
-      player.speed *= 1.5;
-      setTimeout(() => {
-        player.speed = player.initialSpeed;
-        const cdInterval = setInterval(() => {
-          player.boostCd -= 1;
-          if (player.boostCd <= 0) {
-            player.boostCd = 0;
-            clearInterval(cdInterval);
-          }
-        }, 1);
-      }, this.boostDuration);
-    } else if (eventKey == 'stop') player.velocity = 0;
+    else if (eventKey == ' ' && player.boostCd === 0)
+      this.paddleSpeedBoost(player);
+    else if (eventKey == 'stop') player.velocity = 0;
   }
 
   private reduceScorerSize(scorer: Player) {
