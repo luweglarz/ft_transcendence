@@ -2,6 +2,7 @@ import { Room } from '../class/room/room';
 import { Server } from 'socket.io';
 import { Ball } from '../class/ball/ball';
 import { GameCoreService } from '../service/game-core/game-core.service';
+import { Player } from '../class/player/player';
 
 export interface GameMode {
   get canvaWidth(): number;
@@ -16,4 +17,5 @@ export interface GameMode {
     gameCoreService: GameCoreService,
   ): any;
   emitGameUpdate(server: Server, gameRoom: Room, ball: Ball): void;
+  movementHandler(eventKey: string, player: Player);
 }

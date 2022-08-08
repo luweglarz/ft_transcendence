@@ -12,6 +12,7 @@ export class Player {
   ) {
     this._width = Math.round((gameMode.canvaWidth * 2) / 100);
     this._height = Math.round((gameMode.canvaHeight * 20) / 100);
+    this._initialSpped = _speed;
 
     if (playerNb === 1) this._x = (gameMode.canvaWidth * 2) / 100;
     else if (playerNb === 2)
@@ -40,6 +41,9 @@ export class Player {
   private _borderCollisionUp: number;
   private _borderCollisionDown: number;
   private _username: string;
+
+  private _initialSpped: number;
+  private _boostCd = 0;
 
   get x(): number {
     return this._x;
@@ -77,11 +81,15 @@ export class Player {
     return this._speed;
   }
 
+  set speed(newSpeed: number) {
+    this._speed = newSpeed;
+  }
+
   get height(): number {
     return this._height;
   }
 
-  set height(newHeight) {
+  set height(newHeight: number) {
     this._height = newHeight;
   }
 
@@ -89,7 +97,7 @@ export class Player {
     return this._width;
   }
 
-  set width(newWidth) {
+  set width(newWidth: number) {
     this._width = newWidth;
   }
 
@@ -111,6 +119,18 @@ export class Player {
 
   set borderCollisionDown(newBorderCollisionDown: number) {
     this._borderCollisionDown = newBorderCollisionDown;
+  }
+
+  get initialSpeed(): number {
+    return this._initialSpped;
+  }
+
+  get boostCd(): number {
+    return this._boostCd;
+  }
+
+  set boostCd(newCd: number) {
+    this._boostCd = newCd;
   }
 
   checkBorderCollision(): boolean {

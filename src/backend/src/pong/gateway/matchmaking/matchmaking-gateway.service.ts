@@ -9,8 +9,8 @@ import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { GameGatewayService } from '../game/game-gateway.service';
 import { JwtService } from '@nestjs/jwt';
 import { GameMode } from 'src/pong/interface/game-mode.interface';
-import { NormalGame } from 'src/pong/class/normal-game/normal-game';
-import { CustomGame } from 'src/pong/class/custom-game/custom-game';
+import { NormalGame } from 'src/pong/class/game-mode/normal-game/normal-game';
+import { CustomGame } from 'src/pong/class/game-mode/custom-game/custom-game';
 
 @Injectable()
 export class MatchmakingGatewayService {

@@ -1,5 +1,5 @@
 import { GameMode } from 'src/pong/interface/game-mode.interface';
-import { NormalGame } from '../normal-game/normal-game';
+import { NormalGame } from '../game-mode/normal-game/normal-game';
 import { Ball } from './ball';
 
 describe('Ball', () => {

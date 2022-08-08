@@ -2,8 +2,8 @@ import { Room } from 'src/pong/class/room/room';
 import { Server } from 'socket.io';
 import { GameMode } from 'src/pong/interface/game-mode.interface';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
-import { Player } from '../player/player';
-import { Ball } from '../ball/ball';
+import { Player } from '../../player/player';
+import { Ball } from '../../ball/ball';
 
 export class NormalGame implements GameMode {
   constructor(
@@ -43,6 +43,12 @@ export class NormalGame implements GameMode {
         playerTwoGoals: gameRoom.players[1].goals,
       },
     );
+  }
+
+  movementHandler(eventKey: string, player: Player) {
+    if (eventKey == 'ArrowDown') player.velocity = 1;
+    else if (eventKey == 'ArrowUp') player.velocity = -1;
+    else if (eventKey == 'stop') player.velocity = 0;
   }
 
   gameLoop(
