@@ -17,7 +17,7 @@
   font-size: 24px;
   text-align: center;
 
-  background-color: green;
+  margin-block-end: 0%;
 }
 
 /* History */
@@ -27,25 +27,21 @@
   align-items: center;
   height: max-content;
   width: 100%;
-
-  padding: 0%;
-  margin: 0%;
-  background-color: yellow;
 }
 
 .history-items {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   width: 90%;
-  height: fit-content;
-  max-height: 100%;
-  /* overflow-y:scroll;
+  height: 250px;
+
+  overflow-y:scroll;
   overflow-x: hidden;
   scrollbar-color: #44526F #1a202c;
-  scrollbar-width: thin; */
+  scrollbar-width: thin;
 
-  background-color: green;
+  border-radius: 1em;
 }
 
 .history-item {
@@ -53,7 +49,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 95%;
+  width: 98%;
   height: 64px;
   border-radius: 1em;
   margin: 2px;
