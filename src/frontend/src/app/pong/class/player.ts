@@ -6,6 +6,7 @@ export class Player {
   private _goals = 0;
   private _color = '';
   private _username = '';
+  private _boostCd = 0;
 
   get height(): number {
     return this._height;
@@ -61,5 +62,13 @@ export class Player {
 
   set username(newUsername: string) {
     this._username = newUsername;
+  }
+
+  get boostCd(): number {
+    return this._boostCd;
+  }
+
+  set boostCd(newCd: number) {
+    this._boostCd = newCd;
   }
 }

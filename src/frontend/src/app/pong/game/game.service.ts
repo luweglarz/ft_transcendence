@@ -96,4 +96,17 @@ export class GameService {
     playerOneInfo.nativeElement.innerHTML += players[0].username;
     playerTwoInfo.nativeElement.innerHTML += players[1].username;
   }
+
+  drawBoost(
+    playerOneInfo: ElementRef,
+    playerTwoInfo: ElementRef,
+    players: Player[],
+  ) {
+    playerOneInfo.nativeElement.innerHTML = '';
+    playerTwoInfo.nativeElement.innerHTML = '';
+    playerOneInfo.nativeElement.innerHTML += players[0].username;
+    playerTwoInfo.nativeElement.innerHTML += players[1].username;
+    playerOneInfo.nativeElement.innerHTML += players[0].boostCd;
+    playerTwoInfo.nativeElement.innerHTML += players[1].boostCd;
+  }
 }
