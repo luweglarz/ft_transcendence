@@ -40,7 +40,7 @@ export class AvatarService {
               ? `${environment.backend}/users/${username}/avatar`
               : this.default_src;
           }),
-          catchError((_) => of(this.default_src)),
+          catchError(() => of(this.default_src)),
         );
     } else return of(this.default_src);
   }
@@ -79,7 +79,7 @@ export class AvatarService {
       this.http
         .post(`${environment.backend}/me/avatar`, formData)
         // setTimeout: let time to the db to process the upload (especially for large image)
-        .subscribe((_) => setTimeout(() => this.uploaded.next(true), 1000));
+        .subscribe(() => setTimeout(() => this.uploaded.next(true), 1000));
     }
   }
 

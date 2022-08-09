@@ -8,6 +8,12 @@ import { GameService } from '../game/game.service';
   providedIn: 'root',
 })
 export class MatchmakingService {
+  //Timer
+  msInQueue = 0;
+  secInQueue = 0;
+  running = false;
+  timer = 0;
+
   constructor(
     private socket: GameSocket,
     private gameComponent: GameComponent,
@@ -22,11 +28,31 @@ export class MatchmakingService {
     });
   }
 
+  //Timer
+  //startTimer(queueBool: boolean) {
+  startTimer() {
+    //if (queueBool === true) {
+    const startTime = Date.now() - (this.msInQueue || 0);
+    this.timer = setInterval(() => {
+      this.msInQueue = Date.now() - startTime;
+      if (this.msInQueue / 1000 >= this.secInQueue) this.secInQueue++;
+    });
+    //} else clearInterval(this.timer);
+  }
+
+  clearTimer() {
+    this.msInQueue = 0;
+    this.secInQueue = 0;
+    clearInterval(this.timer);
+  }
+
+  //Matchmaking
   requestJoinNormalMatchMaking() {
     this.socket.connect();
     this.socket.emit('joinNormalMatchmaking', 'normal');
     this.socket.once('waitingForAMatch', (msg: any) => {
       console.log(msg);
+      this.startTimer();
     });
     this.socket.once(
       'matchFound',
@@ -55,5 +81,6 @@ export class MatchmakingService {
 
   requestLeaveMatchMaking() {
     this.socket.emit('leaveMatchmaking');
+    this.clearTimer();
   }
 }
