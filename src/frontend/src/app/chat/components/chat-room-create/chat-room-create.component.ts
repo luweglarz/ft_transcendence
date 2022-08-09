@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Room } from 'src/app/chat/interface/room';
 import { RoomType } from 'src/app/chat/interface/room';
@@ -20,7 +21,7 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
 
   //ngOnInit(): void {}
 
-  create() {
+  /*create() {
     console.log('call create');
     this.dialogRef.close();
     console.log(this.data);
@@ -31,9 +32,17 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
     ) {
       this.chatService.createRoom(this.data);
     }
+  }*/
+
+  onSend(userForm: NgForm) {
+    if (userForm.status === 'INVALID') return;
+    const data = userForm.value;
+    console.log(data);
+    this.dialogRef.close('yes');
+    this.chatService.createRoom(this.data);
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close('no');
   }
 }

@@ -66,6 +66,7 @@ model RoomUser {
   isBanned   Boolean   @default(false)
   isMuted    Boolean   @default(false)
   timeOut    DateTime?
+  socketId   String
 }
 
 model Message {

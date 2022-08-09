@@ -18,7 +18,7 @@
     </div>
 
     <!--Add Mesaage-->
-    <div style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
+    <div *ngIf="(roomUsers | async)?.length; else password" style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
         <mat-form-field style="width: 350px;">
             <input matInput [formControl]="chatMessage" type="text">
         </mat-form-field>
@@ -28,4 +28,12 @@
             </span>
         </button>
     </div>
+    <ng-template #password>
+        <input matInput type="password" [formControl]="pass" required>
+        <button mat-button [disabled]="!pass.valid" (click)="joinProtectedRoom()">
+            <span style="display: flex; flex-direction: row; align-items: center;">
+                <mat-icon>join</mat-icon>
+            </span>
+        </button>
+    </ng-template>
 </div>

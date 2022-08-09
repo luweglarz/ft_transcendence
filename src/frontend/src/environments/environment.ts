@@ -7,6 +7,7 @@ export const environment = {
   backend: 'http://localhost:3000',
   frontend: 'http://localhost:4200',
   socketGamePath: '/pong',
+  socketChatPath: '/chat',
 };
 
 /*
