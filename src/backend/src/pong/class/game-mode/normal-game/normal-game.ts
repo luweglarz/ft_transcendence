@@ -11,7 +11,7 @@ export class NormalGame implements GameMode {
     private _canvaWidth: number,
     private _backgroundColor: string,
   ) {
-    this._ball = new Ball(this, 2, 'white', 6);
+    this._ball = new Ball(this, 4, 'white', 6);
   }
 
   private _ball: Ball;
@@ -88,7 +88,7 @@ export class NormalGame implements GameMode {
         );
       }
       this.emitGameUpdate(server, gameRoom, this.ball);
-    }, 5);
+    }, 15);
     return interval;
   }
 }
