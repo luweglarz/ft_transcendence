@@ -20,7 +20,7 @@
     <!--Add Mesaage-->
     <div *ngIf="(roomUsers | async)?.length; else password" style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
         <mat-form-field style="width: 350px;">
-            <input matInput [formControl]="chatMessage" type="text">
+            <input matInput [formControl]="chatMessage" type="text" (keyup.enter)="sendMessage()">
         </mat-form-field>
         <button mat-button [disabled]="!chatMessage.valid && chatRoom" (click)="sendMessage()">
             <span style="display: flex; flex-direction: row; align-items: center;">
