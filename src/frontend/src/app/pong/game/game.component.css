@@ -18,6 +18,6 @@
  }
 
  #players-info{
-    width: auto;
-    height: auto;
+    display: flex;
+    justify-content: space-between;
  }
