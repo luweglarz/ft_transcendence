@@ -1,7 +1,6 @@
 import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { Socket } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
-import { Ball } from '../../class/ball/ball';
 import { Player } from '../../class/player/player';
 import { Room } from '../../class/room/room';
 import { GameGateway } from '../game/game.gateway';
@@ -95,25 +94,24 @@ export class MatchmakingGatewayService {
   private createGame(clientPool: Socket[], gameType: string) {
     let gameMode: GameMode;
     let players: Player[];
-    let ball: Ball;
 
     if (gameType == 'normal') {
       gameMode = new NormalGame(525, 950, 'black');
       players = [
-        new Player(gameMode, clientPool.pop(), 1, 3, 'white'),
-        new Player(gameMode, clientPool.pop(), 2, 3, 'white'),
+        new Player(gameMode, clientPool.pop(), 1, 7, 'white'),
+        new Player(gameMode, clientPool.pop(), 2, 7, 'white'),
       ];
     } else if (gameType == 'custom') {
       gameMode = new CustomGame(525, 950, 'black');
       players = [
-        new Player(gameMode, clientPool.pop(), 1, 3, 'white'),
-        new Player(gameMode, clientPool.pop(), 2, 3, 'white'),
+        new Player(gameMode, clientPool.pop(), 1, 6, 'white'),
+        new Player(gameMode, clientPool.pop(), 2, 6, 'white'),
       ];
     }
-    this.generateGameRoom(gameMode, ball, players);
+    this.generateGameRoom(gameMode, players);
   }
 
-  private generateGameRoom(gameMode: GameMode, ball: Ball, players: Player[]) {
+  private generateGameRoom(gameMode: GameMode, players: Player[]) {
     this.logger.log('Enough player to generate a game room');
     const newRoom: Room = new Room(uuidv4(), gameMode, players);
 
