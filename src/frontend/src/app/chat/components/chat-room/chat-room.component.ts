@@ -27,6 +27,9 @@ export class ChatRoomComponent implements OnChanges {
   chatMessage: UntypedFormControl = new UntypedFormControl(null, [
     Validators.required,
   ]);
+  pass: UntypedFormControl = new UntypedFormControl(null, [
+    Validators.required,
+  ]);
   messages: Observable<Message[]> = this.chatService.getMsgs();
   roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
 
@@ -35,13 +38,29 @@ export class ChatRoomComponent implements OnChanges {
   //ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['chatRoom'].previousValue)
+    if (
+      changes['chatRoom'].previousValue !== undefined &&
+      changes['chatRoom'].previousValue.name !== undefined &&
+      changes['chatRoom'].previousValue.id !==
+        changes['chatRoom'].currentValue.id
+    ) {
+      console.log('previous room', changes['chatRoom'].previousValue);
+      console.log('current room', changes['chatRoom'].currentValue);
       this.chatService.leaveRoom(changes['chatRoom'].previousValue);
+    }
     if (this.chatRoom.id) {
       console.log(`Join room: ${this.chatRoom.name}`);
-      this.chatService.joinRoom(this.chatRoom);
+      //if (this.chatRoom.roomType !== 'PROTECTED')
+      this.chatService.joinRoom(this.chatRoom); //trigger join room on sed password for protected
     }
+    this.roomUsers = this.chatService.getRoomUsers();
     this.messages = this.chatService.getMsgs();
+  }
+
+  joinProtectedRoom() {
+    this.chatRoom.password = this.pass.value;
+    this.chatService.joinRoom(this.chatRoom);
+    this.pass.reset();
   }
 
   sendMessage() {
