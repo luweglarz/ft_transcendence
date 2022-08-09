@@ -10,11 +10,16 @@ import { JwtService } from 'src/app/auth/jwt';
   animations: [],
 })
 export class NavbarComponent {
+  username = '';
+
   constructor(
     public jwtService: JwtService,
     public collapseService: CollapseService,
     public popupsService: PopupsService,
-  ) {}
+  ) {
+    const tmp = this.jwtService.getPayload()?.username;
+    if (tmp != undefined) this.username = tmp;
+  }
 
   /* NAVBAR COLLAPSE */
   openSidenav() {
@@ -26,8 +31,8 @@ export class NavbarComponent {
   }
 
   /* PROFIL POP UP */
-  openProfil() {
-    this.popupsService.openProfil();
+  openProfil(username: string) {
+    this.popupsService.openProfil(username);
   }
 
   /* LADDER POP UP */

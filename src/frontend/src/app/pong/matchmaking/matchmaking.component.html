@@ -6,8 +6,8 @@
     <h3 class="matchmaking-card-title" >Original mode</h3>
     <img src="/assets/images/classic.png" alt="">
     <p class="matchmaking-card-desc">The original pong gamemode from 1972.</p>
-    <p *ngIf="!originalQueue">Player(s) in this mode : {{ this.nbPlayersOriginal }}</p>
-    <p *ngIf="originalQueue">Time in queue : {{ this.secInQueue }}s</p>
+    <p *ngIf="!originalQueue">Player(s) in this mode : 0</p>
+    <p *ngIf="originalQueue">Time in queue : {{ matchmakingService.secInQueue }}s</p>
     <button class="matchmaking-btn" *ngIf="!originalQueue" (click)="buttonRequestJoinNormalMatchMaking()">Join queue</button>
     <button class="matchmaking-btn" *ngIf="originalQueue" (click)="buttonRequestLeaveMatchMaking()">Quit queue</button>
   </div>

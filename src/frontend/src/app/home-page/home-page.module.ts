@@ -13,6 +13,7 @@ import { ProfilComponent } from './popups/profil/profil.component';
 import { LadderComponent } from './popups/ladder/ladder.component';
 import { SocialComponent } from './popups/social/social.component';
 import { RouterModule } from '@angular/router';
+import { MatchHistoryComponent } from './popups/profil/match-history/match-history.component';
 import { ChatModule } from '../chat/chat.module';
 import { AvatarModule } from '../avatar';
 
@@ -25,6 +26,7 @@ import { AvatarModule } from '../avatar';
     ProfilComponent,
     LadderComponent,
     SocialComponent,
+    MatchHistoryComponent,
   ],
   providers: [CollapseService, PopupsService, NotificationService, GameService],
   imports: [CommonModule, PongModule, RouterModule, ChatModule, AvatarModule],
