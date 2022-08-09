@@ -66,6 +66,9 @@ export class ChatRoomComponent implements OnChanges {
   sendMessage() {
     //console.log(this.chatRoom.name);
     //console.log(this.chatMessage.value);
+    if (!this.chatMessage.valid) {
+      return ;
+    }
     this.chatService.sendMessage({
       content: this.chatMessage.value,
       room: this.chatRoom,
