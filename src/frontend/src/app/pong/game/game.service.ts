@@ -1,5 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { Ball } from '../class/ball';
+import { CustomGame } from '../class/game-mode/custom-game';
 import { GameSocket } from '../class/game-socket';
 import { Player } from '../class/player';
 import { GameMode } from '../interface/game-mode';
@@ -17,8 +18,15 @@ export class GameService {
   public keyPressed: string;
   public keyEventsInterval: any;
 
+  private boostOneContext: any;
+  private boostTwoContext: any;
+
   get socket(): GameSocket {
     return this._socket;
+  }
+
+  isCustomGame(game: GameMode): boolean {
+    return game instanceof CustomGame ? true : false;
   }
 
   requestLeaveGame() {
@@ -97,16 +105,34 @@ export class GameService {
     playerTwoInfo.nativeElement.innerHTML += players[1].username;
   }
 
-  drawBoost(
-    playerOneInfo: ElementRef,
-    playerTwoInfo: ElementRef,
-    players: Player[],
-  ) {
-    playerOneInfo.nativeElement.innerHTML = '';
-    playerTwoInfo.nativeElement.innerHTML = '';
-    playerOneInfo.nativeElement.innerHTML += players[0].username;
-    playerTwoInfo.nativeElement.innerHTML += players[1].username;
-    playerOneInfo.nativeElement.innerHTML += players[0].boostCd;
-    playerTwoInfo.nativeElement.innerHTML += players[1].boostCd;
+  setBoostContext(boostOne: ElementRef, boostTwo: ElementRef) {
+    this.boostOneContext = boostOne.nativeElement.getContext('2d');
+    this.boostTwoContext = boostTwo.nativeElement.getContext('2d');
+  }
+
+  drawBoost(players: Player[], boostOne: ElementRef, boostTwo: ElementRef) {
+    this.boostOneContext.clearRect(
+      0,
+      0,
+      boostOne.nativeElement.width,
+      boostOne.nativeElement.height,
+    );
+    this.boostTwoContext.clearRect(
+      0,
+      0,
+      boostTwo.nativeElement.width,
+      boostTwo.nativeElement.height,
+    );
+    console.log(
+      'native eleenmt width height : ',
+      boostOne.nativeElement.width + ' , ',
+      boostOne.nativeElement.height,
+    );
+    this.boostOneContext.fillStyle = 'red';
+    this.boostTwoContext.fillStyle = 'red';
+    const boostOneRatio = Math.abs((players[0].boostCd / 5000) * 100 - 100);
+    this.boostOneContext.fillRect(0, 0, (boostOneRatio * 300) / 100, 150);
+    const boostTwoRatio = Math.abs((players[1].boostCd / 5000) * 100 - 100);
+    this.boostTwoContext.fillRect(0, 0, (boostTwoRatio * 300) / 100, 150);
   }
 }

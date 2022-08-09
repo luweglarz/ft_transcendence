@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CollapseService } from 'src/app/home-page/collapse.service';
+import { CustomGame } from '../class/game-mode/custom-game';
 import { GameMode } from '../interface/game-mode';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { GameService } from './game.service';
@@ -19,9 +20,10 @@ export class GameComponent implements OnInit {
   constructor(
     public collapseService: CollapseService,
     private gameService: GameService,
-    private matchmakingService: MatchmakingService,
+    matchmakingService: MatchmakingService,
   ) {
     this.game = matchmakingService.game;
+    console.log('constructor gmae component');
   }
 
   ngOnInit() {
@@ -31,23 +33,23 @@ export class GameComponent implements OnInit {
 
   private game: GameMode;
 
-  /** Get the #gameCanvas reference with ViewChild decorator. */
+  private gameContext: any;
   @ViewChild('gameCanvas')
   private gameCanvas!: ElementRef;
-  private gameContext: any;
-
   @ViewChild('playersInfo')
   private playersInfo!: ElementRef;
-
   @ViewChild('playerOneInfo')
   private playerOneInfo!: ElementRef;
-
+  @ViewChild('boostOne')
+  private boostOne!: ElementRef;
   @ViewChild('playerTwoInfo')
   private playerTwoInfo!: ElementRef;
+  @ViewChild('boostTwo')
+  private boostTwo!: ElementRef;
 
-  /** Lifecycle hook called after component's view has been initialized. */
   ngAfterViewInit() {
     this.playersInfo.nativeElement.style.width = this.game.canvaWidth + 'px';
+    this.gameService.setBoostContext(this.boostOne, this.boostTwo);
     this.gameService.drawPlayersInfos(
       this.playerOneInfo,
       this.playerTwoInfo,
@@ -63,6 +65,7 @@ export class GameComponent implements OnInit {
   }
 
   private gameLoop = () => {
+    if (this.gameService.isInGame === false) return;
     this.gameService.clearCanvas(this.gameCanvas, this.gameContext);
     this.gameService.fillBackground(this.gameContext, this.game);
     this.gameService.drawMiddleline(this.gameContext, this.game);
@@ -70,11 +73,12 @@ export class GameComponent implements OnInit {
     this.gameService.drawPaddle(this.gameContext, this.game.players[1]);
     this.gameService.drawBall(this.gameContext, this.game.ball);
     this.gameService.drawScore(this.gameContext, this.game);
-    this.gameService.drawBoost(
-      this.playerOneInfo,
-      this.playerTwoInfo,
-      this.game.players,
-    );
+    if (this.game instanceof CustomGame)
+      this.gameService.drawBoost(
+        this.game.players,
+        this.boostOne,
+        this.boostTwo,
+      );
     requestAnimationFrame(this.gameLoop);
   };
 
