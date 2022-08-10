@@ -1,13 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { JwtModule } from '@nestjs/jwt';
-import { AuthService } from './auth.service';
-import { JwtStrategy, OAuth2Strategy } from './strategy';
-import { HttpModule } from '@nestjs/axios';
+import { LocalAuthModule } from './modules/local/local-auth.module';
+import { RouterModule } from '@nestjs/core';
+import { routes } from './routes';
+import { AuthUtilsModule } from './modules/utils/auth-utils.module';
+import { JwtAuthModule } from './modules/jwt/jwt-auth.module';
+import { OauthModule } from './modules/oauth/oauth.module';
 
 @Module({
-  imports: [JwtModule.register({}), HttpModule],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, OAuth2Strategy],
+  imports: [
+    RouterModule.register(routes),
+    LocalAuthModule,
+    JwtAuthModule,
+    AuthUtilsModule,
+    OauthModule,
+  ],
 })
 export class AuthModule {}

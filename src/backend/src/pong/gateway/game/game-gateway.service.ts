@@ -1,16 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { ConnectedSocket } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { CustomGame } from 'src/pong/class/game-mode/custom-game/custom-game';
 import { NormalGame } from 'src/pong/class/game-mode/normal-game/normal-game';
 import { GameMode } from 'src/pong/interface/game-mode.interface';
+import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { Player } from '../../class/player/player';
 import { Room } from '../../class/room/room';
 
 @Injectable()
 export class GameGatewayService {
-  constructor(private jwtService: JwtService) {
+  constructor(private jwtService: JwtAuthService) {
     this.logger = new Logger('GameGateway');
   }
 
@@ -45,9 +45,10 @@ export class GameGatewayService {
 
   checkJwtToken(@ConnectedSocket() client: Socket): boolean {
     try {
-      this.jwtService.verify(client.handshake.auth.token, {
-        secret: process.env['JWT_SECRET'],
-      });
+      // FIX: This function is called much too often when we start a game, see:
+      // console.log(`!!!${this.checkJwtToken.name} is called`);
+      // should also probably try it all async (for better performance)
+      this.jwtService.verifyAccessToken(client.handshake.auth.token, 'sync');
       return true;
     } catch (error) {
       this.logger.debug(error);

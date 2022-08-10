@@ -6,10 +6,10 @@ import { Room } from '../../class/room/room';
 import { GameGateway } from '../game/game.gateway';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { GameGatewayService } from '../game/game-gateway.service';
-import { JwtService } from '@nestjs/jwt';
 import { GameMode } from 'src/pong/interface/game-mode.interface';
 import { NormalGame } from 'src/pong/class/game-mode/normal-game/normal-game';
 import { CustomGame } from 'src/pong/class/game-mode/custom-game/custom-game';
+import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 
 @Injectable()
 export class MatchmakingGatewayService {
@@ -17,7 +17,7 @@ export class MatchmakingGatewayService {
     @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway,
     private gameCoreService: GameCoreService,
     private gameGatewayService: GameGatewayService,
-    private jwtService: JwtService,
+    private jwtService: JwtAuthService,
   ) {}
 
   private logger: Logger = new Logger('GameMatchMakingGateway');
