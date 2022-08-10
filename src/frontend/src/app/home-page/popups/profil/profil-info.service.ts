@@ -46,7 +46,7 @@ export class ProfilInfoService implements OnInit{
   //Retrieve the username pointed by an id
   getUsernameById(id: number): string {
     if (this.users[id - 1].username != undefined)
-      return this.users[id - 1].username;
+      return (this.users[id - 1].username);
     return ('loading');
   }
 
