@@ -14,6 +14,7 @@ import { Room } from '@prisma/client';
 import { Logger } from '@nestjs/common';
 import * as argon from 'argon2';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
+import { CommandService } from './command/command.service';
 
 @WebSocketGateway({ cors: true, path: '/chat' })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -28,6 +29,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private messageService: MessageService, //private connectedUsers:   {[userId: number]: Socket}
     private jwt: JwtAuthService,
     private prisma: DbService,
+    private commandService: CommandService,
   ) {}
 
   async handleConnection(socket: Socket) {
@@ -213,6 +215,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     //this.server.to(socket.id).emit('rooms', [JSON.parse(JSON.stringify(parsed.room))]);
     this.getMsgs(socket, parsed.room.id);
     this.getRoomUsers(socket, parsed.room.id);
+  }
+
+  @SubscribeMessage('command')
+  async command(socket: Socket, command: JSON) {
+    this.logger.debug(command);
+    this.commandService.exec(command, socket.data.user);
   }
 
   @SubscribeMessage('getMsgs')

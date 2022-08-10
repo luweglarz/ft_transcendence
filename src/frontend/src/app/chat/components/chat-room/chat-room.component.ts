@@ -69,11 +69,16 @@ export class ChatRoomComponent implements OnChanges {
     if (!this.chatMessage.valid) {
       return ;
     }
-    this.chatService.sendMessage({
-      content: this.chatMessage.value,
-      room: this.chatRoom,
-      roomId: this.chatRoom.id,
-    });
+    if (this.chatMessage.value[0] === '/') {
+      console.log('command');
+      this.chatService.sendCommand(this.chatMessage.value, this.chatRoom)
+    } else {
+      this.chatService.sendMessage({
+        content: this.chatMessage.value,
+        room: this.chatRoom,
+        roomId: this.chatRoom.id,
+      });
+    }
     this.chatMessage.reset();
     try {
       this.scrollContainer.nativeElement.scrollTop =
