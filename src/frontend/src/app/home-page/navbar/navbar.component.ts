@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CollapseService } from 'src/app/home-page/collapse.service';
+import { CollapseService } from 'src/app/home-page/services/collapse.service';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
 import { JwtService } from 'src/app/auth/jwt';
 

@@ -4,8 +4,8 @@ import { AvatarModule } from '../../avatar';
 import { ProfilComponent } from './profil/profil.component';
 import { LadderComponent } from './ladder/ladder.component';
 import { SocialComponent } from './social/social.component';
-import { CollapseService } from '../collapse.service';
-import { NotificationService } from '../notification.service';
+import { CollapseService } from '../services/collapse.service';
+import { NotificationService } from '../services/notification.service';
 import { PopupsService } from './popups.service';
 import { PopupsComponent } from './popups.component';
 import { MatchHistoryComponent } from './profil/match-history/match-history.component';
@@ -31,6 +31,9 @@ import { JwtService } from '../../auth/jwt';
   imports: [
     CommonModule,
     AvatarModule,
+  ],
+  exports: [
+    PopupsComponent
   ]
 })
 export class PopupsModule {

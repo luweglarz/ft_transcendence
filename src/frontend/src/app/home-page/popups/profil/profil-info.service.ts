@@ -3,28 +3,32 @@ import { Injectable, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 import { environment } from 'src/environments/environment';
+import { Game } from '../../interfaces/game.interface'
+import { WinHistory } from '../../interfaces/win-history.interface'
+import { LoseHistory } from '../../interfaces/lose-history.interface'
+import { User } from '../../interfaces/user.interface'
 
-interface Game {
-  id: number;
-  createdAt: string;
-  winnerId: number;
-  winnerGoals: number;
-  loserId: number;
-  loserGoals: number;
-}
+// interface Game {
+//   id: number;
+//   createdAt: string;
+//   winnerId: number;
+//   winnerGoals: number;
+//   loserId: number;
+//   loserGoals: number;
+// }
 
-interface WinHistory {
-  wins: Array<Game>;
-}
+// interface WinHistory {
+//   wins: Array<Game>;
+// }
 
-interface LoseHistory {
-  loses: Array<Game>;
-}
+// interface LoseHistory {
+//   loses: Array<Game>;
+// }
 
-interface User {
-  username: string;
-  id: number;
-}
+// interface User {
+//   username: string;
+//   id: number;
+// }
 
 @Injectable({
   providedIn: 'root',
