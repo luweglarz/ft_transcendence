@@ -15,14 +15,28 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   username  String     @unique
-  email     String?    @unique
-  password  String?
-  avatar    Bytes?
-  authType  AuthType   @default(LOCAL)
+  auth      Auth?
+  avatar    Avatar?
   RoomUser  RoomUser[]
   Message   Message[]
   wins      Game[]     @relation("Winner")
   loses     Game[]     @relation("Loser")
+}
+
+model Auth {
+  userId       Int      @id
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email        String?  @unique
+  password     String?
+  authType     AuthType @default(LOCAL)
+  refreshToken String?
+}
+
+model Avatar {
+  userId   Int    @id
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mimeType String
+  image    Bytes
 }
 
 enum AuthType {
@@ -52,7 +66,7 @@ model RoomUser {
   isBanned   Boolean   @default(false)
   isMuted    Boolean   @default(false)
   timeOut    DateTime?
-
+  socketId   String
 }
 
 model Message {

@@ -1,0 +1,39 @@
+<div *ngIf="(chatRoom | json) != ({} | json)">
+    <div style="height: 125px;">
+        <span style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+        <h2>{{chatRoom.name}}</h2>
+        </span>
+        <span *ngFor="let roomUser of (roomUsers | async)">
+            {{roomUser.username}}
+            <!--Users-->
+        </span>
+    </div>
+
+
+    <!--Messages-->
+    <div class="mesgs" #msgs>
+        <li *ngFor="let message of (messages|async)">
+            <app-chat-message [message]="message"></app-chat-message>
+        </li>
+    </div>
+
+    <!--Add Mesaage-->
+    <div *ngIf="(roomUsers | async)?.length; else password" style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
+        <mat-form-field style="width: 350px;">
+            <input matInput [formControl]="chatMessage" type="text">
+        </mat-form-field>
+        <button mat-button [disabled]="!chatMessage.valid && chatRoom" (click)="sendMessage()">
+            <span style="display: flex; flex-direction: row; align-items: center;">
+                <mat-icon style="margin-left: 20px;">send</mat-icon>
+            </span>
+        </button>
+    </div>
+    <ng-template #password>
+        <input matInput type="password" [formControl]="pass" required>
+        <button mat-button [disabled]="!pass.valid" (click)="joinProtectedRoom()">
+            <span style="display: flex; flex-direction: row; align-items: center;">
+                <mat-icon>join</mat-icon>
+            </span>
+        </button>
+    </ng-template>
+</div>

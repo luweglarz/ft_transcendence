@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { GameGateway } from './gateway/game/game.gateway';
 import { GameGatewayService } from './gateway/game/game-gateway.service';
 import { MatchmakingGateway } from './gateway/matchmaking/matchmaking.gateway';
@@ -8,10 +7,11 @@ import { GameCoreService } from './service/game-core/game-core.service';
 import { GameDbService } from './service/game-db/game-db.service';
 import { GameController } from './controller/game/game.controller';
 import { DbService } from 'src/db/db.service';
+import { JwtAuthModule } from 'src/auth/modules/jwt/jwt-auth.module';
 
 @Module({
   controllers: [GameController],
-  imports: [JwtModule],
+  imports: [JwtAuthModule],
   providers: [
     GameCoreService,
     GameGateway,

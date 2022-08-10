@@ -18,6 +18,10 @@ export class JwtService {
   private _token: string | null = null;
   constructor(private http: HttpClient) {}
 
+  get username() {
+    return this.getPayload()?.username;
+  }
+
   getToken() {
     if (!this._token) this._token = localStorage.getItem('jwt');
     return this._token;

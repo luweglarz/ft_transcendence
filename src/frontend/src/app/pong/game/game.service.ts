@@ -126,8 +126,18 @@ export class GameService {
     this.boostOneContext.fillStyle = 'red';
     this.boostTwoContext.fillStyle = 'red';
     const boostOneRatio = Math.abs((players[0].boostCd / 5000) * 100 - 100);
-    this.boostOneContext.fillRect(0, 0, (boostOneRatio * 300) / 100, boostOne.nativeElement.height);
+    this.boostOneContext.fillRect(
+      0,
+      0,
+      (boostOneRatio * 300) / 100,
+      boostOne.nativeElement.height,
+    );
     const boostTwoRatio = Math.abs((players[1].boostCd / 5000) * 100 - 100);
-    this.boostTwoContext.fillRect(0, 0, (boostTwoRatio * 300) / 100, boostTwo.nativeElement.height);
+    this.boostTwoContext.fillRect(
+      0,
+      0,
+      (boostTwoRatio * 300) / 100,
+      boostTwo.nativeElement.height,
+    );
   }
 }
