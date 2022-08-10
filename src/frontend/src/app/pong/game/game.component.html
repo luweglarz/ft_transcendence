@@ -1,10 +1,11 @@
 <div class="container" [ngClass]="collapseService.chatCollapsed ? 'container-collapsed': ''">
-  <div id="game-container" align="center">
+  <div align="center">
       <div #playersInfo id= "players-info">
-              <div #playerOneInfo></div>
-              <canvas ngif="this.gameService.isCustomGame(this.game)" #boostOne style="background-color:blue"></canvas>
-              <canvas ngif="this.gameService.isCustomGame(this.game)" #boostTwo style="background-color:blue"></canvas>
-              <div #playerTwoInfo></div>
+              <div #playerOneInfo id="playerOneInfo"></div>
+              <canvas ngif="this.gameService.isCustomGame(this.game)" #boostOne id="boostOne"></canvas>
+              <span style="font-family: Courier New">V.S</span>
+              <canvas ngif="this.gameService.isCustomGame(this.game)" #boostTwo id="boostTwo"></canvas>
+              <div #playerTwoInfo id="playerTwoInfo"></div>
       </div>
       <canvas id="canvas-container" #gameCanvas ></canvas>
   </div>
