@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { CollapseService } from 'src/app/home-page/collapse.service';
+import { CollapseService } from 'src/app/home-page/services/collapse.service';
 import { Game } from '../class/game';
 import { GameService } from './game.service';
 

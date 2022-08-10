@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NotificationService } from 'src/app/home-page/notification.service';
+import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { GameSocket } from '../class/game-socket';
 import { GameComponent } from '../game/game.component';
 import { GameService } from '../game/game.service';

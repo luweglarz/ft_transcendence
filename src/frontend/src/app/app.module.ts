@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { SocketIoModule } from 'ngx-socket-io';
 import { HomePageModule } from './home-page/home-page.module';
+import { PopupsModule } from './home-page/popups/popups.module';
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent],
