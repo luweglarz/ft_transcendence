@@ -8,28 +8,6 @@ import { WinHistory } from '../../interfaces/win-history.interface'
 import { LoseHistory } from '../../interfaces/lose-history.interface'
 import { User } from '../../interfaces/user.interface'
 
-// interface Game {
-//   id: number;
-//   createdAt: string;
-//   winnerId: number;
-//   winnerGoals: number;
-//   loserId: number;
-//   loserGoals: number;
-// }
-
-// interface WinHistory {
-//   wins: Array<Game>;
-// }
-
-// interface LoseHistory {
-//   loses: Array<Game>;
-// }
-
-// interface User {
-//   username: string;
-//   id: number;
-// }
-
 @Injectable({
   providedIn: 'root',
 })
@@ -46,6 +24,8 @@ export class ProfilInfoService implements OnInit{
   loseHistory: Array<Game> = [];
   gameHistory: Array<Game> = [];
 
+  isLoaded = false;
+
   constructor(
     private http: HttpClient,
     private jwtService: JwtService,
@@ -57,7 +37,6 @@ export class ProfilInfoService implements OnInit{
         for (let i = 0; i < data.length; i++)
           this.users.push({ username: data[i], id: i + 1 });
       });
-    const tmp = this.jwtService.getPayload()?.username;
   }
 
   ngOnInit() {
@@ -66,7 +45,9 @@ export class ProfilInfoService implements OnInit{
 
   //Retrieve the username pointed by an id
   getUsernameById(id: number): string {
-    return this.users[id - 1].username;
+    if (this.users[id - 1].username != undefined)
+      return this.users[id - 1].username;
+    return ('loading');
   }
 
   //Find the biggest span of consecutives games
@@ -195,6 +176,7 @@ export class ProfilInfoService implements OnInit{
 
   //Load the profil of a registred user.
   async loadUserProfil(username: string) {
+    this.isLoaded = false;
     this.username = username;
     this.winHistory = await this.retrieveWonGames(username);
     this.loseHistory = await this.retrieveLostGames(username);
@@ -205,5 +187,6 @@ export class ProfilInfoService implements OnInit{
     this.nbLoses = this.retrieveLoseCounter(username, this.loseHistory);
     this.nbGames = this.retrieveGameCounter(username, this.nbWins, this.nbLoses);
     this.score = this.retrieveScore(username, this.nbWins, this.nbLoses);
+    this.isLoaded = true;
   }
 }
