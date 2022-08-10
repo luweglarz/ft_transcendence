@@ -14,8 +14,8 @@
       <!-- Score -->
       <div class="history-item-scoreboard">
         <p class="history-item-score">{{ game.winnerGoals }}</p>
-        <img *ngIf="profilInfoService.getUsernameById(game.winnerId) === username" src="/assets/images/vs-win.png" alt="">
-        <img *ngIf="profilInfoService.getUsernameById(game.winnerId) != username" src="/assets/images/vs-lose.png" alt="">
+        <img *ngIf="profilInfoService.getUsernameById(game.winnerId) === profilInfoService.username" src="/assets/images/vs-win.png" alt="">
+        <img *ngIf="profilInfoService.getUsernameById(game.winnerId) != profilInfoService.username" src="/assets/images/vs-lose.png" alt="">
         <p class="history-item-score">{{ game.loserGoals }}</p>
       </div>
       <!-- Right player -->
