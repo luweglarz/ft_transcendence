@@ -24,7 +24,6 @@ export class ProfilInfoService implements OnInit {
   loseHistory: Array<Game> = [];
   gameHistory: Array<Game> = [];
 
-  //isLoaded = false;
 
   constructor(
     private http: HttpClient,
@@ -36,7 +35,6 @@ export class ProfilInfoService implements OnInit {
       .subscribe((data) => {
         for (let i = 0; i < data.length; i++)
           this.users.push({ username: data[i], id: i + 1 });
-        //this.isLoaded = true;
       });
   }
 
@@ -46,10 +44,12 @@ export class ProfilInfoService implements OnInit {
 
   //Retrieve the username pointed by an id
   getUsernameById(id: number): string {
-    //if (!this.isLoaded)
-    //  return ('loading..');
-    if (this.users != undefined) return this.users[id - 1].username;
-    return '';
+    try {
+      return this.users[id - 1].username;
+    }
+    catch (e) {
+      return '';
+    }
   }
 
   //Find the biggest span of consecutives games
@@ -156,7 +156,6 @@ export class ProfilInfoService implements OnInit {
 
   //Load the profil of a registred user.
   async loadUserProfil(username: string) {
-    //this.isLoaded = false;
     console.log(this.users);
     this.username = username;
     this.winHistory = await this.retrieveWonGames(username);
@@ -173,6 +172,5 @@ export class ProfilInfoService implements OnInit {
     this.nbGames = this.retrieveGameCounter(this.nbWins, this.nbLoses);
     this.score = this.retrieveScore(username, this.nbWins, this.nbLoses);
     console.log('User loaded');
-    //this.isLoaded = true;
   }
 }

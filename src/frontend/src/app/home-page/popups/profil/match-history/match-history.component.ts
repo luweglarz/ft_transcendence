@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-//import { Component, AfterViewInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
 import { AvatarService } from 'src/app/avatar/avatar.service';
@@ -10,9 +9,8 @@ import { ProfilInfoService } from '../profil-info.service';
   templateUrl: './match-history.component.html',
   styleUrls: ['./match-history.component.css'],
 })
-//export class MatchHistoryComponent implements AfterViewInit{
+
 export class MatchHistoryComponent {
-  //isLoaded = false;
 
   constructor(
     public profilInfoService: ProfilInfoService,
@@ -23,7 +21,4 @@ export class MatchHistoryComponent {
     //
   }
 
-  //ngAfterViewInit(): void {
-  //  this.isLoaded = true;
-  //}
 }
