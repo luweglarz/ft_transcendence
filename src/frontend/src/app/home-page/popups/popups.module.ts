@@ -12,14 +12,13 @@ import { MatchHistoryComponent } from './profil/match-history/match-history.comp
 import { ProfilInfoService } from './profil/profil-info.service';
 import { JwtService } from '../../auth/jwt';
 
-
 @NgModule({
   declarations: [
     ProfilComponent,
     LadderComponent,
     SocialComponent,
     MatchHistoryComponent,
-    PopupsComponent
+    PopupsComponent,
   ],
   providers: [
     CollapseService,
@@ -28,13 +27,8 @@ import { JwtService } from '../../auth/jwt';
     ProfilInfoService,
     JwtService,
   ],
-  imports: [
-    CommonModule,
-    AvatarModule,
-  ],
-  exports: [
-    PopupsComponent
-  ]
+  imports: [CommonModule, AvatarModule],
+  exports: [PopupsComponent],
 })
 export class PopupsModule {
   //
