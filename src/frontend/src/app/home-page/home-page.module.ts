@@ -15,13 +15,22 @@ import { ProfilInfoService } from './popups/profil/profil-info.service';
 import { PopupsModule } from './popups/popups.module';
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-    NavbarComponent,
-    ChatbarComponent,
+  declarations: [HomeComponent, NavbarComponent, ChatbarComponent],
+  providers: [
+    CollapseService,
+    PopupsService,
+    NotificationService,
+    GameService,
+    ProfilInfoService,
   ],
-  providers: [CollapseService, PopupsService, NotificationService, GameService, ProfilInfoService],
-  imports: [CommonModule, PongModule, RouterModule, ChatModule, AvatarModule, PopupsModule],
+  imports: [
+    CommonModule,
+    PongModule,
+    RouterModule,
+    ChatModule,
+    AvatarModule,
+    PopupsModule,
+  ],
 })
 export class HomePageModule {
   //
