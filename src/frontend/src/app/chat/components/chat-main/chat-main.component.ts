@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectionListChange } from '@angular/material/list';
-import { delay, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Room } from 'src/app/chat/interface/room';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
 import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.component';
