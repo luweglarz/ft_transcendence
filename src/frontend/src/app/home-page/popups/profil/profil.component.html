@@ -4,55 +4,44 @@
     <!-- Avatar & Username -->
     <div class="profil-header-box">
       <img avatar class="profil-header-avatar" height="128px" width="128px">
-      <p> {{ jwtService.getPayload()?.username }} </p>
+      <p> {{ profilInfoService.username }} </p>
     </div>
-
     <!-- Rank & ELo -->
     <div class="profil-header-box">
       <h3>Ranking :</h3>
       <!-- Rank -->
       <div class="profil-header-line">
         <img src="assets/images/rank.png" height="32px" width="32px">
-        <p> {{ rank }} </p>
+        <p> 0 </p>
       </div>
-      <!-- Elo score -->
+      <!-- Score -->
       <div class="profil-header-line">
         <img src="assets/images/elo.png" height="32px" width="32px">
-        <p> {{ elo }} </p>
+        <p> {{ profilInfoService.score }} </p>
       </div>
     </div>
-
-    <!-- Win/Loss Streaks -->
     <div class="profil-header-box">
       <h3>Largest streak :</h3>
       <!-- Largest win streak -->
       <div class="profil-header-line">
         <img src="assets/images/win-streak.png" height="32px" width="32px">
-        <p>{{ winStreak }} </p>
+        <p>{{ profilInfoService.winStreak }} </p>
       </div>
       <!-- Largest win streak -->
       <div class="profil-header-line">
         <img src="assets/images/loss-streak.png" height="32px" width="32px">
-        <p>{{ lossStreak }} </p>
+        <p>{{ profilInfoService.loseStreak }} </p>
       </div>
     </div>
   </div>
 
-    <!-- Win/Loss counter -->
-  <div class="profil-separator">
-
-    <div class="profil-win-counter">
-      <p class="profil-win-logo">W</p>
-      <p> {{ win }} / {{ loss }} </p>
-      <p class="profil-loss-logo">L</p>
-    </div>
-
-    <!-- History Title -->
-    <h3 class="profil-history-title">Match History</h3>
+  <!-- Win/Loss counter -->
+  <div class="profil-win-counter">
+    <p class="profil-win-logo">W</p>
+    <p> {{ profilInfoService.nbWins }} / {{ profilInfoService.nbLoses }} </p>
+    <p class="profil-loss-logo">L</p>
   </div>
 
   <!-- Match History -->
-  <div class="profil-history">
-  </div>
-
+  <app-match-history class="test"></app-match-history>
 </div>

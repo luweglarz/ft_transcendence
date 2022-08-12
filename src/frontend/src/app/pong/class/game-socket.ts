@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { JwtService } from 'src/app/auth/jwt';
-import { NotificationService } from 'src/app/home-page/notification.service';
+import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { environment } from 'src/environments/environment';
 import { GameService } from '../game/game.service';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
