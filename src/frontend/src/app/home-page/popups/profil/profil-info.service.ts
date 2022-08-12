@@ -12,7 +12,6 @@ import { User } from '../../interfaces/user.interface';
   providedIn: 'root',
 })
 export class ProfilInfoService implements OnInit {
-  users: Array<User> = [];
   username = '';
   nbGames = 0;
   nbWins = 0;
@@ -24,32 +23,16 @@ export class ProfilInfoService implements OnInit {
   loseHistory: Array<Game> = [];
   gameHistory: Array<Game> = [];
 
-
   constructor(
     private http: HttpClient,
     private jwtService: JwtService,
     public avatar: AvatarService,
   ) {
-    this.http
-      .get<Array<string>>(`${environment.backend}/users/`)
-      .subscribe((data) => {
-        for (let i = 0; i < data.length; i++)
-          this.users.push({ username: data[i], id: i + 1 });
-      });
+    //
   }
 
   ngOnInit() {
     //
-  }
-
-  //Retrieve the username pointed by an id
-  getUsernameById(id: number): string {
-    try {
-      return this.users[id - 1].username;
-    }
-    catch (e) {
-      return '';
-    }
   }
 
   //Find the biggest span of consecutives games
@@ -156,7 +139,6 @@ export class ProfilInfoService implements OnInit {
 
   //Load the profil of a registred user.
   async loadUserProfil(username: string) {
-    console.log(this.users);
     this.username = username;
     this.winHistory = await this.retrieveWonGames(username);
     this.loseHistory = await this.retrieveLostGames(username);
@@ -171,6 +153,5 @@ export class ProfilInfoService implements OnInit {
     this.nbLoses = this.retrieveLoseCounter(username, this.loseHistory);
     this.nbGames = this.retrieveGameCounter(this.nbWins, this.nbLoses);
     this.score = this.retrieveScore(username, this.nbWins, this.nbLoses);
-    console.log('User loaded');
   }
 }
