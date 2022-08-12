@@ -8,9 +8,6 @@ import { MatchmakingService } from './matchmaking.service';
   styleUrls: ['./matchmaking.component.css'],
 })
 export class MatchmakingComponent {
-  //Original gamemode
-  originalQueue = false;
-
   constructor(
     public matchmakingService: MatchmakingService,
     public collapseService: CollapseService,
@@ -18,11 +15,13 @@ export class MatchmakingComponent {
 
   buttonRequestJoinNormalMatchMaking() {
     this.matchmakingService.requestJoinNormalMatchMaking();
-    this.originalQueue = true;
+  }
+
+  buttonRequestJoinCustomGamemodeMatchamking() {
+    this.matchmakingService.requestJoinCustomGamemodeMatchamking();
   }
 
   buttonRequestLeaveMatchMaking() {
     this.matchmakingService.requestLeaveMatchMaking();
-    this.originalQueue = false;
   }
 }
