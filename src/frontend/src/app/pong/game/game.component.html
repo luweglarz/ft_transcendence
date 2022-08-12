@@ -2,9 +2,9 @@
   <div align="center">
       <div #playersInfo id= "players-info">
               <div #playerOneInfo id="playerOneInfo"></div>
-              <canvas ngif="this.gameService.isCustomGame(this.game)" #boostOne id="boostOne"></canvas>
+              <canvas *ngIf="this.gameService.isCustomGame(this.game)" #boostOne id="boostOne"></canvas>
               <span style="font-family: Courier New">V.S</span>
-              <canvas ngif="this.gameService.isCustomGame(this.game)" #boostTwo id="boostTwo"></canvas>
+              <canvas *ngIf="this.gameService.isCustomGame(this.game)" #boostTwo id="boostTwo"></canvas>
               <div #playerTwoInfo id="playerTwoInfo"></div>
       </div>
       <canvas id="canvas-container" #gameCanvas ></canvas>
