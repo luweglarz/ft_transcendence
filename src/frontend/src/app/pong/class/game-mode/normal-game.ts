@@ -1,8 +1,11 @@
+import { Directive, ElementRef } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { GameService } from '../../game/game.service';
 import { GameMode } from '../../interface/game-mode';
 import { Ball } from '../ball';
 import { Player } from '../player';
 
+@Directive()
 export class NormalGame implements GameMode {
   constructor(
     private _canvaHeight: number,
@@ -10,7 +13,11 @@ export class NormalGame implements GameMode {
     private _backgroundColor: string,
     private _players: Player[],
     private _ball: Ball,
+    private gameService: GameService,
   ) {}
+
+  private gameContext: any;
+
   get canvaHeight(): number {
     return this._canvaHeight;
   }
@@ -30,6 +37,16 @@ export class NormalGame implements GameMode {
     return this._ball;
   }
 
+  setDrawUtilities(
+    gameContext: any,
+    boostOneRef: ElementRef,
+    boostTwoRef: ElementRef,
+  ): void {
+    this.gameContext = gameContext;
+    boostOneRef;
+    boostTwoRef;
+  }
+
   onGameUpdate(socket: Socket) {
     socket.on(
       'normalGameUpdate',
@@ -45,4 +62,85 @@ export class NormalGame implements GameMode {
       },
     );
   }
+
+  clearCanvas(): void {
+    this.gameContext.clearRect(0, 0, this.canvaWidth, this.canvaHeight);
+  }
+
+  fillBackground(): void {
+    this.gameContext.fillStyle = this.backgroundColor;
+    this.gameContext.fillRect(0, 0, this.canvaWidth, this.canvaHeight);
+  }
+
+  drawPaddles(): void {
+    this.gameContext.beginPath();
+    this.gameContext.fillStyle = this.players[0].color;
+    this.gameContext.fillRect(
+      this.players[0].x,
+      this.players[0].y,
+      this.players[0].width,
+      this.players[0].height,
+    );
+    this.gameContext.closePath();
+    this.gameContext.beginPath();
+    this.gameContext.fillStyle = this.players[1].color;
+    this.gameContext.fillRect(
+      this.players[1].x,
+      this.players[1].y,
+      this.players[1].width,
+      this.players[1].height,
+    );
+    this.gameContext.closePath();
+  }
+
+  drawBall(): void {
+    this.gameContext.beginPath();
+    this.gameContext.fillStyle = this.ball.color;
+    this.gameContext.arc(
+      this.ball.x,
+      this.ball.y,
+      this.ball.radius,
+      0,
+      2 * Math.PI,
+    );
+    this.gameContext.fill();
+    this.gameContext.stroke();
+  }
+
+  drawScore(): void {
+    this.gameContext.beginPath();
+    this.gameContext.font = '50px impact';
+    this.gameContext.fillText(
+      String(this.players[0].goals),
+      (this.canvaWidth * 5) / 100 / 2 + this.canvaWidth / 2 / 2,
+      50,
+    );
+    this.gameContext.fillText(
+      String(this.players[1].goals),
+      (this.canvaWidth * 5) / 100 / 2 +
+        this.canvaWidth / 2 +
+        this.canvaWidth / 6,
+      50,
+    );
+  }
+
+  drawMiddleline() {
+    this.gameContext.lineWidth = 5;
+    this.gameContext.beginPath();
+    this.gameContext.moveTo(Math.round(this.canvaWidth / 2), 0);
+    this.gameContext.lineTo(Math.round(this.canvaWidth / 2), this.canvaHeight);
+    this.gameContext.strokeStyle = 'white';
+    this.gameContext.stroke();
+  }
+
+  gameLoop: FrameRequestCallback = () => {
+    if (this.gameService.isInGame === false) return;
+    this.clearCanvas();
+    this.fillBackground();
+    this.drawMiddleline();
+    this.drawPaddles();
+    this.drawBall();
+    this.drawScore();
+    requestAnimationFrame(this.gameLoop);
+  };
 }
