@@ -8,16 +8,36 @@
   height: calc(100% - 320px);
 }
 
-#game-container {
-  height: auto;
-  width: auto;
- }
-
  canvas {
     display: inline;
  }
 
  #players-info{
-    width: auto;
-    height: auto;
+    display: flex;
+    justify-content: space-between;
+    height: 25px;
  }
+
+ #boostOne{
+  background-color:rgb(255, 140, 64);
+  height: 100%; 
+  width: 100%;
+  margin-right: 5%;
+ }
+
+ #boostTwo{
+  background-color:rgb(255, 140, 64);
+  height: 100%; 
+  width: 100%;
+  margin-left: 5%;
+ }
+
+#playerOneInfo{
+  height: 100%;
+  width: 50%;
+ }
+
+ #playerTwoInfo{
+  height: 100%;
+  width: 50%;
+}

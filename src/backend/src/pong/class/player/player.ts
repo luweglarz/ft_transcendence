@@ -1,28 +1,29 @@
 import { JwtService } from '@nestjs/jwt';
 import { Socket } from 'socket.io';
-import { GameMap } from '../game-map/game-map';
+import { GameMode } from 'src/pong/interface/game-mode.interface';
 
 export class Player {
   constructor(
-    gameMap: GameMap,
+    gameMode: GameMode,
     private _socket: Socket,
     playerNb: number,
     private _speed: number,
     private _color: string,
   ) {
-    this._width = Math.round((gameMap.canvaWidth * 2) / 100);
-    this._height = Math.round((gameMap.canvaHeight * 20) / 100);
+    this._width = Math.round((gameMode.canvaWidth * 2) / 100);
+    this._height = Math.round((gameMode.canvaHeight * 20) / 100);
+    this._initialSpped = _speed;
 
-    if (playerNb === 1) this._x = (gameMap.canvaWidth * 2) / 100;
+    if (playerNb === 1) this._x = (gameMode.canvaWidth * 2) / 100;
     else if (playerNb === 2)
       this._x =
-        gameMap.canvaWidth - this._width - (gameMap.canvaWidth * 2) / 100;
-    this._y = gameMap.canvaHeight / 2 - this._height / 2;
+        gameMode.canvaWidth - this._width - (gameMode.canvaWidth * 2) / 100;
+    this._y = gameMode.canvaHeight / 2 - this._height / 2;
 
-    this._borderCollisionUp = Math.round((gameMap.canvaHeight * 2) / 100);
+    this._borderCollisionUp = Math.round((gameMode.canvaHeight * 2) / 100);
     this._borderCollisionDown = Math.round(
-      gameMap.canvaHeight -
-        Math.round((gameMap.canvaHeight * 2) / 100) -
+      gameMode.canvaHeight -
+        Math.round((gameMode.canvaHeight * 2) / 100) -
         this._height,
     );
     const jwtService = new JwtService();
@@ -40,6 +41,9 @@ export class Player {
   private _borderCollisionUp: number;
   private _borderCollisionDown: number;
   private _username: string;
+
+  private _initialSpped: number;
+  private _boostCd = 0;
 
   get x(): number {
     return this._x;
@@ -77,12 +81,24 @@ export class Player {
     return this._speed;
   }
 
+  set speed(newSpeed: number) {
+    this._speed = newSpeed;
+  }
+
   get height(): number {
     return this._height;
   }
 
+  set height(newHeight: number) {
+    this._height = newHeight;
+  }
+
   get width(): number {
     return this._width;
+  }
+
+  set width(newWidth: number) {
+    this._width = newWidth;
   }
 
   get socket(): Socket {
@@ -95,6 +111,26 @@ export class Player {
 
   get username(): string {
     return this._username;
+  }
+
+  set borderCollisionUp(newBorderCollisionUp: number) {
+    this._borderCollisionUp = newBorderCollisionUp;
+  }
+
+  set borderCollisionDown(newBorderCollisionDown: number) {
+    this._borderCollisionDown = newBorderCollisionDown;
+  }
+
+  get initialSpeed(): number {
+    return this._initialSpped;
+  }
+
+  get boostCd(): number {
+    return this._boostCd;
+  }
+
+  set boostCd(newCd: number) {
+    this._boostCd = newCd;
   }
 
   checkBorderCollision(): boolean {
