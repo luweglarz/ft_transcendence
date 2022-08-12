@@ -1,8 +1,8 @@
 export class Ball {
-  private _radius = 0;
+  constructor(private _radius: number, private _color: string) {}
+
   private _x = 0;
   private _y = 0;
-  private _color = '';
 
   get radius(): number {
     return this._radius;

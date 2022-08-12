@@ -5,6 +5,7 @@ import { GameService } from './game/game.service';
 import { MatchmakingService } from './matchmaking/matchmaking.service';
 import { MatchmakingComponent } from './matchmaking/matchmaking.component';
 import { GameSocket } from './class/game-socket';
+import { NotificationService } from '../home-page/services/notification.service';
 
 @NgModule({
   declarations: [MatchmakingComponent, GameComponent],
