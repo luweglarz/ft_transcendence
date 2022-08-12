@@ -11,10 +11,8 @@ import { ProfilInfoService } from '../profil-info.service';
   templateUrl: './match-history.component.html',
   styleUrls: ['./match-history.component.css'],
 })
-
 export class MatchHistoryComponent {
-
-  users : Array<User> = [];
+  users: Array<User> = [];
   isLoaded = false;
 
   constructor(
@@ -35,10 +33,8 @@ export class MatchHistoryComponent {
   getUsernameById(id: number): string {
     try {
       return this.users[id - 1].username;
-    }
-    catch (e) {
+    } catch (e) {
       return '';
     }
   }
-
 }

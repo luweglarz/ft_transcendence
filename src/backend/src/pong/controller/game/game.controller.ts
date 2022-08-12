@@ -28,4 +28,12 @@ export class GameController {
     });
     return { loses: loses };
   }
+
+  @Get('ladder')
+  async getLadder() {
+    const result = await this.prismaClient.user.findMany();
+    if (result == null )
+      return ('Error');
+    return (result);
+  }
 }
