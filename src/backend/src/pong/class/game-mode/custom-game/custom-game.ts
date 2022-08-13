@@ -11,7 +11,7 @@ export class CustomGame implements GameMode {
     private _canvaWidth: number,
     private _backgroundColor: string,
   ) {
-    this._ball = new Ball(this, 4, 'white', 6);
+    this._ball = new Ball(this, 4, 'white', 10);
   }
 
   private _ball: Ball;

@@ -16,7 +16,7 @@ export class GameService {
   public isInGame: boolean;
   public keyPressed: string;
   public keyEventsInterval: any;
-  
+
   get socket(): GameSocket {
     return this._socket;
   }

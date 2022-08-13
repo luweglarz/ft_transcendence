@@ -12,19 +12,20 @@
   </div>
 
   <div class="matchmaking-card">
-    <h3 class="matchmaking-card-title" >Custom gamemode</h3>
+    <h3 class="matchmaking-card-title" >Ranked mode</h3>
     <img src="/assets/images/ranked.png" alt="">
-    <p class="matchmaking-card-desc">Our custom gamemode.</p>
+    <p class="matchmaking-card-desc">Prove yourself against the best players.</p>
+    <p *ngIf="this.matchmakingService.stopWatch.running">Time in queue : {{ this.matchmakingService.stopWatch.secInQueue }}s</p>
+    <!-- <button class="matchmaking-btn" *ngIf="!this.matchmakingService.stopWatch.running" (click)="buttonRequestJoinRankedGamemodeMatchamking()">Join queue</button>
+    <button class="matchmaking-btn" *ngIf="this.matchmakingService.stopWatch.running" (click)="buttonRequestLeaveMatchMaking()">Quit queue</button> -->
+  </div>
+
+  <div class="matchmaking-card">
+    <h3 class="matchmaking-card-title" >Fun mode</h3>
+    <img src="/assets/images/fun.png" alt="">
+    <p class="matchmaking-card-desc">The funniest remix of the original pong gamemode.</p>
     <p *ngIf="this.matchmakingService.stopWatch.running">Time in queue : {{ this.matchmakingService.stopWatch.secInQueue }}s</p>
     <button class="matchmaking-btn" *ngIf="!this.matchmakingService.stopWatch.running" (click)="buttonRequestJoinCustomGamemodeMatchamking()">Join queue</button>
     <button class="matchmaking-btn" *ngIf="this.matchmakingService.stopWatch.running" (click)="buttonRequestLeaveMatchMaking()">Quit queue</button>
   </div>
-
-  <!-- <div class="matchmaking-card">
-    <h3 class="matchmaking-card-title" >Fun mode</h3>
-    <img src="/assets/images/fun.png" alt="">
-    <p class="matchmaking-card-desc">The funniest remix of the original pong gamemode.</p>
-    <button class="matchmaking-btn" *ngIf="!funQueue" (click)="joinFunQueue()">Join queue</button>
-    <button class="matchmaking-btn" *ngIf="funQueue" (click)="quitFunQueue()">Quit queue</button>
-  </div> -->
 </div>

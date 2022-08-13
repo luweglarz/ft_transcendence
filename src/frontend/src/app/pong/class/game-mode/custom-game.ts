@@ -50,7 +50,7 @@ export class CustomGame implements GameMode {
     this.gameContext = gameContext;
     this.boostSize.width = boostOneRef.nativeElement.width;
     this.boostSize.height = boostOneRef.nativeElement.height;
-    this.boostOneContext = boostTwoRef.nativeElement.getContext('2d');
+    this.boostOneContext = boostOneRef.nativeElement.getContext('2d');
     this.boostTwoContext = boostTwoRef.nativeElement.getContext('2d');
   }
 
@@ -84,34 +84,40 @@ export class CustomGame implements GameMode {
     );
   }
 
-  clearCanvas(): void {
-    this.gameContext.clearRect(0, 0, this.canvaWidth, this.canvaHeight);
-  }
-
   fillBackground(): void {
-    this.gameContext.fillStyle = this.backgroundColor;
-    this.gameContext.fillRect(0, 0, this.canvaWidth, this.canvaHeight);
+    const map = new Image();
+
+    map.src = '/assets/pong/football-pitch.jpeg';
+    map.onload = () => {
+      this.gameContext.drawImage(map, 0, 0, this.canvaWidth, this.canvaHeight);
+    };
   }
 
   drawPaddles(): void {
-    this.gameContext.beginPath();
-    this.gameContext.fillStyle = this.players[0].color;
-    this.gameContext.fillRect(
-      this.players[0].x,
-      this.players[0].y,
-      this.players[0].width,
-      this.players[0].height,
-    );
-    this.gameContext.closePath();
-    this.gameContext.beginPath();
-    this.gameContext.fillStyle = this.players[1].color;
-    this.gameContext.fillRect(
-      this.players[1].x,
-      this.players[1].y,
-      this.players[1].width,
-      this.players[1].height,
-    );
-    this.gameContext.closePath();
+    const paddleOne = new Image();
+    const paddleTwo = new Image();
+
+    paddleOne.src = '/assets/pong/paddleOneSkin.jpeg';
+    paddleTwo.src = '/assets/pong/paddleTwoSkin.jpeg';
+
+    paddleOne.onload = () => {
+      this.gameContext.drawImage(
+        paddleOne,
+        this.players[0].x,
+        this.players[0].y,
+        this.players[0].width,
+        this.players[0].height,
+      );
+    };
+    paddleTwo.onload = () => {
+      this.gameContext.drawImage(
+        paddleTwo,
+        this.players[1].x,
+        this.players[1].y,
+        this.players[1].width,
+        this.players[1].height,
+      );
+    };
   }
 
   drawBall(): void {
@@ -126,10 +132,10 @@ export class CustomGame implements GameMode {
     );
     this.gameContext.fill();
     this.gameContext.stroke();
+    this.gameContext.closePath();
   }
 
   drawScore(): void {
-    this.gameContext.beginPath();
     this.gameContext.font = '50px impact';
     this.gameContext.fillText(
       String(this.players[0].goals),
@@ -182,7 +188,6 @@ export class CustomGame implements GameMode {
 
   gameLoop: FrameRequestCallback = () => {
     if (this.gameService.isInGame === false) return;
-    this.clearCanvas();
     this.fillBackground();
     this.drawPaddles();
     this.drawBall();
