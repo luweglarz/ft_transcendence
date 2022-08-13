@@ -63,10 +63,6 @@ export class NormalGame implements GameMode {
     );
   }
 
-  clearCanvas(): void {
-    this.gameContext.clearRect(0, 0, this.canvaWidth, this.canvaHeight);
-  }
-
   fillBackground(): void {
     this.gameContext.fillStyle = this.backgroundColor;
     this.gameContext.fillRect(0, 0, this.canvaWidth, this.canvaHeight);
@@ -135,7 +131,6 @@ export class NormalGame implements GameMode {
 
   gameLoop: FrameRequestCallback = () => {
     if (this.gameService.isInGame === false) return;
-    this.clearCanvas();
     this.fillBackground();
     this.drawMiddleline();
     this.drawPaddles();

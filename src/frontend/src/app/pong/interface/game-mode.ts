@@ -18,7 +18,6 @@ export interface GameMode {
     boostTwoRef: ElementRef,
   ): void;
 
-  clearCanvas(): void;
   fillBackground(): void;
   drawPaddles(): void;
   drawBall(): void;
