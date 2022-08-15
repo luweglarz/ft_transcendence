@@ -16,6 +16,8 @@
     display: flex;
     justify-content: space-between;
     height: 25px;
+    margin-bottom: 0.5%;
+    margin-top: 0.5%;
  }
 
  #boostOne{
@@ -40,4 +42,16 @@
  #playerTwoInfo{
   height: 100%;
   width: 50%;
+}
+
+#avatarOne{
+  height: 100%;
+  width: 20%;
+  margin-right: 10%;
+}
+
+#avatarTwo{
+  height: 100%;
+  width: 20%;
+  margin-left: 10%;
 }
