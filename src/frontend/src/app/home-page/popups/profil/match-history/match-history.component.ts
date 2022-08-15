@@ -19,7 +19,6 @@ export class MatchHistoryComponent {
     public profilInfoService: ProfilInfoService,
     public avatar: AvatarService,
     private http: HttpClient,
-    private jwtService: JwtService,
   ) {
     this.http
       .get<Array<string>>(`${environment.backend}/users/`)
