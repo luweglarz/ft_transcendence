@@ -31,4 +31,16 @@ export class LadderComponent implements OnInit {
     //
   }
 
+  colorPodium(index: number): string{
+    console.log('Index = ', index);
+    if (index === 1)
+      return ('first');
+    else if (index === 2)
+      return ('second');
+    else if (index === 3)
+      return ('third');
+    else
+      return ('');
+  }
+
 }
