@@ -51,6 +51,24 @@
   text-align: center;
 }
 
+.first {
+  color: #FFC42E;
+}
+
+.second {
+  color: #D0D1D1;
+}
+
+.third {
+  color: #9A6F1B;
+}
+
+.ladder-evolution {
+  display: flex;
+  justify-content: center;
+  width: 15%;
+}
+
 .ladder-score {
   display: flex;
   flex-direction: row;
@@ -90,9 +108,18 @@
 }
 
 .ladder-player {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   background-color: #1A202C;
   width: 30%;
   height: 64px;
   border-radius: 1em;
   text-align: center;
+}
+
+.ladder-player-avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 100%;
 }

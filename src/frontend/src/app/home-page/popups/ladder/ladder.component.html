@@ -4,7 +4,11 @@
     <div class="ladder-item" *ngFor="let player of ladder.slice(); let indexOfElement = index">
 
       <div class="ladder-rank">
-        <p> {{ indexOfElement + 1 }} </p>
+        <p [ngClass]="colorPodium(indexOfElement + 1)"> {{ indexOfElement + 1 }} </p>
+      </div>
+
+      <div class="ladder-evolution">
+        <img src="assets/images/up.png" alt="">
       </div>
 
       <div class="ladder-score">
@@ -20,6 +24,7 @@
 
       <div class="ladder-player">
         <p (click)="popupsService.openProfil(player.username)"> {{ player.username }} </p>
+        <img class="ladder-player-avatar" avatar username="{{ player.username }}" alt="">
       </div>
 
     </div>
