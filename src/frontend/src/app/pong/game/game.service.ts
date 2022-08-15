@@ -1,7 +1,6 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CustomGame } from '../class/game-mode/custom-game';
 import { GameSocket } from '../class/game-socket';
-import { Player } from '../class/player';
 import { GameMode } from '../interface/game-mode';
 
 @Injectable({
@@ -34,14 +33,5 @@ export class GameService {
     this.keyEventsInterval = setInterval(() => {
       this.socket.emit('move', this.keyPressed);
     }, 25);
-  }
-
-  drawPlayersInfos(
-    playerOneInfo: ElementRef,
-    playerTwoInfo: ElementRef,
-    players: Player[],
-  ) {
-    playerOneInfo.nativeElement.innerHTML += players[0].username;
-    playerTwoInfo.nativeElement.innerHTML += players[1].username;
   }
 }
