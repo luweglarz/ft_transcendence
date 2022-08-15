@@ -121,18 +121,18 @@ export class CustomGame implements GameMode {
   }
 
   drawBall(): void {
-    this.gameContext.beginPath();
-    this.gameContext.fillStyle = this.ball.color;
-    this.gameContext.arc(
-      this.ball.x,
-      this.ball.y,
-      this.ball.radius,
-      0,
-      2 * Math.PI,
-    );
-    this.gameContext.fill();
-    this.gameContext.stroke();
-    this.gameContext.closePath();
+    const ball = new Image();
+
+    ball.src = '/assets/pong/ball.png';
+    ball.onload = () => {
+      this.gameContext.drawImage(
+        ball,
+        this.ball.x - this.ball.radius,
+        this.ball.y - this.ball.radius,
+        this.ball.radius * 2,
+        this.ball.radius * 2,
+      );
+    };
   }
 
   drawScore(): void {

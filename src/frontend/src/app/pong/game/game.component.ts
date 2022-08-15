@@ -6,7 +6,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CollapseService } from 'src/app/home-page/collapse.service';
-import { CustomGame } from '../class/game-mode/custom-game';
 import { GameMode } from '../interface/game-mode';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { GameService } from './game.service';
