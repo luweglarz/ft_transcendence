@@ -1,10 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 interface Player {
-  username: string;
+  nbLoses: number;
+  nbWins: number;
   score: number;
-  wins: number;
-  loses: number;
+  username: string;
 }
 
 @Component({
@@ -14,13 +16,30 @@ interface Player {
 })
 export class LadderComponent implements OnInit {
 
+  ladder: Array<Player> = [];
+  isLoaded: boolean = false;
 
-
-  constructor() {
-    //
+  constructor(private http: HttpClient) {
+    this.http.get<Array<Player>>(`${environment.backend}/game/ladder`).subscribe((data) => {
+      this.ladder = data;
+      this.isLoaded = true;
+    });
   }
 
   ngOnInit(): void {
     //
   }
+
+  // async retrieveLostGames(username: string) {
+  //   return new Promise((resolve) => {
+  //     this.http
+  //       .get(
+  //         `${environment.backend}/game/loses?username=` + username,
+  //       )
+  //       .subscribe((data) => {
+
+  //         resolve(data);
+  //       });
+  //   });
+  // }
 }

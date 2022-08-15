@@ -1,9 +1,27 @@
 <div class="container">
-  <div class="ladder">
-    <ul>
-      <li>
 
-      </li>
-    </ul>
+  <div class="ladder-header">
+    <p> Rank </p>
+    <p> Score </p>
+    <p> Wins / Loses </p>
+    <p> Username </p>
   </div>
+
+  <div class="ladder-items" *ngIf="isLoaded">
+    <div class="ladder-item" *ngFor="let player of ladder.slice(); let indexOfElement = index">
+      <div class="ladder-rank">
+        <p> {{ indexOfElement + 1 }} </p>
+      </div>
+
+      <div class="ladder-field">
+        <p> {{ player.score }} </p>
+        <p> {{ player.nbWins }} / {{ player.nbLoses }} </p>
+      </div>
+
+      <div class="ladder-player">
+        <p> {{ player.username }} </p>
+      </div>
+    </div>
+  </div>
+
 </div>
