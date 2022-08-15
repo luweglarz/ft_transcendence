@@ -8,16 +8,6 @@
   font-size: 20px;
 }
 
-.ladder-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  width: 100%;
-  height: fit-content;
-
-  /* background-color: yellow; */
-}
-
 .ladder-items {
   display: flex;
   flex-direction: column;
@@ -27,8 +17,6 @@
   height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
-
-  /* background-color: blue; */
 }
 
 .ladder-item {
@@ -42,25 +30,59 @@
   background-color: #44526F;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
   border-radius: 1em;
+
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .ladder-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 64px;
   height: 64px;
   background-color: #1A202C;
   border-radius: 1em;
+}
+
+.ladder-rank p {
+  font-size: 32px;
+  font-weight: bolder;
   text-align: center;
 }
 
-.ladder-field {
+.ladder-score {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 15%;
+  height: 64px;
+  text-align: center;
+}
+
+.ladder-win-lose {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 
-  width: 30%;
+  width: 15%;
   height: 64px;
   text-align: center;
+}
+
+.ladder-wins {
+  font-size: 24px;
+  font-weight: bolder;
+  color: green;
+}
+
+.ladder-loses {
+  font-size: 24px;
+  font-weight: bolder;
+  color: red;
 }
 
 .ladder-player {
