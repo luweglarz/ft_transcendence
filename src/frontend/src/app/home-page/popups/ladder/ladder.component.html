@@ -9,7 +9,7 @@
 
       <div class="ladder-score">
         <img src="assets/images/elo.png" alt="">
-        <p> {{ player.score }} </p>
+        <p class="ladder-score-field"> {{ player.score }} </p>
       </div>
 
       <div class="ladder-win-lose">
@@ -19,7 +19,7 @@
       </div>
 
       <div class="ladder-player">
-        <p> {{ player.username }} </p>
+        <p (click)="popupsService.openProfil(player.username)"> {{ player.username }} </p>
       </div>
 
     </div>

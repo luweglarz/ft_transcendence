@@ -62,6 +62,10 @@
   text-align: center;
 }
 
+.ladder-score-field {
+  width: 70px;
+}
+
 .ladder-win-lose {
   display: flex;
   flex-direction: row;
