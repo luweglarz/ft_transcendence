@@ -90,17 +90,13 @@ export class NormalGame implements GameMode {
   }
 
   drawBall(): void {
-    this.gameContext.beginPath();
     this.gameContext.fillStyle = this.ball.color;
-    this.gameContext.arc(
-      this.ball.x,
-      this.ball.y,
-      this.ball.radius,
-      0,
-      2 * Math.PI,
+    this.gameContext.fillRect(
+      this.ball.x - this.ball.radius,
+      this.ball.y - this.ball.radius,
+      this.ball.radius * 2,
+      this.ball.radius * 2,
     );
-    this.gameContext.fill();
-    this.gameContext.stroke();
   }
 
   drawScore(): void {
