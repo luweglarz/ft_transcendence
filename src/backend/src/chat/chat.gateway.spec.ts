@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { DbService } from 'src/db/db.service';
 import { ChatGateway } from './chat.gateway';
+import { CommandService } from './command/command.service';
 import { MessageService } from './message/message.service';
 import { RoomUserService } from './room-user/room-user.service';
 import { RoomService } from './room/room.service';
@@ -19,6 +20,7 @@ describe('ChatGateway', () => {
         MessageService,
         JwtAuthService,
         RoomService,
+        CommandService,
       ],
       imports: [JwtModule],
     }).compile();
