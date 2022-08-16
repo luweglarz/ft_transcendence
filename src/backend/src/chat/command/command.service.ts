@@ -12,82 +12,91 @@ export class CommandService {
     private prisma: DbService,
   ) {}
 
-  async exec(command, user: User) {
+  async exec(command, user: User): Promise<string> {
     const roomUser = await this.roomUserService.roomUsers({
       where: { roomId: command.id, AND: { userId: user.id } },
     });
-    if (roomUser.length != 1) return;
+    if (roomUser.length != 1) return 'database error';
     console.log(roomUser);
     const splitCmd: string[] = command.command.split(/[ \t\n]+/);
     console.log(splitCmd);
-    if (splitCmd.length < 2) return;
-    this.cmdSelector(splitCmd, command, roomUser[0]);
+    if (splitCmd.length < 2) return 'incomplete command';
+    return (await this.cmdSelector(splitCmd, command, roomUser[0]));
   }
 
-  cmdSelector(splitCmd: string[], command, roomUser: RoomUser) {
+  async cmdSelector(splitCmd: string[], command, roomUser: RoomUser): Promise<string> {
     if (splitCmd[0] === '/admin') {
-      this.admin(splitCmd, command, roomUser);
+      return (await this.admin(splitCmd, command, roomUser));
     } else if (splitCmd[0] === '/deadmin') {
-      this.deadmin(splitCmd, command, roomUser);
+      return (await this.deadmin(splitCmd, command, roomUser));
     } else if (splitCmd[0] === '/password') {
-      this.password(splitCmd, command, roomUser);
+      return (await this.password(splitCmd, command, roomUser));
     }
   }
 
-  async admin(splitCmd: string[], command, roomUser: RoomUser) {
-    if (roomUser.role === 'USER' || roomUser.role === 'ADMIN') return;
+  async admin(splitCmd: string[], command, roomUser: RoomUser): Promise<string> {
+    if (roomUser.role === 'USER' || roomUser.role === 'ADMIN') return 'you don\'t have the right';
     const targetUser = await this.prisma.user.findUnique({
       where: { username: splitCmd[1] },
     });
     console.log(targetUser);
-    if (targetUser === null) return;
+    if (targetUser === null) return 'no such user';
     const targetRoomUser = await this.roomUserService.roomUsers({
       where: { roomId: command.id, AND: { userId: targetUser.id } },
     });
     console.log(targetRoomUser);
-    if (targetRoomUser.length != 1) return;
+    if (targetRoomUser.length != 1) return 'database error';
     console.log('just before the update');
-    if (targetRoomUser[0].role === 'USER')
+    if (targetRoomUser[0].role === 'USER') {
       await this.roomUserService.updateRole(
         targetRoomUser[0].roomUserId,
         'ADMIN',
       );
+      return ((await this.prisma.user.findUnique({where: {id: targetRoomUser[0].userId}})).username + ' is now an admin');
+    }
+    return ((await this.prisma.user.findUnique({where: {id: targetRoomUser[0].userId}})).username + ' is already an admin');
   }
 
-  async deadmin(splitCmd: string[], command, roomUser: RoomUser) {
-    if (roomUser.role === 'USER' || roomUser.role === 'ADMIN') return;
+  async deadmin(splitCmd: string[], command, roomUser: RoomUser): Promise<string> {
+    if (roomUser.role === 'USER' || roomUser.role === 'ADMIN') return 'you don\'t have the right';
     const targetUser = await this.prisma.user.findUnique({
       where: { username: splitCmd[1] },
     });
     console.log(targetUser);
-    if (targetUser === null) return;
+    if (targetUser === null) return 'no such user';
     const targetRoomUser = await this.roomUserService.roomUsers({
       where: { roomId: command.id, AND: { userId: targetUser.id } },
     });
     console.log(targetRoomUser);
-    if (targetRoomUser.length != 1) return;
+    if (targetRoomUser.length != 1) return 'database error';
     console.log('just before the update');
-    if (targetRoomUser[0].role === 'ADMIN')
+    if (targetRoomUser[0].role === 'ADMIN') {
       await this.roomUserService.updateRole(
         targetRoomUser[0].roomUserId,
         'USER',
       );
+      return ((await this.prisma.user.findUnique({where: {id: targetRoomUser[0].userId}})).username + ' is now a user');
+    }
+    return ((await this.prisma.user.findUnique({where: {id: targetRoomUser[0].userId}})).username + ' is already a user');
   }
 
-  async password(splitCmd: string[], command, roomUser: RoomUser) {
-    if (roomUser.role !== 'OWNER') return;
+  async password(splitCmd: string[], command, roomUser: RoomUser): Promise<string> {
+    if (roomUser.role !== 'OWNER') return 'you don\'t have the right';
     console.log('after check owner');
-    if (splitCmd.length === 1) return;
+    if (splitCmd.length === 1) return 'incomplete command';
     console.log('after check length');
     const room = await this.roomService.room({ id: command.id });
-    if (room === undefined) return;
+    if (room === undefined) return 'database error';
     console.log('after check room');
     if (splitCmd[1] === 'remove') {
       await this.roomService.removePassword(room);
+      return 'this room is now public';
     } else if (splitCmd[1] === 'change') {
-      if (splitCmd.length !== 3) return;
+      if (splitCmd.length !== 3) return 'new password is missing';
       await this.roomService.updatePassword(room, splitCmd[2]);
+      return 'password updated';
     }
+    return 'usage /password ((remove) ^ (update new_password))';
   }
 }
 /*
