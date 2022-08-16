@@ -1,16 +1,17 @@
 <div class="container">
 
+  <div class="ladder-header">
+    <p class="ladder-header-rank">Rank</p>
+    <p class="ladder-header-score">Score</p>
+    <p class="ladder-header-counter">Wins/Loses</p>
+    <p class="ladder-header-username">Username</p>
+  </div>
+
   <div class="ladder-items" *ngIf="isLoaded">
     <div class="ladder-item" *ngFor="let player of ladder.slice(); let indexOfElement = index">
 
       <div class="ladder-rank">
         <p [ngClass]="colorPodium(indexOfElement + 1)"> {{ indexOfElement + 1 }} </p>
-      </div>
-
-      <div class="ladder-evolution">
-        <img *ngIf="scoreEvolution(1, 2) === 'up'" src="assets/images/up.png" alt="">
-        <img *ngIf="scoreEvolution(1, 2) === 'down'" src="assets/images/down.png" alt="">
-        <img *ngIf="scoreEvolution(1, 2) === 'equal'" src="assets/images/equal.png" alt="">
       </div>
 
       <div class="ladder-score">
