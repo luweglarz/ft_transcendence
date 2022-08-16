@@ -131,3 +131,14 @@
   width: 48px;
   border-radius: 100%;
 }
+
+.ladder-player-button {
+  cursor: pointer;
+  fill: white;
+  transition: 0.3s;
+}
+
+.ladder-player-button:hover {
+  fill: #44526F;
+  transition: 0.3s;
+}
