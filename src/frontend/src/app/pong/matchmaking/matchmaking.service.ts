@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NotificationService } from 'src/app/home-page/notification.service';
+import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { GameSocket } from '../class/game-socket';
 import { StopWatch } from '../class/stop-watch';
 import { GameService } from '../game/game.service';
@@ -9,6 +9,12 @@ import { GameMode } from '../interface/game-mode';
   providedIn: 'root',
 })
 export class MatchmakingService {
+  //Timer
+  msInQueue = 0;
+  secInQueue = 0;
+  running = false;
+  timer = 0;
+
   constructor(
     private socket: GameSocket,
     private gameService: GameService,

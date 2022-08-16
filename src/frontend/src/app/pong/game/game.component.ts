@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { CollapseService } from 'src/app/home-page/collapse.service';
+import { CollapseService } from 'src/app/home-page/services/collapse.service';
 import { GameMode } from '../interface/game-mode';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { GameService } from './game.service';
