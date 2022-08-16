@@ -54,8 +54,8 @@ export class ChatService {
     this.socket.emit('addMessage', message);
   }
 
-  sendCommand(command: String, room: Room) {
-    let send = JSON.parse(JSON.stringify(room));
+  sendCommand(command: string, room: Room) {
+    const send = JSON.parse(JSON.stringify(room));
     send.command = command;
     this.socket.emit('command', send);
   }

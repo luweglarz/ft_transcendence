@@ -284,7 +284,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
     console.log('fgh', roomUsers);
     //this.server.to(socket.id).emit('roomUsers', roomUsers);
-    for (let roomUser of roomUsers) {
+    for (const roomUser of roomUsers) {
       this.server.to(roomUser.socketId).emit('roomUsers', roomUsers);
     }
   }

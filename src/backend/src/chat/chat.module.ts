@@ -8,7 +8,13 @@ import { CommandService } from './command/command.service';
 import { JwtAuthModule } from 'src/auth/modules/jwt/jwt-auth.module';
 
 @Module({
-  providers: [ChatGateway, RoomService, RoomUserService, MessageService, CommandService],
+  providers: [
+    ChatGateway,
+    RoomService,
+    RoomUserService,
+    MessageService,
+    CommandService,
+  ],
   controllers: [ChatController],
   imports: [JwtAuthModule],
 })
