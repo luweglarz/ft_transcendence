@@ -43,4 +43,13 @@ export class LadderComponent implements OnInit {
       return ('');
   }
 
+  scoreEvolution(rank: number, lastRank: number): string{
+    if (rank > lastRank)
+      return ('up');
+    else if (rank < lastRank)
+      return ('down');
+    else
+      return ('equal');
+  }
+
 }

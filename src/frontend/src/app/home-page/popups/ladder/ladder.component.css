@@ -33,6 +33,12 @@
 
   font-size: 20px;
   font-weight: 700;
+
+  transition: 0.3s;
+}
+
+.ladder-item:hover {
+  background-color: #1A202C;
 }
 
 .ladder-rank {

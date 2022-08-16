@@ -8,7 +8,9 @@
       </div>
 
       <div class="ladder-evolution">
-        <img src="assets/images/up.png" alt="">
+        <img *ngIf="scoreEvolution(1, 2) === 'up'" src="assets/images/up.png" alt="">
+        <img *ngIf="scoreEvolution(1, 2) === 'down'" src="assets/images/down.png" alt="">
+        <img *ngIf="scoreEvolution(1, 2) === 'equal'" src="assets/images/equal.png" alt="">
       </div>
 
       <div class="ladder-score">
