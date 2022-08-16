@@ -7,7 +7,7 @@ import { Title } from '@angular/platform-browser';
 export class NotificationService {
   //Audio
   gameFoundSound: HTMLAudioElement = new Audio(
-    'assets/sounds/notification.mp3',
+    'assets/sounds/notification.wav',
   );
 
   //Notifications
