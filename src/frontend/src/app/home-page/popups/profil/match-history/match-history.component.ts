@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { JwtService } from 'src/app/auth/jwt';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 import { User } from 'src/app/home-page/interfaces/user.interface';
 import { environment } from 'src/environments/environment';

@@ -21,7 +21,7 @@ export class LadderComponent implements OnInit {
   ladder: Array<Player> = [];
   isLoaded = false;
 
-  buttons: boolean = false;
+  buttons = false;
 
   constructor(private http: HttpClient, public popupsService: PopupsService) {
     this.http
@@ -49,7 +49,7 @@ export class LadderComponent implements OnInit {
     else return 'equal';
   }
 
-  displayButtons(){
+  displayButtons() {
     this.buttons = true;
   }
 
