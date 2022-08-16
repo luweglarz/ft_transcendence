@@ -6,6 +6,42 @@
   height: 100%;
   color: white;
   font-size: 20px;
+
+  padding-top: 50px;
+}
+
+.ladder-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 95%;
+  height: 32px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bolder;
+}
+
+.ladder-header-rank {
+  width: 64px;
+  min-height: fit-content;
+}
+
+.ladder-header-score {
+  width: 25%;
+  min-height: fit-content;
+}
+
+.ladder-header-counter {
+  width: 25%;
+  min-height: fit-content;
+}
+
+.ladder-header-username {
+  width: 30%;
+  text-align: center;
+  min-height: fit-content;
 }
 
 .ladder-items {
@@ -14,7 +50,7 @@
   align-items: center;
 
   width: 95%;
-  height: 100%;
+  height: calc(100% - (50px + 32px));
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -69,19 +105,13 @@
   color: #9A6F1B;
 }
 
-.ladder-evolution {
-  display: flex;
-  justify-content: center;
-  width: 15%;
-}
-
 .ladder-score {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 
-  width: 15%;
+  width: 25%;
   height: 64px;
   text-align: center;
 }
@@ -93,10 +123,10 @@
 .ladder-win-lose {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
-  width: 15%;
+  width: 25%;
   height: 64px;
   text-align: center;
 }
@@ -105,12 +135,14 @@
   font-size: 24px;
   font-weight: bolder;
   color: green;
+  margin-right: 10px;
 }
 
 .ladder-loses {
   font-size: 24px;
   font-weight: bolder;
   color: red;
+  margin-left: 10px;
 }
 
 .ladder-player {
@@ -122,7 +154,6 @@
   height: 64px;
   border-radius: 1em;
   text-align: center;
-
   transition: 0.3s;
 }
 
