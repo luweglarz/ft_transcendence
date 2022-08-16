@@ -1,9 +1,13 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
-import { Player } from 'src/pong/class/player/player';
 
 class LadderPlayer {
-  constructor(public username: string, public nbWins: number, public nbLoses: number, public score: number){
+  constructor(
+    public username: string,
+    public nbWins: number,
+    public nbLoses: number,
+    public score: number,
+  ) {
     this.username = username;
     this.nbWins = nbWins;
     this.nbLoses = nbLoses;
@@ -45,44 +49,37 @@ export class GameController {
     const ladder: Array<LadderPlayer> = [];
 
     const users = await this.prismaClient.user.findMany();
-    if (users === null )
-      return ('Error retrieving users');
+    if (users === null) return 'Error retrieving users';
 
-    for (let i = 0; i < users.length; i++){
+    for (let i = 0; i < users.length; i++) {
       //username
-      let username: string = '';
-      if (users[i].username != undefined)
-        username = users[i].username;
+      let username = '';
+      if (users[i].username != undefined) username = users[i].username;
 
       //nbWins
-      let nbWins: number = 0;
+      let nbWins = 0;
       const wins = await this.prismaClient.game.findMany({
-        where: { winnerId: users[i].id }
+        where: { winnerId: users[i].id },
       });
-      if (wins === null)
-        return ('Error retrieving wins');
+      if (wins === null) return 'Error retrieving wins';
       nbWins = wins.length;
 
       //nbLoses
-      let nbLoses: number = 0;
+      let nbLoses = 0;
       const loses = await this.prismaClient.game.findMany({
-        where: { loserId: users[i].id }
+        where: { loserId: users[i].id },
       });
-      if (loses === null)
-        return ('Error retrieving loses');
+      if (loses === null) return 'Error retrieving loses';
       nbLoses = loses.length;
 
       //Score
-      let score: number = 0;
-      if (nbWins === 0 && nbLoses === 0)
-        score = 0;
-      else if (nbWins != 0 && nbLoses === 0)
-        score = nbWins * 350;
-      else
-        score = Math.round((nbWins / nbLoses) * 1000);
+      let score = 0;
+      if (nbWins === 0 && nbLoses === 0) score = 0;
+      else if (nbWins != 0 && nbLoses === 0) score = nbWins * 350;
+      else score = Math.round((nbWins / nbLoses) * 1000);
 
       //Push the player in the ladder
-      let player = new LadderPlayer(username, nbWins, nbLoses, score);
+      const player = new LadderPlayer(username, nbWins, nbLoses, score);
       ladder.push(player);
     }
 
@@ -98,6 +95,6 @@ export class GameController {
     });
 
     //Return
-    return (ladder);
+    return ladder;
   }
 }
