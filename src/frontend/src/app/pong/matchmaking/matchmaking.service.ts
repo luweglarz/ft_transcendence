@@ -9,12 +9,6 @@ import { GameMode } from '../interface/game-mode';
   providedIn: 'root',
 })
 export class MatchmakingService {
-  //Timer
-  msInQueue = 0;
-  secInQueue = 0;
-  running = false;
-  timer = 0;
-
   constructor(
     private socket: GameSocket,
     private gameService: GameService,
