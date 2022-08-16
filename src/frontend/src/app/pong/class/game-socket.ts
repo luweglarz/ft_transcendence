@@ -18,7 +18,11 @@ export class GameSocket extends Socket {
   constructor(jwtService: JwtService) {
     super({
       url: environment.backend,
-      options: { autoConnect: false, path: environment.socketGamePath, transports: ["websocket", "polling"] },
+      options: {
+        autoConnect: false,
+        path: environment.socketGamePath,
+        transports: ['websocket', 'polling'],
+      },
     });
     this.ioSocket.auth = { token: jwtService.getToken() };
   }

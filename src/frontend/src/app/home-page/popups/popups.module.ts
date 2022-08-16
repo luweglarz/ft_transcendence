@@ -27,7 +27,7 @@ import { LadderService } from './ladder/ladder.service';
     NotificationService,
     ProfilInfoService,
     JwtService,
-    LadderService
+    LadderService,
   ],
   imports: [CommonModule, AvatarModule],
   exports: [PopupsComponent],

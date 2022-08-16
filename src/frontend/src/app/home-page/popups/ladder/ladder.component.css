@@ -122,6 +122,8 @@
   height: 64px;
   border-radius: 1em;
   text-align: center;
+
+  transition: 0.3s;
 }
 
 .ladder-player-avatar {
