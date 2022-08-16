@@ -1,4 +1,9 @@
 .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   height: calc(100% - 58px);
   width: 100%;
   transition: all 0.3s;
