@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
+import { ProfilInfoService } from './profil-info.service';
 
 @Component({
   selector: 'app-profil',
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.css'],
 })
-export class ProfilComponent {
-  username = 'username';
-  rank = 1;
-  elo = 0;
-  win = 0;
-  loss = 0;
-  winStreak = 0;
-  lossStreak = 0;
+export class ProfilComponent implements OnInit {
+  constructor(
+    public jwtService: JwtService,
+    public profilInfoService: ProfilInfoService,
+  ) {
+    //
+  }
 
-  constructor(public jwtService: JwtService) {}
+  ngOnInit(): void {
+    //
+  }
 }

@@ -13,18 +13,30 @@
   height: calc(100% - 320px);
 }
 
-#game-container {
-  height: auto;
-  width: auto;
- }
-
  canvas {
     display: inline;
  }
 
  #players-info{
-    width: auto;
-    height: auto;
+    display: flex;
+    justify-content: space-between;
+    height: 25px;
+    margin-bottom: 0.5%;
+    margin-top: 0.5%;
+ }
+
+ #boostOne{
+  background-color:rgb(255, 140, 64);
+  height: 100%;
+  width: 100%;
+  margin-right: 5%;
+ }
+
+ #boostTwo{
+  background-color:rgb(255, 140, 64);
+  height: 100%;
+  width: 100%;
+  margin-left: 5%;
  }
 
  .button-container {
@@ -83,4 +95,25 @@
 
 .button-leave:active .button-leave-icon {
   fill: white;
+}
+#playerOneInfo{
+  height: 100%;
+  width: 50%;
+ }
+
+ #playerTwoInfo{
+  height: 100%;
+  width: 50%;
+}
+
+#avatarOne{
+  height: 100%;
+  width: 20%;
+  margin-right: 10%;
+}
+
+#avatarTwo{
+  height: 100%;
+  width: 20%;
+  margin-left: 10%;
 }

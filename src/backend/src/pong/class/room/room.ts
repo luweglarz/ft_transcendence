@@ -1,13 +1,11 @@
-import { Ball } from '../ball/ball';
-import { GameMap } from '../game-map/game-map';
+import { GameMode } from '../../interface/game-mode.interface';
 import { Player } from '../player/player';
 
 export class Room {
   constructor(
     private _uuid: string,
-    private _gameMap: GameMap,
+    private _gameMode: GameMode,
     private _players: Player[],
-    private _ball: Ball,
   ) {
     this.players[0].socket.join(this.uuid);
     this.players[1].socket.join(this.uuid);
@@ -19,15 +17,12 @@ export class Room {
     return this._uuid;
   }
 
-  get gameMap(): GameMap {
-    return this._gameMap;
+  get gameMode(): GameMode {
+    return this._gameMode;
   }
 
   get players(): Player[] {
     return this._players;
-  }
-  get ball(): Ball {
-    return this._ball;
   }
 
   get gameLoopInterval(): any {
