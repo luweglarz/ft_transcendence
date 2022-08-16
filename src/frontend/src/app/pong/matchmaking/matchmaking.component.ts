@@ -8,6 +8,10 @@ import { MatchmakingService } from './matchmaking.service';
   styleUrls: ['./matchmaking.component.css'],
 })
 export class MatchmakingComponent {
+  normalQueue = false;
+  customQueue = false;
+  rankedQueue = false;
+
   constructor(
     public matchmakingService: MatchmakingService,
     public collapseService: CollapseService,
@@ -15,13 +19,28 @@ export class MatchmakingComponent {
 
   buttonRequestJoinNormalMatchMaking() {
     this.matchmakingService.requestJoinNormalMatchMaking();
+    this.normalQueue = true;
+    this.customQueue = false;
+    this.rankedQueue = false;
   }
 
   buttonRequestJoinCustomGamemodeMatchamking() {
     this.matchmakingService.requestJoinCustomGamemodeMatchamking();
+    this.normalQueue = false;
+    this.customQueue = true;
+    this.rankedQueue = false;
+  }
+
+  buttonRequestJoinRankedGamemodeMatchamking() {
+    this.normalQueue = false;
+    this.customQueue = false;
+    this.rankedQueue = true;
   }
 
   buttonRequestLeaveMatchMaking() {
     this.matchmakingService.requestLeaveMatchMaking();
+    this.normalQueue = false;
+    this.customQueue = false;
+    this.rankedQueue = false;
   }
 }

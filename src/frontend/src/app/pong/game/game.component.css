@@ -1,4 +1,9 @@
 .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   height: calc(100% - 58px);
   width: 100%;
   transition: all 0.3s;
@@ -16,22 +21,81 @@
     display: flex;
     justify-content: space-between;
     height: 25px;
+    margin-bottom: 0.5%;
+    margin-top: 0.5%;
  }
 
  #boostOne{
   background-color:rgb(255, 140, 64);
-  height: 100%; 
+  height: 100%;
   width: 100%;
   margin-right: 5%;
  }
 
  #boostTwo{
   background-color:rgb(255, 140, 64);
-  height: 100%; 
+  height: 100%;
   width: 100%;
   margin-left: 5%;
  }
 
+ .button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+ }
+
+ .button-leave {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  width: fit-content;
+  height: 48px;
+  cursor: pointer;
+
+  font-size: large;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  border-radius: 8px;
+
+  padding: 14px 24px;
+  border: none;
+  background-color: white;
+  margin: 12px;
+  transition: all 0.3s;
+  color: #1A202C;
+}
+
+ .button-leave:hover {
+  background-color: #44526F;
+  font-size: large;
+  font-weight: bold;
+  color: white;
+}
+
+.button-leave:active {
+  background-color: #1A202C;
+  font-size: large;
+  font-weight: bold;
+  color: white;
+}
+
+.button-leave .button-leave-icon {
+  fill: #1A202C;
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+}
+
+.button-leave:hover .button-leave-icon {
+  fill: white;
+}
+
+.button-leave:active .button-leave-icon {
+  fill: white;
+}
 #playerOneInfo{
   height: 100%;
   width: 50%;
@@ -40,4 +104,16 @@
  #playerTwoInfo{
   height: 100%;
   width: 50%;
+}
+
+#avatarOne{
+  height: 100%;
+  width: 20%;
+  margin-right: 10%;
+}
+
+#avatarTwo{
+  height: 100%;
+  width: 20%;
+  margin-left: 10%;
 }
