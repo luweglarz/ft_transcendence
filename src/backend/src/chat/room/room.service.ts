@@ -93,11 +93,11 @@ export class RoomService {
   async removePassword(room: Room) {
     await this.prisma.room.update({
       where: {
-          id: room.id,
+        id: room.id,
       },
       data: {
-          roomType: 'PUBLIC',
-          password: null,
+        roomType: 'PUBLIC',
+        password: null,
       },
     });
   }
@@ -105,10 +105,10 @@ export class RoomService {
   async updatePassword(room: Room, nPassword: string) {
     await this.prisma.room.update({
       where: {
-          id: room.id,
+        id: room.id,
       },
       data: {
-          password: await argon.hash(nPassword),
+        password: await argon.hash(nPassword),
       },
     });
   }

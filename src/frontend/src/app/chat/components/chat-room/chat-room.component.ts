@@ -67,11 +67,11 @@ export class ChatRoomComponent implements OnChanges {
     //console.log(this.chatRoom.name);
     //console.log(this.chatMessage.value);
     if (!this.chatMessage.valid) {
-      return ;
+      return;
     }
     if (this.chatMessage.value[0] === '/') {
       console.log('command');
-      this.chatService.sendCommand(this.chatMessage.value, this.chatRoom)
+      this.chatService.sendCommand(this.chatMessage.value, this.chatRoom);
     } else {
       this.chatService.sendMessage({
         content: this.chatMessage.value,
