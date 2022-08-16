@@ -1,23 +1,23 @@
-import { GameMap } from '../game-map/game-map';
+import { GameMode } from 'src/pong/interface/game-mode.interface';
 import { Player } from '../player/player';
 
 export class Ball {
   constructor(
-    gameMap: GameMap,
+    gameMode: GameMode,
     private _speed: number,
     private _color: string,
     private _radius: number,
   ) {
     this._initialSpeed = this._speed;
 
-    this._mapCenter.x = Math.round(gameMap.canvaWidth / 2);
-    this._mapCenter.y = Math.round(gameMap.canvaHeight / 2);
+    this._mapCenter.x = Math.round(gameMode.canvaWidth / 2);
+    this._mapCenter.y = Math.round(gameMode.canvaHeight / 2);
 
     this._x = this._mapCenter.x;
     this._y = this._mapCenter.y;
 
     this._borderCollisionUp = 0;
-    this._borderCollisionDown = gameMap.canvaHeight;
+    this._borderCollisionDown = gameMode.canvaHeight;
   }
 
   private _x: number;
@@ -112,9 +112,9 @@ export class Ball {
         return true;
   }
 
-  resetBall(gameMap: GameMap) {
+  resetBall(gameMode: GameMode) {
     this.x = this._mapCenter.x;
-    this.y = Math.floor(Math.random() * gameMap.canvaHeight + 1);
+    this.y = Math.floor(Math.random() * gameMode.canvaHeight + 1);
     this.speed = this._initialSpeed;
   }
 }

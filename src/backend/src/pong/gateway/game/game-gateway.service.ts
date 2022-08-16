@@ -1,8 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConnectedSocket } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
+import { CustomGame } from 'src/pong/class/game-mode/custom-game/custom-game';
+import { NormalGame } from 'src/pong/class/game-mode/normal-game/normal-game';
+import { GameMode } from 'src/pong/interface/game-mode.interface';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
-import { Ball } from 'src/pong/class/ball/ball';
 import { Player } from '../../class/player/player';
 import { Room } from '../../class/room/room';
 
@@ -67,37 +69,31 @@ export class GameGatewayService {
     else server.to(roomUuid).emit('gameFinished', { username: winner });
   }
 
-  emitGameUpdate(server: Server, gameRoom: Room, ball: Ball) {
-    server.to(gameRoom.uuid).emit(
-      'gameUpdate',
-      { x: gameRoom.players[0].x, y: gameRoom.players[0].y },
-      { x: gameRoom.players[1].x, y: gameRoom.players[1].y },
-      { x: ball.x, y: ball.y },
-      {
-        playerOneGoals: gameRoom.players[0].goals,
-        playerTwoGoals: gameRoom.players[1].goals,
-      },
-    );
+  private getGameMode(game: GameMode): string {
+    if (game instanceof NormalGame) return 'normal';
+    else if (game instanceof CustomGame) return 'custom';
+    return 'ranked';
   }
 
-  emitMatchFound(server: Server, newRoom: Room, ball: Ball, players: Player[]) {
+  emitMatchFound(server: Server, newRoom: Room) {
     server.to(newRoom.uuid).emit(
       'matchFound',
       'A match has been found',
+      this.getGameMode(newRoom.gameMode),
       {
-        canvaHeight: newRoom.gameMap.canvaHeight,
-        canvaWidth: newRoom.gameMap.canvaWidth,
-        backgroundColor: newRoom.gameMap.backgroundColor,
-        ballRadius: ball.radius,
-        ballColor: ball.color,
+        canvaHeight: newRoom.gameMode.canvaHeight,
+        canvaWidth: newRoom.gameMode.canvaWidth,
+        backgroundColor: newRoom.gameMode.backgroundColor,
+        ballRadius: newRoom.gameMode.ball.radius,
+        ballColor: newRoom.gameMode.ball.color,
       },
       {
-        height: players[0].height,
-        width: players[0].width,
-        playerOneColor: players[0].color,
-        playerTwoColor: players[1].color,
-        playerOneUsername: players[0].username,
-        playerTwoUsername: players[1].username,
+        height: newRoom.players[0].height,
+        width: newRoom.players[0].width,
+        playerOneColor: newRoom.players[0].color,
+        playerTwoColor: newRoom.players[1].color,
+        playerOneUsername: newRoom.players[0].username,
+        playerTwoUsername: newRoom.players[1].username,
       },
     );
   }

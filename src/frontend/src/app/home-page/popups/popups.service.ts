@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
+import { JwtService } from 'src/app/auth/jwt';
+import { ProfilInfoService } from './profil/profil-info.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PopupsService {
-  constructor() {
+  constructor(
+    public profilInfoService: ProfilInfoService,
+    public jwtService: JwtService,
+  ) {
     this.profilPopup = false;
     this.ladderPopup = false;
     this.socialPopup = false;
@@ -14,7 +19,8 @@ export class PopupsService {
   public ladderPopup;
   public socialPopup;
 
-  openProfil() {
+  openProfil(username: string) {
+    this.profilInfoService.loadUserProfil(username);
     this.profilPopup = true;
     this.ladderPopup = false;
     this.socialPopup = false;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CollapseService } from 'src/app/home-page/collapse.service';
+import { CollapseService } from 'src/app/home-page/services/collapse.service';
 import { MatchmakingService } from './matchmaking.service';
 
 @Component({
@@ -8,33 +8,40 @@ import { MatchmakingService } from './matchmaking.service';
   styleUrls: ['./matchmaking.component.css'],
 })
 export class MatchmakingComponent {
-  //Queues
-  originalQueue = false;
-  funQueue = false;
+
+  normalQueue = false;
+  customQueue = false;
   rankedQueue = false;
 
   constructor(
-    private matchmakingService: MatchmakingService,
+    public matchmakingService: MatchmakingService,
     public collapseService: CollapseService,
   ) {}
 
   buttonRequestJoinNormalMatchMaking() {
     this.matchmakingService.requestJoinNormalMatchMaking();
-    this.originalQueue = true;
+    this.normalQueue = true;
+    this.customQueue = false;
+    this.rankedQueue = false;
   }
 
-  buttonRequestJoinFunMatchMaking() {
-    this.funQueue = true;
+  buttonRequestJoinCustomGamemodeMatchamking() {
+    this.matchmakingService.requestJoinCustomGamemodeMatchamking();
+    this.normalQueue = false;
+    this.customQueue = true;
+    this.rankedQueue = false;
   }
 
-  buttonRequestJoinRankedMatchMaking() {
+  buttonRequestJoinRankedGamemodeMatchamking() {
+    this.normalQueue = false;
+    this.customQueue = false;
     this.rankedQueue = true;
   }
 
   buttonRequestLeaveMatchMaking() {
     this.matchmakingService.requestLeaveMatchMaking();
-    this.originalQueue = false;
-    this.funQueue = false;
+    this.normalQueue = false;
+    this.customQueue = false;
     this.rankedQueue = false;
   }
 }
