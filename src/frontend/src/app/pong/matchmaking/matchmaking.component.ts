@@ -8,7 +8,6 @@ import { MatchmakingService } from './matchmaking.service';
   styleUrls: ['./matchmaking.component.css'],
 })
 export class MatchmakingComponent {
-
   normalQueue = false;
   customQueue = false;
   rankedQueue = false;

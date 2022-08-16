@@ -9,7 +9,6 @@ import { GameMode } from '../interface/game-mode';
   providedIn: 'root',
 })
 export class MatchmakingService {
-
   constructor(
     private socket: GameSocket,
     private gameService: GameService,

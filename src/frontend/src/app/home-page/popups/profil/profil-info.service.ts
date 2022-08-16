@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
 import { Game } from '../../interfaces/game.interface';
 import { WinHistory } from '../../interfaces/win-history.interface';
 import { LoseHistory } from '../../interfaces/lose-history.interface';
-import { User } from '../../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
