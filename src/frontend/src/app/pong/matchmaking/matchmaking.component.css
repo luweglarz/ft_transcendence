@@ -6,7 +6,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    transition: all 0.3s;
+    transition: all 3s;
   }
 
   .matchmaking-cards-collapsed {
@@ -31,7 +31,7 @@
     font-family: 'Roboto', sans-serif;
     text-align: center;
 
-    transition: 0.3s;
+    transition: 1s;
   }
 
   .matchmaking-card-selected {
