@@ -18,7 +18,11 @@ export class GameSocket extends Socket {
   constructor(jwtService: JwtService) {
     super({
       url: environment.backend,
-      options: { autoConnect: false, path: environment.socketGamePath, transports: ["websocket", "polling"] },
+      options: {
+        autoConnect: false,
+        path: environment.socketGamePath,
+        transports: ['websocket', 'polling'],
+      },
     });
     this.ioSocket.auth = { token: jwtService.getToken() };
   }
@@ -59,6 +63,7 @@ export class GameSocket extends Socket {
             gameMapInfo.backgroundColor,
             [playerOne, playerTwo],
             ball,
+            gameService,
           );
         else if (gameType === 'custom')
           matchmakingService.game = new CustomGame(
@@ -67,6 +72,7 @@ export class GameSocket extends Socket {
             gameMapInfo.backgroundColor,
             [playerOne, playerTwo],
             ball,
+            gameService,
           );
       },
     );
