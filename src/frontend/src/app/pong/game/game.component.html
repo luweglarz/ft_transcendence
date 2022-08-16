@@ -1,11 +1,19 @@
 <div class="container" [ngClass]="collapseService.chatCollapsed ? 'container-collapsed': ''">
   <div align="center">
       <div #playersInfo id= "players-info">
-              <div #playerOneInfo id="playerOneInfo"></div>
-              <canvas ngif="this.gameService.isCustomGame(this.game)" #boostOne id="boostOne"></canvas>
-              <span style="font-family: Courier New">V.S</span>
-              <canvas ngif="this.gameService.isCustomGame(this.game)" #boostTwo id="boostTwo"></canvas>
-              <div #playerTwoInfo id="playerTwoInfo"></div>
+        <div id="playerOneInfo">
+          <img id="avatarOne" avatar username= {{this.game.players[0].username}}>
+          <span>{{this.game.players[0].username}}</span>
+        </div>
+        <canvas *ngIf="this.gameService.isCustomGame(this.game)" #boostOne id="boostOne"></canvas>
+        <div *ngIf="!this.gameService.isCustomGame(this.game)" style="height: 100%; width: 100%; margin-right: 5%;"></div>
+        <span style="font-family: Courier New">V.S</span>
+        <canvas *ngIf="this.gameService.isCustomGame(this.game)" #boostTwo id="boostTwo"></canvas>
+        <div *ngIf="!this.gameService.isCustomGame(this.game)" style="height: 100%; width: 100%; margin-right: 5%;"></div>
+        <div id="playerTwoInfo">
+          <span>{{this.game.players[1].username}}</span>
+          <img id="avatarTwo" avatar username= {{this.game.players[1].username}}>
+        </div>
       </div>
       <canvas id="canvas-container" #gameCanvas ></canvas>
   </div>
