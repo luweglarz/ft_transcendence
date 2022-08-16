@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
 import { Room, Prisma, Message } from '@prisma/client';
+import * as argon from 'argon2';
 
 @Injectable()
 export class RoomService {
@@ -85,6 +86,29 @@ export class RoomService {
         messages: {
           connect: nMessage,
         },
+      },
+    });
+  }
+
+  async removePassword(room: Room) {
+    await this.prisma.room.update({
+      where: {
+          id: room.id,
+      },
+      data: {
+          roomType: 'PUBLIC',
+          password: null,
+      },
+    });
+  }
+
+  async updatePassword(room: Room, nPassword: string) {
+    await this.prisma.room.update({
+      where: {
+          id: room.id,
+      },
+      data: {
+          password: await argon.hash(nPassword),
       },
     });
   }

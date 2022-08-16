@@ -63,9 +63,6 @@ model RoomUser {
   room       Room      @relation(fields: [roomId], references: [id])
   roomId     Int
   role       Role
-  isBanned   Boolean   @default(false)
-  isMuted    Boolean   @default(false)
-  timeOut    DateTime?
   socketId   String
 }
 
