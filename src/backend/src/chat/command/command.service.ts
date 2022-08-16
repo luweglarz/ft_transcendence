@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { RoomUser, User } from "@prisma/client";
 import { DbService } from "src/db/db.service";
 import { RoomUserService } from "../room-user/room-user.service";
+import { RoomService } from "../room/room.service";
 
 
 @Injectable()
@@ -9,6 +10,7 @@ export class CommandService {
 
     constructor(
         private roomUserService: RoomUserService,
+        private roomService: RoomService,
         private prisma: DbService,
         ) {}
 
@@ -29,6 +31,8 @@ export class CommandService {
             this.admin(splitCmd, command, roomUser);
         } else if (splitCmd[0] === '/deadmin') {
             this.deadmin(splitCmd, command, roomUser);
+        } else if (splitCmd[0] === '/password') {
+            this.password(splitCmd, command, roomUser);
         }
     }
 
@@ -47,6 +51,7 @@ export class CommandService {
         if (targetRoomUser[0].role === 'USER')
             await this.roomUserService.updateRole(targetRoomUser[0].roomUserId, 'ADMIN');
     }
+
     async deadmin(splitCmd: string[], command, roomUser: RoomUser) {
     if (roomUser.role === 'USER' || roomUser.role === 'ADMIN')
         return ;
@@ -62,13 +67,33 @@ export class CommandService {
     if (targetRoomUser[0].role === 'ADMIN')
         await this.roomUserService.updateRole(targetRoomUser[0].roomUserId, 'USER');
     }
+
+    async password(splitCmd: string[], command, roomUser: RoomUser) {
+        if (roomUser.role !== 'OWNER')
+            return ;
+        console.log('after check owner');
+        if (splitCmd.length === 1)
+            return ;
+        console.log('after check length');
+        let room = await this.roomService.room({id: command.id});
+        if (room === undefined)
+            return ;
+            console.log('after check room');
+        if (splitCmd[1] === 'remove') {
+            await this.roomService.removePassword(room);
+        } else if (splitCmd[1] === 'change') {
+            if (splitCmd.length !== 3)
+                return ;
+            await this.roomService.updatePassword(room, splitCmd[2]);
+        }
+    }
 }
 /*
 - ban 2
 - mute 2
-- password 0
-- admin 0
-- deadmin 1
++ password 0
++ admin 0
++ deadmin 1
 - invite 3
 - challenge 4
 */
