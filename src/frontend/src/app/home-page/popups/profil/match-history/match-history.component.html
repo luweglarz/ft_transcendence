@@ -1,11 +1,10 @@
-<div class="history-content">
+<div class="container">
   <!-- History Title -->
   <h3 class="history-title">Match History</h3>
-
   <!-- List -->
-  <ul class="history-items" *ngIf="isLoaded">
+  <div class="history-items" *ngIf="isLoaded">
     <!-- Item -->
-    <li class="history-item" *ngFor="let game of profilInfoService.gameHistory.slice().reverse()">
+    <div class="history-item" *ngFor="let game of profilInfoService.gameHistory.slice().reverse()">
       <!-- Left player -->
       <div class="history-item-player">
         <img class="history-item-avatar" avatar username="{{ getUsernameById(game.winnerId) }}" height="48px" width="48px" alt="">
@@ -23,6 +22,6 @@
         <p>{{ getUsernameById(game.loserId) }}</p>
         <img class="history-item-avatar" avatar username="{{ getUsernameById(game.loserId) }}" height="48px" width="48px" alt="">
       </div>
-    </li>
-  </ul>
+    </div>
+  </div>
 </div>
