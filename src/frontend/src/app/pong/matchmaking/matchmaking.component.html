@@ -2,29 +2,32 @@
 <div class="matchmaking-cards" [ngClass]=" collapseService.chatCollapsed ? 'matchmaking-cards-collapsed': ''">
 
   <!-- Matchmaking gamemode-->
-  <div class="matchmaking-card">
+  <div class="matchmaking-card" *ngIf="!rankedQueue && !customQueue" [ngClass]="normalQueue ? 'matchmaking-card-selected': ''">
     <h3 class="matchmaking-card-title" >Original mode</h3>
-    <img src="/assets/images/classic.png" alt="">
+    <img class="matchmaking-logo" src="/assets/images/classic.png" alt="">
     <p class="matchmaking-card-desc">The original pong gamemode from 1972.</p>
-    <p *ngIf="!originalQueue">Player(s) in this mode : {{ this.nbPlayersOriginal }}</p>
-    <p *ngIf="originalQueue">Time in queue : {{ this.secInQueue }}s</p>
-    <button class="matchmaking-btn" *ngIf="!originalQueue" (click)="buttonRequestJoinNormalMatchMaking()">Join queue</button>
-    <button class="matchmaking-btn" *ngIf="originalQueue" (click)="buttonRequestLeaveMatchMaking()">Quit queue</button>
-  </div>
-<!--
-  <div class="matchmaking-card">
-    <h3 class="matchmaking-card-title" >Ranked mode</h3>
-    <img src="/assets/images/ranked.png" alt="">
-    <p class="matchmaking-card-desc">The original pong gamemode with a ranking system.</p>
-    <button class="matchmaking-btn" *ngIf="!rankedQueue" (click)="joinRankedQueue()">Join queue</button>
-    <button class="matchmaking-btn" *ngIf="rankedQueue" (click)="quitRankedQueue()">Quit queue</button>
+    <p *ngIf="this.matchmakingService.stopWatch.running">Time in queue : {{ this.matchmakingService.stopWatch.secInQueue }}s</p>
+    <!-- <button class="matchmaking-btn" *ngIf="!this.matchmakingService.stopWatch.running" (click)="buttonRequestJoinNormalMatchMaking()">Join queue</button>
+    <button class="matchmaking-btn" *ngIf="this.matchmakingService.stopWatch.running" (click)="buttonRequestLeaveMatchMaking()">Quit queue</button> -->
+    <button class="matchmaking-btn" *ngIf="!normalQueue" (click)="buttonRequestJoinNormalMatchMaking()">Join queue</button>
+    <button class="matchmaking-btn" *ngIf="normalQueue" (click)="buttonRequestLeaveMatchMaking()">Quit queue</button>
   </div>
 
-  <div class="matchmaking-card">
+  <div class="matchmaking-card" *ngIf="!customQueue && !normalQueue" [ngClass]="rankedQueue ? 'matchmaking-card-selected': ''">
+    <h3 class="matchmaking-card-title" >Ranked mode</h3>
+    <img class="matchmaking-logo" src="/assets/images/ranked.png" alt="">
+    <p class="matchmaking-card-desc">Prove yourself against the best players.</p>
+    <p *ngIf="this.matchmakingService.stopWatch.running">Time in queue : {{ this.matchmakingService.stopWatch.secInQueue }}s</p>
+    <button class="matchmaking-btn" *ngIf="!rankedQueue" (click)="buttonRequestJoinRankedGamemodeMatchamking()">Join queue</button>
+    <button class="matchmaking-btn" *ngIf="rankedQueue" (click)="buttonRequestLeaveMatchMaking()">Quit queue</button>
+  </div>
+
+  <div class="matchmaking-card" *ngIf="!normalQueue && !rankedQueue" [ngClass]="customQueue ? 'matchmaking-card-selected': ''">
     <h3 class="matchmaking-card-title" >Fun mode</h3>
-    <img src="/assets/images/fun.png" alt="">
+    <img class="matchmaking-logo" src="/assets/images/fun.png" alt="">
     <p class="matchmaking-card-desc">The funniest remix of the original pong gamemode.</p>
-    <button class="matchmaking-btn" *ngIf="!funQueue" (click)="joinFunQueue()">Join queue</button>
-    <button class="matchmaking-btn" *ngIf="funQueue" (click)="quitFunQueue()">Quit queue</button>
-  </div> -->
+    <p *ngIf="this.matchmakingService.stopWatch.running">Time in queue : {{ this.matchmakingService.stopWatch.secInQueue }}s</p>
+    <button class="matchmaking-btn" *ngIf="!customQueue" (click)="buttonRequestJoinCustomGamemodeMatchamking()">Join queue</button>
+    <button class="matchmaking-btn" *ngIf="customQueue" (click)="buttonRequestLeaveMatchMaking()">Quit queue</button>
+  </div>
 </div>
