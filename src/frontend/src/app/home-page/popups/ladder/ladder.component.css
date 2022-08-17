@@ -6,9 +6,170 @@
   height: 100%;
   color: white;
   font-size: 20px;
+
+  padding-top: 50px;
 }
 
-.ladder {
+.ladder-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 95%;
+  height: 32px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bolder;
+}
+
+.ladder-header-rank {
+  width: 64px;
+  min-height: fit-content;
+}
+
+.ladder-header-score {
+  width: 25%;
+  min-height: fit-content;
+}
+
+.ladder-header-counter {
+  width: 25%;
+  min-height: fit-content;
+}
+
+.ladder-header-username {
+  width: 30%;
+  text-align: center;
+  min-height: fit-content;
+}
+
+.ladder-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 95%;
+  height: calc(100% - (50px + 32px));
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.ladder-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  height: 100%;
+  height: 64px;
+  margin: 2px;
+  background-color: #44526F;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 1em;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  transition: 0.3s;
+}
+
+.ladder-item:hover {
+  background-color: #1A202C;
+}
+
+.ladder-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background-color: #1A202C;
+  border-radius: 1em;
+}
+
+.ladder-rank p {
+  font-size: 32px;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.first {
+  color: #FFC42E;
+}
+
+.second {
+  color: #D0D1D1;
+}
+
+.third {
+  color: #9A6F1B;
+}
+
+.ladder-score {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 25%;
+  height: 64px;
+  text-align: center;
+}
+
+.ladder-score-field {
+  width: 70px;
+}
+
+.ladder-win-lose {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 25%;
+  height: 64px;
+  text-align: center;
+}
+
+.ladder-wins {
+  font-size: 24px;
+  font-weight: bolder;
+  color: green;
+  margin-right: 10px;
+}
+
+.ladder-loses {
+  font-size: 24px;
+  font-weight: bolder;
+  color: red;
+  margin-left: 10px;
+}
+
+.ladder-player {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #1A202C;
+  width: 30%;
+  height: 64px;
+  border-radius: 1em;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.ladder-player-avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 100%;
+}
+
+.ladder-player-button {
+  cursor: pointer;
+  fill: white;
+  transition: 0.3s;
+}
+
+.ladder-player-button:hover {
+  fill: #44526F;
+  transition: 0.3s;
 }
