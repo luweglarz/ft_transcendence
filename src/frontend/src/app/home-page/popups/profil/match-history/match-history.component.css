@@ -1,4 +1,14 @@
-/* Safari, Chrome, IE */
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:flex-start;
+  height: 100%;
+  width: 100%;
+}
+
+/* Scrollbar Safari, Chrome, IE */
  ::-webkit-scrollbar {
   width: 10px;
 }
@@ -9,15 +19,6 @@
 
 ::-webkit-scrollbar-thumb {
   background: #44526F;
-}
-
-/* History */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  width: 100%;
 }
 
 /* Title */
@@ -35,7 +36,7 @@
   flex-direction: column;
   justify-content: flex-start;
   width: 90%;
-  height: calc(100% - 32px);
+  height: calc(100% - 128px);
 
   overflow-y:scroll;
   overflow-x: hidden;
