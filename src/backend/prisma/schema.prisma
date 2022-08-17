@@ -92,6 +92,7 @@ model Room {
 model Game {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
+  type        String
   winner      User     @relation("Winner", fields: [winnerId], references: [id])
   winnerId    Int
   winnerGoals Int
