@@ -31,6 +31,8 @@ export class CommandService {
       return (await this.deadmin(splitCmd, command, roomUser));
     } else if (splitCmd[0] === '/password') {
       return (await this.password(splitCmd, command, roomUser));
+    } else {
+      return 'command not found';
     }
   }
 
@@ -87,6 +89,7 @@ export class CommandService {
     console.log('after check length');
     const room = await this.roomService.room({ id: command.id });
     if (room === undefined) return 'database error';
+    if (room.roomType !== 'PROTECTED') return 'not a protected room';
     console.log('after check room');
     if (splitCmd[1] === 'remove') {
       await this.roomService.removePassword(room);
