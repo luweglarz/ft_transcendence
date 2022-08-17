@@ -6,6 +6,5 @@ export interface JwtPayload {
 }
 
 export interface OAuthJwtPayload {
-  state: 'incomplete';
   oAuthUser: OAuthUserDto;
 }

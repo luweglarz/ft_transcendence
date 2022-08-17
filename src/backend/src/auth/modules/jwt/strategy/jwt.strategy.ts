@@ -16,6 +16,8 @@ export class JwtAccessStrategy extends PassportStrategy(
     });
   }
   validate(payload: JwtPayload) {
+    // TODO: we may want to check in the database that the user still exists
+    // (if db is erased, the token remains valid even though the user does not exist anymore)
     return payload;
   }
 }

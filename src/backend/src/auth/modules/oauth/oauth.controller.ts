@@ -31,10 +31,7 @@ export class OauthController {
   @UseGuards(OAuth2Guard)
   async oauthSignUpTempToken(@User() user: OAuthUserDto) {
     return {
-      jwt: await this.jwt.signTempToken({
-        state: 'incomplete',
-        oAuthUser: user,
-      }),
+      jwt: await this.jwt.signTempToken({ oAuthUser: user }),
     };
   }
 }
