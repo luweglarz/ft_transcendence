@@ -5,6 +5,5 @@ export interface OAuthUser {
 }
 
 export interface OAuthJwtPayload {
-  state: 'incomplete';
   oAuthUser: OAuthUser;
 }
