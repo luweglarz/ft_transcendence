@@ -4,6 +4,7 @@ import { DbErrorCode } from 'src/db/errors';
 import { DbService } from 'src/db/db.service';
 import { Prisma, User } from '@prisma/client';
 import { JwtAuthService } from '../jwt/jwt-auth.service';
+import { SignInSuccessDto } from './dto/signin-success.dto';
 
 @Injectable()
 export class AuthUtilsService {
@@ -14,11 +15,11 @@ export class AuthUtilsService {
   /*
    * @brief Return a signed token. To be called after the sign in checks were successful
    */
-  async signInSuccess(user: User) {
+  async signInSuccess(user: User): Promise<SignInSuccessDto> {
     this.logger.log(`User '${user.username}' successfully signed in!`);
     return {
       message: `${user.username} successfully signed in!`,
-      jwt: await this.jwt.signAccessToken({
+      tokens: await this.jwt.newTokens({
         sub: user.id,
         username: user.username,
       }),

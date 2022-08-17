@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { SignInSuccessDto } from '../signin/dto/signin-success.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +15,9 @@ export class SignupService {
   postSignUpData(type: 'local' | 'oauth', payload: any, token?: string) {
     console.table(payload);
     if (type == 'local') {
-      return this.http.post(this.local_signup_url, payload);
+      return this.http.post<SignInSuccessDto>(this.local_signup_url, payload);
     } else {
-      return this.http.post(this.oauth_signup_url, {
+      return this.http.post<SignInSuccessDto>(this.oauth_signup_url, {
         ...payload,
         jwt: token,
       });

@@ -11,7 +11,7 @@ export class JwtAuthService {
 
   constructor(private jwt: JwtService, private db: DbService) {}
 
-  async tokens(payload: JwtPayload) {
+  async newTokens(payload: JwtPayload) {
     const tokenList = await Promise.all([
       this.signAccessToken(payload),
       this.signRefreshToken(payload),
@@ -34,13 +34,13 @@ export class JwtAuthService {
 
   //  ============================== Sign token ==============================  //
 
-  signAccessToken(payload: JwtPayload): Promise<string> {
+  private signAccessToken(payload: JwtPayload): Promise<string> {
     return this.jwt.signAsync(payload, {
       expiresIn: '42m',
       secret: this._accessTokenSecret,
     });
   }
-  signRefreshToken(payload: JwtPayload): Promise<string> {
+  private signRefreshToken(payload: JwtPayload): Promise<string> {
     return this.jwt.signAsync(payload, {
       expiresIn: '42h',
       secret: this._refreshTokenSecret,
