@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AvatarService } from 'src/app/avatar/avatar.service';
-import { OAuthUser } from '../interface';
+import { OAuthUserDto } from '../oauth/dto';
 import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
 import { SigninService } from '../signin/signin.service';
@@ -25,7 +25,7 @@ export class SignUpComponent implements OnInit {
   image_url = '/assets/images/default-avatar.png';
   // Oauth specific
   token?: string;
-  oAuthUser?: OAuthUser;
+  oAuthUser?: OAuthUserDto;
 
   registerForm?: UntypedFormGroup;
 

@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
-import { JwtPayload, OAuthJwtPayload } from './interfaces';
+import { JwtPayload } from './interfaces';
 
 @Injectable()
 export class JwtAuthService {
   private readonly _accessTokenSecret = `access ${process.env['JWT_SECRET']}`;
   private readonly _refreshTokenSecret = `refresh ${process.env['JWT_SECRET']}`;
-  private readonly _tempTokenSecret = `temp ${process.env['JWT_SECRET']}`;
 
   constructor(private jwt: JwtService, private db: DbService) {}
 
@@ -46,12 +45,6 @@ export class JwtAuthService {
       secret: this._refreshTokenSecret,
     });
   }
-  signTempToken(payload: OAuthJwtPayload): Promise<string> {
-    return this.jwt.signAsync(payload, {
-      expiresIn: '10m',
-      secret: this._tempTokenSecret,
-    });
-  }
 
   //  ============================= Verify token =============================  //
 
@@ -63,9 +56,6 @@ export class JwtAuthService {
   }
   verifyRefreshToken(token: string) {
     return this.jwt.verifyAsync(token, { secret: this._refreshTokenSecret });
-  }
-  verifyTempToken(token: string) {
-    return this.jwt.verifyAsync(token, { secret: this._tempTokenSecret });
   }
 
   //  ================= Save / Clear / Compare refresh token =================  //
