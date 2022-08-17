@@ -37,7 +37,7 @@ export class ChatRoomComponent implements OnChanges {
   constructor(
     private chatService: ChatService,
     private snackBar: MatSnackBar,
-    ) {}
+  ) {}
 
   //ngOnInit(): void {}
 
@@ -78,7 +78,10 @@ export class ChatRoomComponent implements OnChanges {
       this.chatService.sendCommand(this.chatMessage.value, this.chatRoom);
       this.chatService.getCommandResult().then((commandReturn) => {
         //console.log(commandReturn);
-        this.snackBar.open(commandReturn, 'dismiss', {duration: 2000, horizontalPosition: 'right'});
+        this.snackBar.open(commandReturn, 'dismiss', {
+          duration: 2000,
+          horizontalPosition: 'right',
+        });
       });
     } else {
       this.chatService.sendMessage({

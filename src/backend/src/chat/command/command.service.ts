@@ -21,23 +21,32 @@ export class CommandService {
     const splitCmd: string[] = command.command.split(/[ \t\n]+/);
     console.log(splitCmd);
     if (splitCmd.length < 2) return 'incomplete command';
-    return (await this.cmdSelector(splitCmd, command, roomUser[0]));
+    return await this.cmdSelector(splitCmd, command, roomUser[0]);
   }
 
-  async cmdSelector(splitCmd: string[], command, roomUser: RoomUser): Promise<string> {
+  async cmdSelector(
+    splitCmd: string[],
+    command,
+    roomUser: RoomUser,
+  ): Promise<string> {
     if (splitCmd[0] === '/admin') {
-      return (await this.admin(splitCmd, command, roomUser));
+      return await this.admin(splitCmd, command, roomUser);
     } else if (splitCmd[0] === '/deadmin') {
-      return (await this.deadmin(splitCmd, command, roomUser));
+      return await this.deadmin(splitCmd, command, roomUser);
     } else if (splitCmd[0] === '/password') {
-      return (await this.password(splitCmd, command, roomUser));
+      return await this.password(splitCmd, command, roomUser);
     } else {
       return 'command not found';
     }
   }
 
-  async admin(splitCmd: string[], command, roomUser: RoomUser): Promise<string> {
-    if (roomUser.role === 'USER' || roomUser.role === 'ADMIN') return 'you don\'t have the right';
+  async admin(
+    splitCmd: string[],
+    command,
+    roomUser: RoomUser,
+  ): Promise<string> {
+    if (roomUser.role === 'USER' || roomUser.role === 'ADMIN')
+      return "you don't have the right";
     const targetUser = await this.prisma.user.findUnique({
       where: { username: splitCmd[1] },
     });
@@ -54,13 +63,30 @@ export class CommandService {
         targetRoomUser[0].roomUserId,
         'ADMIN',
       );
-      return ((await this.prisma.user.findUnique({where: {id: targetRoomUser[0].userId}})).username + ' is now an admin');
+      return (
+        (
+          await this.prisma.user.findUnique({
+            where: { id: targetRoomUser[0].userId },
+          })
+        ).username + ' is now an admin'
+      );
     }
-    return ((await this.prisma.user.findUnique({where: {id: targetRoomUser[0].userId}})).username + ' is already an admin');
+    return (
+      (
+        await this.prisma.user.findUnique({
+          where: { id: targetRoomUser[0].userId },
+        })
+      ).username + ' is already an admin'
+    );
   }
 
-  async deadmin(splitCmd: string[], command, roomUser: RoomUser): Promise<string> {
-    if (roomUser.role === 'USER' || roomUser.role === 'ADMIN') return 'you don\'t have the right';
+  async deadmin(
+    splitCmd: string[],
+    command,
+    roomUser: RoomUser,
+  ): Promise<string> {
+    if (roomUser.role === 'USER' || roomUser.role === 'ADMIN')
+      return "you don't have the right";
     const targetUser = await this.prisma.user.findUnique({
       where: { username: splitCmd[1] },
     });
@@ -77,13 +103,29 @@ export class CommandService {
         targetRoomUser[0].roomUserId,
         'USER',
       );
-      return ((await this.prisma.user.findUnique({where: {id: targetRoomUser[0].userId}})).username + ' is now a user');
+      return (
+        (
+          await this.prisma.user.findUnique({
+            where: { id: targetRoomUser[0].userId },
+          })
+        ).username + ' is now a user'
+      );
     }
-    return ((await this.prisma.user.findUnique({where: {id: targetRoomUser[0].userId}})).username + ' is already a user');
+    return (
+      (
+        await this.prisma.user.findUnique({
+          where: { id: targetRoomUser[0].userId },
+        })
+      ).username + ' is already a user'
+    );
   }
 
-  async password(splitCmd: string[], command, roomUser: RoomUser): Promise<string> {
-    if (roomUser.role !== 'OWNER') return 'you don\'t have the right';
+  async password(
+    splitCmd: string[],
+    command,
+    roomUser: RoomUser,
+  ): Promise<string> {
+    if (roomUser.role !== 'OWNER') return "you don't have the right";
     console.log('after check owner');
     if (splitCmd.length === 1) return 'incomplete command';
     console.log('after check length');

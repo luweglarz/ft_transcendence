@@ -14,7 +14,7 @@ import { ChatMessageComponent } from './components/chat-message/chat-message.com
 import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room-create.component';
 import { ChatMainComponent } from './components/chat-main/chat-main.component';
 import { MatCardModule } from '@angular/material/card';
-import { MatSnackBarModule } from '@angular/material/snack-bar'
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
