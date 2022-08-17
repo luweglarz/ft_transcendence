@@ -33,6 +33,10 @@ export class ChatService {
     return this.socket.fromOneTimeEvent<Room>('createdRoom');
   }
 
+  getCommandResult(): Promise<string> {
+    return this.socket.fromOneTimeEvent<string>('resultCommand');
+  }
+
   openChat() {
     this.socket.emit('getRooms');
   }
