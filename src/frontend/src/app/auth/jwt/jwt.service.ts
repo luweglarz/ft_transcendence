@@ -15,7 +15,10 @@ export interface JwtPayload {
   providedIn: 'root',
 })
 export class JwtService {
-  private _token: string | null = null;
+  private readonly accessTokenKey = 'accessToken';
+  private readonly refreshTokenKey = 'refreshToken';
+  private _accessToken: string | null = null;
+
   constructor(private http: HttpClient) {}
 
   get username() {
@@ -23,18 +26,21 @@ export class JwtService {
   }
 
   getToken() {
-    if (!this._token) this._token = localStorage.getItem('jwt');
-    return this._token;
+    if (!this._accessToken)
+      this._accessToken = localStorage.getItem(this.accessTokenKey);
+    return this._accessToken;
   }
 
-  setToken(token: string) {
-    localStorage.setItem('jwt', token);
-    this._token = token;
+  storeTokens(accessToken: string, refreshToken: string) {
+    localStorage.setItem(this.accessTokenKey, accessToken);
+    localStorage.setItem(this.refreshTokenKey, refreshToken);
+    this._accessToken = accessToken;
   }
 
   clearToken() {
-    localStorage.removeItem('jwt');
-    this._token = null;
+    localStorage.removeItem(this.accessTokenKey);
+    localStorage.removeItem(this.refreshTokenKey);
+    this._accessToken = null;
   }
 
   getPayload() {
@@ -65,7 +71,7 @@ export class JwtService {
   async testToken() {
     let status = { message: 'Cannot establish private connection... 🛑' };
     if (this.getToken()) {
-      console.log(`My jwt: ${this._token}`);
+      console.log(`My jwt: ${this._accessToken}`);
       try {
         status = await lastValueFrom<{ message: string }>(
           this.http.get<{ message: string }>(

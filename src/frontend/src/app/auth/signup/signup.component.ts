@@ -108,8 +108,11 @@ export class SignUpComponent implements OnInit {
         this.registerForm?.value,
         this.token,
       );
-      signUpStatus$.subscribe((response: any) => {
-        this.signin.signInSuccess(response['jwt']);
+      signUpStatus$.subscribe((response) => {
+        this.signin.signInSuccess(
+          response.tokens.access,
+          response.tokens.refresh,
+        );
         this.avatar.backendUpload();
       });
     }
