@@ -222,7 +222,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('command')
   async command(socket: Socket, command: JSON) {
     this.logger.debug(command);
-    let resultCmd: string = await this.commandService.exec(command, socket.data.user);
+    const resultCmd: string = await this.commandService.exec(
+      command,
+      socket.data.user,
+    );
     this.logger.debug(resultCmd);
     this.server.to(socket.id).emit('resultCommand', resultCmd);
   }
