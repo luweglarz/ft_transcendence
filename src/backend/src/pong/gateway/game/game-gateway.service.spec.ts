@@ -1,6 +1,5 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { JwtAuthModule } from 'src/auth/modules/jwt/jwt-auth.module';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { GameGatewayService } from './game-gateway.service';
 
