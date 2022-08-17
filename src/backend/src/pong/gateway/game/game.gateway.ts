@@ -71,9 +71,7 @@ export class GameGateway
         gameRoom,
         client,
       );
-      if (eventKey == 'ArrowDown') player.velocity = 1;
-      else if (eventKey == 'ArrowUp') player.velocity = -1;
-      else if (eventKey == 'stop') player.velocity = 0;
+      gameRoom.gameMode.movementHandler(eventKey, player);
     } catch (error) {
       this.logger.debug(error);
     }

@@ -104,6 +104,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // needs emit once i can find how to identify user by connection to server
     // emit new room to all connected user
     //this.server.to(socket.id).emit('rooms', this.roomService.rooms({}));
+    //await this.getRooms(socket);
     await this.getRooms();
     this.server.to(socket.id).emit('createdRoom', nr);
     await this.getRoomUsers(room.id);
@@ -237,10 +238,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.messageService.messages({ where: { roomId: roomId } }),
       ),
     );
-    let count = 0;
-    for (const roomUser of messages) {
-      count++;
-    }
+    // let count = 0;
+    // for (const roomUser of messages) {
+    //   count++;
+    // }
+    const count = messages.length;
     let i = 0;
     while (i < count) {
       messages[i].username = (
@@ -276,10 +278,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.roomUserService.roomUsers({ where: { roomId: roomId } }),
       ),
     );
-    let count = 0;
-    for (const roomUser of roomUsers) {
-      count++;
-    }
+    const count = roomUsers.length;
     let i = 0;
     while (i < count) {
       roomUsers[i].username = (

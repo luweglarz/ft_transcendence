@@ -4,8 +4,10 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 100%;
   color: white;
   font-size: 20px;
+  overflow: hidden;
 }
 
 /* Header */
@@ -13,11 +15,12 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  width: 90%;
+  height: 180px;
   border-radius: 1em;
   background-color: #1A202C;
-
   padding: 20px;
+  margin: 10px;
 }
 
 .profil-header-box {
@@ -28,7 +31,7 @@
   font-size: large;
   font-weight: 700;
 
-  width: 20%;
+  width: 30%;
   margin-right: 20px;
   margin-left: 20px;
 }
@@ -47,8 +50,10 @@
 
 }
 
-/* Separator */
-.profil-separator {
+/* Win Counter */
+.profil-counter {
+  width: 100%;
+  height: 32px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -78,11 +83,8 @@
   font-size: 24px;
 }
 
-.profil-history-title {
-  font-size: 24px;
-}
-
 /* History */
-.profil-history {
-  background-color: red;
+.history-app {
+  width: 100%;
+  height: calc(90% - 180px);
 }

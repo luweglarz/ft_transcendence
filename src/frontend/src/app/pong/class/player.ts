@@ -1,11 +1,14 @@
 export class Player {
-  private _height = 0;
-  private _width = 0;
+  constructor(
+    private _height: number,
+    private _width: number,
+    private _color: string,
+    private _username: string,
+  ) {}
   private _x = 0;
   private _y = 0;
   private _goals = 0;
-  private _color = '';
-  private _username = '';
+  private _boostCd = 0;
 
   get height(): number {
     return this._height;
@@ -61,5 +64,13 @@ export class Player {
 
   set username(newUsername: string) {
     this._username = newUsername;
+  }
+
+  get boostCd(): number {
+    return this._boostCd;
+  }
+
+  set boostCd(newCd: number) {
+    this._boostCd = newCd;
   }
 }

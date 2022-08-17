@@ -5,8 +5,9 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { CollapseService } from 'src/app/home-page/collapse.service';
-import { Game } from '../class/game';
+import { CollapseService } from 'src/app/home-page/services/collapse.service';
+import { GameMode } from '../interface/game-mode';
+import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { GameService } from './game.service';
 
 @Component({
@@ -17,83 +18,49 @@ import { GameService } from './game.service';
 export class GameComponent implements OnInit {
   constructor(
     public collapseService: CollapseService,
-    private gameService: GameService,
-    public game: Game,
-  ) {}
+    public gameService: GameService,
+    matchmakingService: MatchmakingService,
+  ) {
+    this.game = matchmakingService.game;
+  }
 
   ngOnInit() {
     this.gameService.sendKeyEvents();
-    this.gameService.socket.once(
-      'gameFinished',
-      (winner: any, leaver?: any) => {
-        clearInterval(this.gameService.keyEventsInterval);
-        this.gameService.isInGame = false;
-        if (leaver != null && leaver != undefined)
-          console.log(`Player ${leaver.username} has left the game`);
-        console.log(winner.username + ' Has won the game');
-      },
-    );
+    this.gameService.socket.onGameFinished(this.gameService);
   }
 
-  /** Get the #gameCanvas reference with ViewChild decorator. */
+  public game: GameMode;
+
+  private gameContext: any;
   @ViewChild('gameCanvas')
   private gameCanvas!: ElementRef;
-  private gameContext: any;
-
   @ViewChild('playersInfo')
   private playersInfo!: ElementRef;
 
-  @ViewChild('playerOneInfo')
-  private playerOneInfo!: ElementRef;
+  @ViewChild('boostOne')
+  private boostOne!: ElementRef;
+  @ViewChild('boostTwo')
+  private boostTwo!: ElementRef;
 
-  @ViewChild('playerTwoInfo')
-  private playerTwoInfo!: ElementRef;
-
-  /** Lifecycle hook called after component's view has been initialized. */
   ngAfterViewInit() {
     this.playersInfo.nativeElement.style.width = this.game.canvaWidth + 'px';
-    this.gameService.drawPlayersInfos(
-      this.playerOneInfo,
-      this.playerTwoInfo,
-      this.game.players,
-    );
+
     this.gameContext = this.gameCanvas.nativeElement.getContext('2d');
     this.gameCanvas.nativeElement.width = this.game.canvaWidth;
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;
-    this.gameService.socket.on(
-      'gameUpdate',
-      (player1Pos: any, player2Pos: any, ballPos: any, score: any) => {
-        this.game.players[0].x = player1Pos.x;
-        this.game.players[0].y = player1Pos.y;
-        this.game.players[1].x = player2Pos.x;
-        this.game.players[1].y = player2Pos.y;
-        this.game.ball.x = ballPos.x;
-        this.game.ball.y = ballPos.y;
-        this.game.players[0].goals = score.playerOneGoals;
-        this.game.players[1].goals = score.playerTwoGoals;
-      },
-    );
-    requestAnimationFrame(this.gameLoop);
+
+    this.game.onGameUpdate(this.gameService.socket);
+    this.game.setDrawUtilities(this.gameContext, this.boostOne, this.boostTwo);
+    requestAnimationFrame(this.game.gameLoop);
   }
 
-  private gameLoop = () => {
-    this.gameService.clearCanvas(this.gameCanvas, this.gameContext);
-    this.gameService.fillBackground(this.gameContext, this.game);
-    this.gameService.drawMiddleline(this.gameContext, this.game);
-    this.gameService.drawPaddle(this.gameContext, this.game.players[0]);
-    this.gameService.drawPaddle(this.gameContext, this.game.players[1]);
-    this.gameService.drawBall(this.gameContext, this.game.ball);
-    this.gameService.drawScore(this.gameContext, this.game);
-    requestAnimationFrame(this.gameLoop);
-  };
-
   @HostListener('document:keydown', ['$event'])
-  movement(event: KeyboardEvent) {
+  keyEvent(event: KeyboardEvent) {
     this.gameService.keyPressed = event.key;
   }
 
   @HostListener('document:keyup', ['$event'])
-  movementUp(event: KeyboardEvent) {
+  stopKeyLoop(event: KeyboardEvent) {
     if (event.key == this.gameService.keyPressed)
       this.gameService.keyPressed = 'stop';
   }
