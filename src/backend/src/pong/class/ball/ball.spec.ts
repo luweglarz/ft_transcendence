@@ -4,7 +4,7 @@ import { Ball } from './ball';
 
 describe('Ball', () => {
   it('should be defined', () => {
-    const gameMap: GameMode = new NormalGame(525, 850, 'black');
+    const gameMap: GameMode = new NormalGame(525, 850, 'black', 'ranked');
 
     expect(new Ball(gameMap, 5, 'white', 5)).toBeDefined();
   });
