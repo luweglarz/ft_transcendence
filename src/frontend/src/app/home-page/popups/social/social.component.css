@@ -1,7 +1,6 @@
 .container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   width: 100%;
   height: 100%;
   color: white;
@@ -9,6 +8,85 @@
 }
 
 .social {
+  width: 50%;
+  height: 100%;
+}
+
+.social-header {
+  display: flex;
+  flex-direction: row;
+
+  height: 64px;
   width: 100%;
+}
+
+.social-header-button {
+  width: 50%;
+  height: 64px;
+  background-color: #1A202C;
+  color: white;
+  border: none;
+  border-radius: 1em;
+  transition: 0.3s;
+}
+
+.social-header-button-active {
+  background-color: white;
+  color: black;
+}
+
+.social-friends {
+  display: flex;
+  flex-direction: column;
+
+  height: calc(100% - 64px);
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.social-friends-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 64px;
+  width: 100%;
+  border-radius: 1em;
+
+  background-color: #1A202C;
+  color: white;
+  border: 1px solid black;
+  transition: 0.3s;
+}
+
+.social-friends-item:hover {
+  background-color: white;
+  color: #1A202C;
+}
+
+.social-friends-item-avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 100%;
+}
+
+.social-friends-item-status {
+  height: 32px;
+  width: 32px;
+  border-radius: 100%;
+}
+
+.online {
+  background-color: green;
+}
+
+.offline {
+  background-color: red;
+}
+
+.dms {
+  width: 50%;
   height: 100%;
 }
