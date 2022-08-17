@@ -1,4 +1,14 @@
-/* Safari, Chrome, IE */
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:flex-start;
+  height: 100%;
+  width: 100%;
+}
+
+/* Scrollbar Safari, Chrome, IE */
  ::-webkit-scrollbar {
   width: 10px;
 }
@@ -14,35 +24,24 @@
 /* Title */
 .history-title {
   width: 100%;
+  height: 32px;
   font-size: 24px;
   text-align: center;
-
   margin-block-end: 0%;
 }
 
-/* History */
-.history-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-}
 
 .history-items {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   width: 90%;
-  height: 45%;
+  height: calc(100% - 128px);
 
   overflow-y:scroll;
   overflow-x: hidden;
   scrollbar-color: #44526F #1a202c;
   scrollbar-width: thin;
-
-  margin-right: 2%;
-  border-radius: 1em;
 }
 
 .history-item {

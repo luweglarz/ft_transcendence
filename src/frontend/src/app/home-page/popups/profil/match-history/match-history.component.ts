@@ -28,6 +28,7 @@ export class MatchHistoryComponent {
       });
   }
 
+  //Return the username referenced by id
   getUsernameById(id: number): string {
     try {
       return this.users[id - 1].username;
