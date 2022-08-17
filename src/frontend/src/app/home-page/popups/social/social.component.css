@@ -16,13 +16,13 @@
   display: flex;
   flex-direction: row;
 
-  height: 64px;
+  height: 32px;
   width: 100%;
 }
 
 .social-header-button {
   width: 50%;
-  height: 64px;
+  height: 32px;
   background-color: #1A202C;
   color: white;
   border: none;
@@ -30,22 +30,22 @@
   transition: 0.3s;
 }
 
-.social-header-button-active {
+.active {
   background-color: white;
   color: black;
 }
 
-.social-friends {
+.social-list {
   display: flex;
   flex-direction: column;
 
-  height: calc(100% - 64px);
+  height: calc(100% - 32px);
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
-.social-friends-item {
+.social-list-item {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -61,18 +61,18 @@
   transition: 0.3s;
 }
 
-.social-friends-item:hover {
+.social-list-item:hover {
   background-color: white;
   color: #1A202C;
 }
 
-.social-friends-item-avatar {
+.social-list-item-avatar {
   height: 48px;
   width: 48px;
   border-radius: 100%;
 }
 
-.social-friends-item-status {
+.social-list-item-status {
   height: 32px;
   width: 32px;
   border-radius: 100%;

@@ -4,23 +4,26 @@
   <div class="social">
     <!-- Social header -->
     <div class="social-header">
-      <button class="social-header-button" [ngClass]="showFriends === true ? 'social-header-button-active': 'social-header-button'" (click)="selectFriends()">Friends</button>
-      <button class="social-header-button" [ngClass]="showFriends === false ? 'social-header-button-active': 'social-header-button'" (click)="selectBlocked()">Blocked</button>
+      <button class="social-header-button" [ngClass]="showFriends === true ? 'active': 'social-header-button'" (click)="selectFriends()">Friends</button>
+      <button class="social-header-button" [ngClass]="showFriends === false ? 'active': 'social-header-button'" (click)="selectBlocked()">Blocked</button>
     </div>
 
     <!-- Friend list -->
-    <div *ngIf="showFriends" class="social-friends">
-      <div *ngFor="let user of users" class="social-friends-item">
-        <img class="social-friends-item-avatar" avatar username="{{user.username}}" alt="">
+    <div *ngIf="showFriends" class="social-list">
+      <div *ngFor="let user of users" class="social-list-item">
+        <img class="social-list-item-avatar" avatar username="{{user.username}}" alt="">
         <p>{{ user.username }}</p>
 
-        <div class="social-friends-item-status" [ngClass]="user.online ? 'online': 'offline'"></div>
+        <div class="social-list-item-status" [ngClass]="user.online ? 'online': 'offline'"></div>
       </div>
     </div>
 
     <!-- Block list -->
-    <div *ngIf="!showFriends" class="social-blocked">
-
+    <div *ngIf="!showFriends" class="social-list">
+      <div *ngFor="let user of users" class="social-list-item">
+        <img class="social-list-item-avatar" avatar username="{{user.username}}" alt="">
+        <p>{{ user.username }}</p>
+      </div>
     </div>
   </div>
 
