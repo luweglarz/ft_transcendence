@@ -27,7 +27,7 @@ export class MatchmakingService {
     return this._stopWatch;
   }
 
-  requestJoinNormalMatchMaking() {
+  requestJoinNormalMatchmaking() {
     this.socket.connect();
     this.socket.emit('joinMatchmaking', 'normal');
     this.socket.onWaitingForAMatch(this.stopWatch);
@@ -40,7 +40,20 @@ export class MatchmakingService {
     this.socket.onMatchmakingLeft();
   }
 
-  requestJoinCustomGamemodeMatchamking() {
+  requestJoinRankedMatchmaking() {
+    this.socket.connect();
+    this.socket.emit('joinMatchmaking', 'ranked');
+    this.socket.onWaitingForAMatch(this.stopWatch);
+    this.socket.onMatchFound(
+      this.notificationService,
+      this.gameService,
+      this,
+      this._stopWatch,
+    );
+    this.socket.onMatchmakingLeft();
+  }
+
+  requestJoinCustomMatchmaking() {
     this.socket.connect();
     this.socket.emit('joinMatchmaking', 'custom');
     this.socket.onWaitingForAMatch(this.stopWatch);
@@ -53,7 +66,7 @@ export class MatchmakingService {
     this.socket.onMatchmakingLeft();
   }
 
-  requestLeaveMatchMaking() {
+  requestLeaveMatchmaking() {
     this._stopWatch.clearTimer();
     this.socket.emit('leaveMatchmaking');
   }

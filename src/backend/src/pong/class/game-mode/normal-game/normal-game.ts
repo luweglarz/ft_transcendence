@@ -10,6 +10,7 @@ export class NormalGame implements GameMode {
     private _canvaHeight: number,
     private _canvaWidth: number,
     private _backgroundColor: string,
+    private _gameType: string,
   ) {
     this._ball = new Ball(this, 4, 'white', 10);
   }
@@ -30,6 +31,10 @@ export class NormalGame implements GameMode {
 
   get ball(): Ball {
     return this._ball;
+  }
+
+  get gameType(): string {
+    return this._gameType;
   }
 
   emitGameUpdate(server: Server, gameRoom: Room, ball: Ball) {

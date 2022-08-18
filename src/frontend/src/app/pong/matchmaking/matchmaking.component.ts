@@ -17,28 +17,29 @@ export class MatchmakingComponent {
     public collapseService: CollapseService,
   ) {}
 
-  buttonRequestJoinNormalMatchMaking() {
-    this.matchmakingService.requestJoinNormalMatchMaking();
+  buttonRequestJoinNormalMatchmaking() {
+    this.matchmakingService.requestJoinNormalMatchmaking();
     this.normalQueue = true;
     this.customQueue = false;
     this.rankedQueue = false;
   }
 
-  buttonRequestJoinCustomGamemodeMatchamking() {
-    this.matchmakingService.requestJoinCustomGamemodeMatchamking();
-    this.normalQueue = false;
-    this.customQueue = true;
-    this.rankedQueue = false;
-  }
-
-  buttonRequestJoinRankedGamemodeMatchamking() {
+  buttonRequestJoinRankedMatchmaking() {
+    this.matchmakingService.requestJoinRankedMatchmaking();
     this.normalQueue = false;
     this.customQueue = false;
     this.rankedQueue = true;
   }
 
-  buttonRequestLeaveMatchMaking() {
-    this.matchmakingService.requestLeaveMatchMaking();
+  buttonRequestJoinCustomMatchmaking() {
+    this.matchmakingService.requestJoinCustomMatchmaking();
+    this.normalQueue = false;
+    this.customQueue = true;
+    this.rankedQueue = false;
+  }
+
+  buttonRequestLeaveMatchmaking() {
+    this.matchmakingService.requestLeaveMatchmaking();
     this.normalQueue = false;
     this.customQueue = false;
     this.rankedQueue = false;

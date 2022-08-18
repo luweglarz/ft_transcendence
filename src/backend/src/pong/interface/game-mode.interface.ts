@@ -9,6 +9,7 @@ export interface GameMode {
   get canvaHeight(): number;
   get backgroundColor(): string;
   get ball(): Ball;
+  get gameType(): string;
 
   gameLoop(
     gameRoom: Room,
