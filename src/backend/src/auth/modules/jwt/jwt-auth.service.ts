@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
 import { JwtUser } from './dto';
@@ -7,6 +7,7 @@ import { JwtUser } from './dto';
 export class JwtAuthService {
   private readonly _accessTokenSecret = `access ${process.env['JWT_SECRET']}`;
   private readonly _refreshTokenSecret = `refresh ${process.env['JWT_SECRET']}`;
+  private readonly _logger = new Logger(JwtAuthService.name);
 
   constructor(private jwt: JwtService, private db: DbService) {}
 
@@ -14,6 +15,7 @@ export class JwtAuthService {
    * @brief return a fresh pair of tokens and save the refresh token to the db
    */
   async newTokens(payload: JwtUser) {
+    this._logger.log(`User '${payload.username}' requested a pair of tokens`);
     const tokenList = await Promise.all([
       this.signAccessToken(payload),
       this.signRefreshToken(payload),
