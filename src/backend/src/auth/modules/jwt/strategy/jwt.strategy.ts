@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
-import { JwtPayload } from '../interfaces';
+import { JwtData, JwtUser } from '../dto';
 import { JwtAuthService } from '../jwt-auth.service';
 
 @Injectable()
@@ -15,10 +15,11 @@ export class JwtAccessStrategy extends PassportStrategy(
       secretOrKey: service.accessTokenSecret,
     });
   }
-  validate(payload: JwtPayload) {
+  validate(payload: JwtData) {
     // TODO: we may want to check in the database that the user still exists
     // (if db is erased, the token remains valid even though the user does not exist anymore)
-    return payload;
+    const user: JwtUser = { sub: payload.sub, username: payload.username };
+    return user;
   }
 }
 
@@ -33,7 +34,8 @@ export class JwtRefreshStrategy extends PassportStrategy(
       secretOrKey: service.refreshTokenSecret,
     });
   }
-  validate(payload: JwtPayload) {
-    return payload;
+  validate(payload: JwtData) {
+    const user: JwtUser = { sub: payload.sub, username: payload.username };
+    return user;
   }
 }

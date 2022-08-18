@@ -3,13 +3,7 @@ import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
-export interface JwtPayload {
-  sub: number;
-  username: string;
-  iat: number;
-  exp: number;
-}
+import { JwtData } from './dto';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +39,7 @@ export class JwtService {
 
   getPayload() {
     const token = this.getToken();
-    if (token) return jwtDecode<JwtPayload>(token);
+    if (token) return jwtDecode<JwtData>(token);
     else return undefined;
   }
 

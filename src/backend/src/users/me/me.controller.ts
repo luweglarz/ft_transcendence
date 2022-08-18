@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User, JwtAccessGuard } from 'src/auth';
-import { JwtPayload } from 'src/auth/modules/jwt/interfaces';
+import { JwtUser } from 'src/auth/modules/jwt/dto';
 import { AvatarService } from '../services/avatar/avatar.service';
 
 @Controller('me')
@@ -19,7 +19,7 @@ export class MeController {
   @UseInterceptors(FileInterceptor('avatar'))
   editAvatar(
     @UploadedFile() avatar: Express.Multer.File,
-    @User() user: JwtPayload,
+    @User() user: JwtUser,
   ) {
     this.avatar.uploadAvatar(user, avatar.buffer);
   }

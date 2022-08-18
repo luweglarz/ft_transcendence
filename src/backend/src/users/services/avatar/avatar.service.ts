@@ -4,14 +4,14 @@ import {
   StreamableFile,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { JwtPayload } from 'src/auth/modules/jwt/interfaces';
+import { JwtUser } from 'src/auth/modules/jwt/dto';
 import { DbService } from 'src/db/db.service';
 
 @Injectable()
 export class AvatarService {
   constructor(private db: DbService) {}
 
-  async uploadAvatar(user: JwtPayload, image: Buffer) {
+  async uploadAvatar(user: JwtUser, image: Buffer) {
     try {
       await this.db.avatar.upsert({
         where: { userId: user.sub },

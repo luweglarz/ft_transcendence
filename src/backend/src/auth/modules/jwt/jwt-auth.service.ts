@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
-import { JwtPayload } from './interfaces';
+import { JwtUser } from './dto';
 
 @Injectable()
 export class JwtAuthService {
@@ -13,7 +13,7 @@ export class JwtAuthService {
   /*
    * @brief return a fresh pair of tokens and save the refresh token to the db
    */
-  async newTokens(payload: JwtPayload) {
+  async newTokens(payload: JwtUser) {
     const tokenList = await Promise.all([
       this.signAccessToken(payload),
       this.signRefreshToken(payload),
@@ -36,13 +36,13 @@ export class JwtAuthService {
 
   //  ============================== Sign token ==============================  //
 
-  private signAccessToken(payload: JwtPayload): Promise<string> {
+  private signAccessToken(payload: JwtUser): Promise<string> {
     return this.jwt.signAsync(payload, {
       expiresIn: '42m',
       secret: this._accessTokenSecret,
     });
   }
-  private signRefreshToken(payload: JwtPayload): Promise<string> {
+  private signRefreshToken(payload: JwtUser): Promise<string> {
     return this.jwt.signAsync(payload, {
       expiresIn: '42h',
       secret: this._refreshTokenSecret,
