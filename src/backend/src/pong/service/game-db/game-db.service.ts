@@ -6,7 +6,7 @@ import { Player } from 'src/pong/class/player/player';
 export class GameDbService {
   constructor(private prismaClient: DbService) {}
 
-  async pushGameDb(winner: Player, loser: Player) {
+  async pushGameDb(winner: Player, loser: Player, gameType: string) {
     const winnerUser = await this.prismaClient.user.findUnique({
       where: { username: winner.username },
     });
@@ -15,6 +15,7 @@ export class GameDbService {
     });
     await this.prismaClient.game.create({
       data: {
+        type: gameType,
         winner: {
           connect: { id: winnerUser.id },
         },

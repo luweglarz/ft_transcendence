@@ -15,6 +15,7 @@ export class CustomGame implements GameMode {
   }
 
   private _ball: Ball;
+  private _gameType = 'custom';
   readonly boostCd: number = 5000;
   readonly boostDuration: number = 3000;
 
@@ -32,6 +33,10 @@ export class CustomGame implements GameMode {
 
   get ball(): Ball {
     return this._ball;
+  }
+
+  get gameType(): string {
+    return this._gameType;
   }
 
   emitGameUpdate(server: Server, gameRoom: Room, ball: Ball) {
