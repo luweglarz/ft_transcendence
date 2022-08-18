@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 interface User{
   username: string;
-  friend: boolean;
-  blocked: boolean;
-  online: boolean;
+  relation: string;
+  status: string;
 }
 
 @Component({
@@ -16,79 +15,64 @@ export class SocialComponent implements OnInit {
 
   users :Array<User> = [{
     username:'ugtheven',
-    friend:true,
-    blocked:false,
-    online:true,
+    relation:'friend',
+    status:'ingame',
   },{
     username:'usertest',
-    friend:true,
-    blocked:false,
-    online:true,
+    relation:'blocked',
+    status:'offline',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:false,
+    username:'usertest1',
+    relation:'blocked',
+    status:'offline',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:true,
+    username:'usertest2',
+    relation:'friend',
+    status:'online',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:false,
+    username:'usertest3',
+    relation:'none',
+    status:'online',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:false,
+    username:'usertest4',
+    relation:'none',
+    status:'online',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:true,
+    username:'usertest5',
+    relation:'none',
+    status:'ingame',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:false,
+    username:'usertest6',
+    relation:'none',
+    status:'offline',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:true,
+    username:'usertest7',
+    relation:'none',
+    status:'online',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:false,
+    username:'usertest8',
+    relation:'friend',
+    status:'ingame',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:true,
+    username:'usertest9',
+    relation:'none',
+    status:'offline',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:false,
+    username:'usertest10',
+    relation:'friend',
+    status:'online',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:false,
+    username:'usertest11',
+    relation:'none',
+    status:'online',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:true,
+    username:'usertest12',
+    relation:'none',
+    status:'ingame',
   },{
-    username:'usertest',
-    friend:true,
-    blocked:false,
-    online:false,
+    username:'usertest13',
+    relation:'none',
+    status:'ingame',
   },];
   showFriends: boolean = true;
 
@@ -107,5 +91,4 @@ export class SocialComponent implements OnInit {
   selectBlocked() {
     this.showFriends = false;
   }
-
 }

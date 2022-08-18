@@ -14,7 +14,7 @@
         <img class="social-list-item-avatar" avatar username="{{user.username}}" alt="">
         <p>{{ user.username }}</p>
 
-        <div class="social-list-item-status" [ngClass]="user.online ? 'online': 'offline'"></div>
+        <div class="social-list-item-status" [ngClass]="user.status"></div>
       </div>
     </div>
 

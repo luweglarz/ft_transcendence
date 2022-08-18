@@ -86,6 +86,10 @@
   background-color: red;
 }
 
+.ingame{
+  background-color: orange;
+}
+
 .dms {
   width: 50%;
   height: 100%;
