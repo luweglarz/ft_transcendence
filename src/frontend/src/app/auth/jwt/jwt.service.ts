@@ -12,6 +12,7 @@ export class JwtService {
   private readonly accessTokenKey = 'accessToken';
   private readonly refreshTokenKey = 'refreshToken';
   private _accessToken: string | null = null;
+  readonly refreshTokenUrl = `${environment.backend}/auth/jwt/refresh`;
 
   constructor(private http: HttpClient) {}
 
@@ -21,8 +22,18 @@ export class JwtService {
 
   getToken() {
     if (!this._accessToken)
+      // TODO: move to constructor
       this._accessToken = localStorage.getItem(this.accessTokenKey);
+    // if (this._accessToken && !this.isValid()) this.refreshTokens();
     return this._accessToken;
+  }
+
+  get refreshToken() {
+    return localStorage.getItem(this.refreshTokenKey);
+  }
+
+  refreshTokens() {
+    // TODO:
   }
 
   storeTokens(accessToken: string, refreshToken: string) {
