@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConnectedSocket } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { CustomGame } from 'src/pong/class/game-mode/custom-game/custom-game';
-import { NormalGame } from 'src/pong/class/game-mode/normal-game/normal-game';
 import { GameMode } from 'src/pong/interface/game-mode.interface';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { Player } from '../../class/player/player';
@@ -70,7 +69,7 @@ export class GameGatewayService {
   }
 
   private getGameMode(game: GameMode): string {
-    if (game instanceof NormalGame) return 'normal';
+    if (game.gameType === 'normal') return 'normal';
     else if (game instanceof CustomGame) return 'custom';
     return 'ranked';
   }

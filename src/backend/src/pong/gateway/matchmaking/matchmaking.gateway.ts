@@ -14,12 +14,14 @@ export class MatchmakingGateway {
     this.normalClientPool = [];
     this.pools = [];
     this.pools.push(this.normalClientPool);
+    this.pools.push(this.rankedClientPool);
     this.pools.push(this.customClientPool);
     this.logger = new Logger('GameMatchMakingGateway');
   }
 
   private pools: Socket[][];
   private normalClientPool: Socket[] = [];
+  private rankedClientPool: Socket[] = [];
   private customClientPool: Socket[] = [];
   private logger: Logger;
 

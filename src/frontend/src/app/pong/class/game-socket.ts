@@ -56,7 +56,7 @@ export class GameSocket extends Socket {
         );
         gameService.isInGame = true;
         console.log(msg);
-        if (gameType === 'normal')
+        if (gameType === 'normal' || gameType === 'ranked') {
           matchmakingService.game = new NormalGame(
             gameMapInfo.canvaHeight,
             gameMapInfo.canvaWidth,
@@ -65,7 +65,8 @@ export class GameSocket extends Socket {
             ball,
             gameService,
           );
-        else if (gameType === 'custom')
+        } else if (gameType === 'custom') {
+          console.log('cusotmmode');
           matchmakingService.game = new CustomGame(
             gameMapInfo.canvaHeight,
             gameMapInfo.canvaWidth,
@@ -74,6 +75,7 @@ export class GameSocket extends Socket {
             ball,
             gameService,
           );
+        }
       },
     );
   }
