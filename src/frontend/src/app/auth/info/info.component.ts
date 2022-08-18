@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 import { environment } from 'src/environments/environment';
-import { JwtPayload, JwtService } from '../jwt';
+import { JwtData, JwtService } from '../jwt';
 
 @Component({
   selector: 'app-info',
@@ -10,7 +10,7 @@ import { JwtPayload, JwtService } from '../jwt';
   styleUrls: ['./info.component.css'],
 })
 export class InfoComponent implements OnInit {
-  payload?: JwtPayload;
+  payload?: JwtData;
   is_valid = false;
   expiration = '';
   backend_messagee = '';
