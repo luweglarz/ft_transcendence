@@ -141,7 +141,7 @@ export class CommandService {
       await this.roomService.updatePassword(room, splitCmd[2]);
       return 'password updated';
     }
-    return 'usage /password (remove | (change new_password))';
+    return 'usage /password (remove ^ (change new_password))';
   }
 }
 /*
