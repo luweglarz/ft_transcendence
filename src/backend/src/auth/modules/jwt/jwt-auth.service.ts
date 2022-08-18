@@ -10,6 +10,9 @@ export class JwtAuthService {
 
   constructor(private jwt: JwtService, private db: DbService) {}
 
+  /*
+   * @brief return a fresh pair of tokens and save the refresh token to the db
+   */
   async newTokens(payload: JwtPayload) {
     const tokenList = await Promise.all([
       this.signAccessToken(payload),
