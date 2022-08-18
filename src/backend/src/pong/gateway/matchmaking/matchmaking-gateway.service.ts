@@ -66,10 +66,14 @@ export class MatchmakingGatewayService {
       clientPools[0].push(client);
       client.emit('waitingForAMatch', 'Waiting for a normal match');
       if (clientPools[0].length > 1) this.createGame(clientPools[0], gameType);
-    } else if (gameType === 'custom') {
+    } else if (gameType === 'ranked') {
       clientPools[1].push(client);
-      client.emit('waitingForAMatch', 'Waiting for a custom match');
+      client.emit('waitingForAMatch', 'Waiting for a ranked match');
       if (clientPools[1].length > 1) this.createGame(clientPools[1], gameType);
+    } else if (gameType === 'custom') {
+      clientPools[2].push(client);
+      client.emit('waitingForAMatch', 'Waiting for a custom match');
+      if (clientPools[2].length > 1) this.createGame(clientPools[2], gameType);
     }
   }
 
@@ -96,10 +100,16 @@ export class MatchmakingGatewayService {
     let players: Player[];
 
     if (gameType == 'normal') {
-      gameMode = new NormalGame(525, 950, 'black');
+      gameMode = new NormalGame(525, 950, 'black', gameType);
       players = [
         new Player(gameMode, clientPool.pop(), 1, 7, 'white'),
         new Player(gameMode, clientPool.pop(), 2, 7, 'white'),
+      ];
+    } else if (gameType == 'ranked') {
+      gameMode = new NormalGame(525, 950, 'black', gameType);
+      players = [
+        new Player(gameMode, clientPool.pop(), 1, 6, 'white'),
+        new Player(gameMode, clientPool.pop(), 2, 6, 'white'),
       ];
     } else if (gameType == 'custom') {
       gameMode = new CustomGame(525, 950, 'black');

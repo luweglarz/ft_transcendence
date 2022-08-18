@@ -29,8 +29,11 @@ async function createGame(users: User[]) {
       where: { username: users[Math.floor(Math.random() * 4)].username },
     });
   }
+  const type = Math.floor(Math.random() * 3);
+  const modes = new Array<string>('normal', 'ranked', 'custom');
   await prisma.game.create({
     data: {
+      type: modes[type],
       winner: {
         connect: { id: winner.id },
       },

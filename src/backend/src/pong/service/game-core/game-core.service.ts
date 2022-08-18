@@ -20,7 +20,7 @@ export class GameCoreService {
     loser: Player,
     gameLeft: boolean,
   ) {
-    this.gameDbService.pushGameDb(winner, loser);
+    this.gameDbService.pushGameDb(winner, loser, gameRoom.gameMode.gameType);
     if (gameLeft === false)
       this.gameGatewayService.emitGameFinished(
         server,
