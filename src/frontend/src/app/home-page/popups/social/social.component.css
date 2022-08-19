@@ -78,6 +78,18 @@
   border-radius: 100%;
 }
 
+.social-list-item-delete {
+  height: 32px;
+  width: 32px;
+  fill: white;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.social-list-item:hover .social-list-item-delete {
+  fill: black;
+}
+
 .online {
   background-color: green;
 }

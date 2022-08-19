@@ -10,19 +10,24 @@
 
     <!-- Friend list -->
     <div *ngIf="showFriends" class="social-list">
-      <div *ngFor="let user of users" class="social-list-item">
+      <div *ngFor="let user of getFriendUser()" class="social-list-item" (click)="openConversation(user.username)">
         <img class="social-list-item-avatar" avatar username="{{user.username}}" alt="">
         <p>{{ user.username }}</p>
-
         <div class="social-list-item-status" [ngClass]="user.status"></div>
+        <svg class="social-list-item-delete" (click)="unblockUser(user.username)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 3.4284L20.5716 0L12 8.5716L3.4284 0L0 3.4284L8.5716 12L0 20.5716L3.4284 24L12 15.4284L20.5716 24L24 20.5716L15.4284 12L24 3.4284Z"/>
+        </svg>
       </div>
     </div>
 
     <!-- Block list -->
     <div *ngIf="!showFriends" class="social-list">
-      <div *ngFor="let user of users" class="social-list-item">
+      <div *ngFor="let user of getBlockedUser()" class="social-list-item">
         <img class="social-list-item-avatar" avatar username="{{user.username}}" alt="">
         <p>{{ user.username }}</p>
+        <svg class="social-list-item-delete" (click)="unblockUser(user.username)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 3.4284L20.5716 0L12 8.5716L3.4284 0L0 3.4284L8.5716 12L0 20.5716L3.4284 24L12 15.4284L20.5716 24L24 20.5716L15.4284 12L24 3.4284Z"/>
+        </svg>
       </div>
     </div>
   </div>

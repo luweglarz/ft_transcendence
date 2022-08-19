@@ -91,4 +91,30 @@ export class SocialComponent implements OnInit {
   selectBlocked() {
     this.showFriends = false;
   }
+
+  getBlockedUser() {
+    return (this.users.filter((item) => item.relation === 'blocked'));
+  }
+
+  getFriendUser() {
+    return (this.users.filter((item) => item.relation === 'friend'));
+  }
+
+  unblockUser(username: string) {
+    this.users.forEach((user, index) => {
+      if (user.username === username)
+        user.relation = 'none';
+    });
+  }
+
+  unfriendUser(username: string) {
+    this.users.forEach((user, index) => {
+      if (user.username === username)
+        user.relation = 'none';
+    });
+  }
+
+  openConversation(username: string){
+    console.log(username);
+  }
 }
