@@ -176,16 +176,16 @@ export class CommandService {
       console.log(timeOut);
     }
     await this.jailUserService.banOrMuteUser(targetRoomUser[0].userId, command.id, (splitCmd[0] === '/ban'), timeOut);
-    return 'banned';
+    return (splitCmd[0] === 'ban' ? 'banned' : 'muted');
   }
 
 }
 /*
-- ban 2
-- mute 2
++ ban 2
++ mute 2
 + password 0
 + admin 0
-+ deadmin 1
++ deadmin 1 
 - leave 2
 - invite 3
 - challenge 4
