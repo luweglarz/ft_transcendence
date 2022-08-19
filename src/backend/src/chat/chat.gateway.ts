@@ -80,6 +80,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.prisma.roomUser.delete({
           where: { roomUserId: roomUser.roomUserId },
         });
+        await this.prisma.jailUser.deleteMany({where: {roomId: roomUser.roomId}});
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
       this.getRoomUsers(roomUser.roomId);
@@ -173,6 +174,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.prisma.roomUser.delete({
           where: { roomUserId: roomUser.roomUserId },
         });
+        await this.prisma.jailUser.deleteMany({where: {roomId: roomUser.roomId}});
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
     }
