@@ -63,9 +63,6 @@ model RoomUser {
   room       Room      @relation(fields: [roomId], references: [id])
   roomId     Int
   role       Role
-  isBanned   Boolean   @default(false)
-  isMuted    Boolean   @default(false)
-  timeOut    DateTime?
   socketId   String
 }
 
@@ -78,6 +75,16 @@ model Message {
   content String
 }
 
+model JailUser {
+  id        Int      @id @default(autoincrement())
+  roomId    Int
+  UserId    Int
+  createdAt DateTime
+  timeOut   DateTime
+  isBanned  Boolean  @default(false)
+  isMuted   Boolean  @default(false)
+}
+
 model Room {
   id        Int        @id @default(autoincrement())
   createdAt DateTime   @default(now())
@@ -87,6 +94,7 @@ model Room {
   roomType  RoomType
   users     RoomUser[]
   messages  Message[]
+  jailUsers String[] //["userId, roomId", "userId, roomId", ...]
 }
 
 model Game {

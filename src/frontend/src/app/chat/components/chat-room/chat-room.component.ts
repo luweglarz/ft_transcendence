@@ -12,6 +12,7 @@ import { Room } from 'src/app/chat/interface/room';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
 import { Observable } from 'rxjs';
 import { RoomUser } from 'src/app/chat/interface/roomUser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-chat-room',
@@ -32,7 +33,10 @@ export class ChatRoomComponent implements OnChanges {
   messages: Observable<Message[]> = this.chatService.getMsgs();
   roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
 
-  constructor(private chatService: ChatService) {}
+  constructor(
+    private chatService: ChatService,
+    private snackBar: MatSnackBar,
+  ) {}
 
   //ngOnInit(): void {}
 
@@ -65,11 +69,26 @@ export class ChatRoomComponent implements OnChanges {
   sendMessage() {
     //console.log(this.chatRoom.name);
     //console.log(this.chatMessage.value);
-    this.chatService.sendMessage({
-      content: this.chatMessage.value,
-      room: this.chatRoom,
-      roomId: this.chatRoom.id,
-    });
+    if (!this.chatMessage.valid) {
+      return;
+    }
+    if (this.chatMessage.value[0] === '/') {
+      console.log('command');
+      this.chatService.sendCommand(this.chatMessage.value, this.chatRoom);
+      this.chatService.getCommandResult().then((commandReturn) => {
+        //console.log(commandReturn);
+        this.snackBar.open(commandReturn, 'dismiss', {
+          duration: 3000,
+          horizontalPosition: 'right',
+        });
+      });
+    } else {
+      this.chatService.sendMessage({
+        content: this.chatMessage.value,
+        room: this.chatRoom,
+        roomId: this.chatRoom.id,
+      });
+    }
     this.chatMessage.reset();
     try {
       this.scrollContainer.nativeElement.scrollTop =
