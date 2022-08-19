@@ -6,6 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { UsersModule } from './users/users.module';
+import { SocialService } from './social/social.service';
+import { SocialController } from './social/social.controller';
 
 @Module({
   imports: [DbModule, PongModule, AuthModule, ChatModule, UsersModule],
@@ -15,7 +17,9 @@ import { UsersModule } from './users/users.module';
       scope: Scope.REQUEST,
       useClass: LoggingInterceptor,
     },
+    SocialService,
   ],
+  controllers: [SocialController],
   // controllers: [AppController], // TODO: should probably remove those
   // providers: [AppService],
 })

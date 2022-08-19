@@ -21,6 +21,9 @@ model User {
   Message   Message[]
   wins      Game[]     @relation("Winner")
   loses     Game[]     @relation("Loser")
+
+  mySocial    Social[]    @relation("MySocial")
+  theirSocial Social[]    @relation("TheirSocial")
 }
 
 model Auth {
@@ -98,4 +101,22 @@ model Game {
   loser       User     @relation("Loser", fields: [loserId], references: [id])
   loserId     Int
   loserGoals  Int
+}
+
+enum Relation {
+  friend
+  blocked
+  none
+}
+
+model Social {
+  id         Int      @id @default(autoincrement())
+
+  author     User     @relation("MySocial", fields: [authorId], references: [id])
+  authorId   Int
+
+  target     User     @relation("TheirSocial", fields: [targetId], references: [id])
+  targetId   Int
+
+  relation   Relation
 }
