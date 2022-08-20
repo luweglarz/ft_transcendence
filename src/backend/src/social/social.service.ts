@@ -2,31 +2,35 @@ import { Injectable} from '@nestjs/common';
 import { Prisma, Social } from '@prisma/client';
 import { DbService } from 'src/db/db.service';
 
-enum Relation {
-    friend,
-    blocked,
-    none,
-}
-
 @Injectable()
 export class SocialService {
 
     constructor(private prisma: DbService) {}
 
-    getRelations(){
-        return (this.prisma.social);
+    async getMySocial(username: string){
+        const user = await this.prisma.user.findUnique({
+            where: { username: username },
+        });
+        return (user.mySocial);
     }
 
-    async createRelation(){
+    async getTheirSocial(username: string){
+        const user = await this.prisma.user.findUnique({
+            where: { username: username },
+          });
+        return (user.theirSocial);
+    }
+
+    async createRelation(author: string, target:string){
         const authorUser = await this.prisma.user.findUnique({
-          where: { username: 'ugtheven' },
+          where: { username: author },
         });
         const targetUser = await this.prisma.user.findUnique({
-          where: { username: 'usertest' },
+          where: { username: target },
         });
         console.log(authorUser);
         console.log(targetUser)
-        this.prisma.social.create({
+        await this.prisma.social.create({
             data: {
               author: {
                 connect: { authorId: authorUser.id },
@@ -36,6 +40,7 @@ export class SocialService {
               },
               relation: 'friend',
             },
-          });
+        });
+        return ('Created');
     }
 }

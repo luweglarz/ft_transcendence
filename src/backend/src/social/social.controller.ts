@@ -8,13 +8,18 @@ export class SocialController {
         //
     }
 
-    @Get('relations')
-    async getRelationsList(@Query('username') username: string) {
-        return { relations: this.socialService.getRelations() };
+    @Get('mySocial')
+    async getMySocialList(@Query('username') username: string) {
+        return { relations: this.socialService.getMySocial(username) };
+    }
+
+    @Get('theirSocial')
+    async getTheirSocialList(@Query('username') username: string) {
+        return { relations: this.socialService.getTheirSocial(username) };
     }
 
     @Get('create')
-    async createRelation() {
-        this.socialService.createRelation();
+    async createRelation(@Query('author') author: string, @Query('target') target: string) {
+        this.socialService.createRelation(author, target);
     }
 }
