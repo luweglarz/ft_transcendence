@@ -82,7 +82,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.prisma.roomUser.delete({
           where: { roomUserId: roomUser.roomUserId },
         });
-        await this.prisma.jailUser.deleteMany({where: {roomId: roomUser.roomId}});
+        await this.prisma.jailUser.deleteMany({
+          where: { roomId: roomUser.roomId },
+        });
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
       this.getRoomUsers(roomUser.roomId);
@@ -176,7 +178,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.prisma.roomUser.delete({
           where: { roomUserId: roomUser.roomUserId },
         });
-        await this.prisma.jailUser.deleteMany({where: {roomId: roomUser.roomId}});
+        await this.prisma.jailUser.deleteMany({
+          where: { roomId: roomUser.roomId },
+        });
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
     }
@@ -204,7 +208,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       where: { roomId: parsed.room.id, socketId: socket.id },
     });
     if (finduser.length < 1) return;
-    if ((await this.jailUserService.getUser(finduser[0].userId, parsed.room.id)) !== null) return ;
+    if (
+      (await this.jailUserService.getUser(
+        finduser[0].userId,
+        parsed.room.id,
+      )) !== null
+    )
+      return;
     await this.messageService.createMessage({
       content: parsed.content,
       //room: { connect: message.room },
@@ -259,7 +269,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const roomUsers = await this.roomUserService.roomUsers({
       where: { roomId: roomId },
     });
-    let jailUsers: JailUser[] = await this.jailUserService.jailUsers({where: {roomId: roomId, AND: {isBanned: true}}});
+    const jailUsers: JailUser[] = await this.jailUserService.jailUsers({
+      where: { roomId: roomId, AND: { isBanned: true } },
+    });
     let j = 0;
     for (const jailUser of jailUsers) {
       j = 0;

@@ -161,24 +161,36 @@ export class CommandService {
     if (splitCmd.length === 1) return 'incomplete command';
     const room = await this.roomService.room({ id: command.id });
     if (room === undefined) return 'database error';
-    let timeOut: number = 0;
-    let targetUser = await this.prisma.user.findUnique({where: {username: splitCmd[1]}});
-    if  (targetUser === null) return 'not a user';
-    let targetRoomUser: RoomUser[] = await this.roomUserService.roomUsers({where: {roomId: command.id, AND: {userId: targetUser.id}}}); // get targetUser
+    let timeOut = 0;
+    const targetUser = await this.prisma.user.findUnique({
+      where: { username: splitCmd[1] },
+    });
+    if (targetUser === null) return 'not a user';
+    const targetRoomUser: RoomUser[] = await this.roomUserService.roomUsers({
+      where: { roomId: command.id, AND: { userId: targetUser.id } },
+    }); // get targetUser
     if (targetRoomUser.length === 0) return 'user is not in the room';
     if (targetRoomUser.length !== 1) return 'database error';
-    if (targetRoomUser[0].role !== 'USER') return 'you cannot ban an owner or an admin';
-    if (await this.jailUserService.getUser(targetUser.id, command.id) !== null) return 'user is already banned or muted';
+    if (targetRoomUser[0].role !== 'USER')
+      return 'you cannot ban an owner or an admin';
+    if (
+      (await this.jailUserService.getUser(targetUser.id, command.id)) !== null
+    )
+      return 'user is already banned or muted';
     if (splitCmd.length === 3) {
       timeOut = +splitCmd[2];
       if (isNaN(timeOut)) return 'enter a number';
       if (timeOut < 1) return 'enter a positive value greater than 0';
       console.log(timeOut);
     }
-    await this.jailUserService.banOrMuteUser(targetRoomUser[0].userId, command.id, (splitCmd[0] === '/ban'), timeOut);
-    return (splitCmd[0] === 'ban' ? 'banned' : 'muted');
+    await this.jailUserService.banOrMuteUser(
+      targetRoomUser[0].userId,
+      command.id,
+      splitCmd[0] === '/ban',
+      timeOut,
+    );
+    return splitCmd[0] === 'ban' ? 'banned' : 'muted';
   }
-
 }
 /*
 + ban 2

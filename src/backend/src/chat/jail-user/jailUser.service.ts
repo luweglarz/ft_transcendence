@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
-import { Room, Prisma, Message, JailUser } from '@prisma/client';
+import { Prisma, JailUser } from '@prisma/client';
 import { RoomService } from '../room/room.service';
 
 @Injectable()
@@ -42,30 +42,49 @@ export class JailUserService {
 
   async deleteJailUser(jailUserId: number, roomId: number, userId: number) {
     console.log('delete jail user has been called');
-    let ju: number[] = (await this.roomService.room({id: roomId})).jailUsers;
-    await this.prisma.room.update({where: {id: roomId}, data: {jailUsers: {set: ju.filter((id: number) => id !== userId)}}});
-    await this.prisma.jailUser.delete({where: {id: jailUserId}});
+    const ju: number[] = (await this.roomService.room({ id: roomId }))
+      .jailUsers;
+    await this.prisma.room.update({
+      where: { id: roomId },
+      data: { jailUsers: { set: ju.filter((id: number) => id !== userId) } },
+    });
+    await this.prisma.jailUser.delete({ where: { id: jailUserId } });
   }
 
-  async banOrMuteUser(userId: number, roomId: number, banOrMute: boolean ,timeOut: number) {
-    await this.prisma.room.update({where: {id: roomId}, data: {jailUsers: {push: userId}}});
-    let data = {userId: userId, roomId: roomId, isBanned: false, isMuted: false};
+  async banOrMuteUser(
+    userId: number,
+    roomId: number,
+    banOrMute: boolean,
+    timeOut: number,
+  ) {
+    await this.prisma.room.update({
+      where: { id: roomId },
+      data: { jailUsers: { push: userId } },
+    });
+    const data = {
+      userId: userId,
+      roomId: roomId,
+      isBanned: false,
+      isMuted: false,
+    };
     if (banOrMute === true) {
-        data.isBanned = true;
+      data.isBanned = true;
     } else {
-        data.isMuted = true;
+      data.isMuted = true;
     }
-    let jailUser: JailUser = await this.createJailUser(data);
+    const jailUser: JailUser = await this.createJailUser(data);
     if (timeOut !== 0) {
-        setTimeout(() => {this.deleteJailUser(jailUser.id, roomId, userId);}, timeOut * 1000);
+      setTimeout(() => {
+        this.deleteJailUser(jailUser.id, roomId, userId);
+      }, timeOut * 1000);
     }
   }
 
   async getUser(userId: number, roomId: number): Promise<JailUser | null> {
-    let users: JailUser[] = await this.jailUsers({where: {userId: userId, AND: {roomId: roomId}}});
-    if (users.length !== 1)
-        return (null);
-    return (users[0]);
+    const users: JailUser[] = await this.jailUsers({
+      where: { userId: userId, AND: { roomId: roomId } },
+    });
+    if (users.length !== 1) return null;
+    return users[0];
   }
-
 }
