@@ -4,6 +4,7 @@ import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { DbService } from 'src/db/db.service';
 import { ChatGateway } from './chat.gateway';
 import { CommandService } from './command/command.service';
+import { JailUserService } from './jail-user/jailUser.service';
 import { MessageService } from './message/message.service';
 import { RoomUserService } from './room-user/room-user.service';
 import { RoomService } from './room/room.service';
@@ -21,6 +22,7 @@ describe('ChatGateway', () => {
         JwtAuthService,
         RoomService,
         CommandService,
+        JailUserService,
       ],
       imports: [JwtModule],
     }).compile();
