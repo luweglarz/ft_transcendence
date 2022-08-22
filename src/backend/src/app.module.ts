@@ -8,18 +8,17 @@ import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { UsersModule } from './users/users.module';
 import { SocialService } from './social/social.service';
 import { SocialController } from './social/social.controller';
+import { SocialModule } from './social/social.module';
 
 @Module({
-  imports: [DbModule, PongModule, AuthModule, ChatModule, UsersModule],
+  imports: [DbModule, PongModule, AuthModule, ChatModule, UsersModule, SocialModule, SocialModule],
   providers: [
     {
       provide: APP_INTERCEPTOR,
       scope: Scope.REQUEST,
       useClass: LoggingInterceptor,
     },
-    SocialService,
   ],
-  controllers: [SocialController],
   // controllers: [AppController], // TODO: should probably remove those
   // providers: [AppService],
 })

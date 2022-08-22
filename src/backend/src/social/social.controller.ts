@@ -1,4 +1,5 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Relation } from '@prisma/client';
 import { DbService } from 'src/db/db.service';
 import { SocialService } from './social.service';
 
@@ -8,18 +9,22 @@ export class SocialController {
         //
     }
 
-    @Get('mySocial')
-    async getMySocialList(@Query('username') username: string) {
-        return { relations: this.socialService.getMySocial(username) };
+    @Get('')
+    async getSocialList() {
+        return { allRelations: this.socialService.getSocial() };
     }
 
-    @Get('theirSocial')
-    async getTheirSocialList(@Query('username') username: string) {
-        return { relations: this.socialService.getTheirSocial(username) };
+    @Get('relations')
+    async getUserRelations(@Query('username') username: string) {
+        return { userRelations: this.socialService.getUserSocial(username) };
     }
 
-    @Get('create')
-    async createRelation(@Query('author') author: string, @Query('target') target: string) {
-        this.socialService.createRelation(author, target);
+    @Post('add')
+    async addUserRelation(@Query('author') authorName: string, @Query('target') targetName: string, @Query('relation') relation: Relation) {
+        console.log('author : ', authorName);
+        console.log('target : ', targetName);
+        console.log('relation : ', relation);
+        return { newRelation: this.socialService.addUserRelation(authorName, targetName, relation) };
     }
+
 }

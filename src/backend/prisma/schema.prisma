@@ -11,19 +11,18 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  username  String     @unique
-  auth      Auth?
-  avatar    Avatar?
-  RoomUser  RoomUser[]
-  Message   Message[]
-  wins      Game[]     @relation("Winner")
-  loses     Game[]     @relation("Loser")
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  username    String      @unique
+  auth        Auth?
+  avatar      Avatar?
+  RoomUser    RoomUser[]
+  Message     Message[]
+  wins        Game[]      @relation("Winner")
+  loses       Game[]      @relation("Loser")
 
-  mySocial    Social[]    @relation("MySocial")
-  theirSocial Social[]    @relation("TheirSocial")
+  social      Social[]    @relation("Social")
 }
 
 model Auth {
@@ -112,11 +111,10 @@ enum Relation {
 model Social {
   id         Int      @id @default(autoincrement())
 
-  author     User     @relation("MySocial", fields: [authorId], references: [id])
-  authorId   Int
+  author     User     @relation("Social", fields: [authorName], references: [username])
+  authorName String   @unique
 
-  target     User     @relation("TheirSocial", fields: [targetId], references: [id])
-  targetId   Int
+  targetName   String @unique
 
   relation   Relation
 }
