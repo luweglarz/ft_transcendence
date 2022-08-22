@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { SigninService } from '../signin/signin.service';
 import jwtDecode from 'jwt-decode';
-import { OAuthJwtPayload } from '../interface';
+import { OAuthJwtPayload } from './dto';
 
 @Injectable({
   providedIn: 'root',
