@@ -66,7 +66,6 @@ export class GameSocket extends Socket {
             gameService,
           );
         } else if (gameType === 'custom') {
-          console.log('cusotmmode');
           matchmakingService.game = new CustomGame(
             gameMapInfo.canvaHeight,
             gameMapInfo.canvaWidth,
