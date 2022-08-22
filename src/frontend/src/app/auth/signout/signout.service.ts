@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { AvatarService } from 'src/app/avatar/avatar.service';
 import { JwtService } from '../jwt';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignoutService {
-  constructor(private jwt: JwtService, private avatar: AvatarService) {}
+  constructor(private jwt: JwtService) {}
 
   signOut() {
-    const username = this.jwt.getPayload()?.username;
+    const username = this.jwt.username;
     this.jwt.clearToken();
     if (username) console.log(`${username} successfully signed out`);
   }

@@ -12,6 +12,8 @@ export class ChatSocket extends Socket {
       url: environment.backend,
       options: { autoConnect: false, path: environment.socketChatPath },
     });
-    this.ioSocket.auth = { token: jwtService.getToken() };
+    jwtService
+      .getToken$()
+      .subscribe((token) => (this.ioSocket.auth = { token: token }));
   }
 }

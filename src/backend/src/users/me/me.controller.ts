@@ -6,12 +6,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { User, JwtGuard } from 'src/auth';
-import { JwtPayload } from 'src/auth/modules/jwt/interfaces';
+import { User, JwtAccessGuard } from 'src/auth';
+import { JwtUser } from 'src/auth/modules/jwt/dto';
 import { AvatarService } from '../services/avatar/avatar.service';
 
 @Controller('me')
-@UseGuards(JwtGuard)
+@UseGuards(JwtAccessGuard)
 export class MeController {
   constructor(private avatar: AvatarService) {}
 
@@ -19,7 +19,7 @@ export class MeController {
   @UseInterceptors(FileInterceptor('avatar'))
   editAvatar(
     @UploadedFile() avatar: Express.Multer.File,
-    @User() user: JwtPayload,
+    @User() user: JwtUser,
   ) {
     this.avatar.uploadAvatar(user, avatar.buffer);
   }
