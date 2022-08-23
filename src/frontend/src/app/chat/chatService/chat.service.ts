@@ -37,6 +37,10 @@ export class ChatService {
     return this.socket.fromOneTimeEvent<string>('resultCommand');
   }
 
+  getBanMuteResult(): Observable<string> {
+    return this.socket.fromEvent<string>('banMute');
+  }
+
   openChat() {
     this.socket.emit('getRooms');
   }
