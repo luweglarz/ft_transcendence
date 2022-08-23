@@ -5,6 +5,7 @@ import { routes } from './routes';
 import { AuthUtilsModule } from './modules/utils/auth-utils.module';
 import { JwtAuthModule } from './modules/jwt/jwt-auth.module';
 import { OauthModule } from './modules/oauth/oauth.module';
+import { TwoFactorsModule } from './modules/two-factors/two-factors.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { OauthModule } from './modules/oauth/oauth.module';
     JwtAuthModule,
     AuthUtilsModule,
     OauthModule,
+    TwoFactorsModule,
   ],
 })
 export class AuthModule {}

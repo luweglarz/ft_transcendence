@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { InfoComponent } from './info';
 import { AvatarModule } from '../avatar';
 import { SignupModule } from './signup/signup.module';
+import { TwoFactorsModule } from './two-factors/two-factors.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SignupModule } from './signup/signup.module';
     RouterModule,
     AvatarModule,
     SignupModule,
+    TwoFactorsModule,
   ],
   exports: [SignInComponent, OauthCallbackComponent],
 })
