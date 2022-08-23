@@ -24,7 +24,9 @@ export class GameSocket extends Socket {
         transports: ['websocket', 'polling'],
       },
     });
-    this.ioSocket.auth = { token: jwtService.getToken() };
+    jwtService
+      .getToken$()
+      .subscribe((token) => (this.ioSocket.auth = { token: token }));
   }
 
   onMatchFound(

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
+import { SignInSuccessDto } from './dto/signin-success.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -32,18 +33,19 @@ export class SigninService {
       payload = undefined;
     }
 
-    this.http.post<{ jwt: string }>(url, payload).subscribe({
-      next: (response) => this.signInSuccess(response.jwt),
+    this.http.post<SignInSuccessDto>(url, payload).subscribe({
+      next: (response) =>
+        this.signInSuccess(response.tokens.access, response.tokens.refresh),
       error: (err: HttpErrorResponse) =>
         this.signInFailure(err, payload, state),
     });
   }
 
   /*
-   * @Brief store the access token, fetch the avatar and redirect to home page
+   * @Brief store the access token redirect to home page
    */
-  signInSuccess(token: string) {
-    this.jwt.setToken(token);
+  signInSuccess(accessToken: string, refreshToken: string) {
+    this.jwt.storeTokens(accessToken, refreshToken);
     this.router.navigate(['/'], {
       replaceUrl: true,
     });

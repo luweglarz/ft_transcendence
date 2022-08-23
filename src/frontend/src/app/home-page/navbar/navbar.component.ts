@@ -17,8 +17,8 @@ export class NavbarComponent {
     public collapseService: CollapseService,
     public popupsService: PopupsService,
   ) {
-    const tmp = this.jwtService.getPayload()?.username;
-    if (tmp != undefined) this.username = tmp;
+    const username = this.jwtService.username;
+    if (username) this.username = username;
   }
 
   /* NAVBAR COLLAPSE */

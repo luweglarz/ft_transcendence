@@ -34,3 +34,10 @@ export class OAuthSignUpDto {
   @IsString()
   jwt: string;
 }
+
+/*
+ * @brief Data stored in the temp jwt on oauth signup
+ */
+export interface OAuthJwtPayload {
+  oAuthUser: OAuthUserDto;
+}
