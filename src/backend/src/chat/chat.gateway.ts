@@ -10,7 +10,7 @@ import { RoomUserService } from './room-user/room-user.service';
 import { RoomService } from './room/room.service';
 import { MessageService } from './message/message.service';
 import { DbService } from 'src/db/db.service';
-import { JailUser, Room } from '@prisma/client';
+import { JailUser, Room, RoomUser } from '@prisma/client';
 import { Logger } from '@nestjs/common';
 import * as argon from 'argon2';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
@@ -236,7 +236,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('command')
-  async command(socket: Socket, command: JSON) {
+  async command(socket: Socket, command) {
     this.logger.debug(command);
     const resultCmd: string = await this.commandService.exec(
       command,
@@ -244,6 +244,20 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
     this.logger.debug(resultCmd);
     this.server.to(socket.id).emit('resultCommand', resultCmd);
+    let splitRet: string[] = resultCmd.split(/[ ]/);
+    if (splitRet.length === 2 && (splitRet[0] === 'banned' || splitRet[0] === 'muted')) {
+      let jailUsers: RoomUser[] = await this.roomUserService.roomUsers({
+        where: {
+          userId: (await this.prisma.user.findUnique({where: {username: splitRet[1]}})).id,
+        AND: {
+          roomId: command.id,
+        }}
+      });
+      console.log(jailUsers);
+      if (jailUsers.length === 1) {
+        this.server.to(jailUsers[0].socketId).emit('banMute', 'you are ' + splitRet[0]);
+      }
+    }
   }
 
   @SubscribeMessage('getMsgs')

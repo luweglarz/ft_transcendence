@@ -189,7 +189,7 @@ export class CommandService {
       splitCmd[0] === '/ban',
       timeOut,
     );
-    return splitCmd[0] === 'ban' ? 'banned' : 'muted';
+    return splitCmd[0] === '/ban' ? 'banned ' + splitCmd[1] : 'muted ' + splitCmd[1];
   }
 }
 /*
