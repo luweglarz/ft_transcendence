@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SocialService } from './social.service';
 
 interface User{
   username: string;
@@ -76,7 +77,7 @@ export class SocialComponent implements OnInit {
   },];
   showFriends: boolean = true;
 
-  constructor() {
+  constructor(public socialService: SocialService) {
     //
   }
 
