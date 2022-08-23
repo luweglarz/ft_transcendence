@@ -11,12 +11,13 @@ export class SocialController {
 
     @Get('')
     async getSocialList() {
-        return { allRelations: this.socialService.getSocial() };
+        return (this.socialService.getSocial());
     }
 
     @Get('relations')
     async getUserRelations(@Query('username') username: string) {
-        return { userRelations: this.socialService.getUserSocial(username) };
+        console.log('username : ', username);
+        return (this.socialService.getUserSocial(username));
     }
 
     @Post('add')
@@ -24,7 +25,6 @@ export class SocialController {
         console.log('author : ', authorName);
         console.log('target : ', targetName);
         console.log('relation : ', relation);
-        return { newRelation: this.socialService.addUserRelation(authorName, targetName, relation) };
+        return (this.socialService.addUserRelation(authorName, targetName, relation));
     }
-
 }

@@ -112,9 +112,9 @@ model Social {
   id         Int      @id @default(autoincrement())
 
   author     User     @relation("Social", fields: [authorName], references: [username])
-  authorName String   @unique
+  authorName String
 
-  targetName   String @unique
+  targetName   String
 
   relation   Relation
 }

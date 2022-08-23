@@ -14,14 +14,14 @@ export class SocialService {
   }
 
   async getUserSocial(username: string){
-    const userSocialList = await this.prisma.social.findUnique({
+    const userSocialList = await this.prisma.social.findMany({
       where: { authorName: username }
-    })
+    });
     return (userSocialList);
   }
 
   async addUserRelation(author: string, target: string, relation: Relation){
-    const newRelation: Social = await this.prisma.social.create({
+    const newRelation = await this.prisma.social.create({
       data: {
         authorName: author,
         targetName: target,
@@ -29,6 +29,16 @@ export class SocialService {
       }
     });
     return (newRelation);
+  }
+
+  async updateUserRelation(author: string, target: string, relation: Relation){
+    const userSocialList = await this.prisma.social.findMany({
+      where: {
+        authorName: author,
+        targetName: target,
+      }
+    });
+    return (userSocialList);
   }
 
 }
