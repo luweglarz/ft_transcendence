@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './strategy';
+import { JwtAccessStrategy, JwtRefreshStrategy } from './strategy';
 import { JwtAuthService } from './jwt-auth.service';
 import { JwtAuthController } from './jwt-auth.controller';
 
 @Module({
   imports: [JwtModule.register({})],
-  providers: [JwtStrategy, JwtAuthService],
+  providers: [JwtAccessStrategy, JwtRefreshStrategy, JwtAuthService],
   exports: [JwtAuthService],
   controllers: [JwtAuthController],
 })

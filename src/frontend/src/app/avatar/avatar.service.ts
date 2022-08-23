@@ -27,7 +27,7 @@ export class AvatarService {
   }
 
   get me() {
-    return this.user(this.jwt.isValid() ? this.jwt.username : undefined);
+    return this.user(this.jwt.username);
   }
 
   user(username?: string) {
