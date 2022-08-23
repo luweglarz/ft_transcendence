@@ -244,18 +244,28 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
     this.logger.debug(resultCmd);
     this.server.to(socket.id).emit('resultCommand', resultCmd);
-    let splitRet: string[] = resultCmd.split(/[ ]/);
-    if (splitRet.length === 2 && (splitRet[0] === 'banned' || splitRet[0] === 'muted')) {
-      let jailUsers: RoomUser[] = await this.roomUserService.roomUsers({
+    const splitRet: string[] = resultCmd.split(/[ ]/);
+    if (
+      splitRet.length === 2 &&
+      (splitRet[0] === 'banned' || splitRet[0] === 'muted')
+    ) {
+      const jailUsers: RoomUser[] = await this.roomUserService.roomUsers({
         where: {
-          userId: (await this.prisma.user.findUnique({where: {username: splitRet[1]}})).id,
-        AND: {
-          roomId: command.id,
-        }}
+          userId: (
+            await this.prisma.user.findUnique({
+              where: { username: splitRet[1] },
+            })
+          ).id,
+          AND: {
+            roomId: command.id,
+          },
+        },
       });
       console.log(jailUsers);
       if (jailUsers.length === 1) {
-        this.server.to(jailUsers[0].socketId).emit('banMute', 'you are ' + splitRet[0]);
+        this.server
+          .to(jailUsers[0].socketId)
+          .emit('banMute', 'you are ' + splitRet[0]);
       }
     }
   }
