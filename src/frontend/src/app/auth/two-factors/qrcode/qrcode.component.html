@@ -1,0 +1,11 @@
+<p>qrcode works!</p>
+
+<!-- 2FA field -->
+<div class="checkbox-register">
+    <label>Enable 2FA</label>
+    <input [formControl]="enabled" type="checkbox">
+</div>
+<div *ngIf="enabled.value == true && enabled.dirty">
+    <img [src]="codeSrc"/>
+    <div *ngIf="data"><p>Secret: {{data.secret}}</p></div>
+</div>
