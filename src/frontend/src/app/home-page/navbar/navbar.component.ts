@@ -44,4 +44,9 @@ export class NavbarComponent {
   openSocial() {
     this.popupsService.openSocial();
   }
+
+  /* SETTINGS POP UP */
+  openSettings() {
+    this.popupsService.openSettings();
+  }
 }
