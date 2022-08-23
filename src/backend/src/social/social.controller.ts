@@ -16,15 +16,16 @@ export class SocialController {
 
     @Get('relations')
     async getUserRelations(@Query('username') username: string) {
-        console.log('username : ', username);
         return (this.socialService.getUserSocial(username));
     }
 
     @Post('add')
     async addUserRelation(@Query('author') authorName: string, @Query('target') targetName: string, @Query('relation') relation: Relation) {
-        console.log('author : ', authorName);
-        console.log('target : ', targetName);
-        console.log('relation : ', relation);
         return (this.socialService.addUserRelation(authorName, targetName, relation));
+    }
+
+    @Post('update')
+    async updateUserRelation(@Query('author') authorName: string, @Query('target') targetName: string, @Query('relation') relation: Relation) {
+        return (this.socialService.updateUserRelation(authorName, targetName, relation));
     }
 }

@@ -9,7 +9,7 @@ export class SocialService {
   constructor(private prisma: DbService, private http: HttpService) {}
 
   async getSocial(){
-    const socialList = await this.prisma.social;
+    const socialList = await this.prisma.social.findMany();
     return (socialList);
   }
 
@@ -32,13 +32,16 @@ export class SocialService {
   }
 
   async updateUserRelation(author: string, target: string, relation: Relation){
-    const userSocialList = await this.prisma.social.findMany({
+    const updatedRelation = await this.prisma.social.updateMany({
       where: {
         authorName: author,
         targetName: target,
+      },
+      data: {
+        relation: relation,
       }
     });
-    return (userSocialList);
+    return (updatedRelation);
   }
 
 }
