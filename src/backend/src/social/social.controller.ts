@@ -14,9 +14,14 @@ export class SocialController {
         return (this.socialService.getSocial());
     }
 
-    @Get('relations')
-    async getUserRelations(@Query('username') username: string) {
-        return (this.socialService.getUserSocial(username));
+    @Get('friends')
+    async getUserFriends(@Query('username') username: string) {
+        return (this.socialService.getUserFriends(username));
+    }
+
+    @Get('blocked')
+    async getUserBlocked(@Query('username') username: string) {
+        return (this.socialService.getUserBlocked(username));
     }
 
     @Post('add')

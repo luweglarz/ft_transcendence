@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable} from '@nestjs/common';
-import { Relation, Social } from '@prisma/client';
+import { Relation } from '@prisma/client';
 import { DbService } from 'src/db/db.service';
 
 @Injectable()
@@ -13,11 +13,24 @@ export class SocialService {
     return (socialList);
   }
 
-  getUserSocial(username: string){
-    const userSocialList = this.prisma.social.findMany({
-      where: { authorName: username }
+  getUserFriends(username: string){
+    const userFriends = this.prisma.social.findMany({
+      where: {
+        authorName: username,
+        relation: 'friend',
+      }
     });
-    return (userSocialList);
+    return (userFriends);
+  }
+
+  getUserBlocked(username: string){
+    const userBlocked = this.prisma.social.findMany({
+      where: {
+        authorName: username,
+        relation: 'blocked',
+      }
+    });
+    return (userBlocked);
   }
 
   addUserRelation(author: string, target: string, relation: Relation){

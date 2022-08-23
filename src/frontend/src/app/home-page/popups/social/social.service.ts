@@ -31,16 +31,20 @@ export class SocialService {
     return (relations);
   }
 
-  getUserRelations(username: string){
-    let relations: Social[] = []
-    this.http.get<Social[]>('http://localhost:3000/social/relations?username=' + username).subscribe(val => {
-      relations = val;
+  getUserFriends(username: string){
+    let friends: Social[] = []
+    this.http.get<Social[]>('http://localhost:3000/social/friends?username=' + username).subscribe(val => {
+      friends = val;
     });
-    return (relations);
+    return (friends);
   }
 
-  addRelation(author: string, target: string, relation: Relation){
-
+  getUserBlocked(username: string){
+    let blocked: Social[] = []
+    this.http.get<Social[]>('http://localhost:3000/social/blocked?username=' + username).subscribe(val => {
+      blocked = val;
+    });
+    return (blocked);
   }
 
 }

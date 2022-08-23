@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtService } from 'src/app/auth/jwt';
 import { SocialService } from './social.service';
 
 enum Relation {
@@ -21,11 +22,17 @@ interface Social {
 })
 export class SocialComponent implements OnInit {
 
-  users :Array<Social> = [];
   showFriends: boolean = true;
+  username: string = '';
+  friends: Social[] = [];
+  blocked: Social[] = [];
 
-  constructor(public socialService: SocialService) {
-    this.users = this.socialService.getAllRelations();
+  constructor(public socialService: SocialService, public jwtService: JwtService) {
+    const tmp = this.jwtService.getPayload()?.username;
+    if (tmp != undefined)
+      this.username = tmp;
+    this.friends = this.getFriendUser();
+    this.blocked = this.getBlockedUser();
   }
 
   ngOnInit(): void {
@@ -40,29 +47,27 @@ export class SocialComponent implements OnInit {
     this.showFriends = false;
   }
 
-  getBlockedUser() {
-    return (this.users.filter((item) => item.relation === 0));
+  getFriendUser() {
+    console.log('Je recup les users friends');
+    console.log(this.socialService.getUserFriends(this.username));
+    return (this.socialService.getUserFriends(this.username));
   }
 
-  getFriendUser() {
-    return (this.users.filter((item) => item.relation === 1));
+  getBlockedUser() {
+    console.log('Je recup les users blocked');
+    console.log(this.socialService.getUserBlocked(this.username));
+    return (this.socialService.getUserBlocked(this.username));
   }
 
   unblockUser(username: string) {
-    this.users.forEach((user, index) => {
-      if (user.targetName === username)
-        user.relation = 2;
-    });
+    //
   }
 
   unfriendUser(username: string) {
-    this.users.forEach((user, index) => {
-      if (user.targetName === username)
-        user.relation = 2;
-    });
+    //
   }
 
   openConversation(username: string){
-    console.log(username);
+    //
   }
 }
