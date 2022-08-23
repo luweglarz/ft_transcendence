@@ -23,22 +23,20 @@ export class SocialService {
     //
   }
 
-  async getAllRelations(){
-    // const relations: Array<Social> = [];
-    // return new Promise((resolve) => {
-    //   this.http
-    //     .get<Array<Social>(
-    //       `${environment.backend}/social`,
-    //     )
-    //     .subscribe((data) => {
-    //       resolve(relations);
-    //     });
-    // });
-    return (this.http.get<ArrayBuffer>('http://localhost:3000/social'));
+  getAllRelations(): Social[]{
+    let relations: Social[] = []
+    this.http.get<Social[]>('http://localhost:3000/social').subscribe(val => {
+      relations = val;
+    });
+    return (relations);
   }
 
   getUserRelations(username: string){
-
+    let relations: Social[] = []
+    this.http.get<Social[]>('http://localhost:3000/social/relations?username=' + username).subscribe(val => {
+      relations = val;
+    });
+    return (relations);
   }
 
   addRelation(author: string, target: string, relation: Relation){

@@ -8,20 +8,20 @@ export class SocialService {
 
   constructor(private prisma: DbService, private http: HttpService) {}
 
-  async getSocial(){
-    const socialList = await this.prisma.social.findMany();
+  getSocial(){
+    const socialList = this.prisma.social.findMany();
     return (socialList);
   }
 
-  async getUserSocial(username: string){
-    const userSocialList = await this.prisma.social.findMany({
+  getUserSocial(username: string){
+    const userSocialList = this.prisma.social.findMany({
       where: { authorName: username }
     });
     return (userSocialList);
   }
 
-  async addUserRelation(author: string, target: string, relation: Relation){
-    const newRelation = await this.prisma.social.create({
+  addUserRelation(author: string, target: string, relation: Relation){
+    const newRelation = this.prisma.social.create({
       data: {
         authorName: author,
         targetName: target,
@@ -31,8 +31,8 @@ export class SocialService {
     return (newRelation);
   }
 
-  async updateUserRelation(author: string, target: string, relation: Relation){
-    const updatedRelation = await this.prisma.social.updateMany({
+  updateUserRelation(author: string, target: string, relation: Relation){
+    const updatedRelation = this.prisma.social.updateMany({
       where: {
         authorName: author,
         targetName: target,
