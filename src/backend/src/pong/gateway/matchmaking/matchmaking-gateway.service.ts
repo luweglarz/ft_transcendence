@@ -26,7 +26,6 @@ export class MatchmakingGatewayService {
     this.pools.push(this.customClientPool);
   }
 
-
   private pools: Socket[][];
   private normalClientPool: Socket[] = [];
   private rankedClientPool: Socket[] = [];
@@ -69,7 +68,7 @@ export class MatchmakingGatewayService {
     return false;
   }
 
-  clientJoinMatchmaking(client: Socket, gameType: string,) {
+  clientJoinMatchmaking(client: Socket, gameType: string) {
     if (gameType === 'normal') {
       this.pools[0].push(client);
       client.emit('waitingForAMatch', 'Waiting for a normal match');

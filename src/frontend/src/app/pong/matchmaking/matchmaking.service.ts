@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { JwtService } from 'src/app/auth/jwt';
 import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { GameSocket } from '../class/game-socket';
 import { StopWatch } from '../class/stop-watch';
@@ -13,6 +14,7 @@ export class MatchmakingService {
     private socket: GameSocket,
     private gameService: GameService,
     public notificationService: NotificationService,
+    private jwtService: JwtService,
   ) {
     this._stopWatch = new StopWatch();
     this.socket.on('error', (msg: string) => {
@@ -28,6 +30,10 @@ export class MatchmakingService {
   }
 
   requestJoinNormalMatchmaking() {
+    this.jwtService
+      .getToken$()
+      .subscribe((token) => (this.socket.ioSocket.auth = { token: token }));
+    //console.log("le token: " +  this.socket.ioSocket.auth.token);
     this.socket.connect();
     this.socket.emit('joinMatchmaking', 'normal');
     this.socket.onWaitingForAMatch(this.stopWatch);
@@ -41,6 +47,9 @@ export class MatchmakingService {
   }
 
   requestJoinRankedMatchmaking() {
+    this.jwtService
+      .getToken$()
+      .subscribe((token) => (this.socket.ioSocket.auth = { token: token }));
     this.socket.connect();
     this.socket.emit('joinMatchmaking', 'ranked');
     this.socket.onWaitingForAMatch(this.stopWatch);
@@ -54,6 +63,9 @@ export class MatchmakingService {
   }
 
   requestJoinCustomMatchmaking() {
+    this.jwtService
+      .getToken$()
+      .subscribe((token) => (this.socket.ioSocket.auth = { token: token }));
     this.socket.connect();
     this.socket.emit('joinMatchmaking', 'custom');
     this.socket.onWaitingForAMatch(this.stopWatch);

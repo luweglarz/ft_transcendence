@@ -15,7 +15,7 @@ import { StopWatch } from './stop-watch';
   providedIn: 'root',
 })
 export class GameSocket extends Socket {
-  constructor(jwtService: JwtService) {
+  constructor() {
     super({
       url: environment.backend,
       options: {
@@ -24,9 +24,6 @@ export class GameSocket extends Socket {
         transports: ['websocket', 'polling'],
       },
     });
-    jwtService
-      .getToken$()
-      .subscribe((token) => (this.ioSocket.auth = { token: token }));
   }
 
   onMatchFound(
