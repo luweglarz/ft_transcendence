@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 import { environment } from 'src/environments/environment';
-import { JwtPayload, JwtService } from '../jwt';
+import { JwtService, JwtUser } from '../jwt';
 
 @Component({
   selector: 'app-info',
@@ -10,7 +10,7 @@ import { JwtPayload, JwtService } from '../jwt';
   styleUrls: ['./info.component.css'],
 })
 export class InfoComponent implements OnInit {
-  payload?: JwtPayload;
+  user?: JwtUser;
   is_valid = false;
   expiration = '';
   backend_messagee = '';
@@ -23,13 +23,13 @@ export class InfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.payload = this.jwt.getPayload();
+    this.user = this.jwt.user;
     this.is_valid = this.jwt.isValid();
     this.expiration = this.jwt.expirationString();
     this.jwt
       .testToken()
       .then((status) => (this.backend_messagee = status.message));
-    console.table(this.payload);
+    this.jwt.logPayload();
     this.http
       .get<string[]>(`${environment.backend}/users`)
       .subscribe((users) => (this.users = users));

@@ -8,7 +8,7 @@ import { JwtService } from '../jwt';
 })
 export class SignoutService {
   constructor(private jwt: JwtService, private matchmakingService: MatchmakingService, private gameService: GameService) {}
-
+  
   signOut() {
     const username = this.jwt.username;
     this.jwt.clearToken();

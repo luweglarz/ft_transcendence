@@ -2,14 +2,14 @@
   <div class="avatar-preview">
     <img avatar class="avatar" />
   </div>
-	<div class="card" *ngIf="payload">
+	<div class="card" *ngIf="user">
 		<h1>User infos</h1>
 		<table>
 			<tr>
-				<th>sub <span class="detail">(user id)</span></th><td>{{payload.sub}}</td>
+				<th>sub <span class="detail">(user id)</span></th><td>{{user.sub}}</td>
 			</tr>
 			<tr>
-				<th>username</th><td>{{payload.username}}</td>
+				<th>username</th><td>{{user.username}}</td>
 			</tr>
 			<tr>
 				<th>token state</th><td>{{is_valid ? "valid": "invalid"}}</td>
@@ -22,7 +22,7 @@
 			</tr>
 		</table>
 	</div>
-	<div class="card" *ngIf="!payload">
+	<div class="card" *ngIf="!user">
 		<p>User not logged in 🙁 (no token found locally).</p>
 	</div>
 </div>
