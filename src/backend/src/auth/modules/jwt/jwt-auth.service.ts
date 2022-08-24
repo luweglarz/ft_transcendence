@@ -40,8 +40,8 @@ export class JwtAuthService {
 
   private signAccessToken(payload: JwtUser): Promise<string> {
     return this.jwt.signAsync(payload, {
-      //expiresIn: '42m',
-      expiresIn: 10,
+      expiresIn: '42m',
+      //expiresIn: 10,
       secret: this._accessTokenSecret,
     });
   }

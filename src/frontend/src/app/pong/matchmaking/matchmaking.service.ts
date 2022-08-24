@@ -33,7 +33,6 @@ export class MatchmakingService {
     this.jwtService
       .getToken$()
       .subscribe((token) => (this.socket.ioSocket.auth = { token: token }));
-    //console.log("le token: " +  this.socket.ioSocket.auth.token);
     this.socket.connect();
     this.socket.emit('joinMatchmaking', 'normal');
     this.socket.onWaitingForAMatch(this.stopWatch);
@@ -79,6 +78,9 @@ export class MatchmakingService {
   }
 
   requestLeaveMatchmaking() {
+    this.jwtService
+      .getToken$()
+      .subscribe((token) => (this.socket.ioSocket.auth = { token: token }));
     this._stopWatch.clearTimer();
     this.socket.emit('leaveMatchmaking');
   }
