@@ -43,6 +43,18 @@ export class TwoFactorsService {
     });
   }
 
+  async verify(userId: number, code: string) {
+    console.debug(`Received code: ${code}`);
+    console.debug(code);
+    const secret = (
+      await this.db.auth.findUnique({
+        select: { twoFactorSecret: true },
+        where: { userId: userId },
+      })
+    ).twoFactorSecret;
+    return authenticator.check(code, secret);
+  }
+
   //  =========================== Private Methods ============================  //
 
   private generateSecret() {

@@ -4,6 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { toDataURL } from 'qrcode';
 import { tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { OtpCode } from '../dto';
 import { TwoFactorSecret } from '../dto/secret-data.dto';
 
 @Component({
@@ -56,5 +57,15 @@ export class QrcodeComponent implements OnInit {
       if (err) console.error('Could not load QRCode');
       else this.codeSrc = imageUrl;
     });
+  }
+
+  logCode(code: OtpCode) {
+    console.log(code);
+    this.http
+      .post(`${environment.backend}/auth/two-factors/verify`, code)
+      .subscribe((isValid) => {
+        if (isValid) console.log('Code is valid');
+        else console.error('Code is invalid');
+      });
   }
 }

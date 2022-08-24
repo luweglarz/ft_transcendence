@@ -1,0 +1,14 @@
+code-input {
+  --item-spacing: 2em;
+  --item-height: 3em;
+  --item-border: 3px solid #dddddd;
+  --item-border-bottom: 3px solid #dddddd;
+  --item-border-has-value: 3px solid #44526f;
+  --item-border-bottom-has-value: 3px solid #44526f;
+  --item-border-focused: 3px solid #4aaac2;
+  --item-border-bottom-focused: 3px solid #4aaac2;
+  --item-shadow-focused: none;
+  --item-border-radius: 5px;
+  --item-background: #1a202c;
+  --color: white;
+}

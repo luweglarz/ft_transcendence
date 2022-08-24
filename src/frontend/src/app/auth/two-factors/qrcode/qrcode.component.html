@@ -6,4 +6,5 @@
 <div *ngIf="enabled.value == true && enabled.dirty">
     <img [src]="codeSrc"/>
     <div><p>Secret: {{secret}}</p></div>
+    <otp-input (codeCompleted)="logCode($event)"></otp-input>
 </div>
