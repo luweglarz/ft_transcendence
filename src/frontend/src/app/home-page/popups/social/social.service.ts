@@ -19,6 +19,9 @@ interface Social {
 })
 export class SocialService {
 
+  friends: Social[] = [];
+  blocked: Social[] = [];
+
   constructor(private http: HttpClient) {
     //
   }
@@ -34,7 +37,7 @@ export class SocialService {
    async getUserFriends(username: string){
      let friends: Social[] = []
      this.http.get<Social[]>('http://localhost:3000/social/friends?username=' + username).subscribe(val => {
-        console.log(val);
+        console.log('Friends', val);
         friends = val;
      });
      return (friends);
@@ -43,11 +46,27 @@ export class SocialService {
    async getUserBlocked(username: string){
      let blocked: Social[] = []
      this.http.get<Social[]>('http://localhost:3000/social/blocked?username=' + username).subscribe(val => {
-        console.log(val);
+        console.log('Blocked' ,val);
         blocked = val;
      });
      return (blocked);
    }
 
+  async loadUserSocial(username: string){
+    // this.friends = await this.getUserFriends(username);
+    // this.blocked = await this.getUserBlocked(username);
+    await this.getUserFriends(username).then((data) => {
+      data.forEach((val) => {
+        this.friends.push(Object.assign({}, val));
+        console.log(val);
+      });
+    });
+    await this.getUserBlocked(username).then((data) => {
+      data.forEach((val) => {
+        this.blocked.push(Object.assign({}, val));
+        console.log(val);
+      });
+    });
+  }
 
 }

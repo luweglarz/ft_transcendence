@@ -10,7 +10,7 @@
 
     <!-- Friend list -->
     <div *ngIf="showFriends" class="social-list">
-      <div *ngFor="let user of friends" class="social-list-item" (click)="openConversation(user.targetName)">
+      <div *ngFor="let user of socialService.friends" class="social-list-item" (click)="openConversation(user.targetName)">
         <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
         <p>{{ user.targetName }}</p>
         <!-- <div class="social-list-item-status" [ngClass]="user.status"></div> -->
@@ -22,7 +22,7 @@
 
     <!-- Block list -->
     <div *ngIf="!showFriends" class="social-list">
-      <div *ngFor="let user of blocked" class="social-list-item">
+      <div *ngFor="let user of socialService.blocked" class="social-list-item">
         <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
         <p>{{ user.targetName }}</p>
         <svg class="social-list-item-delete" (click)="unblockUser(user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
