@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
+import { LocalSigninDto } from './dto/local-signin.dto';
 import { SignInSuccessDto } from './dto/signin-success.dto';
 
 @Injectable({
@@ -19,11 +20,13 @@ export class SigninService {
   ) {}
 
   signIn(
-    data: { type: 'oauth'; code: string } | { type: 'local'; form: any },
+    data:
+      | { type: 'oauth'; code: string }
+      | { type: 'local'; form: LocalSigninDto },
     state?: { failure: boolean; reason: string },
   ) {
     let url: string;
-    let payload: any;
+    let payload: LocalSigninDto | undefined;
 
     if (data.type == 'local') {
       url = this.local_signin_url;
