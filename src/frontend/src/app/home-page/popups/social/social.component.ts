@@ -31,8 +31,8 @@ export class SocialComponent implements OnInit {
     const tmp = this.jwtService.getPayload()?.username;
     if (tmp != undefined)
       this.username = tmp;
-    this.friends = this.getFriendUser();
-    this.blocked = this.getBlockedUser();
+    this.getFriendUser();
+    this.getBlockedUser();
   }
 
   ngOnInit(): void {
@@ -41,22 +41,20 @@ export class SocialComponent implements OnInit {
 
   selectFriends() {
     this.showFriends = true;
+    console.log(this.friends);
   }
 
   selectBlocked() {
     this.showFriends = false;
+    console.log(this.blocked);
   }
 
-  getFriendUser() {
-    console.log('Je recup les users friends');
-    console.log(this.socialService.getUserFriends(this.username));
-    return (this.socialService.getUserFriends(this.username));
+  async getFriendUser() {
+    this.friends = await this.socialService.getUserFriends(this.username);
   }
 
-  getBlockedUser() {
-    console.log('Je recup les users blocked');
-    console.log(this.socialService.getUserBlocked(this.username));
-    return (this.socialService.getUserBlocked(this.username));
+  async getBlockedUser() {
+    this.blocked = await this.socialService.getUserBlocked(this.username);
   }
 
   unblockUser(username: string) {

@@ -31,20 +31,23 @@ export class SocialService {
     return (relations);
   }
 
-  getUserFriends(username: string){
-    let friends: Social[] = []
-    this.http.get<Social[]>('http://localhost:3000/social/friends?username=' + username).subscribe(val => {
-      friends = val;
-    });
-    return (friends);
-  }
+   async getUserFriends(username: string){
+     let friends: Social[] = []
+     this.http.get<Social[]>('http://localhost:3000/social/friends?username=' + username).subscribe(val => {
+        console.log(val);
+        friends = val;
+     });
+     return (friends);
+   }
 
-  getUserBlocked(username: string){
-    let blocked: Social[] = []
-    this.http.get<Social[]>('http://localhost:3000/social/blocked?username=' + username).subscribe(val => {
-      blocked = val;
-    });
-    return (blocked);
-  }
+   async getUserBlocked(username: string){
+     let blocked: Social[] = []
+     this.http.get<Social[]>('http://localhost:3000/social/blocked?username=' + username).subscribe(val => {
+        console.log(val);
+        blocked = val;
+     });
+     return (blocked);
+   }
+
 
 }
