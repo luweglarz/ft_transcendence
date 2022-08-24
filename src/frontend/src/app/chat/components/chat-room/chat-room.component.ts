@@ -32,6 +32,13 @@ export class ChatRoomComponent implements OnChanges {
   ]);
   messages: Observable<Message[]> = this.chatService.getMsgs();
   roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
+  banMute = this.chatService.getBanMuteResult().subscribe((commandReturn) => {
+    //console.log(commandReturn);
+    this.snackBar.open(commandReturn, 'dismiss', {
+      duration: 3000,
+      horizontalPosition: 'right',
+    });
+  });
 
   constructor(
     private chatService: ChatService,

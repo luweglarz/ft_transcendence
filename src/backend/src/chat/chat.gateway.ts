@@ -10,11 +10,12 @@ import { RoomUserService } from './room-user/room-user.service';
 import { RoomService } from './room/room.service';
 import { MessageService } from './message/message.service';
 import { DbService } from 'src/db/db.service';
-import { Room } from '@prisma/client';
+import { JailUser, Room, RoomUser } from '@prisma/client';
 import { Logger } from '@nestjs/common';
 import * as argon from 'argon2';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { CommandService } from './command/command.service';
+import { JailUserService } from './jail-user/jailUser.service';
 
 @WebSocketGateway({ cors: true, path: '/chat' })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -30,6 +31,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private jwt: JwtAuthService,
     private prisma: DbService,
     private commandService: CommandService,
+    private jailUserService: JailUserService,
   ) {}
 
   async handleConnection(socket: Socket) {
@@ -79,6 +81,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         });
         await this.prisma.roomUser.delete({
           where: { roomUserId: roomUser.roomUserId },
+        });
+        await this.prisma.jailUser.deleteMany({
+          where: { roomId: roomUser.roomId },
         });
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
@@ -173,6 +178,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.prisma.roomUser.delete({
           where: { roomUserId: roomUser.roomUserId },
         });
+        await this.prisma.jailUser.deleteMany({
+          where: { roomId: roomUser.roomId },
+        });
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
     }
@@ -200,6 +208,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       where: { roomId: parsed.room.id, socketId: socket.id },
     });
     if (finduser.length < 1) return;
+    if (
+      (await this.jailUserService.getUser(
+        finduser[0].userId,
+        parsed.room.id,
+      )) !== null
+    )
+      return;
     await this.messageService.createMessage({
       content: parsed.content,
       //room: { connect: message.room },
@@ -221,7 +236,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('command')
-  async command(socket: Socket, command: JSON) {
+  async command(socket: Socket, command) {
     this.logger.debug(command);
     const resultCmd: string = await this.commandService.exec(
       command,
@@ -229,6 +244,30 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
     this.logger.debug(resultCmd);
     this.server.to(socket.id).emit('resultCommand', resultCmd);
+    const splitRet: string[] = resultCmd.split(/[ ]/);
+    if (
+      splitRet.length === 2 &&
+      (splitRet[0] === 'banned' || splitRet[0] === 'muted')
+    ) {
+      const jailUsers: RoomUser[] = await this.roomUserService.roomUsers({
+        where: {
+          userId: (
+            await this.prisma.user.findUnique({
+              where: { username: splitRet[1] },
+            })
+          ).id,
+          AND: {
+            roomId: command.id,
+          },
+        },
+      });
+      console.log(jailUsers);
+      if (jailUsers.length === 1) {
+        this.server
+          .to(jailUsers[0].socketId)
+          .emit('banMute', 'you are ' + splitRet[0]);
+      }
+    }
   }
 
   @SubscribeMessage('getMsgs')
@@ -254,8 +293,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const roomUsers = await this.roomUserService.roomUsers({
       where: { roomId: roomId },
     });
+    const jailUsers: JailUser[] = await this.jailUserService.jailUsers({
+      where: { roomId: roomId, AND: { isBanned: true } },
+    });
+    let j = 0;
+    for (const jailUser of jailUsers) {
+      j = 0;
+      for (const roomUser of roomUsers) {
+        if (roomUser.userId === jailUser.userId) {
+          delete roomUsers[j];
+        }
+        j++;
+      }
+    }
     for (const roomuser of roomUsers) {
-      this.server.to(roomuser.socketId).emit('msgs', messages);
+      if (roomuser !== undefined)
+        this.server.to(roomuser.socketId).emit('msgs', messages);
     }
     //this.server.to(socket.id).emit('msgs', messages);
   }
