@@ -13,6 +13,15 @@ export class SocialService {
     return (socialList);
   }
 
+  getUserRelations(username: string){
+    const userRelations = this.prisma.social.findMany({
+      where: {
+        authorName: username,
+      }
+    });
+    return (userRelations);
+  }
+
   getUserFriends(username: string){
     const userFriends = this.prisma.social.findMany({
       where: {
@@ -33,8 +42,13 @@ export class SocialService {
     return (userBlocked);
   }
 
-  addUserRelation(author: string, target: string, relation: Relation){
-    const newRelation = this.prisma.social.create({
+  async addUserRelation(author: string, target: string, relation: Relation){
+    const tmp = await this.getUserRelations(author);
+    for (let i = 0; i < tmp.length; i++){
+      if (tmp[i].authorName === author && tmp[i].targetName === target)
+        return (this.updateUserRelation(author, target, relation));
+    }
+    const newRelation = await this.prisma.social.create({
       data: {
         authorName: author,
         targetName: target,
@@ -44,8 +58,8 @@ export class SocialService {
     return (newRelation);
   }
 
-  updateUserRelation(author: string, target: string, relation: Relation){
-    const updatedRelation = this.prisma.social.updateMany({
+  async updateUserRelation(author: string, target: string, relation: Relation){
+    const updatedRelation = await this.prisma.social.updateMany({
       where: {
         authorName: author,
         targetName: target,
