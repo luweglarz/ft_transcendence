@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QrcodeComponent } from './qrcode.component';
+import { OtpInputComponent } from './otp-input.component';
 
-describe('QrcodeComponent', () => {
-  let component: QrcodeComponent;
-  let fixture: ComponentFixture<QrcodeComponent>;
+describe('OtpInputComponent', () => {
+  let component: OtpInputComponent;
+  let fixture: ComponentFixture<OtpInputComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [QrcodeComponent],
+      declarations: [OtpInputComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(QrcodeComponent);
+    fixture = TestBed.createComponent(OtpInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
