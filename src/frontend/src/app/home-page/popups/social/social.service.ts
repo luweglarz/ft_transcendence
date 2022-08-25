@@ -21,6 +21,7 @@ export class SocialService {
 
   friends: Social[] = [];
   blocked: Social[] = [];
+  isLoaded: boolean = false;
 
   constructor(private http: HttpClient) {
     //
@@ -35,38 +36,31 @@ export class SocialService {
   }
 
    async getUserFriends(username: string){
-     let friends: Social[] = []
      this.http.get<Social[]>('http://localhost:3000/social/friends?username=' + username).subscribe(val => {
         console.log('Friends', val);
-        friends = val;
+        val.forEach((data) => {
+          this.friends.push(Object.assign({}, data));
+        })
      });
-     return (friends);
    }
 
    async getUserBlocked(username: string){
-     let blocked: Social[] = []
      this.http.get<Social[]>('http://localhost:3000/social/blocked?username=' + username).subscribe(val => {
         console.log('Blocked' ,val);
-        blocked = val;
+        val.forEach((data) => {
+          this.blocked.push(Object.assign({}, data));
+        })
      });
-     return (blocked);
    }
 
   async loadUserSocial(username: string){
-    // this.friends = await this.getUserFriends(username);
-    // this.blocked = await this.getUserBlocked(username);
-    await this.getUserFriends(username).then((data) => {
-      data.forEach((val) => {
-        this.friends.push(Object.assign({}, val));
-        console.log(val);
-      });
-    });
-    await this.getUserBlocked(username).then((data) => {
-      data.forEach((val) => {
-        this.blocked.push(Object.assign({}, val));
-        console.log(val);
-      });
-    });
+    await this.getUserBlocked(username);
+    await this.getUserFriends(username);
+    this.isLoaded = true;
+  }
+
+  updateUserRelation(author: string, target: string, relation: string) {
+    this.http.post('http://localhost:3000/social/add?author=' + author + '&target=' + target + '&relation=' + relation, '');
   }
 
 }

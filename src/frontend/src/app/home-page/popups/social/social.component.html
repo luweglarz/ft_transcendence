@@ -9,23 +9,23 @@
     </div>
 
     <!-- Friend list -->
-    <div *ngIf="showFriends" class="social-list">
+    <div *ngIf="showFriends && socialService.isLoaded" class="social-list">
       <div *ngFor="let user of socialService.friends" class="social-list-item" (click)="openConversation(user.targetName)">
         <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
         <p>{{ user.targetName }}</p>
         <!-- <div class="social-list-item-status" [ngClass]="user.status"></div> -->
-        <svg class="social-list-item-delete" (click)="unblockUser(user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="social-list-item-delete" (click)="socialService.updateUserRelation(username, user.targetName, 'none')" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M24 3.4284L20.5716 0L12 8.5716L3.4284 0L0 3.4284L8.5716 12L0 20.5716L3.4284 24L12 15.4284L20.5716 24L24 20.5716L15.4284 12L24 3.4284Z"/>
         </svg>
       </div>
     </div>
 
     <!-- Block list -->
-    <div *ngIf="!showFriends" class="social-list">
+    <div *ngIf="!showFriends && socialService.isLoaded" class="social-list">
       <div *ngFor="let user of socialService.blocked" class="social-list-item">
         <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
         <p>{{ user.targetName }}</p>
-        <svg class="social-list-item-delete" (click)="unblockUser(user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="social-list-item-delete" (click)="socialService.updateUserRelation(username, user.targetName, 'none')" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M24 3.4284L20.5716 0L12 8.5716L3.4284 0L0 3.4284L8.5716 12L0 20.5716L3.4284 24L12 15.4284L20.5716 24L24 20.5716L15.4284 12L24 3.4284Z"/>
         </svg>
       </div>

@@ -44,14 +44,6 @@ export class SocialComponent implements OnInit {
 
   }
 
-  unblockUser(username: string) {
-    //
-  }
-
-  unfriendUser(username: string) {
-    //
-  }
-
   openConversation(username: string){
     //
   }
