@@ -22,7 +22,13 @@ export class SignInComponent implements OnInit {
     private oauth: OAuthService,
     private service: SigninService,
     private signOut: SignoutService,
-  ) {}
+  ) {
+    const error = window.history.state['error'];
+    if (error) {
+      this.state.failure = true;
+      this.state.reason = error;
+    }
+  }
 
   ngOnInit(): void {
     this.signOut.signOut();

@@ -35,10 +35,7 @@ export class OAuthSignUpDto {
   jwt: string;
 }
 
-export class OAuthSigninDto {
-  @IsString()
-  otp?: string;
-}
+export class OAuthSigninDto {}
 
 /*
  * @brief Data stored in the temp jwt on oauth signup

@@ -6,6 +6,7 @@ import { AuthUtilsModule } from './modules/utils/auth-utils.module';
 import { JwtAuthModule } from './modules/jwt/jwt-auth.module';
 import { OauthModule } from './modules/oauth/oauth.module';
 import { TwoFactorsModule } from './modules/two-factors/two-factors.module';
+import { AuthenticatorModule } from './modules/authenticator/authenticator.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { TwoFactorsModule } from './modules/two-factors/two-factors.module';
     AuthUtilsModule,
     OauthModule,
     TwoFactorsModule,
+    AuthenticatorModule,
   ],
 })
 export class AuthModule {}

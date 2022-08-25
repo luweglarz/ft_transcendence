@@ -1,3 +1,1 @@
-export interface OauthSigninDto {
-  otp?: string;
-}
+export interface OauthSigninDto {}

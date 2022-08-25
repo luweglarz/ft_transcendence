@@ -30,7 +30,4 @@ export class LocalSigninDto {
   @IsString()
   @IsNotEmpty()
   password: string;
-
-  @IsString()
-  otp?: string;
 }

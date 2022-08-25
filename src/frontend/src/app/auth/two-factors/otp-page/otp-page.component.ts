@@ -1,6 +1,8 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SignInData } from '../../signin/interfaces/signin-data.interface';
+import { environment } from 'src/environments/environment';
+import { AuthenticatorSigninDto, SignInSuccessDto } from '../../signin/dto';
 import { SigninService } from '../../signin/signin.service';
 import { OtpCode } from '../dto';
 
@@ -10,20 +12,41 @@ import { OtpCode } from '../dto';
   styleUrls: ['./otp-page.component.css'],
 })
 export class OtpPageComponent implements OnInit {
-  signinData?: SignInData;
-  constructor(private router: Router, private signinService: SigninService) {}
+  partialSigninToken?: string;
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private signinService: SigninService,
+  ) {}
 
   ngOnInit(): void {
-    this.signinData = window.history.state['signin'];
-    if (!this.signinData) this.router.navigate(['/auth/signin']);
+    this.partialSigninToken = window.history.state['partialSigninToken'];
+    if (!this.partialSigninToken) this.router.navigate(['/auth/signin']);
   }
 
   signin(otp: OtpCode) {
-    if (this.signinData) {
-      // console.log(this.signinData);
-      // console.log(otp);
-      this.signinData.form.otp = otp.code;
-      this.signinService.signIn(this.signinData);
+    if (this.partialSigninToken) {
+      const authenticatorSigninDto: AuthenticatorSigninDto = {
+        partialToken: this.partialSigninToken,
+        otp: otp.code,
+      };
+      this.http
+        .post<SignInSuccessDto>(
+          `${environment.backend}/auth/authenticator/signin`,
+          authenticatorSigninDto,
+        )
+        .subscribe({
+          next: (response) =>
+            this.signinService.signInSuccess(
+              response.tokens.access,
+              response.tokens.refresh,
+            ),
+          error: (err: HttpErrorResponse) => {
+            this.router.navigate(['/auth/signin'], {
+              state: { error: err.error.message },
+            });
+          },
+        });
     }
   }
 }
