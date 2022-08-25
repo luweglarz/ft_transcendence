@@ -47,7 +47,7 @@ export class SocialService {
 
   async loadUserSocial(username: string){
     this.friends.splice(0, this.friends.length);
-    this.blocked.splice(0, this.friends.length);
+    this.blocked.splice(0, this.blocked.length);
     await this.getUserBlocked(username);
     await this.getUserFriends(username);
     this.isLoaded = true;
@@ -72,6 +72,7 @@ export class SocialService {
         });
       }
     });
+    this.loadUserSocial(author);
   }
 
   async unfriendUser(author: string, target: string) {
@@ -82,6 +83,7 @@ export class SocialService {
           social.relation = 'none';
       });
     });
+    this.loadUserSocial(author);
   }
 
   async blockUser(author: string, target: string) {
@@ -96,6 +98,7 @@ export class SocialService {
         });
       }
     });
+    this.loadUserSocial(author);
   }
 
   async unblockUser(author: string, target: string) {
@@ -106,6 +109,7 @@ export class SocialService {
           social.relation = 'none';
       });
     });
+    this.loadUserSocial(author);
   }
 
 }
