@@ -37,9 +37,9 @@ export class GameComponent implements OnInit {
   @ViewChild('playersInfo')
   private playersInfo!: ElementRef;
 
-  @ViewChild('boostOne')
+  // @ViewChild('boostOne')
   private boostOne!: ElementRef;
-  @ViewChild('boostTwo')
+  //@ViewChild('boostTwo')
   private boostTwo!: ElementRef;
 
   ngAfterViewInit() {
@@ -63,6 +63,37 @@ export class GameComponent implements OnInit {
   stopKeyLoop(event: KeyboardEvent) {
     if (event.key == this.gameService.keyPressed)
       this.gameService.keyPressed = 'stop';
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (this.gameCanvas.nativeElement.width > window.innerWidth) {
+      this.gameCanvas.nativeElement.width -=
+        this.gameCanvas.nativeElement.width - window.innerWidth;
+      this.game.canvaWidth = this.gameCanvas.nativeElement.width;
+    } else if (
+      this.gameCanvas.nativeElement.width < window.innerWidth &&
+      this.gameCanvas.nativeElement.width <= this.game.initialWidth &&
+      window.innerWidth <= this.game.initialWidth
+    ) {
+      this.gameCanvas.nativeElement.width +=
+        window.innerWidth - this.gameCanvas.nativeElement.width;
+      this.game.canvaWidth = this.gameCanvas.nativeElement.width;
+    }
+
+    if (this.gameCanvas.nativeElement.height > window.innerHeight) {
+      this.gameCanvas.nativeElement.height -=
+        this.gameCanvas.nativeElement.height - window.innerHeight;
+      this.game.canvaHeight = this.gameCanvas.nativeElement.height;
+    } else if (
+      this.gameCanvas.nativeElement.height < window.innerHeight &&
+      this.gameCanvas.nativeElement.height <= this.game.initialHeight &&
+      window.innerHeight <= this.game.initialHeight
+    ) {
+      this.gameCanvas.nativeElement.height +=
+        window.innerHeight - this.gameCanvas.nativeElement.height;
+      this.game.canvaHeight = this.gameCanvas.nativeElement.height;
+    }
   }
 
   buttonRequestLeaveGame() {
