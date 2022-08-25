@@ -103,6 +103,41 @@
 }
 
 .dms {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 50%;
   height: 100%;
+}
+
+.dms-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 95%;
+  width: 95%;
+}
+
+.dms-box-messages {
+  height: calc(100% - 48px);
+  width: 100%;
+  border-radius: 1em;
+  background-color: #1A202C;
+}
+
+.dms-box-input {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 32px;
+  width: 100%;
+  border-radius: 1em;
+  background-color: #1A202C;
+}
+
+.dms-box-input-send {
+  width: 96px;
+  height: 30px;
+  border-radius: 1em;
 }

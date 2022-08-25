@@ -158,4 +158,8 @@ export class SocialService {
       });
     this.loadUserSocial(author);
   }
+
+  isOnline(){
+    return ('online');
+  }
 }
