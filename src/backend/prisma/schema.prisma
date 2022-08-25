@@ -104,11 +104,8 @@ model Game {
 
 model Social {
   id         Int      @id @default(autoincrement())
-
   author     User     @relation("Social", fields: [authorName], references: [username])
   authorName String
-
-  targetName   String
-
+  targetName String
   relation   String
 }

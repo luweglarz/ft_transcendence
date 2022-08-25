@@ -23,7 +23,7 @@ export class SocialController {
         return (this.socialService.getUserBlocked(username));
     }
 
-    @Post('add')
+    @Get('add')
     async addUserRelation(@Query('author') authorName: string, @Query('target') targetName: string, @Query('relation') relation: string) {
         console.log('Received a post request');
         return (this.socialService.addUserRelation(authorName, targetName, relation));

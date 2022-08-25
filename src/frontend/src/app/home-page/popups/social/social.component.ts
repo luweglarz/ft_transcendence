@@ -39,6 +39,6 @@ export class SocialComponent implements OnInit {
   }
 
   openConversation(username: string){
-    //
+    console.log(username);
   }
 }
