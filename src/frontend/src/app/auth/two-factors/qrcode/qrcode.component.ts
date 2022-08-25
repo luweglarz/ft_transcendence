@@ -38,9 +38,12 @@ export class QrcodeComponent implements OnInit {
   disable() {
     this.secret = undefined;
     this.codeSrc = undefined;
+    this.codeValid = undefined;
     this.http
       .get(`${environment.backend}/auth/authenticator/disable`)
-      .subscribe(() => console.log('2FA disabled'));
+      .subscribe(() => {
+        console.log('2FA disabled');
+      });
   }
 
   enable() {
@@ -65,8 +68,13 @@ export class QrcodeComponent implements OnInit {
     this.http
       .post(`${environment.backend}/auth/authenticator/verify`, code)
       .subscribe((isValid) => {
-        if (isValid) console.log('Code is valid');
-        else console.error('Code is invalid');
+        if (isValid) {
+          console.log('Code is valid');
+          this.codeValid = true;
+        } else {
+          console.error('Code is invalid');
+          this.codeValid = false;
+        }
       });
   }
 }

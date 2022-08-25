@@ -17,7 +17,12 @@
 
     <!-- Verify -->
     <div>
-        <p>Check your one-time passwords:</p>
+        <p>
+            Check your one-time passwords: 
+            <span *ngIf="codeValid === true" class="success">Code is valid!</span>
+            <span *ngIf="codeValid === false" class="alert">Code is invalid!</span>
+        </p>
+        <otp-input (codeCompleted)="checkCode($event)"></otp-input>
     </div>
-    <otp-input (codeCompleted)="checkCode($event)"></otp-input>
+
 </div>

@@ -13,3 +13,20 @@ td {
 td.image {
   border-bottom: 2px solid #98a5c0;
 }
+
+/* VALIDATION */
+.alert {
+  color: #7d283c;
+  background-color: rgba(245, 206, 215, 0.8);
+  border-radius: 5px;
+  padding: 7px;
+  display: inline-block;
+}
+
+.success {
+  color: #275c36;
+  background-color: rgba(183, 232, 197, 0.8);
+  border-radius: 5px;
+  padding: 7px;
+  display: inline-block;
+}
