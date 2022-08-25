@@ -9,14 +9,8 @@ import { JwtService } from '@nestjs/jwt';
 import { validate } from 'class-validator';
 import { lastValueFrom } from 'rxjs';
 import { DbService } from 'src/db/db.service';
-import { TwoFactorsService } from '../two-factors/two-factors.service';
 import { AuthUtilsService } from '../utils/auth-utils.service';
-import {
-  OAuthJwtPayload,
-  OAuthSigninDto,
-  OAuthSignUpDto,
-  OAuthUserDto,
-} from './dto';
+import { OAuthJwtPayload, OAuthSignUpDto, OAuthUserDto } from './dto';
 
 @Injectable()
 export class OauthService {
@@ -28,20 +22,14 @@ export class OauthService {
     private jwt: JwtService,
     private readonly httpService: HttpService,
     private authUtils: AuthUtilsService,
-    private twoFactor: TwoFactorsService,
   ) {}
   async oauthSignUp(dto: OAuthSignUpDto) {
     const user = await this.oauthCreateUser(dto);
     return this.authUtils.signInSuccess(user);
   }
 
-  async oauthSignIn(oauthUser: OAuthUserDto, body: OAuthSigninDto) {
+  async oauthSignIn(oauthUser: OAuthUserDto) {
     const user = await this.oauthFindUser(oauthUser);
-    if (
-      (await this.twoFactor.isEnabled(user.username)) &&
-      !(await this.twoFactor.verify(user.id, body.otp))
-    )
-      throw new ForbiddenException('2FA Failed');
     this.logger.debug(`Sign in user: ${user.username}`);
     return this.authUtils.signInSuccess(user);
   }

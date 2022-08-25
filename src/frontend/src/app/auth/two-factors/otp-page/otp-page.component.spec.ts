@@ -8,9 +8,8 @@ describe('OtpPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OtpPageComponent ]
-    })
-    .compileComponents();
+      declarations: [OtpPageComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(OtpPageComponent);
     component = fixture.componentInstance;

@@ -1,4 +1,5 @@
 import { Routes } from '@nestjs/core';
+import { AuthenticatorModule } from './modules/authenticator/authenticator.module';
 import { JwtAuthModule } from './modules/jwt/jwt-auth.module';
 import { LocalAuthModule } from './modules/local/local-auth.module';
 import { OauthModule } from './modules/oauth/oauth.module';
@@ -14,6 +15,7 @@ export const routes: Routes = [
       { path: 'oauth42', module: OauthModule },
       { path: 'jwt', module: JwtAuthModule },
       { path: 'two-factors', module: TwoFactorsModule },
+      { path: 'authenticator', module: AuthenticatorModule },
     ],
   },
 ];

@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { User } from '../../decorators';
-import { TwoFactorsService } from '../two-factors/two-factors.service';
-import { OAuthUserDto, OAuthSignUpDto, OAuthSigninDto } from './dto';
+import { OAuthUserDto, OAuthSignUpDto } from './dto';
 import { OAuth2Guard } from './guard';
 import { OauthService } from './oauth.service';
 
@@ -9,10 +8,7 @@ import { OauthService } from './oauth.service';
 export class OauthController {
   private readonly client_id = process.env['OAUTH_42_CLIENT_ID'];
 
-  constructor(
-    private service: OauthService,
-    private twoFactor: TwoFactorsService,
-  ) {}
+  constructor(private service: OauthService) {}
 
   @Get('client_id')
   getOAuthClientId() {
@@ -21,9 +17,9 @@ export class OauthController {
 
   @Post('signin')
   @UseGuards(OAuth2Guard)
-  async oauthSignIn(@User() user: OAuthUserDto, @Body() body: OAuthSigninDto) {
+  async oauthSignIn(@User() user: OAuthUserDto) {
     // console.log(body);
-    return this.service.oauthSignIn(user, body);
+    return this.service.oauthSignIn(user);
   }
 
   @Post('signup')

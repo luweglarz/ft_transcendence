@@ -38,13 +38,13 @@ export class QrcodeComponent implements OnInit {
     this.secret = undefined;
     this.codeSrc = undefined;
     this.http
-      .get(`${environment.backend}/auth/two-factors/disable`)
+      .get(`${environment.backend}/auth/authenticator/disable`)
       .subscribe(() => console.log('2FA disabled'));
   }
 
   enable() {
     this.http
-      .get<TwoFactorSecret>(`${environment.backend}/auth/two-factors/enable`)
+      .get<TwoFactorSecret>(`${environment.backend}/auth/authenticator/enable`)
       .subscribe((twoFactorData) => {
         console.log('2FA enabled');
         this.secret = twoFactorData.secret;
@@ -62,7 +62,7 @@ export class QrcodeComponent implements OnInit {
   logCode(code: OtpCode) {
     console.log(code);
     this.http
-      .post(`${environment.backend}/auth/two-factors/verify`, code)
+      .post(`${environment.backend}/auth/authenticator/verify`, code)
       .subscribe((isValid) => {
         if (isValid) console.log('Code is valid');
         else console.error('Code is invalid');

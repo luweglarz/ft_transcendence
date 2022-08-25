@@ -1,18 +1,13 @@
 import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import * as argon from 'argon2';
 import { DbService } from 'src/db/db.service';
-import { TwoFactorsService } from '../two-factors/two-factors.service';
 import { AuthUtilsService } from '../utils/auth-utils.service';
 import { LocalSignupDto, LocalSigninDto } from './dto';
 
 @Injectable()
 export class LocalAuthService {
   private readonly logger = new Logger(LocalAuthService.name);
-  constructor(
-    private db: DbService,
-    private auth: AuthUtilsService,
-    private twoFactor: TwoFactorsService,
-  ) {}
+  constructor(private db: DbService, private auth: AuthUtilsService) {}
 
   /*
    * @brief sign up with email and password
@@ -45,13 +40,7 @@ export class LocalAuthService {
         'Local authentication not set up for the current user',
       );
     else if (user && (await argon.verify(user.auth.password, dto.password))) {
-      console.log(dto.otp);
-      if (
-        (await this.twoFactor.isEnabled(user.username)) &&
-        !(await this.twoFactor.verify(user.id, dto.otp))
-      )
-        throw new ForbiddenException('2FA Failed');
-      else return this.auth.signInSuccess(user);
+      return this.auth.signInSuccess(user);
     } else throw new ForbiddenException('Credentials incorrect');
   }
 }
