@@ -16,6 +16,7 @@ export class QrcodeComponent implements OnInit {
   enabled = this.fb.control<boolean>(false, { nonNullable: true });
   secret?: string;
   codeSrc?: string;
+  codeValid?: boolean;
 
   constructor(private http: HttpClient, private fb: FormBuilder) {}
 
@@ -59,7 +60,7 @@ export class QrcodeComponent implements OnInit {
     });
   }
 
-  logCode(code: OtpCode) {
+  checkCode(code: OtpCode) {
     console.log(code);
     this.http
       .post(`${environment.backend}/auth/authenticator/verify`, code)
