@@ -1,11 +1,11 @@
-import { LocalSigninDto, OauthSigninDto } from '../dto';
+import { LocalSigninDto } from '../dto';
 
 export type SignInData = OauthSigninData | LocalSigninData;
 
 interface OauthSigninData {
   type: 'oauth';
   code: string;
-  form: OauthSigninDto;
+  form: undefined;
 }
 
 interface LocalSigninData {
