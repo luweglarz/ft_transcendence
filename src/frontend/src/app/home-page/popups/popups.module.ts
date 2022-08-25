@@ -29,7 +29,7 @@ import { SocialService } from './social/social.service';
     ProfilInfoService,
     JwtService,
     LadderService,
-    SocialService
+    SocialService,
   ],
   imports: [CommonModule, AvatarModule],
   exports: [PopupsComponent],

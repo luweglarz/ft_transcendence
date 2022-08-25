@@ -6,12 +6,17 @@ import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { UsersModule } from './users/users.module';
-import { SocialService } from './social/social.service';
-import { SocialController } from './social/social.controller';
 import { SocialModule } from './social/social.module';
 
 @Module({
-  imports: [DbModule, PongModule, AuthModule, ChatModule, UsersModule, SocialModule, SocialModule],
+  imports: [
+    DbModule,
+    PongModule,
+    AuthModule,
+    ChatModule,
+    UsersModule,
+    SocialModule,
+  ],
   providers: [
     {
       provide: APP_INTERCEPTOR,

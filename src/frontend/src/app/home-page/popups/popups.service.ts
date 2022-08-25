@@ -10,7 +10,7 @@ export class PopupsService {
   constructor(
     public profilInfoService: ProfilInfoService,
     public jwtService: JwtService,
-    public socialService: SocialService
+    public socialService: SocialService,
   ) {
     this.profilPopup = false;
     this.ladderPopup = false;

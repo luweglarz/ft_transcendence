@@ -20,16 +20,20 @@ interface Player {
   styleUrls: ['./ladder.component.css'],
 })
 export class LadderComponent implements OnInit {
-  username: string = '';
+  username = '';
   ladder: Array<Player> = [];
   isLoaded = false;
 
   buttons = false;
 
-  constructor(private http: HttpClient, public popupsService: PopupsService, public jwtService: JwtService, public socialService: SocialService) {
+  constructor(
+    private http: HttpClient,
+    public popupsService: PopupsService,
+    public jwtService: JwtService,
+    public socialService: SocialService,
+  ) {
     const tmp = this.jwtService.getPayload()?.username;
-    if (tmp != undefined)
-      this.username = tmp;
+    if (tmp != undefined) this.username = tmp;
     this.http
       .get<Array<Player>>(`${environment.backend}/game/ladder`)
       .subscribe((data) => {
