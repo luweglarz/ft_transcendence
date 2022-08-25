@@ -45,7 +45,7 @@ export class OAuthService {
       if (params['code']) {
         if (params['state'] == 'signup') this.getTempToken(params['code']);
         else if (params['state'] == 'signin')
-          this.signin.signIn({ type: 'oauth', code: params['code'] });
+          this.signin.signIn({ type: 'oauth', code: params['code'], form: {} });
       } else {
         console.warn('"code" or "state" query param is missing.');
       }

@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
+import { OauthSigninDto } from './dto';
 import { LocalSigninDto } from './dto/local-signin.dto';
 import { SignInSuccessDto } from './dto/signin-success.dto';
+import { SignInData } from './interfaces/signin-data.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -19,23 +21,26 @@ export class SigninService {
     private http: HttpClient,
   ) {}
 
-  signIn(
-    data:
-      | { type: 'oauth'; code: string }
-      | { type: 'local'; form: LocalSigninDto },
-    state?: { failure: boolean; reason: string },
-  ) {
+  signIn(data: SignInData, state?: { failure: boolean; reason: string }) {
     let url: string;
-    let payload: LocalSigninDto | undefined;
+    let payload: LocalSigninDto | OauthSigninDto;
+    payload = data.form;
 
-    if (data.type == 'local') {
-      url = this.local_signin_url;
-      payload = data.form;
-    } else {
-      url = `${this.oauth_signin_url}?code=${data.code}`;
-      payload = undefined;
+    // 2FA
+    const twoFactorEnabled = true;
+    if (twoFactorEnabled && !payload.otp) {
+      this.router.navigate(['/auth/2FA'], { state: { signin: data } });
+      return;
     }
 
+    // Set url
+    if (data.type == 'local') {
+      url = this.local_signin_url;
+    } else {
+      url = `${this.oauth_signin_url}?code=${data.code}`;
+    }
+
+    // Post data
     this.http.post<SignInSuccessDto>(url, payload).subscribe({
       next: (response) =>
         this.signInSuccess(response.tokens.access, response.tokens.refresh),

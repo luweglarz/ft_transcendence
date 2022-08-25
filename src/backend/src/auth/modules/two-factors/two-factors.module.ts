@@ -5,5 +5,6 @@ import { TwoFactorsService } from './two-factors.service';
 @Module({
   controllers: [TwoFactorsController],
   providers: [TwoFactorsService],
+  exports: [TwoFactorsService],
 })
 export class TwoFactorsModule {}
