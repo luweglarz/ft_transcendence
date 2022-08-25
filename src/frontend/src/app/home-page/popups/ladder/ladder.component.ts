@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { JwtService } from 'src/app/auth/jwt';
 import { environment } from 'src/environments/environment';
 import { PopupsService } from '../popups.service';
+import { SocialService } from '../social/social.service';
 
 interface Player {
   nbLoses: number;
@@ -18,12 +20,16 @@ interface Player {
   styleUrls: ['./ladder.component.css'],
 })
 export class LadderComponent implements OnInit {
+  username: string = '';
   ladder: Array<Player> = [];
   isLoaded = false;
 
   buttons = false;
 
-  constructor(private http: HttpClient, public popupsService: PopupsService) {
+  constructor(private http: HttpClient, public popupsService: PopupsService, public jwtService: JwtService, public socialService: SocialService) {
+    const tmp = this.jwtService.getPayload()?.username;
+    if (tmp != undefined)
+      this.username = tmp;
     this.http
       .get<Array<Player>>(`${environment.backend}/game/ladder`)
       .subscribe((data) => {
