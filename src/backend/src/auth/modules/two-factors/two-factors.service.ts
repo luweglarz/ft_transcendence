@@ -11,13 +11,13 @@ export class TwoFactorsService {
 
   constructor(private readonly db: DbService) {}
 
-  async isEnabled(userId: number) {
+  async isEnabled(username: string) {
     return (
-      await this.db.auth.findUnique({
-        select: { twoFactor: true },
-        where: { userId: userId },
+      await this.db.user.findUnique({
+        include: { auth: true },
+        where: { username: username },
       })
-    ).twoFactor;
+    ).auth.twoFactor;
   }
 
   /*

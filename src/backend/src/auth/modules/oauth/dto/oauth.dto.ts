@@ -35,6 +35,11 @@ export class OAuthSignUpDto {
   jwt: string;
 }
 
+export class OAuthSigninDto {
+  @IsString()
+  otp?: string;
+}
+
 /*
  * @brief Data stored in the temp jwt on oauth signup
  */
