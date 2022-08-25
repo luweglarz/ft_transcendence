@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DbService } from 'src/db/db.service';
 import { TwoFactorsController } from './two-factors.controller';
@@ -9,7 +10,7 @@ describe('TwoFactorsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TwoFactorsController],
-      providers: [TwoFactorsService, DbService],
+      providers: [TwoFactorsService, DbService, JwtService],
     }).compile();
 
     controller = module.get<TwoFactorsController>(TwoFactorsController);
