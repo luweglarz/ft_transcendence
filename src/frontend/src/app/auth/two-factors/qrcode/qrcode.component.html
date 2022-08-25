@@ -1,10 +1,23 @@
-<!-- 2FA field -->
+<!-- 2FA Opt-in/out -->
 <div class="checkbox-register">
     <label>Enable 2FA</label>
     <input [formControl]="enabled" type="checkbox">
 </div>
+
 <div *ngIf="enabled.value == true && enabled.dirty">
-    <img [src]="codeSrc"/>
-    <div><p>Secret: {{secret}}</p></div>
-    <otp-input (codeCompleted)="logCode($event)"></otp-input>
+    <!-- QR Code -->
+    <table>
+        <tr>
+            <td class="image"><img [src]="codeSrc"/></td>
+        </tr>
+        <tr>
+            <td>Secret: {{secret}}</td>
+        </tr>
+    </table>
+
+    <!-- Verify -->
+    <div>
+        <p>Check your one-time passwords:</p>
+    </div>
+    <otp-input (codeCompleted)="checkCode($event)"></otp-input>
 </div>
