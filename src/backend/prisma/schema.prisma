@@ -102,12 +102,6 @@ model Game {
   loserGoals  Int
 }
 
-enum Relation {
-  friend
-  blocked
-  none
-}
-
 model Social {
   id         Int      @id @default(autoincrement())
 

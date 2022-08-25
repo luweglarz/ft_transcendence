@@ -1,6 +1,5 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable} from '@nestjs/common';
-//import { Relation } from '@prisma/client';
 import { DbService } from 'src/db/db.service';
 
 @Injectable()

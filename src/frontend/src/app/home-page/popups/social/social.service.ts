@@ -2,12 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
-// enum Relation {
-//   friend,
-//   blocked,
-//   none,
-// }
-
 interface Social {
   authorName: string,
   targetName: string,

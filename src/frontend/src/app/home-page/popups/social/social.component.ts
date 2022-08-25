@@ -2,12 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
 import { SocialService } from './social.service';
 
-// enum Relation {
-//   friend,
-//   blocked,
-//   none,
-// }
-
 interface Social {
   authorName: string,
   targetName: string,
