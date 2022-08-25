@@ -116,5 +116,5 @@ model Social {
 
   targetName   String
 
-  relation   Relation
+  relation   String
 }

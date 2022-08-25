@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Query } from '@nestjs/common';
-import { Relation } from '@prisma/client';
+//import { Relation } from '@prisma/client';
 import { DbService } from 'src/db/db.service';
 import { SocialService } from './social.service';
 
@@ -25,12 +25,8 @@ export class SocialController {
     }
 
     @Post('add')
-    async addUserRelation(@Query('author') authorName: string, @Query('target') targetName: string, @Query('relation') relation: Relation) {
+    async addUserRelation(@Query('author') authorName: string, @Query('target') targetName: string, @Query('relation') relation: string) {
+        console.log('Received a post request');
         return (this.socialService.addUserRelation(authorName, targetName, relation));
-    }
-
-    @Post('update')
-    async updateUserRelation(@Query('author') authorName: string, @Query('target') targetName: string, @Query('relation') relation: Relation) {
-        return (this.socialService.updateUserRelation(authorName, targetName, relation));
     }
 }

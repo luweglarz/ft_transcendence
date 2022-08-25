@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable} from '@nestjs/common';
-import { Relation } from '@prisma/client';
+//import { Relation } from '@prisma/client';
 import { DbService } from 'src/db/db.service';
 
 @Injectable()
@@ -42,7 +42,8 @@ export class SocialService {
     return (userBlocked);
   }
 
-  async addUserRelation(author: string, target: string, relation: Relation){
+  async addUserRelation(author: string, target: string, relation: string){
+    console.log('Received a post request');
     const tmp = await this.getUserRelations(author);
     for (let i = 0; i < tmp.length; i++){
       if (tmp[i].authorName === author && tmp[i].targetName === target)
@@ -58,7 +59,7 @@ export class SocialService {
     return (newRelation);
   }
 
-  async updateUserRelation(author: string, target: string, relation: Relation){
+  async updateUserRelation(author: string, target: string, relation: string){
     const updatedRelation = await this.prisma.social.updateMany({
       where: {
         authorName: author,

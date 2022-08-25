@@ -2,16 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
-enum Relation {
-  friend,
-  blocked,
-  none,
-}
+// enum Relation {
+//   friend,
+//   blocked,
+//   none,
+// }
 
 interface Social {
   authorName: string,
   targetName: string,
-  relation: Relation,
+  relation: string,
 }
 
 @Injectable({
@@ -54,13 +54,19 @@ export class SocialService {
    }
 
   async loadUserSocial(username: string){
+    this.friends.splice(0, this.friends.length);
+    this.blocked.splice(0, this.friends.length);
     await this.getUserBlocked(username);
     await this.getUserFriends(username);
     this.isLoaded = true;
   }
 
   updateUserRelation(author: string, target: string, relation: string) {
-    this.http.post('http://localhost:3000/social/add?author=' + author + '&target=' + target + '&relation=' + relation, '');
+    console.log('Author: ', author);
+    console.log('Target: ', target);
+    console.log('Relation: ', relation);
+    //this.http.post('http://localhost:3000/social/add?author=' + author + '&target=' + target + '&relation=' + relation, '');
+    this.http.post<any>('http://localhost:3000/social/add?author=ugtheven&target=usertest&relation=none', '');
   }
 
 }
