@@ -44,7 +44,6 @@ export class SignUpComponent implements OnInit {
       asyncValidators: this.validators.isAvailable('email'),
       updateOn: 'change',
     }),
-    twoFactors: [false, Validators.required],
   });
 
   oauthForm = this.formBuilder.group({
@@ -53,7 +52,6 @@ export class SignUpComponent implements OnInit {
       asyncValidators: this.validators.isAvailable('username'),
       updateOn: 'change',
     }),
-    twoFactors: [false, Validators.required],
   });
 
   get username() {

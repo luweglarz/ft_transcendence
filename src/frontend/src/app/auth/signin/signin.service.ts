@@ -3,7 +3,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
+import { SignInPartialDto } from './dto';
+import { LocalSigninDto } from './dto/local-signin.dto';
 import { SignInSuccessDto } from './dto/signin-success.dto';
+import { SignInData } from './interfaces/signin-data.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -18,27 +21,32 @@ export class SigninService {
     private http: HttpClient,
   ) {}
 
-  signIn(
-    data: { type: 'oauth'; code: string } | { type: 'local'; form: any },
-    state?: { failure: boolean; reason: string },
-  ) {
+  signIn(data: SignInData, state?: { failure: boolean; reason: string }) {
     let url: string;
-    let payload: any;
+    const payload: LocalSigninDto | undefined = data.form;
 
+    // Set url
     if (data.type == 'local') {
       url = this.local_signin_url;
-      payload = data.form;
     } else {
       url = `${this.oauth_signin_url}?code=${data.code}`;
-      payload = undefined;
     }
 
-    this.http.post<SignInSuccessDto>(url, payload).subscribe({
-      next: (response) =>
-        this.signInSuccess(response.tokens.access, response.tokens.refresh),
-      error: (err: HttpErrorResponse) =>
-        this.signInFailure(err, payload, state),
-    });
+    // Post data
+    this.http
+      .post<SignInSuccessDto | SignInPartialDto>(url, payload)
+      .subscribe({
+        next: (response) => {
+          if (response.status == 'partial')
+            this.router.navigate(['/auth/2FA'], {
+              state: { partialSigninToken: response.token },
+            });
+          else if (response.status == 'complete')
+            this.signInSuccess(response.tokens.access, response.tokens.refresh);
+        },
+        error: (err: HttpErrorResponse) =>
+          this.signInFailure(err, payload, state),
+      });
   }
 
   /*

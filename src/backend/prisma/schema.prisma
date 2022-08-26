@@ -24,12 +24,14 @@ model User {
 }
 
 model Auth {
-  userId       Int      @id
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  email        String?  @unique
-  password     String?
-  authType     AuthType @default(LOCAL)
-  refreshToken String?
+  userId          Int      @id
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email           String?  @unique
+  password        String?
+  authType        AuthType @default(LOCAL)
+  refreshToken    String?
+  twoFactor       Boolean  @default(false)
+  twoFactorSecret String?
 }
 
 model Avatar {
@@ -57,10 +59,10 @@ enum RoomType {
 }
 
 model RoomUser {
-  roomUserId Int       @id @default(autoincrement())
-  user       User      @relation(fields: [userId], references: [id])
+  roomUserId Int    @id @default(autoincrement())
+  user       User   @relation(fields: [userId], references: [id])
   userId     Int
-  room       Room      @relation(fields: [roomId], references: [id])
+  room       Room   @relation(fields: [roomId], references: [id])
   roomId     Int
   role       Role
   socketId   String
