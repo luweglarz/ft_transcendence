@@ -12,6 +12,8 @@ import { MatchHistoryComponent } from './profil/match-history/match-history.comp
 import { ProfilInfoService } from './profil/profil-info.service';
 import { JwtService } from '../../auth/jwt';
 import { LadderService } from './ladder/ladder.service';
+import { SettingsComponent } from './settings/settings.component';
+import { TwoFactorsModule } from 'src/app/auth/two-factors/two-factors.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import { LadderService } from './ladder/ladder.service';
     SocialComponent,
     MatchHistoryComponent,
     PopupsComponent,
+    SettingsComponent,
   ],
   providers: [
     CollapseService,
@@ -29,7 +32,7 @@ import { LadderService } from './ladder/ladder.service';
     JwtService,
     LadderService,
   ],
-  imports: [CommonModule, AvatarModule],
+  imports: [CommonModule, AvatarModule, TwoFactorsModule],
   exports: [PopupsComponent],
 })
 export class PopupsModule {
