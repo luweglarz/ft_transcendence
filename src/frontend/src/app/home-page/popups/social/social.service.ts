@@ -9,6 +9,8 @@ import { Social } from './interfaces/social';
 export class SocialService {
   friends: Social[] = [];
   blocked: Social[] = [];
+  loadedDmUsername: string = 'username';
+  loadedDms: string[] = ["salut", "ca va ?", "je t'envoie ce message pour savoir...."];
   isLoaded = false;
 
   constructor(private http: HttpClient) {
@@ -157,6 +159,27 @@ export class SocialService {
         });
       });
     this.loadUserSocial(author);
+  }
+
+  checkUserRelation(author: string, target: string): string{
+    let foundIndex = this.blocked.findIndex((social) =>
+      social.authorName === author && social.targetName === target,
+    );
+    if (foundIndex === -1){
+      foundIndex = this.friends.findIndex((social) =>
+        social.authorName === author && social.targetName === target,
+      );
+      if (foundIndex != -1)
+        return ("friend");
+      else
+        return ("none");
+    }
+    else
+      return ('blocked');
+  }
+
+  isInGame(){
+    return (false);
   }
 
   isOnline(){

@@ -34,16 +34,23 @@
 
   <!-- Direct Messages -->
   <div class="dms">
-    <!-- Contain the 2 elements -->
-    <div class="dms-box">
-      <!-- Messages -->
-      <div class="dms-box-messages">
+    <div class="dms-box-messages">
+      <!-- Messages Header -->
+      <div class="dms-box-messages-header">
+        <p>{{ socialService.loadedDmUsername }}</p>
+      </div>
 
+      <!-- Messages -->
+      <div class="dms-box-messages-items">
+        <div class="dms-box-messages-item" *ngFor="let message of socialService.loadedDms">
+          <img class="dms-box-messages-item-avatar" avatar alt="">
+          <p>{{ message }}</p>
+        </div>
       </div>
-      <!-- Input box -->
-      <div class="dms-box-input">
-        <button class="dms-box-input-send">Send</button>
-      </div>
+    </div>
+    <!-- Input box -->
+    <div class="dms-box-messages-input">
+      <button class="dms-box-messages-input-send">Send</button>
     </div>
   </div>
 

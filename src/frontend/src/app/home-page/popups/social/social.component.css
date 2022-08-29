@@ -104,29 +104,67 @@
 
 .dms {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   width: 50%;
   height: 100%;
 }
 
-.dms-box {
+.dms-box-messages {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  height: 95%;
-  width: 95%;
-}
 
-.dms-box-messages {
   height: calc(100% - 48px);
   width: 100%;
   border-radius: 1em;
   background-color: #1A202C;
 }
 
-.dms-box-input {
+.dms-box-messages-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 48px;
+  width: 100%;
+  border-radius: 1em;
+
+  background-color: #44526F;
+}
+
+.dms-box-messages-header p {
+  font-size: 24px;
+  font-weight: bolder;
+}
+
+.dms-box-messages-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+
+}
+
+.dms-box-messages-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+}
+
+.dms-box-messages-item-avatar {
+  height: 32px;
+  width: 32px;
+  border-radius: 100%;
+}
+
+.dms-box-messages-input {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -136,7 +174,7 @@
   background-color: #1A202C;
 }
 
-.dms-box-input-send {
+.dms-box-messages-input-send {
   width: 96px;
   height: 30px;
   border-radius: 1em;
