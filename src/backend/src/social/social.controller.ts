@@ -1,13 +1,9 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { DbService } from 'src/db/db.service';
 import { SocialService } from './social.service';
 
 @Controller('social')
 export class SocialController {
-  constructor(
-    private prismaClient: DbService,
-    public socialService: SocialService,
-  ) {
+  constructor(public socialService: SocialService) {
     //
   }
 

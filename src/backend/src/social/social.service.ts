@@ -4,7 +4,9 @@ import { DbService } from 'src/db/db.service';
 
 @Injectable()
 export class SocialService {
-  constructor(private prisma: DbService, private http: HttpService) {}
+  constructor(private prisma: DbService, private http: HttpService) {
+    //
+  }
 
   getSocial() {
     const socialList = this.prisma.social.findMany();

@@ -3,6 +3,13 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Social } from './interfaces/social';
 
+interface Message {
+  authorName: string;
+  targetName: string;
+  createdAt: number;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
