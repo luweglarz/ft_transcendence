@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   backend:
-    build: 
+    build:
       context: ./src/backend
       dockerfile: Dockerfile
       target: development
@@ -16,9 +16,9 @@ services:
     command: npm run start:debug
     networks:
       transcendence_network:
-        aliases: [ transcendence.backend ]
+        aliases: [transcendence.backend]
     depends_on:
-      postgres: {condition: service_healthy}
+      postgres: { condition: service_healthy }
     ports:
       - 3000:3000
       - 5555:5555 # prisma studio
@@ -33,7 +33,7 @@ services:
     restart: on-failure
 
   frontend:
-    build: 
+    build:
       context: ./src/frontend
       dockerfile: Dockerfile
       target: development
@@ -47,18 +47,18 @@ services:
       - 4200:4200
     networks:
       transcendence_network:
-        aliases: [ transcendence.frontend ]
+        aliases: [transcendence.frontend]
     environment:
       TZ: "Europe/Paris"
       OAUTH_42_CLIENT_ID: ${OAUTH_42_CLIENT_ID}
     restart: on-failure
-  
+
   postgres:
     image: postgres:13.1
     container_name: postgres
     networks:
       transcendence_network:
-        aliases: [ transcendence.postgres ]
+        aliases: [transcendence.postgres]
     env_file:
       - ./src/backend/env/postgres.dev.env
     environment:
@@ -67,7 +67,7 @@ services:
     ports:
       - 5432:5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -75,12 +75,11 @@ services:
 
 networks:
   transcendence_network:
-      driver: bridge
-
+    driver: bridge
 # volumes:
 #   ## Some modules have to be compiled for the right architecture (ex argon2),
 #   #  hence we need to isolate them from the host
-#   ## If you have a dependency issue, run: 
+#   ## If you have a dependency issue, run:
 #   #  `docker-compose down && docker volume prune && docker-compose build`
 #   #  (or install stuff manually using `docker-compose exec ...`)
 #   transcendence_backend_modules: {}
