@@ -5,5 +5,6 @@ import { JwtTokens } from '../../jwt/dto/tokens.dto';
  */
 export interface SignInSuccessDto {
   message: string;
+  status: 'complete';
   tokens: JwtTokens;
 }

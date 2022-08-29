@@ -2,6 +2,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DbService } from 'src/db/db.service';
 import { JwtAuthService } from '../jwt/jwt-auth.service';
+import { TwoFactorsService } from '../two-factors/two-factors.service';
 import { AuthUtilsService } from '../utils/auth-utils.service';
 import { LocalAuthController } from './local-auth.controller';
 import { LocalAuthService } from './local-auth.service';
@@ -16,6 +17,7 @@ describe('LocalAuthController', () => {
         LocalAuthService,
         DbService,
         AuthUtilsService,
+        TwoFactorsService,
         JwtAuthService,
         JwtService,
       ],

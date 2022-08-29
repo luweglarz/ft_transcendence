@@ -18,6 +18,7 @@ export class OauthController {
   @Post('signin')
   @UseGuards(OAuth2Guard)
   async oauthSignIn(@User() user: OAuthUserDto) {
+    // console.log(body);
     return this.service.oauthSignIn(user);
   }
 
