@@ -288,7 +288,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     } else if (splitRet[0] === '/invite') {
       let invite: Invite = await this.prisma.invite.create({data: {userId: socket.data.user.id,username: splitRet[2] ,targetuserId: +splitRet[1], roomId: command.id, challenge: false}});
       console.log(this.connectedUsers.length)
-      this.server.to(splitRet[3]).emit('invitation', invite);
+      this.server.to(splitRet[3]).emit('invitation', {invite, Room: await this.roomService.room({id: command.id})});
     }
   }
 
