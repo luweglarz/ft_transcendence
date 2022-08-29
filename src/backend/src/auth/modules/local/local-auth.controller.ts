@@ -12,6 +12,7 @@ export class LocalAuthController {
 
   @Post('signin')
   async localSignIn(@Body() dto: LocalSigninDto) {
+    console.log(dto);
     return this.service.localSignIn(dto);
   }
 }
