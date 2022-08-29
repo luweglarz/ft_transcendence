@@ -1,13 +1,13 @@
-import { Room } from "./room";
+import { Room } from './room';
 
 export interface Invite {
-    id?:            number,
-    userId?:        number,
-    username?:      string,
-    targetUserId?:  number,
-    roomId?:        number,
-    challenge?:     boolean,
-    room?:          Room
+  id?: number;
+  userId?: number;
+  username?: string;
+  targetUserId?: number;
+  roomId?: number;
+  challenge?: boolean;
+  room?: Room;
 }
 
 /*
