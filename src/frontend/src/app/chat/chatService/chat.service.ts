@@ -42,8 +42,8 @@ export class ChatService {
     return this.socket.fromEvent<string>('banMute');
   }
 
-  getInvitations(): Observable<Invite> {
-    return this.socket.fromEvent<Invite>('invitation');
+  getInvitations(): Observable<{invite: Invite, Room: Room}> {
+    return this.socket.fromEvent<{invite: Invite, Room: Room}>('invitation');
   }
 
   openChat() {

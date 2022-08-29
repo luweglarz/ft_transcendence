@@ -22,7 +22,7 @@
       </div>
 
       <div>
-        <app-chat-invite [chatRoom]="selectedRoom"></app-chat-invite>
+        <app-chat-invite [chatRoom]="selectedRoom" (roomInvite)="joinRoomInvite($event)"></app-chat-invite>
       </div>
 
       </div>

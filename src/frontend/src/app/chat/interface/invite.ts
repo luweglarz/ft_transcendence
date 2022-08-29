@@ -1,3 +1,5 @@
+import { Room } from "./room";
+
 export interface Invite {
     id?:            number,
     userId?:        number,
@@ -5,6 +7,7 @@ export interface Invite {
     targetUserId?:  number,
     roomId?:        number,
     challenge?:     boolean,
+    room?:          Room
 }
 
 /*
