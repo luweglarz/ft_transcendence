@@ -10,19 +10,19 @@ import { RoomUserService } from './room-user/room-user.service';
 import { RoomService } from './room/room.service';
 import { MessageService } from './message/message.service';
 import { DbService } from 'src/db/db.service';
-import { JailUser, Room, RoomUser } from '@prisma/client';
-import { Logger } from '@nestjs/common';
+import { Invite, JailUser, Room, RoomUser } from '@prisma/client';
+import { Logger, OnModuleInit } from '@nestjs/common';
 import * as argon from 'argon2';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { CommandService } from './command/command.service';
 import { JailUserService } from './jail-user/jailUser.service';
 
 @WebSocketGateway({ cors: true, path: '/chat' })
-export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit {
   @WebSocketServer()
   server: Server;
   private readonly logger = new Logger(ChatGateway.name);
-  private connectedUsers: string[] = [];
+  private connectedUsers: Socket[] = []; 
 
   constructor(
     private roomService: RoomService,
@@ -33,6 +33,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private commandService: CommandService,
     private jailUserService: JailUserService,
   ) {}
+
+    onModuleInit() {
+      this.connectedUsers = [];
+      this.connectedUsers.length = 0;
+    }
 
   async handleConnection(socket: Socket) {
     console.log('client connected');
@@ -55,7 +60,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
     const rooms = await this.roomService.rooms({});
-    this.connectedUsers.push(socket.id);
+    this.connectedUsers.push(socket);
     if (rooms.length > 0) this.server.to(socket.id).emit('rooms', rooms);
     //this.server.to(socket.id).emit('testfgh');
     //console.log(await this.roomService.rooms({}));
@@ -64,7 +69,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async handleDisconnect(socket: Socket) {
     //need cleanup of roomusers
     this.logger.debug(socket.id);
-    delete this.connectedUsers[socket.id];
+    //delete this.connectedUsers[socket.id];
+    let i = 0;
+    for (let connectedUser of this.connectedUsers) {
+      if (connectedUser !== undefined && (connectedUser.id === socket.id || connectedUser.connected === false))
+        delete this.connectedUsers[i];
+      i++;
+    }
     //await this.prisma.roomUser.deleteMany({where: {socketId: socket.id}});
     const roomUsers = await this.roomUserService.roomUsers({
       where: { socketId: socket.id },
@@ -85,6 +96,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.prisma.jailUser.deleteMany({
           where: { roomId: roomUser.roomId },
         });
+        await this.prisma.invite.deleteMany({where: {roomId: roomUser.roomId}});
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
       this.getRoomUsers(roomUser.roomId);
@@ -154,6 +166,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     } catch (error) {
       this.logger.error(error);
     }
+    await this.prisma.invite.deleteMany({where: {roomId: room.id, AND: {challenge: false, targetuserId: user.id}}});
     // needs emit once i can find how to identify user by connection to server
     // emmit room messages to new member of room
     //console.log(room);
@@ -181,6 +194,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.prisma.jailUser.deleteMany({
           where: { roomId: roomUser.roomId },
         });
+        await this.prisma.invite.deleteMany({where: {roomId: roomUser.roomId}});
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
     }
@@ -241,10 +255,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const resultCmd: string = await this.commandService.exec(
       command,
       socket.data.user,
+      this.connectedUsers,
     );
     this.logger.debug(resultCmd);
-    this.server.to(socket.id).emit('resultCommand', resultCmd);
     const splitRet: string[] = resultCmd.split(/[ ]/);
+    if (splitRet[0] !== '/invite')
+      this.server.to(socket.id).emit('resultCommand', resultCmd);
+    else
+    this.server.to(socket.id).emit('resultCommand', "invited " + splitRet[2]);
     if (
       splitRet.length === 2 &&
       (splitRet[0] === 'banned' || splitRet[0] === 'muted')
@@ -267,6 +285,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           .to(jailUsers[0].socketId)
           .emit('banMute', 'you are ' + splitRet[0]);
       }
+    } else if (splitRet[0] === '/invite') {
+      let invite: Invite = await this.prisma.invite.create({data: {userId: socket.data.user.id,username: splitRet[2] ,targetuserId: +splitRet[1], roomId: command.id, challenge: false}});
+      console.log(this.connectedUsers.length)
+      this.server.to(splitRet[3]).emit('invitation', invite);
     }
   }
 
@@ -321,7 +343,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (room.roomType == 'PROTECTED') room.password = '';
     }
     for (const connectedUser of this.connectedUsers) {
-      this.server.to(connectedUser).emit('rooms', rooms);
+      if (connectedUser !== undefined)
+        this.server.to(connectedUser.id).emit('rooms', rooms);
     }
   }
 
