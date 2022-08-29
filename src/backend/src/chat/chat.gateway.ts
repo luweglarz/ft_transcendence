@@ -18,11 +18,13 @@ import { CommandService } from './command/command.service';
 import { JailUserService } from './jail-user/jailUser.service';
 
 @WebSocketGateway({ cors: true, path: '/chat' })
-export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit {
+export class ChatGateway
+  implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit
+{
   @WebSocketServer()
   server: Server;
   private readonly logger = new Logger(ChatGateway.name);
-  private connectedUsers: Socket[] = []; 
+  private connectedUsers: Socket[] = [];
 
   constructor(
     private roomService: RoomService,
@@ -34,10 +36,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     private jailUserService: JailUserService,
   ) {}
 
-    onModuleInit() {
-      this.connectedUsers = [];
-      this.connectedUsers.length = 0;
-    }
+  onModuleInit() {
+    this.connectedUsers = [];
+    this.connectedUsers.length = 0;
+  }
 
   async handleConnection(socket: Socket) {
     console.log('client connected');
@@ -71,8 +73,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     this.logger.debug(socket.id);
     //delete this.connectedUsers[socket.id];
     let i = 0;
-    for (let connectedUser of this.connectedUsers) {
-      if (connectedUser !== undefined && (connectedUser.id === socket.id || connectedUser.connected === false))
+    for (const connectedUser of this.connectedUsers) {
+      if (
+        connectedUser !== undefined &&
+        (connectedUser.id === socket.id || connectedUser.connected === false)
+      )
         delete this.connectedUsers[i];
       i++;
     }
@@ -96,7 +101,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
         await this.prisma.jailUser.deleteMany({
           where: { roomId: roomUser.roomId },
         });
-        await this.prisma.invite.deleteMany({where: {roomId: roomUser.roomId}});
+        await this.prisma.invite.deleteMany({
+          where: { roomId: roomUser.roomId },
+        });
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
       this.getRoomUsers(roomUser.roomId);
@@ -166,7 +173,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     } catch (error) {
       this.logger.error(error);
     }
-    await this.prisma.invite.deleteMany({where: {roomId: room.id, AND: {challenge: false, targetuserId: user.id}}});
+    await this.prisma.invite.deleteMany({
+      where: {
+        roomId: room.id,
+        AND: { challenge: false, targetuserId: user.id },
+      },
+    });
     // needs emit once i can find how to identify user by connection to server
     // emmit room messages to new member of room
     //console.log(room);
@@ -194,7 +206,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
         await this.prisma.jailUser.deleteMany({
           where: { roomId: roomUser.roomId },
         });
-        await this.prisma.invite.deleteMany({where: {roomId: roomUser.roomId}});
+        await this.prisma.invite.deleteMany({
+          where: { roomId: roomUser.roomId },
+        });
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
     }
@@ -262,7 +276,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     if (splitRet[0] !== '/invite')
       this.server.to(socket.id).emit('resultCommand', resultCmd);
     else
-    this.server.to(socket.id).emit('resultCommand', "invited " + splitRet[2]);
+      this.server.to(socket.id).emit('resultCommand', 'invited ' + splitRet[2]);
     if (
       splitRet.length === 2 &&
       (splitRet[0] === 'banned' || splitRet[0] === 'muted')
@@ -286,9 +300,20 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
           .emit('banMute', 'you are ' + splitRet[0]);
       }
     } else if (splitRet[0] === '/invite') {
-      let invite: Invite = await this.prisma.invite.create({data: {userId: socket.data.user.id,username: splitRet[2] ,targetuserId: +splitRet[1], roomId: command.id, challenge: false}});
-      console.log(this.connectedUsers.length)
-      this.server.to(splitRet[3]).emit('invitation', {invite, Room: await this.roomService.room({id: command.id})});
+      const invite: Invite = await this.prisma.invite.create({
+        data: {
+          userId: socket.data.user.id,
+          username: splitRet[2],
+          targetuserId: +splitRet[1],
+          roomId: command.id,
+          challenge: false,
+        },
+      });
+      console.log(this.connectedUsers.length);
+      this.server.to(splitRet[3]).emit('invitation', {
+        invite,
+        Room: await this.roomService.room({ id: command.id }),
+      });
     }
   }
 

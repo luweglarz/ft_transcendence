@@ -25,7 +25,12 @@ export class CommandService {
     console.log(splitCmd);
     if (splitCmd.length < 2) return 'incomplete command';
     if (splitCmd[splitCmd.length - 1] === '') splitCmd.pop();
-    return await this.cmdSelector(splitCmd, command, roomUser[0], connectedUsers);
+    return await this.cmdSelector(
+      splitCmd,
+      command,
+      roomUser[0],
+      connectedUsers,
+    );
   }
 
   async cmdSelector(
@@ -218,14 +223,24 @@ export class CommandService {
     });
     if (targetRoomUser.length === 1) return 'user is already in the room';
     if (targetRoomUser.length > 1) return 'database error';
-    for (let connectedUser of connectedUsers) {
-      if (connectedUser !== undefined && connectedUser.connected === true && targetUser.username === connectedUser.data.user.username) {
-        return '/invite ' + targetUser.id + ' ' + targetUser.username + ' ' + connectedUser.id;
+    for (const connectedUser of connectedUsers) {
+      if (
+        connectedUser !== undefined &&
+        connectedUser.connected === true &&
+        targetUser.username === connectedUser.data.user.username
+      ) {
+        return (
+          '/invite ' +
+          targetUser.id +
+          ' ' +
+          targetUser.username +
+          ' ' +
+          connectedUser.id
+        );
       }
     }
     return 'user is not in chat';
   }
-
 }
 /*
 + ban 2
