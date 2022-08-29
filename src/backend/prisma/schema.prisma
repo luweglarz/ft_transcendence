@@ -85,6 +85,15 @@ model JailUser {
   isMuted   Boolean  @default(false)
 }
 
+model Invite {
+  id            Int     @id @default(autoincrement())
+  userId        Int
+  username      String
+  targetuserId  Int
+  roomId        Int?
+  challenge     Boolean
+}
+
 model Room {
   id        Int        @id @default(autoincrement())
   createdAt DateTime   @default(now())
