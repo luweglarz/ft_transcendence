@@ -9,6 +9,10 @@ import { AuthUtilsService } from '../utils/auth-utils.service';
 @Injectable()
 export class AuthenticatorService {
   private readonly serviceName: string = 'Transcendence';
+  private readonly _Cryptr = require('cryptr');
+  private readonly _cryptr = new this._Cryptr(
+    `encrypt ${process.env['JWT_SECRET']}`,
+  );
   private readonly _logger = new Logger(AuthenticatorService.name);
 
   constructor(
@@ -38,7 +42,7 @@ export class AuthenticatorService {
   async enable(user: JwtUser): Promise<TwoFactorSecret> {
     const secret = this.generateSecret();
     await this.db.auth.update({
-      data: { twoFactor: true, twoFactorSecret: secret },
+      data: { twoFactor: true, twoFactorSecret: this._cryptr.encrypt(secret) },
       where: { userId: user.sub },
     });
     this._logger.log(`${user.username} enabled 2FA`);
@@ -64,7 +68,7 @@ export class AuthenticatorService {
         where: { userId: userId },
       })
     ).twoFactorSecret;
-    return authenticator.check(code, secret);
+    return authenticator.check(code, this._cryptr.decrypt(secret));
   }
 
   //  =========================== Private Methods ============================  //
