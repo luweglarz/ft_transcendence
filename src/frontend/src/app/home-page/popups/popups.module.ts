@@ -13,6 +13,7 @@ import { ProfilInfoService } from './profil/profil-info.service';
 import { JwtService } from '../../auth/jwt';
 import { LadderService } from './ladder/ladder.service';
 import { SocialService } from './social/social.service';
+import { DirectMessagesService } from './social/direct-messages.service';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { SocialService } from './social/social.service';
     JwtService,
     LadderService,
     SocialService,
+    DirectMessagesService
   ],
   imports: [CommonModule, AvatarModule],
   exports: [PopupsComponent],

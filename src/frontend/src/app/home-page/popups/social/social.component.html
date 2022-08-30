@@ -37,14 +37,15 @@
     <div class="dms-box-messages">
       <!-- Messages Header -->
       <div class="dms-box-messages-header">
-        <p>{{ socialService.loadedDmUsername }}</p>
+        <p>{{ dmsService.loadedDmUsername }}</p>
       </div>
 
       <!-- Messages -->
       <div class="dms-box-messages-items">
-        <div class="dms-box-messages-item" *ngFor="let message of socialService.loadedDms">
-          <img class="dms-box-messages-item-avatar" avatar alt="">
-          <p>{{ message }}</p>
+        <div class="dms-box-messages-item" *ngFor="let message of dmsService.loadedDms" [ngClass]="message.authorName === username ? 'sent': 'received'">
+          <img class="dms-box-messages-item-avatar" avatar username="{{ message.authorName }}" alt="">
+          <p>{{ message.content }}</p>
+
         </div>
       </div>
     </div>
