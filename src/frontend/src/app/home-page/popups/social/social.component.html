@@ -43,11 +43,13 @@
       <!-- Messages -->
       <div class="dms-box-messages-items">
         <div class="dms-box-messages-item" *ngFor="let message of dmsService.loadedDms" [ngClass]="message.authorName === username ? 'sent': 'received'">
-          <img class="dms-box-messages-item-avatar" avatar username="{{ message.authorName }}" alt="">
+          <div class="dms-box-messages-item-user">
+            <img class="dms-box-messages-item-avatar" avatar username="{{ message.authorName }}" alt="">
+          </div>
           <p>{{ message.content }}</p>
-
         </div>
       </div>
+
     </div>
     <!-- Input box -->
     <div class="dms-box-messages-input">

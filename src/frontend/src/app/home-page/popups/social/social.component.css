@@ -1,6 +1,7 @@
 .container {
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
   width: 100%;
   height: 100%;
   color: white;
@@ -8,7 +9,7 @@
 }
 
 .social {
-  width: 50%;
+  width: calc(50% - 32px);
   height: 100%;
 }
 
@@ -109,7 +110,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 50%;
+  width: calc(50% - 32px);
   height: 100%;
 }
 
@@ -118,10 +119,10 @@
   flex-direction: column;
   align-items: center;
 
-  height: calc(100% - 48px);
+  height: calc(100% - 64px);
   width: 100%;
   border-radius: 1em;
-  background-color: #1A202C;
+  background-color: #44526F;
 }
 
 .dms-box-messages-header {
@@ -129,11 +130,11 @@
   justify-content: center;
   align-items: center;
 
-  height: 48px;
+  height: 64px;
   width: 100%;
   border-radius: 1em;
 
-  background-color: #44526F;
+  background-color: #1A202C;
 }
 
 .dms-box-messages-header p {
@@ -145,7 +146,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
   height: 100%;
   overflow-y: scroll;
@@ -156,8 +157,10 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  width: 100%;
+  width: calc(100% - 48px);
   height: fit-content;
+
+  font-size: 0px;
 }
 
 .sent {
@@ -168,12 +171,28 @@
   flex-direction: row-reverse;
 }
 
+.dms-box-messages-item p {
+  width: calc(100% - 64px);
+  height: fit-content;
+  font-size: 18px;
+}
+
+.dms-box-messages-item-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 64px;
+  height: 32px;
+}
+
 .dms-box-messages-item-avatar {
   height: 32px;
   width: 32px;
   border-radius: 100%;
 }
 
+/* INPUT */
 .dms-box-messages-input {
   display: flex;
   justify-content: flex-end;
@@ -181,11 +200,22 @@
   height: 32px;
   width: 100%;
   border-radius: 1em;
-  background-color: #1A202C;
+  background-color: #44526F;
 }
 
 .dms-box-messages-input-send {
   width: 96px;
   height: 30px;
   border-radius: 1em;
+
+  background-color: #1A202C;
+  color: white;
+  border: 0px;
+  transition: 0.3s;
+}
+
+.dms-box-messages-input-send:hover {
+  background-color: white;
+  color: #1A202C;
+  transition: 0.3s;
 }

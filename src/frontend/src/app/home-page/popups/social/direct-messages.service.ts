@@ -50,6 +50,23 @@ export class DirectMessagesService {
       targetName: 'ugtheven',
       content: 'Dacc mais je joue pas longtemps',
     },
+    {
+      id: 8,
+      authorName: 'ugtheven',
+      targetName: 'usertest',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur imperdiet justo non suscipit lobortis. Aliquam sodales bibendum odio at pellentesque. Duis ac mollis ante. Aliquam quis lacus purus.',
+    },{
+      id: 9,
+      authorName: 'usertest',
+      targetName: 'ugtheven',
+      content: 'Curabitur at porta diam. Donec at dapibus elit. Integer lobortis orci in tellus viverra tempor. Sed quis massa sed turpis venenatis lobortis et eget tortor. Nunc accumsan aliquet mattis. Sed non est dictum metus viverra tempus. Sed mattis massa eu consequat finibus. ',
+    },{
+      id: 10,
+      authorName: 'ugtheven',
+      targetName: 'usertest',
+      content: 'In rhoncus dictum est vitae dictum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
+    },
+
   ];
 
   constructor() { }
