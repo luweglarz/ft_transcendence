@@ -31,7 +31,7 @@ import { DirectMessagesService } from './social/direct-messages.service';
     JwtService,
     LadderService,
     SocialService,
-    DirectMessagesService
+    DirectMessagesService,
   ],
   imports: [CommonModule, AvatarModule],
   exports: [PopupsComponent],

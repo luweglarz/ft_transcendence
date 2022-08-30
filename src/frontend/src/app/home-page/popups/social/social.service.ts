@@ -8,13 +8,15 @@ import { Social } from './interfaces/social';
   providedIn: 'root',
 })
 export class SocialService {
-  username: string = '';
+  username = '';
   friends: Social[] = [];
   blocked: Social[] = [];
   isLoaded = false;
 
-  constructor(private http: HttpClient, private dmService: DirectMessagesService) {
-  }
+  constructor(
+    private http: HttpClient,
+    private dmService: DirectMessagesService,
+  ) {}
 
   getAllRelations(): Social[] {
     let relations: Social[] = [];
@@ -55,14 +57,6 @@ export class SocialService {
     this.blocked.splice(0, this.blocked.length);
     await this.getUserBlocked(username);
     await this.getUserFriends(username);
-    console.log(this.friends.length, this.friends);
-    if (this.friends.length > 0)
-      console.log(this.friends[0].targetName);
-      //this.dmService.loadUserDms(username, this.friends[0].targetName);
-    else
-    console.log('else');
-      //this.dmService.loadUserDms(username, '');
-    this.dmService.loadUserDms(username, 'usertest');
     this.isLoaded = true;
   }
 
@@ -168,28 +162,25 @@ export class SocialService {
     this.loadUserSocial(author);
   }
 
-  checkUserRelation(author: string, target: string): string{
-    let foundIndex = this.blocked.findIndex((social) =>
-      social.authorName === author && social.targetName === target,
+  checkUserRelation(author: string, target: string): string {
+    let foundIndex = this.blocked.findIndex(
+      (social) => social.authorName === author && social.targetName === target,
     );
-    if (foundIndex === -1){
-      foundIndex = this.friends.findIndex((social) =>
-        social.authorName === author && social.targetName === target,
+    if (foundIndex === -1) {
+      foundIndex = this.friends.findIndex(
+        (social) =>
+          social.authorName === author && social.targetName === target,
       );
-      if (foundIndex != -1)
-        return ("friend");
-      else
-        return ("none");
-    }
-    else
-      return ('blocked');
+      if (foundIndex != -1) return 'friend';
+      else return 'none';
+    } else return 'blocked';
   }
 
-  isInGame(){
-    return (false);
+  isInGame() {
+    return false;
   }
 
-  isOnline(){
-    return ('online');
+  isOnline() {
+    return 'online';
   }
 }

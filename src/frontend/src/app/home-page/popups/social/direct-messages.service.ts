@@ -10,13 +10,12 @@ interface Message {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DirectMessagesService {
-
-  loadedDmUsername: string = '';
+  loadedDmUsername = '';
   loadedDms: Message[] = [];
-  isLoaded: boolean = false;
+  isLoaded = false;
 
   constructor(private http: HttpClient) {
     //
@@ -25,7 +24,10 @@ export class DirectMessagesService {
   async getUsersConversation(author: string, target: string) {
     this.http
       .get<Message[]>(
-        `${environment.backend}/direct-messages/conversation?author=` + author + '&target=' + target,
+        `${environment.backend}/direct-messages/conversation?author=` +
+          author +
+          '&target=' +
+          target,
       )
       .subscribe((val) => {
         val.forEach((data) => {

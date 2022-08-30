@@ -66,5 +66,4 @@ export class DirectMessagesService {
     });
     return newMessage;
   }
-
 }

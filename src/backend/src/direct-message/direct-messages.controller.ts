@@ -13,9 +13,7 @@ export class DirectMessagesController {
   }
 
   @Get('user')
-  async getUserDms(
-    @Query('username') username: string
-  ) {
+  async getUserDms(@Query('username') username: string) {
     return this.dmService.getUserDms(username);
   }
 
@@ -36,5 +34,4 @@ export class DirectMessagesController {
     console.log('Received a post request');
     return this.dmService.addUserDm(authorName, targetName, content);
   }
-
 }
