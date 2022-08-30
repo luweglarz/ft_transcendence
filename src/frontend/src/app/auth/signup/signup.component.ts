@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AvatarService } from 'src/app/avatar/avatar.service';
 import { OAuthUserDto } from '../oauth/dto';
 import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
@@ -14,6 +13,7 @@ import { SigninService } from '../signin/signin.service';
 import { SignoutService } from '../signout/signout.service';
 import { SignupService } from './signup.service';
 import { ValidatorBuilderService } from './validators/validator-builder.service';
+import { AvatarUploadService } from 'src/app/avatar/avatar-upload/avatar-upload.service';
 
 @Component({
   selector: 'app-register',
@@ -81,7 +81,7 @@ export class SignUpComponent implements OnInit {
     private route: ActivatedRoute,
     private service: SignupService,
     private signin: SigninService,
-    private avatar: AvatarService,
+    private avatar: AvatarUploadService,
     private signOut: SignoutService,
     private jwt: JwtService,
     private validators: ValidatorBuilderService,
