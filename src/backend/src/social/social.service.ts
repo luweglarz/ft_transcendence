@@ -43,7 +43,6 @@ export class SocialService {
   }
 
   async addUserRelation(author: string, target: string, relation: string) {
-    console.log('Received a post request');
     const tmp = await this.getUserRelations(author);
     for (let i = 0; i < tmp.length; i++) {
       if (tmp[i].authorName === author && tmp[i].targetName === target)

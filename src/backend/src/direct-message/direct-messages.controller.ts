@@ -3,29 +3,38 @@ import { DirectMessagesService } from './direct-messages.service';
 
 @Controller('direct-messages')
 export class DirectMessagesController {
-  constructor(public DmService: DirectMessagesService) {
+  constructor(public dmService: DirectMessagesService) {
     //
   }
 
   @Get('')
   async getDms() {
-    return 'Tout les DMS';
+    return this.dmService.getDms();
   }
 
-  @Get('friends')
+  @Get('user')
   async getUserDms(
+    @Query('username') username: string
+  ) {
+    return this.dmService.getUserDms(username);
+  }
+
+  @Get('conversation')
+  async getUsersConversation(
     @Query('author') author: string,
     @Query('target') target: string,
   ) {
-    return 'Les DMS entre ' + author + ' et ' + target;
+    return this.dmService.getUsersConversation(author, target);
   }
 
   @Get('add')
-  async addUserDms(
-    @Query('author') author: string,
-    @Query('target') target: string,
+  async addUserDm(
+    @Query('author') authorName: string,
+    @Query('target') targetName: string,
     @Query('content') content: string,
   ) {
-    return 'Send ' + content + ' entre ' + author + ' et ' + target;
+    console.log('Received a post request');
+    return this.dmService.addUserDm(authorName, targetName, content);
   }
+
 }
