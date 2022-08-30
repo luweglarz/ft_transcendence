@@ -26,19 +26,28 @@ export class SignUpComponent implements OnInit {
   // Oauth specific
   token?: string;
   oAuthUser?: OAuthUserDto;
+  private readonly _requirements = {
+    username: [
+      Validators.required,
+      Validators.maxLength(42),
+      Validators.pattern(/^[a-zA-Z0-9]*$/),
+    ],
+    password: [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(42),
+    ],
+  };
 
   registerForm?: UntypedFormGroup;
 
   localForm = this.formBuilder.group({
     username: this.formBuilder.control('', {
-      validators: [Validators.required, Validators.maxLength(42)],
+      validators: this._requirements.username,
       asyncValidators: this.validators.isAvailable('username'),
       updateOn: 'change',
     }),
-    password: [
-      '',
-      [Validators.required, Validators.minLength(4), Validators.maxLength(42)],
-    ],
+    password: ['', this._requirements.password],
     email: this.formBuilder.control('', {
       validators: [Validators.required, Validators.email],
       asyncValidators: this.validators.isAvailable('email'),
@@ -48,7 +57,7 @@ export class SignUpComponent implements OnInit {
 
   oauthForm = this.formBuilder.group({
     username: new UntypedFormControl('', {
-      validators: [Validators.required, Validators.maxLength(42)],
+      validators: this._requirements.username,
       asyncValidators: this.validators.isAvailable('username'),
       updateOn: 'change',
     }),
