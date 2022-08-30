@@ -1,4 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
+import { AvatarUploadService } from '../avatar-upload/avatar-upload.service';
 import { AvatarService } from '../avatar.service';
 
 @Directive({
@@ -8,7 +9,11 @@ export class AvatarDirective implements AfterViewInit {
   private img: HTMLImageElement;
   @Input() username = '';
 
-  constructor(el: ElementRef, private service: AvatarService) {
+  constructor(
+    el: ElementRef,
+    private service: AvatarService,
+    private avatarUpload: AvatarUploadService,
+  ) {
     this.img = el.nativeElement;
     this.img.src = this.service.default_src;
   }
@@ -16,7 +21,7 @@ export class AvatarDirective implements AfterViewInit {
   ngAfterViewInit(): void {
     if (!this.username) {
       this.service.me.subscribe(this.updateSrc);
-      this.service.uploaded.subscribe(() =>
+      this.avatarUpload.uploaded.subscribe(() =>
         this.service.me.subscribe(this.updateSrc),
       );
     } else this.service.user(this.username).subscribe(this.updateSrc);
