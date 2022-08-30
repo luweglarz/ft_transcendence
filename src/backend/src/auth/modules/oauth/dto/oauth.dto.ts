@@ -1,4 +1,5 @@
 import {
+    IsAlphanumeric,
   IsEmail,
   IsNotEmpty,
   IsString,
@@ -29,6 +30,7 @@ export class OAuthSignUpDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(42)
+  @IsAlphanumeric()
   username: string;
 
   @IsString()
