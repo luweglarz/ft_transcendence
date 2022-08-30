@@ -34,6 +34,6 @@ export class SocialComponent implements OnInit {
   }
 
   openConversation(target: string) {
-    this.dmsService.loadUserSocial(this.username, target);
+    this.dmsService.loadUserDms(this.username, target);
   }
 }

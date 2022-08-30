@@ -34,7 +34,7 @@
 
   <!-- Direct Messages -->
   <div class="dms">
-    <div class="dms-box-messages">
+    <div class="dms-box-messages" *ngIf="socialService.isLoaded">
       <!-- Messages Header -->
       <div class="dms-box-messages-header">
         <p>{{ dmsService.loadedDmUsername }}</p>

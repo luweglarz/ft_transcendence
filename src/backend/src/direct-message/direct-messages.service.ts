@@ -1,6 +1,5 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { targetModulesByContainer } from '@nestjs/core/router/router-module';
 import { DbService } from 'src/db/db.service';
 
 @Injectable()
@@ -45,6 +44,15 @@ export class DirectMessagesService {
       },
     });
     allMessages = sentMessages.concat(receivedMessages);
+    allMessages.sort((n1, n2) => {
+      if (n1.id > n2.id) {
+        return 1;
+      }
+      if (n1.id < n2.id) {
+        return -1;
+      }
+      return 0;
+    });
     return allMessages;
   }
 

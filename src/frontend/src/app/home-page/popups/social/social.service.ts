@@ -1,18 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { DirectMessagesService } from './direct-messages.service';
 import { Social } from './interfaces/social';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SocialService {
+  username: string = '';
   friends: Social[] = [];
   blocked: Social[] = [];
   isLoaded = false;
 
-  constructor(private http: HttpClient) {
-    //
+  constructor(private http: HttpClient, private dmService: DirectMessagesService) {
   }
 
   getAllRelations(): Social[] {
@@ -54,6 +55,14 @@ export class SocialService {
     this.blocked.splice(0, this.blocked.length);
     await this.getUserBlocked(username);
     await this.getUserFriends(username);
+    console.log(this.friends.length, this.friends);
+    if (this.friends.length > 0)
+      console.log(this.friends[0].targetName);
+      //this.dmService.loadUserDms(username, this.friends[0].targetName);
+    else
+    console.log('else');
+      //this.dmService.loadUserDms(username, '');
+    this.dmService.loadUserDms(username, 'usertest');
     this.isLoaded = true;
   }
 
