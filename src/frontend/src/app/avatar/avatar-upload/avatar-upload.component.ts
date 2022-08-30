@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { assets } from 'src/assets/assets';
 import { AvatarService } from '../avatar.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { AvatarService } from '../avatar.service';
   styleUrls: ['./avatar-upload.component.css'],
 })
 export class AvatarUploadComponent implements OnInit, OnDestroy {
-  @Input() default_src = this.avatar.default_src;
+  @Input() default_src = assets.defaultAvatar;
 
   constructor(public readonly avatar: AvatarService) {}
 

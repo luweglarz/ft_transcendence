@@ -4,12 +4,13 @@ import { environment } from 'src/environments/environment';
 import { Avatar } from './interface';
 import { JwtService } from '../auth/jwt';
 import { catchError, map, of, Subject } from 'rxjs';
+import { assets } from 'src/assets/assets';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AvatarService {
-  readonly default_src = '/assets/images/default-avatar.png';
+  readonly default_src = assets.defaultAvatar;
   readonly uploaded = new Subject<boolean>();
   private avatar: Avatar = {
     src: this.default_src,
