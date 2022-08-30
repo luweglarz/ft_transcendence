@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 interface Message {
   id: number;
@@ -12,7 +14,7 @@ interface Message {
 })
 export class DirectMessagesService {
 
-  loadedDmUsername: string = 'username';
+  loadedDmUsername: string = 'usertest';
   loadedDms: Message[] = [
     {
       id: 1,
@@ -66,8 +68,28 @@ export class DirectMessagesService {
       targetName: 'usertest',
       content: 'In rhoncus dictum est vitae dictum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
     },
-
   ];
+  isLoaded: boolean = false;
 
-  constructor() { }
+  constructor(private http: HttpClient) {
+    //
+  }
+
+  async getUsersConversation(author: string, target: string) {
+    this.http
+      .get<Message[]>(
+        `${environment.backend}/direct-messages/conversation?author=` + author + '&target=' + target,
+      )
+      .subscribe((val) => {
+        val.forEach((data) => {
+          this.loadedDms.push(Object.assign({}, data));
+        });
+      });
+  }
+
+  async loadUserSocial(author: string, target: string) {
+    this.loadedDms.splice(0, this.loadedDms.length);
+    await this.getUsersConversation(author, target);
+    this.isLoaded = true;
+  }
 }

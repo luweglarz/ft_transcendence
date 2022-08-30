@@ -33,7 +33,7 @@ export class SocialComponent implements OnInit {
     this.showFriends = false;
   }
 
-  openConversation(username: string) {
-    console.log(username);
+  openConversation(target: string) {
+    this.dmsService.loadUserSocial(this.username, target);
   }
 }
