@@ -1,5 +1,7 @@
 import {
   Controller,
+  HttpStatus,
+  ParseFilePipeBuilder,
   Post,
   UploadedFile,
   UseGuards,
@@ -18,7 +20,19 @@ export class MeController {
   @Post('avatar')
   @UseInterceptors(FileInterceptor('avatar'))
   editAvatar(
-    @UploadedFile() avatar: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: /jpeg|jpg|png/,
+        })
+        .addMaxSizeValidator({
+          maxSize: 10 * 1000 * 1000, // 10Mb
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    avatar: Express.Multer.File,
     @User() user: JwtUser,
   ) {
     this.avatar.uploadAvatar(user, avatar.buffer);
