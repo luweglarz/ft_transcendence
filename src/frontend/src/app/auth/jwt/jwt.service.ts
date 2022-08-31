@@ -98,11 +98,11 @@ export class JwtService {
   }
 
   storeTokens(accessToken: string, refreshToken: string) {
+    this._data = jwtDecode<JwtData>(accessToken);
     console.log('Storing tokens');
     localStorage.setItem(this._accessTokenKey, accessToken);
     localStorage.setItem(this._refreshTokenKey, refreshToken);
     this._accessToken$.next(accessToken);
-    this._data = jwtDecode<JwtData>(accessToken);
   }
 
   clearToken() {

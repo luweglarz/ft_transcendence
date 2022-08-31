@@ -14,6 +14,7 @@ import { SignoutService } from '../signout/signout.service';
 import { SignupService } from './signup.service';
 import { ValidatorBuilderService } from './validators/validator-builder.service';
 import { AvatarUploadService } from 'src/app/avatar/avatar-upload/avatar-upload.service';
+import { assets } from 'src/assets/assets';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,7 @@ import { AvatarUploadService } from 'src/app/avatar/avatar-upload/avatar-upload.
 })
 export class SignUpComponent implements OnInit {
   signUpType?: 'local' | 'oauth';
-  image_url = '/assets/images/default-avatar.png';
+  image_url = assets.defaultAvatar;
   // Oauth specific
   token?: string;
   oAuthUser?: OAuthUserDto;
