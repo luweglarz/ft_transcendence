@@ -25,16 +25,6 @@ export class DirectMessagesController {
     return this.dmService.getUsersConversation(author, target);
   }
 
-  // @Get('add')
-  // async addUserDm(
-  //   @Query('author') authorName: string,
-  //   @Query('target') targetName: string,
-  //   @Query('content') content: string,
-  // ) {
-  //   console.log('Received a post request');
-  //   return this.dmService.addUserDm(authorName, targetName, content);
-  // }
-
   @Post('add')
   async addUsersDm(
     @Query('author') authorName: string,

@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
 import { environment } from 'src/environments/environment';
-import { SocialService } from './social.service';
 
 interface Message {
   id: number;
@@ -52,6 +51,8 @@ export class DirectMessagesService {
     console.log('Je suis : ', author);
     console.log('Jenvoie : ', content);
     console.log('A : ', target);
-    this.http.post<{content: string}>(`${environment.backend}/direct-messages/conversation?author=` + author + '&target=' + target, content);
+
+    if (content.length > 0)
+      this.http.post(`${environment.backend}/direct-messages/add?author=` + author + '&target=' + target, {content: content});
   }
 }

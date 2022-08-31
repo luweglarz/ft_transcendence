@@ -57,7 +57,6 @@ export class DirectMessagesService {
   }
 
   async addUserDm(author: string, target: string, content: string) {
-    console.log('CONTENT = ', content);
     const newMessage = await this.prisma.directMessage.create({
       data: {
         authorName: author,

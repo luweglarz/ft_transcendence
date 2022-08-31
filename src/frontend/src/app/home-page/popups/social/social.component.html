@@ -56,8 +56,8 @@
       <button class="dms-box-messages-input-send">Send</button>
     </div> -->
     <div class="dms-box-messages-input" *ngIf="socialService.isLoaded && dmsService.loadedDmUsername != ''">
-      <input class="dms-box-messages-input-box" #box (keyup.enter)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value)" (blur)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value); box.value = ''">
-      <button class="dms-box-messages-input-send" (click)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value)">Send</button>
+      <input class="dms-box-messages-input-box" #box (keyup.enter)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value); box.value = ''" (blur)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value); box.value = ''">
+      <button class="dms-box-messages-input-send" (click)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value); box.value = ''">Send</button>
     </div>
   </div>
 
