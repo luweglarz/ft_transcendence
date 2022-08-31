@@ -84,7 +84,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
     if (this.jwt.isValid()) {
       this.signOut.signOut();
-      window.location.reload(); // to clear the avatar
+      // window.location.reload(); // to clear the avatar
     }
     this.route.queryParams.subscribe((params) => {
       if (params['type'] == 'oauth') {
