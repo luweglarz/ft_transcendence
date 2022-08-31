@@ -1,29 +1,25 @@
 <div class="container" [ngClass]="collapseService.chatCollapsed ? 'container-collapsed': ''">
-  <div align="center">
+  <div style="width: calc(100vmin - 85px);height: 55vmin;" align="center">
       <div #playersInfo id= "players-info">
-        <div id="playerOneInfo">
-          <img id="avatarOne" avatar username= {{this.game.players[0].username}}>
-          <span>{{this.game.players[0].username}}</span>
-        </div>
+        <img id="avatarOne" avatar username= {{this.game.players[0].username}}>
+        <span>{{this.game.players[0].username}}</span>
         <canvas *ngIf="this.gameService.isCustomGame(this.game)" #boostOne id="boostOne"></canvas>
         <div *ngIf="!this.gameService.isCustomGame(this.game)" style="height: 100%; width: 100%; margin-right: 5%;"></div>
         <span style="font-family: Courier New">V.S</span>
         <canvas *ngIf="this.gameService.isCustomGame(this.game)" #boostTwo id="boostTwo"></canvas>
         <div *ngIf="!this.gameService.isCustomGame(this.game)" style="height: 100%; width: 100%; margin-right: 5%;"></div>
-        <div id="playerTwoInfo">
-          <span>{{this.game.players[1].username}}</span>
-          <img id="avatarTwo" avatar username= {{this.game.players[1].username}}>
-        </div>
+        <span>{{this.game.players[1].username}}</span>
+        <img id="avatarTwo" avatar username= {{this.game.players[1].username}}>
       </div>
       <canvas id="canvas-container" #gameCanvas ></canvas>
-  </div>
-
-  <!-- Button -->
-  <div class="button-container">
-    <button class="button-leave" (click)="buttonRequestLeaveGame()">
-      <svg class="button-leave-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-        <path d="M28.6667 24.5H25.3333V10.5604C25.3333 9.42459 24.4363 8.50001 23.3333 8.50001H18.6667V11.1667H22.6667V27.1667H28.6667C29.035 27.1667 29.3333 26.8684 29.3333 26.5V25.1667C29.3333 24.7984 29.035 24.5 28.6667 24.5ZM15.6767 5.87542L7.67664 7.94792C7.08288 8.10167 6.66663 8.65417 6.66663 9.28834V24.5H3.33329C2.96496 24.5 2.66663 24.7984 2.66663 25.1667V26.5C2.66663 26.8684 2.96496 27.1667 3.33329 27.1667H17.3333V7.21584C17.3333 6.31667 16.5183 5.65708 15.6767 5.87542ZM13.6666 17.8334C13.1146 17.8334 12.6666 17.2363 12.6666 16.5C12.6666 15.7638 13.1146 15.1667 13.6666 15.1667C14.2187 15.1667 14.6666 15.7638 14.6666 16.5C14.6666 17.2363 14.2187 17.8334 13.6666 17.8334Z"/>
-      </svg>Leave game</button>
+  
+    <!-- Button -->
+    <div class="button-container">
+      <button class="button-leave" (click)="buttonRequestLeaveGame()">
+        <svg class="button-leave-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <path d="M28.6667 24.5H25.3333V10.5604C25.3333 9.42459 24.4363 8.50001 23.3333 8.50001H18.6667V11.1667H22.6667V27.1667H28.6667C29.035 27.1667 29.3333 26.8684 29.3333 26.5V25.1667C29.3333 24.7984 29.035 24.5 28.6667 24.5ZM15.6767 5.87542L7.67664 7.94792C7.08288 8.10167 6.66663 8.65417 6.66663 9.28834V24.5H3.33329C2.96496 24.5 2.66663 24.7984 2.66663 25.1667V26.5C2.66663 26.8684 2.96496 27.1667 3.33329 27.1667H17.3333V7.21584C17.3333 6.31667 16.5183 5.65708 15.6767 5.87542ZM13.6666 17.8334C13.1146 17.8334 12.6666 17.2363 12.6666 16.5C12.6666 15.7638 13.1146 15.1667 13.6666 15.1667C14.2187 15.1667 14.6666 15.7638 14.6666 16.5C14.6666 17.2363 14.2187 17.8334 13.6666 17.8334Z"/>
+        </svg>Leave game</button>
+    </div>
   </div>
 
 </div>

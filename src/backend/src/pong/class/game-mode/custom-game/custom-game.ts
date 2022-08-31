@@ -42,9 +42,15 @@ export class CustomGame implements GameMode {
   emitGameUpdate(server: Server, gameRoom: Room, ball: Ball) {
     server.to(gameRoom.uuid).emit(
       'customGameUpdate',
-      { x: gameRoom.players[0].x, y: gameRoom.players[0].y },
-      { x: gameRoom.players[1].x, y: gameRoom.players[1].y },
-      { x: ball.x, y: ball.y },
+      {
+        x: gameRoom.players[0].x / this.canvaWidth,
+        y: gameRoom.players[0].y / this.canvaHeight,
+      },
+      {
+        x: gameRoom.players[1].x / this.canvaWidth,
+        y: gameRoom.players[1].y / this.canvaHeight,
+      },
+      { x: ball.x / this.canvaWidth, y: ball.y / this.canvaHeight },
       {
         playerOneGoals: gameRoom.players[0].goals,
         playerTwoGoals: gameRoom.players[1].goals,
