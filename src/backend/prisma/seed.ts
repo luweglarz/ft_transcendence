@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 interface User {
   username: string;
-  email: string;
   password: string;
 }
 
@@ -14,7 +13,7 @@ async function createUser(user: User) {
   await prisma.user.create({
     data: {
       username: user.username,
-      auth: { create: { email: user.email, password: hashedPassword } },
+      auth: { create: { password: hashedPassword } },
     },
   });
 }
@@ -48,10 +47,10 @@ async function createGame(users: User[]) {
 
 async function main() {
   const users: User[] = [
-    { username: 'lucas', email: 'lucas@mail.com', password: 'lucas' },
-    { username: 'ugo', email: 'ugo@mail.com', password: 'ugo' },
-    { username: 'matthieu', email: 'matthieu@mail.com', password: 'matthieu' },
-    { username: 'jeremy', email: 'jeremy@mail.com', password: 'jeremy' },
+    { username: 'lucas', password: 'lucas' },
+    { username: 'ugo', password: 'ugo' },
+    { username: 'matthieu', password: 'matthieu' },
+    { username: 'jeremy', password: 'jeremy' },
   ];
   for (let i = 0; i < users.length; i++) {
     await createUser(users[i]);

@@ -1,6 +1,5 @@
 import {
-    IsAlphanumeric,
-  IsEmail,
+  IsAlphanumeric,
   IsNotEmpty,
   IsString,
   MaxLength,
@@ -13,10 +12,6 @@ export class LocalSignupDto {
   @MaxLength(42)
   @IsAlphanumeric()
   username: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
 
   @IsString()
   @MinLength(4)
