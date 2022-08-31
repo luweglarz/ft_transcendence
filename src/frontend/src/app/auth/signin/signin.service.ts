@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { EventsService } from 'src/app/services/events.service';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
 import { SignInPartialDto } from './dto';
@@ -14,12 +15,16 @@ import { SignInData } from './interfaces/signin-data.interface';
 export class SigninService {
   private readonly local_signin_url = `${environment.backend}/auth/local/signin`;
   private readonly oauth_signin_url = `${environment.backend}/auth/oauth42/signin`;
+  private signinEvent: EventEmitter<boolean>;
 
   constructor(
     private jwt: JwtService,
     private router: Router,
     private http: HttpClient,
-  ) {}
+    private readonly events: EventsService,
+  ) {
+    this.signinEvent = this.events.auth.signin;
+  }
 
   signIn(data: SignInData, state?: { failure: boolean; reason: string }) {
     let url: string;
@@ -54,6 +59,7 @@ export class SigninService {
    */
   signInSuccess(accessToken: string, refreshToken: string) {
     this.jwt.storeTokens(accessToken, refreshToken);
+    this.signinEvent.emit(true);
     this.router.navigate(['/'], {
       replaceUrl: true,
     });

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { EventEmitter, Injectable } from '@angular/core';
+import { EventsService } from 'src/app/services/events.service';
 import { assets } from 'src/assets/assets';
 import { environment } from 'src/environments/environment';
 import { Avatar } from '../interface';
@@ -10,13 +10,18 @@ import { Avatar } from '../interface';
 })
 export class AvatarUploadService {
   readonly default_src = assets.defaultAvatar;
-  readonly uploaded = new Subject<boolean>();
+  readonly uploaded: EventEmitter<string>;
   private avatar: Avatar = {
     src: this.default_src,
     file: undefined,
   };
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly events: EventsService,
+  ) {
+    this.uploaded = this.events.avatar.upload;
+  }
 
   get src() {
     return this.avatar.src;
@@ -53,13 +58,13 @@ export class AvatarUploadService {
   }
 
   backendUpload() {
+    const src = this.src;
     if (this.avatar.file) {
       const formData = new FormData();
       formData.append('avatar', this.avatar.file);
       this.http
         .post(`${environment.backend}/me/avatar`, formData)
-        // setTimeout: let time to the db to process the upload (especially for large image)
-        .subscribe(() => setTimeout(() => this.uploaded.next(true), 1000));
+        .subscribe(() => this.uploaded.next(src));
     }
   }
 
