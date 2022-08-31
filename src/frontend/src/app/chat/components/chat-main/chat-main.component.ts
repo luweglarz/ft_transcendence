@@ -55,6 +55,10 @@ export class ChatMainComponent implements OnInit, OnDestroy {
     });
   }
 
+  joinRoomInvite(newRoom: Room) {
+    this.selectedRoom = newRoom;
+  }
+
   ngOnDestroy(): void {
     this.selectedRoom = {}; // probably useless
   }
