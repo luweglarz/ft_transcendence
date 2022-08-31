@@ -1,7 +1,12 @@
 <div class="avatar-register">
   <label class="avatar-label">Upload your avatar</label>
+  <div class="avatar-clear" *ngIf="service.src != service.default_src">
+    <button type="button" class="clear-image" (click)="service.clear()">
+      <svg class="icon-clear" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+  </div>
   <div class="avatar-edit">
-    <form action="" method="post" class="form-image">
+    <form action="" class="form-image">
       <input type="file" id="inputAvatar" accept=".png, .jpg, .jpeg" #inputAvatar (input)="processInput(inputAvatar)">
       <label for="inputAvatar">
         <svg width="64" height="64" viewBox="0 0 64 64" fill="none" class="icon-register" xmlns="http://www.w3.org/2000/svg">
