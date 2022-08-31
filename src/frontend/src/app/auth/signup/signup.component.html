@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <!-- Local Signup specific fields: password / email -->
+      <!-- Local Signup specific fields: password -->
       <ng-container *ngIf="signUpType == 'local'">
         <!-- Password field -->
         <div class="field-register">
@@ -33,16 +33,6 @@
             <div *ngIf="password.errors?.['required']"> Password is required. </div>
             <div *ngIf="password.errors?.['maxlength']"> Password too long (42 char max). </div>
             <div *ngIf="password.errors?.['minlength']"> Password too short (4 char min). </div>
-          </div>
-        </div>
-        <!-- Email field -->
-        <div class="field-register">
-          <label>Email: </label>
-          <input formControlName="email" placeholder="Email" name="email">
-          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert">
-            <div *ngIf="email.errors?.['required']"> Email is required. </div>
-            <div *ngIf="email.errors?.['email']"> Enter a valid email. </div>
-            <div *ngIf="email.errors?.['isAvailable']"> Email `{{email.value}}` is unavailable. </div>
           </div>
         </div>
       </ng-container>

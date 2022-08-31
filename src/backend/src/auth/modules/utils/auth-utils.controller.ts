@@ -14,14 +14,6 @@ export class AuthUtilsController {
     };
   }
 
-  @Get('exists/email/:email')
-  async emailAlreadyExists(@Param('email') email: string) {
-    return {
-      email: email,
-      exists: await this.service.emailExists(email),
-    };
-  }
-
   //  ============================ Testing routes ============================  //
 
   @UseGuards(JwtAccessGuard)

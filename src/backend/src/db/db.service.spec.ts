@@ -21,7 +21,7 @@ describe('DbClientService', () => {
     await service.user.create({
       data: {
         username: 'Monkey D. Luffy',
-        auth: { create: { email: 'luffy@mugirawa.jp' } },
+        auth: { create: { password: 'abc' } },
       },
     });
 
@@ -30,7 +30,7 @@ describe('DbClientService', () => {
       where: { username: 'Monkey D. Luffy' },
       include: { auth: true },
     });
-    expect(user.auth.email).toBe('luffy@mugirawa.jp');
+    expect(user.auth.password).toBe('abc');
 
     // Delete
     await service.user.delete({

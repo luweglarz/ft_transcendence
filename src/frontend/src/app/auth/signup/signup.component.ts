@@ -49,11 +49,6 @@ export class SignUpComponent implements OnInit {
       updateOn: 'change',
     }),
     password: ['', this._requirements.password],
-    email: this.formBuilder.control('', {
-      validators: [Validators.required, Validators.email],
-      asyncValidators: this.validators.isAvailable('email'),
-      updateOn: 'change',
-    }),
   });
 
   oauthForm = this.formBuilder.group({
@@ -69,9 +64,6 @@ export class SignUpComponent implements OnInit {
   }
   get password() {
     return this.registerForm?.get('password') as UntypedFormControl;
-  }
-  get email() {
-    return this.registerForm?.get('email') as UntypedFormControl;
   }
   get twoFactors() {
     return this.registerForm?.get('twoFactors') as UntypedFormControl;
