@@ -9,6 +9,7 @@ import { AvatarUploadService } from './avatar-upload.service';
 })
 export class AvatarUploadComponent implements OnInit, OnDestroy {
   @Input() default_src = assets.defaultAvatar;
+  error = '';
 
   constructor(public readonly service: AvatarUploadService) {}
 
@@ -23,8 +24,13 @@ export class AvatarUploadComponent implements OnInit, OnDestroy {
   processInput(upload: HTMLInputElement) {
     if (upload.files) {
       const image = upload.files[0];
-      console.log(`Loaded image: ${image.name}`);
-      this.service.update({ file: image });
+      if (image.size > 10 * 1000 * 1000) {
+        this.error = 'Image to large: max size 10Mb';
+      } else {
+        this.error = '';
+        console.debug(`Loaded image: ${image.name}`);
+        this.service.update({ file: image });
+      }
     }
   }
 }
