@@ -34,8 +34,6 @@ export class GameComponent implements OnInit {
   private gameContext: any;
   @ViewChild('gameCanvas')
   private gameCanvas!: ElementRef;
-  @ViewChild('playersInfo')
-  private playersInfo!: ElementRef;
 
   @ViewChild('boostOne')
   private boostOne!: ElementRef;
@@ -43,8 +41,6 @@ export class GameComponent implements OnInit {
   private boostTwo!: ElementRef;
 
   ngAfterViewInit() {
-    this.playersInfo.nativeElement.style.width = this.game.canvaWidth + 'px';
-
     this.gameContext = this.gameCanvas.nativeElement.getContext('2d');
     this.gameCanvas.nativeElement.width = this.game.canvaWidth;
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;
