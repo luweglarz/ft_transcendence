@@ -34,7 +34,7 @@
 
   <!-- Direct Messages -->
   <div class="dms">
-    <div class="dms-box-messages" *ngIf="socialService.isLoaded">
+    <div class="dms-box-messages" *ngIf="socialService.isLoaded && dmsService.loadedDmUsername != ''">
       <!-- Messages Header -->
       <div class="dms-box-messages-header">
         <p>{{ dmsService.loadedDmUsername }}</p>
@@ -49,11 +49,15 @@
           <p>{{ message.content }}</p>
         </div>
       </div>
-
     </div>
+
     <!-- Input box -->
-    <div class="dms-box-messages-input">
+    <!-- <div class="dms-box-messages-input" *ngIf="socialService.isLoaded && dmsService.loadedDmUsername != ''">
       <button class="dms-box-messages-input-send">Send</button>
+    </div> -->
+    <div class="dms-box-messages-input" *ngIf="socialService.isLoaded && dmsService.loadedDmUsername != ''">
+      <input class="dms-box-messages-input-box" #box (keyup.enter)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value)" (blur)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value); box.value = ''">
+      <button class="dms-box-messages-input-send" (click)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value)">Send</button>
     </div>
   </div>
 

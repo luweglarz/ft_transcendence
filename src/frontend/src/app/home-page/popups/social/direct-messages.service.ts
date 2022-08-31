@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JwtService } from 'src/app/auth/jwt';
 import { environment } from 'src/environments/environment';
+import { SocialService } from './social.service';
 
 interface Message {
   id: number;
@@ -13,12 +15,15 @@ interface Message {
   providedIn: 'root',
 })
 export class DirectMessagesService {
+  username = '';
   loadedDmUsername = '';
   loadedDms: Message[] = [];
   isLoaded = false;
 
-  constructor(private http: HttpClient) {
-    //
+  constructor(private jwtService: JwtService, private http: HttpClient) {
+    const tmp = this.jwtService.getPayload()?.username;
+    if (tmp != undefined)
+      this.username = tmp;
   }
 
   async getUsersConversation(author: string, target: string) {
@@ -41,5 +46,12 @@ export class DirectMessagesService {
     this.loadedDmUsername = target;
     await this.getUsersConversation(author, target);
     this.isLoaded = true;
+  }
+
+  sendMessage(author: string, target: string, content: string){
+    console.log('Je suis : ', author);
+    console.log('Jenvoie : ', content);
+    console.log('A : ', target);
+    this.http.post<{content: string}>(`${environment.backend}/direct-messages/conversation?author=` + author + '&target=' + target, content);
   }
 }
