@@ -21,8 +21,7 @@ export class DirectMessagesService {
 
   constructor(private jwtService: JwtService, private http: HttpClient) {
     const tmp = this.jwtService.getPayload()?.username;
-    if (tmp != undefined)
-      this.username = tmp;
+    if (tmp != undefined) this.username = tmp;
   }
 
   async getUsersConversation(author: string, target: string) {
@@ -47,12 +46,18 @@ export class DirectMessagesService {
     this.isLoaded = true;
   }
 
-  sendMessage(author: string, target: string, content: string){
+  sendMessage(author: string, target: string, content: string) {
     console.log('Je suis : ', author);
     console.log('Jenvoie : ', content);
     console.log('A : ', target);
 
     if (content.length > 0)
-      this.http.post(`${environment.backend}/direct-messages/add?author=` + author + '&target=' + target, {content: content});
+      this.http.post(
+        `${environment.backend}/direct-messages/add?author=` +
+          author +
+          '&target=' +
+          target,
+        { content: content },
+      );
   }
 }
