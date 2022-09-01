@@ -36,7 +36,7 @@ export class OauthService {
 
   async oauthFindUser(apiUser: OAuthUserDto) {
     const authInfo = await this.db.auth.findUnique({
-      where: { email: apiUser.email },
+      where: { oauthId: apiUser.id },
       include: { user: true },
     });
     if (!authInfo) throw new ForbiddenException('Unknown user');
@@ -49,7 +49,7 @@ export class OauthService {
     const payload = <OAuthJwtPayload>this.jwt.decode(dto.jwt);
     const user = await this.authUtils.createUser({
       username: dto.username,
-      auth: { create: { email: payload.oAuthUser.email, authType: 'OAUTH42' } },
+      auth: { create: { oauthId: payload.oAuthUser.id, authType: 'OAUTH42' } },
     });
     return user;
   }
@@ -75,7 +75,7 @@ export class OauthService {
     if (!data)
       throw new ForbiddenException('Could not fetch user with 42 OAuth2 API');
     const user = new OAuthUserDto();
-    for (const key of ['login', 'email', 'image_url']) {
+    for (const key of ['login', 'id', 'image_url']) {
       user[key] = data[key];
     }
     const errors = await validate(user, {

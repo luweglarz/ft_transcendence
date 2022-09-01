@@ -56,12 +56,6 @@ export class AuthUtilsService {
     });
   }
 
-  async emailExists(email: string) {
-    return await this.db.auth.count({
-      where: { email: email },
-    });
-  }
-
   async createUser(data: Prisma.UserCreateInput) {
     try {
       const user = await this.db.user.create({ data: data });
