@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AvatarService } from '../avatar.service';
+import { assets } from 'src/assets/assets';
+import { AvatarUploadService } from './avatar-upload.service';
 
 @Component({
   selector: 'app-avatar-upload',
@@ -7,23 +8,29 @@ import { AvatarService } from '../avatar.service';
   styleUrls: ['./avatar-upload.component.css'],
 })
 export class AvatarUploadComponent implements OnInit, OnDestroy {
-  @Input() default_src = this.avatar.default_src;
+  @Input() default_src = assets.defaultAvatar;
+  error = '';
 
-  constructor(public readonly avatar: AvatarService) {}
+  constructor(public readonly service: AvatarUploadService) {}
 
   ngOnInit(): void {
-    if (this.default_src != this.avatar.default_src)
-      this.avatar.update({ src: this.default_src });
+    if (this.default_src != this.service.default_src)
+      this.service.update({ src: this.default_src });
   }
   ngOnDestroy(): void {
-    this.avatar.clear();
+    this.service.clear();
   }
 
-  processUpload(upload: HTMLInputElement) {
+  processInput(upload: HTMLInputElement) {
     if (upload.files) {
       const image = upload.files[0];
-      console.log(`Loaded image: ${image.name}`);
-      this.avatar.update({ file: image });
+      if (image.size > 10 * 1000 * 1000) {
+        this.error = 'Image to large: max size 10Mb';
+      } else {
+        this.error = '';
+        console.debug(`Loaded image: ${image.name}`);
+        this.service.update({ file: image });
+      }
     }
   }
 }
