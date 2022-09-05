@@ -31,7 +31,8 @@ export class ChatRoomComponent implements OnChanges {
     Validators.required,
   ]);
   messages: Observable<Message[]> = this.chatService.getMsgs();
-  roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
+  //roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
+  roomUsers: RoomUser[] = [];
   banMute = this.chatService.getBanMuteResult().subscribe((commandReturn) => {
     //console.log(commandReturn);
     this.snackBar.open(commandReturn, 'dismiss', {
@@ -63,7 +64,13 @@ export class ChatRoomComponent implements OnChanges {
       //if (this.chatRoom.roomType !== 'PROTECTED')
       this.chatService.joinRoom(this.chatRoom); //trigger join room on sed password for protected
     }
-    this.roomUsers = this.chatService.getRoomUsers();
+    //this.roomUsers = new Observable<RoomUser[]>;
+    //this.roomUsers = this.chatService.getRoomUsers();
+    this.chatService.getRoomUsers().subscribe((roomUsers: RoomUser[]) => {
+      console.log(roomUsers);
+      if (roomUsers.length !== 0)
+        this.roomUsers = roomUsers;
+    });
     this.messages = this.chatService.getMsgs();
   }
 

@@ -11,7 +11,7 @@ import { Invite } from '../interface/invite';
 })
 export class ChatService {
   constructor(private socket: ChatSocket) {
-    this.socket.connect();
+    //this.socket.connect();
   }
 
   getRooms(): Observable<Room[]> {
@@ -47,7 +47,12 @@ export class ChatService {
   }
 
   openChat() {
+    this.socket.connect();
     this.socket.emit('getRooms');
+  }
+
+  closeChat() {
+    this.socket.disconnect();
   }
 
   joinRoom(room: Room) {
