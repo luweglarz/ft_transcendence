@@ -13,9 +13,14 @@ export class CustomGame implements GameMode {
     private _players: Player[],
     private _ball: Ball,
     private gameService: GameService,
-  ) {}
+  ) {
+    this._initialWidth = this._canvaWidth;
+    this._initialHeight = this._canvaHeight;
+  }
 
   private gameContext: any;
+  private _initialWidth: number;
+  private _initialHeight: number;
   private boostOneContext: any;
   private boostTwoContext: any;
   private boostSize = {
@@ -26,8 +31,25 @@ export class CustomGame implements GameMode {
   get canvaHeight(): number {
     return this._canvaHeight;
   }
+
+  set canvaHeight(newHeight: number) {
+    this._canvaHeight = newHeight;
+  }
+
   get canvaWidth(): number {
     return this._canvaWidth;
+  }
+
+  set canvaWidth(newWidth: number) {
+    this._canvaWidth = newWidth;
+  }
+
+  get initialWidth(): number {
+    return this._initialWidth;
+  }
+
+  get initialHeight(): number {
+    return this._initialHeight;
   }
 
   get backgroundColor(): string {
@@ -66,12 +88,12 @@ export class CustomGame implements GameMode {
         playerWidth?: any,
         playersCd?: any,
       ) => {
-        this.players[0].x = player1Pos.x;
-        this.players[0].y = player1Pos.y;
-        this.players[1].x = player2Pos.x;
-        this.players[1].y = player2Pos.y;
-        this.ball.x = ballPos.x;
-        this.ball.y = ballPos.y;
+        this.players[0].x = player1Pos.x * this.canvaWidth;
+        this.players[0].y = player1Pos.y * this.canvaHeight;
+        this.players[1].x = player2Pos.x * this.canvaWidth;
+        this.players[1].y = player2Pos.y * this.canvaHeight;
+        this.ball.x = ballPos.x * this.canvaWidth;
+        this.ball.y = ballPos.y * this.canvaHeight;
         this.players[0].goals = score.playerOneGoals;
         this.players[1].goals = score.playerTwoGoals;
         this.players[0].height = playerHeights.player1Height;
@@ -166,6 +188,7 @@ export class CustomGame implements GameMode {
     );
     this.boostOneContext.fillStyle = 'red';
     this.boostTwoContext.fillStyle = 'red';
+
     const boostOneRatio = Math.abs(
       (this.players[0].boostCd / 5000) * 100 - 100,
     );
@@ -175,6 +198,7 @@ export class CustomGame implements GameMode {
       (boostOneRatio * 300) / 100,
       this.boostSize.height,
     );
+
     const boostTwoRatio = Math.abs(
       (this.players[1].boostCd / 5000) * 100 - 100,
     );

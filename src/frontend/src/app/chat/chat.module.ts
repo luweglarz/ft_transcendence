@@ -15,6 +15,7 @@ import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room
 import { ChatMainComponent } from './components/chat-main/chat-main.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ChatInviteComponent } from './components/chat-invite/chat-invite.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ChatMessageComponent,
     ChatRoomCreateComponent,
     ChatMainComponent,
+    ChatInviteComponent,
   ],
   imports: [
     CommonModule,
@@ -43,6 +45,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ChatMessageComponent,
     ChatRoomCreateComponent,
     ChatMainComponent,
+    ChatInviteComponent,
   ],
 })
 export class ChatModule {}

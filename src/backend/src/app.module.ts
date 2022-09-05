@@ -16,7 +16,5 @@ import { UsersModule } from './users/users.module';
       useClass: LoggingInterceptor,
     },
   ],
-  // controllers: [AppController], // TODO: should probably remove those
-  // providers: [AppService],
 })
 export class AppModule {}

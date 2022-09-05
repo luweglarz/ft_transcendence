@@ -1,6 +1,6 @@
 export interface OAuthUserDto {
   login: string;
-  email: string;
+  id: number;
   image_url: string;
 }
 

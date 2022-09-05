@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DbService } from 'src/db/db.service';
 import { JwtAuthService } from '../jwt/jwt-auth.service';
+import { TwoFactorsService } from '../two-factors/two-factors.service';
 import { AuthUtilsService } from '../utils/auth-utils.service';
 import { OauthController } from './oauth.controller';
 import { OauthService } from './oauth.service';
@@ -19,6 +20,7 @@ describe('OauthController', () => {
         JwtAuthService,
         JwtService,
         AuthUtilsService,
+        TwoFactorsService,
       ],
       imports: [HttpModule],
     }).compile();

@@ -4,6 +4,7 @@ import { Room } from 'src/app/chat/interface/room';
 import { Observable } from 'rxjs';
 import { Message } from 'src/app/chat/interface/message';
 import { RoomUser } from 'src/app/chat/interface/roomUser';
+import { Invite } from '../interface/invite';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,14 @@ export class ChatService {
 
   getCommandResult(): Promise<string> {
     return this.socket.fromOneTimeEvent<string>('resultCommand');
+  }
+
+  getBanMuteResult(): Observable<string> {
+    return this.socket.fromEvent<string>('banMute');
+  }
+
+  getInvitations(): Observable<{ invite: Invite; Room: Room }> {
+    return this.socket.fromEvent<{ invite: Invite; Room: Room }>('invitation');
   }
 
   openChat() {

@@ -1,4 +1,4 @@
-<div class="popup-container" *ngIf="popupsService.profilPopup || popupsService.ladderPopup || popupsService.socialPopup"
+<div class="popup-container" *ngIf="popupsService.profilPopup || popupsService.ladderPopup || popupsService.socialPopup || popupsService.settingsPopup"
 [ngClass]="manageClassCollapse()"
 >
   <div class="popup-window">
@@ -11,11 +11,13 @@
       <h1 *ngIf="popupsService.profilPopup">Profil</h1>
       <h1 *ngIf="popupsService.ladderPopup">Ladder</h1>
       <h1 *ngIf="popupsService.socialPopup">Social</h1>
+      <h1 *ngIf="popupsService.settingsPopup">Settings</h1>
     </div>
     <div class="popup-content">
       <app-profil *ngIf="popupsService.profilPopup"></app-profil>
       <app-ladder *ngIf="popupsService.ladderPopup"></app-ladder>
       <app-social *ngIf="popupsService.socialPopup"></app-social>
+      <app-settings *ngIf="popupsService.settingsPopup"></app-settings>
     </div>
   </div>
 </div>

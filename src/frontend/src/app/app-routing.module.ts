@@ -6,6 +6,7 @@ import { HomeComponent } from './home-page/home.component';
 import { OauthCallbackComponent } from './auth/oauth/oauth-callback.component';
 import { SignOutComponent } from './auth/signout/signout.component';
 import { InfoComponent } from './auth/info/info.component';
+import { OtpPageComponent } from './auth/two-factors/otp-page/otp-page.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
       {
         path: 'oauth42/callback',
         component: OauthCallbackComponent,
+      },
+      {
+        path: '2FA',
+        component: OtpPageComponent,
       },
       {
         path: 'info',

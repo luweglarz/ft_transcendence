@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AvatarService } from 'src/app/avatar/avatar.service';
 import { OAuthUserDto } from '../oauth/dto';
 import { JwtService } from '../jwt';
 import { OAuthService } from '../oauth';
@@ -14,6 +13,8 @@ import { SigninService } from '../signin/signin.service';
 import { SignoutService } from '../signout/signout.service';
 import { SignupService } from './signup.service';
 import { ValidatorBuilderService } from './validators/validator-builder.service';
+import { AvatarUploadService } from 'src/app/avatar/avatar-upload/avatar-upload.service';
+import { assets } from 'src/assets/assets';
 
 @Component({
   selector: 'app-register',
@@ -22,38 +23,40 @@ import { ValidatorBuilderService } from './validators/validator-builder.service'
 })
 export class SignUpComponent implements OnInit {
   signUpType?: 'local' | 'oauth';
-  image_url = '/assets/images/default-avatar.png';
+  image_url = assets.defaultAvatar;
   // Oauth specific
   token?: string;
   oAuthUser?: OAuthUserDto;
+  private readonly _requirements = {
+    username: [
+      Validators.required,
+      Validators.maxLength(42),
+      Validators.pattern(/^[a-zA-Z0-9]*$/),
+    ],
+    password: [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(42),
+    ],
+  };
 
   registerForm?: UntypedFormGroup;
 
   localForm = this.formBuilder.group({
     username: this.formBuilder.control('', {
-      validators: [Validators.required, Validators.maxLength(42)],
+      validators: this._requirements.username,
       asyncValidators: this.validators.isAvailable('username'),
       updateOn: 'change',
     }),
-    password: [
-      '',
-      [Validators.required, Validators.minLength(4), Validators.maxLength(42)],
-    ],
-    email: this.formBuilder.control('', {
-      validators: [Validators.required, Validators.email],
-      asyncValidators: this.validators.isAvailable('email'),
-      updateOn: 'change',
-    }),
-    twoFactors: [false, Validators.required],
+    password: ['', this._requirements.password],
   });
 
   oauthForm = this.formBuilder.group({
     username: new UntypedFormControl('', {
-      validators: [Validators.required, Validators.maxLength(42)],
+      validators: this._requirements.username,
       asyncValidators: this.validators.isAvailable('username'),
       updateOn: 'change',
     }),
-    twoFactors: [false, Validators.required],
   });
 
   get username() {
@@ -61,9 +64,6 @@ export class SignUpComponent implements OnInit {
   }
   get password() {
     return this.registerForm?.get('password') as UntypedFormControl;
-  }
-  get email() {
-    return this.registerForm?.get('email') as UntypedFormControl;
   }
   get twoFactors() {
     return this.registerForm?.get('twoFactors') as UntypedFormControl;
@@ -74,7 +74,7 @@ export class SignUpComponent implements OnInit {
     private route: ActivatedRoute,
     private service: SignupService,
     private signin: SigninService,
-    private avatar: AvatarService,
+    private avatar: AvatarUploadService,
     private signOut: SignoutService,
     private jwt: JwtService,
     private validators: ValidatorBuilderService,
@@ -84,7 +84,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
     if (this.jwt.isValid()) {
       this.signOut.signOut();
-      window.location.reload(); // to clear the avatar
+      // window.location.reload(); // to clear the avatar
     }
     this.route.queryParams.subscribe((params) => {
       if (params['type'] == 'oauth') {

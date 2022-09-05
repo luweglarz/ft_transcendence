@@ -5,7 +5,11 @@ import { Player } from '../class/player';
 
 export interface GameMode {
   get canvaHeight(): number;
+  set canvaHeight(newHeight);
   get canvaWidth(): number;
+  set canvaWidth(newWidth);
+  get initialWidth(): number;
+  get initialHeight(): number;
   get backgroundColor(): string;
   get players(): Player[];
   get ball(): Ball;

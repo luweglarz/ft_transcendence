@@ -1,0 +1,7 @@
+<li *ngFor="let invite of invites">
+    <mat-card>from {{invite.username}} to 
+        <div *ngIf="invite.challenge === true">challenge</div>
+        <div *ngIf="invite.challenge === false">a room</div>
+        <button mat-icon-button (click)="openInvite(invite, true)"> <mat-icon>yes</mat-icon></button><button mat-icon-button (click)="openInvite(invite, false)"> <mat-icon>no</mat-icon></button>
+    </mat-card>
+</li>
