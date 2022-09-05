@@ -26,9 +26,9 @@ model User {
 model Auth {
   userId          Int      @id
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  email           String?  @unique
   password        String?
   authType        AuthType @default(LOCAL)
+  oauthId         Int?     @unique
   refreshToken    String?
   twoFactor       Boolean  @default(false)
   twoFactorSecret String?
@@ -78,13 +78,13 @@ model Message {
 }
 
 model JailUser {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   roomId    Int
   userId    Int
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   timeOut   DateTime?
-  isBanned  Boolean  @default(false)
-  isMuted   Boolean  @default(false)
+  isBanned  Boolean   @default(false)
+  isMuted   Boolean   @default(false)
 }
 
 model Invite {

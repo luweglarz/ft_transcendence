@@ -23,11 +23,11 @@
     <form [formGroup]="signInForm" (ngSubmit)="localSignIn()" (keydown.meta.enter)="localSignIn()" class="form-signin">
       <!-- Username field -->
       <div class="field-signin">
-        <input formControlName="username" placeholder="Username" name="username">
+        <input formControlName="username" placeholder="Username" name="username" autocomplete="username">
       </div>
       <!-- Password field -->
       <div class="field-signin">
-        <input formControlName="password" placeholder="Password" name="password" type="password">
+        <input formControlName="password" placeholder="Password" name="password" type="password" autocomplete="current-password">
       </div>
       <button class="btn-login" [disabled]="signInForm.invalid">
         <p>Sign in locally</p>

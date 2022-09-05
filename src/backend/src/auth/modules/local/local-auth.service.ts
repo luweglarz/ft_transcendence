@@ -10,7 +10,7 @@ export class LocalAuthService {
   constructor(private db: DbService, private auth: AuthUtilsService) {}
 
   /*
-   * @brief sign up with email and password
+   * @brief sign up with login and password
    */
   async localSignUp(dto: LocalSignupDto) {
     const pwdHash = await argon.hash(dto.password);
@@ -18,7 +18,6 @@ export class LocalAuthService {
       username: dto.username,
       auth: {
         create: {
-          email: dto.email,
           password: pwdHash,
         },
       },
@@ -28,7 +27,7 @@ export class LocalAuthService {
   }
 
   /*
-   * @brief sign in with email and password
+   * @brief sign in with login and password
    */
   async localSignIn(dto: LocalSigninDto) {
     const user = await this.db.user.findUnique({
