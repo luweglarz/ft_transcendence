@@ -51,11 +51,6 @@ export class GameGateway
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
-  @SubscribeMessage('*')
-  socketMiddleware(@ConnectedSocket() client: Socket) {
-    this.gameGatewayService.checkJwtToken(client);
-  }
-
   @SubscribeMessage('move')
   movement(@ConnectedSocket() client: Socket, @MessageBody() eventKey: string) {
     if (this.matchmakingService.isClientInGame(client) === false) {
