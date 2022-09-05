@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
+import { EventsService } from 'src/app/services/events.service';
 import { MatchmakingService } from './matchmaking.service';
 
 @Component({
@@ -15,7 +16,12 @@ export class MatchmakingComponent {
   constructor(
     public matchmakingService: MatchmakingService,
     public collapseService: CollapseService,
-  ) {}
+    private eventsService: EventsService,
+  ) {
+    this.eventsService.auth.signout.subscribe(() => {
+      this.matchmakingService.requestLeaveMatchmaking();
+    });
+  }
 
   buttonRequestJoinNormalMatchmaking() {
     this.matchmakingService.requestJoinNormalMatchmaking();
