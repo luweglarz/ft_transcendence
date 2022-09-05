@@ -1,5 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
+import { MatchmakingGatewayService } from 'src/pong/gateway/matchmaking/matchmaking-gateway.service';
 
 class LadderPlayer {
   constructor(
@@ -17,7 +18,7 @@ class LadderPlayer {
 
 @Controller('game')
 export class GameController {
-  constructor(private prismaClient: DbService) {}
+  constructor(private prismaClient: DbService, private matchmaking: MatchmakingGatewayService) {}
 
   @Get('wins')
   async getUserWins(@Query('username') username: string) {
@@ -96,5 +97,11 @@ export class GameController {
 
     //Return
     return ladder;
+  }
+
+  //SOCIAL
+  @Get('ingame')
+  isUserInGame(@Query('username') username: string){
+    return (this.matchmaking.isUserInGame(username));
   }
 }

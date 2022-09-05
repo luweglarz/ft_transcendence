@@ -4,6 +4,7 @@ import { JwtService } from 'src/app/auth/jwt';
 import { environment } from 'src/environments/environment';
 
 interface Message {
+  createdAt: string;
   id: number;
   authorName: string;
   targetName: string;
@@ -24,6 +25,7 @@ export class DirectMessagesService {
     if (tmp != undefined) this.username = tmp;
   }
 
+  //Retrieve DMs between 2 users
   async getUsersConversation(author: string, target: string) {
     this.http
       .get<Message[]>(
@@ -39,6 +41,7 @@ export class DirectMessagesService {
       });
   }
 
+  //Load DMs between 2 users
   async loadUserDms(author: string, target: string) {
     this.loadedDms.splice(0, this.loadedDms.length);
     this.loadedDmUsername = target;
@@ -46,18 +49,19 @@ export class DirectMessagesService {
     this.isLoaded = true;
   }
 
+  //Add the message in the backend
   sendMessage(author: string, target: string, content: string) {
-    console.log('Je suis : ', author);
-    console.log('Jenvoie : ', content);
-    console.log('A : ', target);
-
-    if (content.length > 0)
-      this.http.post(
-        `${environment.backend}/direct-messages/add?author=` +
-          author +
-          '&target=' +
-          target,
-        { content: content },
-      );
+    if (content.length > 0){
+      console.log(`${environment.backend}/direct-messages/add?author=` + author + '&target=' + target);
+      this.http.post(`${environment.backend}/direct-messages/add?author=` + author + '&target=' + target, {"content": content}).subscribe();
+      const dateNow = new Date();
+      this.loadedDms.push({
+        id: 1,
+        createdAt: dateNow.toISOString(),
+        authorName: author,
+        targetName: target,
+        content: content,
+      })
+    }
   }
 }
