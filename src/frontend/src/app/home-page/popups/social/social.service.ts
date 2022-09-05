@@ -55,70 +55,66 @@ export class SocialService {
 
   //Add a friend
   async friendUser(author: string, target: string) {
-    this.http
-      .get<any>(
-        `${environment.backend}/social/add?author=` +
-          author +
-          '&target=' +
-          target +
-          '&relation=friend',
-      )
-      .subscribe(() => {
-        const foundIndex = this.friends.findIndex(
-          (social) =>
-            social.authorName === author && social.targetName === target,
-        );
-        if (foundIndex === -1)
-          this.friends.push(
-            Object.assign(
-              {},
-              { authorName: author, targetName: target, relation: 'friend' },
-            ),
-          );
-        else {
-          this.friends.forEach((social, index) => {
-            if (index === foundIndex) social.relation = 'friend';
-          });
-        }
-      });
+    // this.http.get<any>(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=friend').subscribe(() => {
+    //   const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
+    //   if (foundIndex === -1)
+    //     this.friends.push(Object.assign({},{authorName: author, targetName: target, relation: 'friend'}));
+    //   else {
+    //     this.friends.forEach((social, index) => {
+    //       if (index === foundIndex)
+    //         social.relation = 'friend';
+    //     });
+    //   }
+    // });
+
+    this.http.post(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=friend', {}).subscribe(() => {
+      const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
+      if (foundIndex === -1)
+        this.friends.push(Object.assign({},{authorName: author, targetName: target, relation: 'friend'}));
+      else {
+        this.friends.forEach((social, index) => {
+          if (index === foundIndex)
+            social.relation = 'friend';
+        });
+      }
+    });
     this.loadUserSocial(author);
   }
 
   //Delete a friend
   async unfriendUser(author: string, target: string) {
-    this.http
-      .get<any>(
-        `${environment.backend}/social/add?author=` +
-          author +
-          '&target=' +
-          target +
-          '&relation=none',
-      )
-      .subscribe(() => {
-        const foundIndex = this.friends.findIndex(
-          (social) =>
-            social.authorName === author && social.targetName === target,
-        );
-        this.friends.forEach((social, index) => {
-          if (index === foundIndex) social.relation = 'none';
+    // this.http.get<any>(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=none').subscribe(() => {
+    //   const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
+    //   this.friends.forEach((social, index) => {
+    //       if (index === foundIndex)
+    //         social.relation = 'none';
+    //     });
+    // });
+
+    this.http.post(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=none', {}).subscribe(() => {
+      const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
+      this.friends.forEach((social, index) => {
+          if (index === foundIndex)
+            social.relation = 'none';
         });
-      });
+    });
     this.loadUserSocial(author);
   }
 
   //Block an user
   async blockUser(author: string, target: string) {
-    this.http.get<any>(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=blocked').subscribe(() => {
-      const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
-      if (foundIndex === -1)
-        this.blocked.push(Object.assign({}, {authorName: author, targetName: target, relation: 'blocked'}));
-      else {
-        this.blocked.forEach((social, index) => {
-          if (index === foundIndex)
-           social.relation = 'blocked';
-        });
-      }
-    });
+    // this.http.get<any>(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=blocked').subscribe(() => {
+    //   const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
+    //   if (foundIndex === -1)
+    //     this.blocked.push(Object.assign({}, {authorName: author, targetName: target, relation: 'blocked'}));
+    //   else {
+    //     this.blocked.forEach((social, index) => {
+    //       if (index === foundIndex)
+    //        social.relation = 'blocked';
+    //     });
+    //   }
+    // });
+
     this.http.post(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=blocked', {}).subscribe(() => {
       const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
       if (foundIndex === -1)
@@ -135,13 +131,14 @@ export class SocialService {
 
   //Unblock an user
   async unblockUser(author: string, target: string) {
-    this.http.get<any>(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=none').subscribe(() => {
-      const foundIndex = this.blocked.findIndex((social) =>social.authorName === author && social.targetName === target,);
-      this.friends.forEach((social, index) => {
-        if (index === foundIndex)
-          social.relation = 'none';
-      });
-    });
+    // this.http.get<any>(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=none').subscribe(() => {
+    //   const foundIndex = this.blocked.findIndex((social) =>social.authorName === author && social.targetName === target,);
+    //   this.friends.forEach((social, index) => {
+    //     if (index === foundIndex)
+    //       social.relation = 'none';
+    //   });
+    // });
+
     this.http.post(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=none', {}).subscribe(() => {
       const foundIndex = this.blocked.findIndex((social) =>social.authorName === author && social.targetName === target,);
       this.friends.forEach((social, index) => {

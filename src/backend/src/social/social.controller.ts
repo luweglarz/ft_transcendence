@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Post, Query } from '@nestjs/common';
 import { SocialService } from './social.service';
 
 @Controller('social')
@@ -22,13 +22,21 @@ export class SocialController {
     return this.socialService.getUserBlocked(username);
   }
 
-  @Get('add')
+  // @Get('add')
+  // async addUserRelation(
+  //   @Query('author') authorName: string,
+  //   @Query('target') targetName: string,
+  //   @Query('relation') relation: string,
+  // ) {
+  //   return this.socialService.addUserRelation(authorName, targetName, relation);
+  // }
+
+  @Post('add')
   async addUserRelation(
     @Query('author') authorName: string,
     @Query('target') targetName: string,
     @Query('relation') relation: string,
   ) {
-    console.log('Received a post request');
     return this.socialService.addUserRelation(authorName, targetName, relation);
   }
 }

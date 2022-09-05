@@ -31,10 +31,6 @@ export class DirectMessagesController {
     @Query('target') targetName: string,
     @Body() content,
   ) {
-    console.log('Author: ', authorName);
-    console.log('Target: ', targetName);
-    console.log('Content: ', content.content);
-
     return this.dmService.addUserDm(authorName, targetName, content.content);
   }
 }
