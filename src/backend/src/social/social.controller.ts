@@ -1,4 +1,6 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { JwtGuard, User } from 'src/auth';
+import { JwtPayload } from 'src/auth/modules/jwt/interfaces';
 import { SocialService } from './social.service';
 
 @Controller('social')
@@ -22,21 +24,17 @@ export class SocialController {
     return this.socialService.getUserBlocked(username);
   }
 
-  // @Get('add')
-  // async addUserRelation(
-  //   @Query('author') authorName: string,
-  //   @Query('target') targetName: string,
-  //   @Query('relation') relation: string,
-  // ) {
-  //   return this.socialService.addUserRelation(authorName, targetName, relation);
-  // }
-
   @Post('add')
+  @UseGuards(JwtGuard)
   async addUserRelation(
-    @Query('author') authorName: string,
     @Query('target') targetName: string,
     @Query('relation') relation: string,
+    @User() user: JwtPayload,
   ) {
-    return this.socialService.addUserRelation(authorName, targetName, relation);
+    return this.socialService.addUserRelation(
+      user.username,
+      targetName,
+      relation,
+    );
   }
 }

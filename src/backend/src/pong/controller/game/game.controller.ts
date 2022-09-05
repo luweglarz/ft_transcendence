@@ -18,7 +18,10 @@ class LadderPlayer {
 
 @Controller('game')
 export class GameController {
-  constructor(private prismaClient: DbService, private matchmaking: MatchmakingGatewayService) {}
+  constructor(
+    private prismaClient: DbService,
+    private matchmaking: MatchmakingGatewayService,
+  ) {}
 
   @Get('wins')
   async getUserWins(@Query('username') username: string) {
@@ -101,7 +104,7 @@ export class GameController {
 
   //SOCIAL
   @Get('ingame')
-  isUserInGame(@Query('username') username: string){
-    return (this.matchmaking.isUserInGame(username));
+  isUserInGame(@Query('username') username: string) {
+    return this.matchmaking.isUserInGame(username);
   }
 }

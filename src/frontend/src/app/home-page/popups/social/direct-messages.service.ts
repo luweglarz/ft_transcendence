@@ -50,18 +50,21 @@ export class DirectMessagesService {
   }
 
   //Add the message in the backend
-  sendMessage(author: string, target: string, content: string) {
-    if (content.length > 0){
-      console.log(`${environment.backend}/direct-messages/add?author=` + author + '&target=' + target);
-      this.http.post(`${environment.backend}/direct-messages/add?author=` + author + '&target=' + target, {"content": content}).subscribe();
+  sendMessage(target: string, content: string) {
+    if (content.length > 0) {
+      this.http
+        .post(`${environment.backend}/direct-messages/add?target=` + target, {
+          content: content,
+        })
+        .subscribe();
       const dateNow = new Date();
       this.loadedDms.push({
         id: 1,
         createdAt: dateNow.toISOString(),
-        authorName: author,
+        authorName: this.username,
         targetName: target,
         content: content,
-      })
+      });
     }
   }
 }

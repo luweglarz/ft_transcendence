@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JwtService } from 'src/app/auth/jwt';
 import { environment } from 'src/environments/environment';
 import { DirectMessagesService } from './direct-messages.service';
 import { Social } from './interfaces/social';
@@ -16,7 +17,11 @@ export class SocialService {
   constructor(
     private http: HttpClient,
     private dmService: DirectMessagesService,
-  ) {}
+    private jwtService: JwtService,
+  ) {
+    const tmp = this.jwtService.getPayload()?.username;
+    if (tmp != undefined) this.username = tmp;
+  }
 
   //Return the friendlist of the user
   async getUserFriends(username: string) {
@@ -26,7 +31,17 @@ export class SocialService {
       )
       .subscribe((val) => {
         val.forEach((data) => {
-          this.friends.push(Object.assign({}, data));
+          this.friends.push(
+            Object.assign(
+              {},
+              {
+                authorName: data.authorName,
+                targetName: data.targetName,
+                relation: data.relation,
+                status: this.getUserStatus(data.targetName),
+              },
+            ),
+          );
         });
       });
   }
@@ -39,7 +54,17 @@ export class SocialService {
       )
       .subscribe((val) => {
         val.forEach((data) => {
-          this.blocked.push(Object.assign({}, data));
+          this.blocked.push(
+            Object.assign(
+              {},
+              {
+                authorName: data.authorName,
+                targetName: data.targetName,
+                relation: data.relation,
+                status: this.getUserStatus(data.targetName),
+              },
+            ),
+          );
         });
       });
   }
@@ -50,103 +75,121 @@ export class SocialService {
     this.blocked.splice(0, this.blocked.length);
     await this.getUserBlocked(username);
     await this.getUserFriends(username);
+    this.friends.forEach(
+      (friend) => (friend.status = this.getUserStatus(friend.targetName)),
+    );
+    this.blocked.forEach(
+      (blocked) => (blocked.status = this.getUserStatus(blocked.targetName)),
+    );
     this.isLoaded = true;
   }
 
   //Add a friend
-  async friendUser(author: string, target: string) {
-    // this.http.get<any>(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=friend').subscribe(() => {
-    //   const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
-    //   if (foundIndex === -1)
-    //     this.friends.push(Object.assign({},{authorName: author, targetName: target, relation: 'friend'}));
-    //   else {
-    //     this.friends.forEach((social, index) => {
-    //       if (index === foundIndex)
-    //         social.relation = 'friend';
-    //     });
-    //   }
-    // });
-
-    this.http.post(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=friend', {}).subscribe(() => {
-      const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
-      if (foundIndex === -1)
-        this.friends.push(Object.assign({},{authorName: author, targetName: target, relation: 'friend'}));
-      else {
-        this.friends.forEach((social, index) => {
-          if (index === foundIndex)
-            social.relation = 'friend';
-        });
-      }
-    });
-    this.loadUserSocial(author);
+  async friendUser(target: string) {
+    this.http
+      .post(
+        `${environment.backend}/social/add?target=` +
+          target +
+          '&relation=friend',
+        {},
+      )
+      .subscribe(() => {
+        const foundIndex = this.friends.findIndex(
+          (social) =>
+            social.authorName === this.username && social.targetName === target,
+        );
+        if (foundIndex === -1)
+          this.friends.push(
+            Object.assign(
+              {},
+              {
+                authorName: this.username,
+                targetName: target,
+                relation: 'friend',
+                status: this.getUserStatus(target),
+              },
+            ),
+          );
+        else {
+          this.friends.forEach((social, index) => {
+            if (index === foundIndex) social.relation = 'friend';
+          });
+        }
+      });
+    this.loadUserSocial(this.username);
   }
 
   //Delete a friend
-  async unfriendUser(author: string, target: string) {
-    // this.http.get<any>(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=none').subscribe(() => {
-    //   const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
-    //   this.friends.forEach((social, index) => {
-    //       if (index === foundIndex)
-    //         social.relation = 'none';
-    //     });
-    // });
-
-    this.http.post(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=none', {}).subscribe(() => {
-      const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
-      this.friends.forEach((social, index) => {
-          if (index === foundIndex)
-            social.relation = 'none';
+  async unfriendUser(target: string) {
+    this.http
+      .post(
+        `${environment.backend}/social/add?target=` + target + '&relation=none',
+        {},
+      )
+      .subscribe(() => {
+        const foundIndex = this.friends.findIndex(
+          (social) =>
+            social.authorName === this.username && social.targetName === target,
+        );
+        this.friends.forEach((social, index) => {
+          if (index === foundIndex) social.relation = 'none';
         });
-    });
-    this.loadUserSocial(author);
+      });
+    this.loadUserSocial(this.username);
   }
 
   //Block an user
-  async blockUser(author: string, target: string) {
-    // this.http.get<any>(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=blocked').subscribe(() => {
-    //   const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
-    //   if (foundIndex === -1)
-    //     this.blocked.push(Object.assign({}, {authorName: author, targetName: target, relation: 'blocked'}));
-    //   else {
-    //     this.blocked.forEach((social, index) => {
-    //       if (index === foundIndex)
-    //        social.relation = 'blocked';
-    //     });
-    //   }
-    // });
-
-    this.http.post(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=blocked', {}).subscribe(() => {
-      const foundIndex = this.friends.findIndex((social) => social.authorName === author && social.targetName === target);
-      if (foundIndex === -1)
-        this.blocked.push(Object.assign({}, {authorName: author, targetName: target, relation: 'blocked'}));
-      else {
-        this.blocked.forEach((social, index) => {
-          if (index === foundIndex)
-           social.relation = 'blocked';
-        });
-      }
-    });
-    this.loadUserSocial(author);
+  async blockUser(target: string) {
+    this.http
+      .post(
+        `${environment.backend}/social/add?target=` +
+          target +
+          '&relation=blocked',
+        {},
+      )
+      .subscribe(() => {
+        const foundIndex = this.friends.findIndex(
+          (social) =>
+            social.authorName === this.username && social.targetName === target,
+        );
+        if (foundIndex === -1)
+          this.blocked.push(
+            Object.assign(
+              {},
+              {
+                authorName: this.username,
+                targetName: target,
+                relation: 'blocked',
+                status: this.getUserStatus(target),
+              },
+            ),
+          );
+        else {
+          this.blocked.forEach((social, index) => {
+            if (index === foundIndex) social.relation = 'blocked';
+          });
+        }
+      });
+    this.loadUserSocial(this.username);
   }
 
   //Unblock an user
-  async unblockUser(author: string, target: string) {
-    // this.http.get<any>(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=none').subscribe(() => {
-    //   const foundIndex = this.blocked.findIndex((social) =>social.authorName === author && social.targetName === target,);
-    //   this.friends.forEach((social, index) => {
-    //     if (index === foundIndex)
-    //       social.relation = 'none';
-    //   });
-    // });
-
-    this.http.post(`${environment.backend}/social/add?author=` + author + '&target=' + target + '&relation=none', {}).subscribe(() => {
-      const foundIndex = this.blocked.findIndex((social) =>social.authorName === author && social.targetName === target,);
-      this.friends.forEach((social, index) => {
-        if (index === foundIndex)
-          social.relation = 'none';
+  async unblockUser(target: string) {
+    this.http
+      .post(
+        `${environment.backend}/social/add?target=` + target + '&relation=none',
+        {},
+      )
+      .subscribe(() => {
+        const foundIndex = this.blocked.findIndex(
+          (social) =>
+            social.authorName === this.username && social.targetName === target,
+        );
+        this.friends.forEach((social, index) => {
+          if (index === foundIndex) social.relation = 'none';
+        });
       });
-    });
-    this.loadUserSocial(author);
+    this.loadUserSocial(this.username);
   }
 
   //Return the relations status between 2 users
@@ -166,34 +209,25 @@ export class SocialService {
 
   //Return true if the user is actually playing a game.
   isInGame(username: string): boolean {
-    let response: boolean = false;
-    this.http.get<boolean>(`${environment.backend}/game/ingame?username=` + username).subscribe(isInGame => {
-      //console.log(isInGame);
-      response = isInGame;
-    });
-    return (response);
+    let response = false;
+    this.http
+      .get<boolean>(`${environment.backend}/game/ingame?username=` + username)
+      .subscribe((isInGame) => {
+        response = isInGame;
+      });
+    return response;
   }
 
   //Return true if the user is online.
   isOnline(username: string): boolean {
-    return (true);
+    return true;
   }
 
   //Return the status of the user
-  getUserStatus(username: string){
-    if (this.isOnline(username) == true){
-      if (this.isInGame(username) == true){
-        //console.log('ingame : ');
-        return ('ingame');
-      }
-      else{
-        //console.log('online', ' | isInGame = ', this.isInGame(username));
-        return ('online');
-      }
-    }
-    else{
-      //console.log('offline');
-      return ('offline');
-    }
+  getUserStatus(username: string) {
+    if (this.isOnline(username) == true) {
+      if (this.isInGame(username) == true) return 'ingame';
+      else return 'online';
+    } else return 'offline';
   }
 }

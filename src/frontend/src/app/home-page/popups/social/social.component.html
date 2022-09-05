@@ -15,9 +15,10 @@
         <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
         <p>{{ user.targetName }}</p>
         <!-- Status (online, ingame, offline) -->
-        <div class="social-list-item-status" [ngClass]="socialService.getUserStatus(user.authorName)"></div>
+        <div class="social-list-item-status" [ngClass]="user.status"></div>
         <!-- Unfriend button -->
-        <svg class="social-list-item-delete" (click)="socialService.unfriendUser(username, user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- <svg class="social-list-item-delete" (click)="socialService.unfriendUser(username, user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> -->
+        <svg class="social-list-item-delete" (click)="socialService.unfriendUser(user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M24 3.4284L20.5716 0L12 8.5716L3.4284 0L0 3.4284L8.5716 12L0 20.5716L3.4284 24L12 15.4284L20.5716 24L24 20.5716L15.4284 12L24 3.4284Z"/>
         </svg>
       </div>
@@ -30,7 +31,8 @@
         <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
         <p>{{ user.targetName }}</p>
         <!-- Unblock button -->
-        <svg class="social-list-item-delete" (click)="socialService.unblockUser(username, user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- <svg class="social-list-item-delete" (click)="socialService.unblockUser(username, user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> -->
+        <svg class="social-list-item-delete" (click)="socialService.unblockUser(user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M24 3.4284L20.5716 0L12 8.5716L3.4284 0L0 3.4284L8.5716 12L0 20.5716L3.4284 24L12 15.4284L20.5716 24L24 20.5716L15.4284 12L24 3.4284Z"/>
         </svg>
       </div>
@@ -57,8 +59,8 @@
     </div>
 
     <div class="dms-box-messages-input" *ngIf="socialService.isLoaded && dmsService.loadedDmUsername != ''">
-      <input class="dms-box-messages-input-box" #box (keyup.enter)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value); box.value = ''" (blur)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value); box.value = ''">
-      <button class="dms-box-messages-input-send" (click)="dmsService.sendMessage(username, dmsService.loadedDmUsername, box.value); box.value = ''">Send</button>
+      <input class="dms-box-messages-input-box" #box (keyup.enter)="dmsService.sendMessage(dmsService.loadedDmUsername, box.value); box.value = ''" (blur)="dmsService.sendMessage(dmsService.loadedDmUsername, box.value); box.value = ''">
+      <button class="dms-box-messages-input-send" (click)="dmsService.sendMessage(dmsService.loadedDmUsername, box.value); box.value = ''">Send</button>
     </div>
   </div>
 

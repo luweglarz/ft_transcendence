@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { JwtGuard, User } from 'src/auth';
+import { JwtPayload } from 'src/auth/modules/jwt/interfaces';
 import { DirectMessagesService } from './direct-messages.service';
 
 @Controller('direct-messages')
@@ -26,11 +28,12 @@ export class DirectMessagesController {
   }
 
   @Post('add')
+  @UseGuards(JwtGuard)
   async addUsersDm(
-    @Query('author') authorName: string,
     @Query('target') targetName: string,
     @Body() content,
+    @User() user: JwtPayload,
   ) {
-    return this.dmService.addUserDm(authorName, targetName, content.content);
+    return this.dmService.addUserDm(user.username, targetName, content.content);
   }
 }

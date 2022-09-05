@@ -40,10 +40,7 @@ export class MatchmakingGatewayService {
   isUserInGame(username: string): boolean {
     for (const room of this.gameGateway.rooms) {
       for (const player of room.players) {
-        if (
-          username === player.username
-        )
-          return true;
+        if (username === player.username) return true;
       }
     }
     return false;
