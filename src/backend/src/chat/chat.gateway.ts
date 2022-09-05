@@ -92,7 +92,7 @@ export class ChatGateway
         where: { roomId: roomUser.roomId },
       });
       this.logger.debug('otherroomuser', otherRoomUser.length);
-       if(otherRoomUser.length == 1) {
+      if (otherRoomUser.length == 1) {
         await this.prisma.message.deleteMany({
           where: { roomId: roomUser.roomId },
         });
@@ -107,8 +107,12 @@ export class ChatGateway
         });
         await this.prisma.room.delete({ where: { id: roomUser.roomId } });
       }
-      if (await this.roomUserService.roomUser({roomUserId: roomUser.roomUserId}))
-        await this.prisma.roomUser.delete({where: {roomUserId: roomUser.roomUserId}});
+      if (
+        await this.roomUserService.roomUser({ roomUserId: roomUser.roomUserId })
+      )
+        await this.prisma.roomUser.delete({
+          where: { roomUserId: roomUser.roomUserId },
+        });
       this.getRoomUsers(roomUser.roomId);
     }
     await this.prisma.roomUser.deleteMany({ where: { socketId: socket.id } });
@@ -367,14 +371,13 @@ export class ChatGateway
   async getRooms() {
     //this.server.to(socket.id).emit('rooms', await this.roomService.rooms({}));
     const rooms = await this.roomService.rooms({});
-    let roomsNoPRV: Room[] = [];
-    for (let room of rooms) {
+    const roomsNoPRV: Room[] = [];
+    for (const room of rooms) {
       console.log('roomBefor', room);
     }
-    for (let room of rooms) {
+    for (const room of rooms) {
       console.log('room', room);
-      if (room.roomType !== 'PRIVATE')
-        roomsNoPRV.push(room);
+      if (room.roomType !== 'PRIVATE') roomsNoPRV.push(room);
     }
     for (const room of roomsNoPRV) {
       if (room.roomType == 'PROTECTED') room.password = '';

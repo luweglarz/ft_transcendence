@@ -68,8 +68,7 @@ export class ChatRoomComponent implements OnChanges {
     //this.roomUsers = this.chatService.getRoomUsers();
     this.chatService.getRoomUsers().subscribe((roomUsers: RoomUser[]) => {
       console.log(roomUsers);
-      if (roomUsers.length !== 0)
-        this.roomUsers = roomUsers;
+      if (roomUsers.length !== 0) this.roomUsers = roomUsers;
     });
     this.messages = this.chatService.getMsgs();
   }
