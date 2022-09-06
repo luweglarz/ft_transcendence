@@ -17,7 +17,7 @@ export class MatchmakingService {
     private jwtService: JwtService,
   ) {
     this._stopWatch = new StopWatch();
-    this.socket.on('error', (msg: string) => {
+    this.socket.once('error', (msg: string) => {
       console.log(msg);
     });
   }
