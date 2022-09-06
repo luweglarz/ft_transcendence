@@ -1,29 +1,35 @@
-    <mat-card>
-      <div style="display: flex; flex-direction: row;">
-        <div>
-          <div>
-            <span style="display: flex; flex-direction: row; align-items: baseline;">
-              <h2>Chat rooms</h2>
-            </span>
-            <button mat-raised-button (click)="openDialog()">Create new room</button>
-          </div>
-          <div class="rooms">
-            <mat-selection-list [multiple]="false" (selectionChange)="onSelectRoom($event)">
-              <mat-list-option *ngFor="let room of (rooms|async)" [value]="room">
-                Name: {{room.name}}
-                <mat-divider></mat-divider>
-              </mat-list-option>
-            </mat-selection-list>
-          </div>
+    <!-- Container -->
+    <div class="container" style="display: flex; flex-direction: row;">
+
+      <!-- Rooms selection -->
+      <div class="chat-selection">
+        <!-- Header -->
+        <div class="chat-selection-header">
+          <span style="display: flex; flex-direction: row; align-items: baseline;">
+            <h2>Chat rooms</h2>
+          </span>
+          <button mat-raised-button (click)="openDialog()">Create new room</button>
         </div>
 
+        <!-- Room list -->
+        <div class="chat-selection-list">
+          <mat-selection-list [multiple]="false" (selectionChange)="onSelectRoom($event)">
+            <mat-list-option *ngFor="let room of (rooms|async)" [value]="room">
+              Name: {{room.name}}
+              <mat-divider></mat-divider>
+            </mat-list-option>
+          </mat-selection-list>
+        </div>
+      </div>
+
+      <!-- Chat space -->
       <div class="chatroom" *ngIf="selectedRoom">
         <app-chat-room [chatRoom]="selectedRoom"></app-chat-room>
       </div>
 
-      <div>
+      <!-- Chat invite ? -->
+      <div class="idk">
         <app-chat-invite [chatRoom]="selectedRoom" (roomInvite)="joinRoomInvite($event)"></app-chat-invite>
       </div>
 
       </div>
-    </mat-card>

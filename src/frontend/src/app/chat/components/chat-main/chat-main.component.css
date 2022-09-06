@@ -1,7 +1,31 @@
-.rooms {
+/* Container */
+.container {
+  background: purple;
+}
+
+/* Rooms selection */
+.chat-selection {
+  background-color: yellow;
+}
+
+.chat-selection-header {
+  background-color: blue;
+}
+
+.chat-selection-list {
   overflow: scroll;
   overflow-x: hidden;
   padding: 0;
   height: 250px;
   width: 350px;
+
+  /* background-color: orange; */
+}
+
+.chatroom {
+  background-color: aqua;
+}
+
+.idk {
+  background-color: brown;
 }
