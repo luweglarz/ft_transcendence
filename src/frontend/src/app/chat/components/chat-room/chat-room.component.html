@@ -3,7 +3,7 @@
         <span style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
         <h2>{{chatRoom.name}}</h2>
         </span>
-        <span *ngFor="let roomUser of (roomUsers | async)">
+        <span *ngFor="let roomUser of (roomUsers)">
             {{roomUser.username}}
             <!--Users-->
         </span>
@@ -18,7 +18,7 @@
     </div>
 
     <!--Add Mesaage-->
-    <div *ngIf="(roomUsers | async)?.length; else password" style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
+    <div *ngIf="(roomUsers)?.length; else password" style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
         <mat-form-field style="width: 350px;">
             <input matInput [formControl]="chatMessage" type="text" (keyup.enter)="sendMessage()">
         </mat-form-field>

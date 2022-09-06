@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Room } from 'src/app/chat/interface/room';
@@ -15,7 +15,7 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
 
   constructor(
     public dialogRef: MatDialogRef<ChatRoomCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Room,
+    @Inject(MAT_DIALOG_DATA) public data: Room = {},
     private chatService: ChatService,
   ) {}
 
@@ -37,9 +37,12 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
   onSend(userForm: NgForm) {
     if (userForm.status === 'INVALID') return;
     const data = userForm.value;
-    console.log(data);
-    this.dialogRef.close('yes');
+    console.log(this.data);
     this.chatService.createRoom(this.data);
+    this.chatService.getCreatedRoom().subscribe((room: Room) => {
+      console.log(room);
+      this.dialogRef.close(room);
+    });
   }
 
   onNoClick(): void {
