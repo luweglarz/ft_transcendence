@@ -1,33 +1,31 @@
 <div class="chatbox" *ngIf="(chatRoom | json) != ({} | json)">
-
-    <div class="chatbox-header" style="height: 125px;">
-        <span style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+    <!-- Header -->
+    <!-- <div class="chatbox-header">
+        <span class="chatbox-header-span">
           <h2>{{chatRoom.name}}</h2>
         </span>
         <span *ngFor="let roomUser of (roomUsers | async)">
             {{roomUser.username}}
         </span>
-    </div>
+    </div> -->
 
 
     <!--Messages-->
     <div class="chatbox-messages" #msgs>
-        <li *ngFor="let message of (messages|async)">
+        <div *ngFor="let message of (messages|async)">
             <app-chat-message [message]="message"></app-chat-message>
-        </li>
+        </div>
     </div>
 
-    <!--Add Mesaage-->
-    <div *ngIf="(roomUsers | async)?.length; else password" style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
-        <mat-form-field style="width: 350px;">
-            <input matInput [formControl]="chatMessage" type="text" (keyup.enter)="sendMessage()">
-        </mat-form-field>
-        <button mat-button [disabled]="!chatMessage.valid && chatRoom" (click)="sendMessage()">
-            <span style="display: flex; flex-direction: row; align-items: center;">
-                <mat-icon style="margin-left: 20px;">send</mat-icon>
-            </span>
-        </button>
+    <!-- Input-->
+    <div class="chatbox-input" *ngIf="(roomUsers | async)?.length; else password">
+      <!-- Input -->
+      <input class="chatbox-input-form" matInput [formControl]="chatMessage" type="text" (keyup.enter)="sendMessage()">
+      <!-- Send button -->
+      <button class="chatbox-input-button" [disabled]="!chatMessage.valid && chatRoom" (click)="sendMessage()">Send</button>
     </div>
+
+    <!-- ???? -->
     <ng-template #password>
         <input matInput type="password" [formControl]="pass" required>
         <button mat-button [disabled]="!pass.valid" (click)="joinProtectedRoom()">

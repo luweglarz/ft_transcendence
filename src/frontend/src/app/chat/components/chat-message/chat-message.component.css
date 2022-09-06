@@ -1,0 +1,16 @@
+.message {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 100%;
+  height: fit-content;
+}
+
+.message-author {
+  font-weight: bolder;
+}
+
+.message-content {
+  padding-left: 8px;
+}

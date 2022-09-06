@@ -1,24 +1,55 @@
-li {
-    list-style-type: none;
-}
-
 .chatbox {
-  /* background-color: blue; */
-  background-color: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  width: calc(100% - 32px);
+  height: 100%;
 }
 
-.chatbox-header {
-  /* background-color: yellow; */
-  background-color: none;
+/* .chatbox-header {
+  background-color: yellow;
+  background-color: blue;
+} */
+
+.chatbox-header-span {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .chatbox-messages {
   overflow: scroll;
   overflow-x: hidden;
   padding: 0;
-  height: 250px;
-  width: 350px;
+  height: 218px;
+  /* height: 200px; */
+  width: 100%;
 
-  /* background-color: red; */
-  background-color: none;
+  border-radius: 1em;
+  background-color: #1a202c;
+}
+
+.chatbox-input {
+  height: 32px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  border-radius: 1em;
+  background-color: #1a202c;
+}
+
+.chatbox-input-form {
+  height: 32px;
+  width: calc(100% - 64px);
+}
+
+.chatbox-input-button {
+  height: 32px;
+  width: 64px;
+  border-radius: 1em;
 }
