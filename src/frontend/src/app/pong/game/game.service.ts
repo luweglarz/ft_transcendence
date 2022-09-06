@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { tap } from 'rxjs';
 import { JwtService } from 'src/app/auth/jwt';
 import { CustomGame } from '../class/game-mode/custom-game';
 import { GameSocket } from '../class/game-socket';
@@ -29,8 +30,8 @@ export class GameService {
     this.isInGame = false;
     this.jwtService
       .getToken$()
-      .subscribe((token) => (this.socket.ioSocket.auth = { token: token }));
-    this.socket.emit('leaveGame');
+      .pipe(tap((token) => (this.socket.ioSocket.auth = { token: token })))
+      .subscribe(() => this.socket.emit('leaveGame'));
   }
 
   sendKeyEvents() {
