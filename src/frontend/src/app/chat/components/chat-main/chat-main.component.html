@@ -1,35 +1,41 @@
     <!-- Container -->
     <div class="container" style="display: flex; flex-direction: row;">
 
+      <!-- Chat space -->
+      <div class="chat-box" *ngIf="selectedRoom">
+        <app-chat-room [chatRoom]="selectedRoom"></app-chat-room>
+      </div>
+
       <!-- Rooms selection -->
       <div class="chat-selection">
-        <!-- Header -->
-        <div class="chat-selection-header">
-          <span style="display: flex; flex-direction: row; align-items: baseline;">
-            <h2>Chat rooms</h2>
-          </span>
-          <button mat-raised-button (click)="openDialog()">Create new room</button>
-        </div>
 
         <!-- Room list -->
         <div class="chat-selection-list">
-          <mat-selection-list [multiple]="false" (selectionChange)="onSelectRoom($event)">
+          <!-- <mat-selection-list [multiple]="false" (selectionChange)="onSelectRoom($event)">
             <mat-list-option *ngFor="let room of (rooms|async)" [value]="room">
               Name: {{room.name}}
               <mat-divider></mat-divider>
             </mat-list-option>
-          </mat-selection-list>
+          </mat-selection-list> -->
+          <div class="chat-selections-items">
+            <div class="chat-selection-item" *ngFor="let room of (rooms|async)">
+              <svg class="chat-selection-item-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24.4889 13.1111H21.8889V9.64444C21.8889 5.45989 19.9606 3 16.1111 3C12.2602 3 10.3333 5.45989 10.3333 9.64444V10.2222H13.2222V9.06522C13.2222 6.978 14.3734 5.88889 16.1111 5.88889C17.8488 5.88889 19 6.978 19 9.06522V13.1111H7.44444C6.64567 13.1111 6 14.0442 6 14.843V26.1111C6 26.9041 6.61822 27.7563 7.37367 27.999L9.10267 28.558C10.0197 28.8253 10.9673 28.9739 11.9222 29H20.3C21.2545 28.9741 22.2017 28.825 23.1181 28.5566L24.8457 27.9976C25.6026 27.7563 26.2222 26.9041 26.2222 26.1111V14.843C26.2222 14.0442 25.2862 13.1111 24.4889 13.1111Z"/>
+              </svg>
+              <p> {{room.name}} </p>
+              <p> 1/? </p>
+            </div>
+          </div>
         </div>
+
+        <!-- Header -->
+        <button class="chat-selection-button" mat-raised-button (click)="openDialog()">Create new room</button>
       </div>
 
-      <!-- Chat space -->
-      <div class="chatroom" *ngIf="selectedRoom">
-        <app-chat-room [chatRoom]="selectedRoom"></app-chat-room>
-      </div>
 
       <!-- Chat invite ? -->
-      <div class="idk">
+      <!-- <div class="chat-invite">
         <app-chat-invite [chatRoom]="selectedRoom" (roomInvite)="joinRoomInvite($event)"></app-chat-invite>
-      </div>
+      </div> -->
 
       </div>

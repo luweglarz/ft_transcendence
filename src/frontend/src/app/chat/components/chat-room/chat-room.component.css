@@ -2,10 +2,23 @@ li {
     list-style-type: none;
 }
 
-.mesgs {
-    overflow: scroll;
-    overflow-x: hidden;
-    padding: 0;
-    height: 250px;
-    width: 350px;
+.chatbox {
+  /* background-color: blue; */
+  background-color: none;
+}
+
+.chatbox-header {
+  /* background-color: yellow; */
+  background-color: none;
+}
+
+.chatbox-messages {
+  overflow: scroll;
+  overflow-x: hidden;
+  padding: 0;
+  height: 250px;
+  width: 350px;
+
+  /* background-color: red; */
+  background-color: none;
 }

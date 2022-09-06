@@ -1,17 +1,17 @@
-<div *ngIf="(chatRoom | json) != ({} | json)">
-    <div style="height: 125px;">
+<div class="chatbox" *ngIf="(chatRoom | json) != ({} | json)">
+
+    <div class="chatbox-header" style="height: 125px;">
         <span style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
-        <h2>{{chatRoom.name}}</h2>
+          <h2>{{chatRoom.name}}</h2>
         </span>
         <span *ngFor="let roomUser of (roomUsers | async)">
             {{roomUser.username}}
-            <!--Users-->
         </span>
     </div>
 
 
     <!--Messages-->
-    <div class="mesgs" #msgs>
+    <div class="chatbox-messages" #msgs>
         <li *ngFor="let message of (messages|async)">
             <app-chat-message [message]="message"></app-chat-message>
         </li>
