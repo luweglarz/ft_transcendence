@@ -2,24 +2,18 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-
   width: 100%;
   height: fit-content;
-
-  background-color: blue;
 }
 
 .message-author {
   width: 20%;
   font-weight: bolder;
-
-  background-color: red;
 }
 
 .message-content {
+  overflow-wrap: break-word;
   padding-left: 8px;
   height: fit-content;
   width: 80%;
-
-  background-color: red;
 }

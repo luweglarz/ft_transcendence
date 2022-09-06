@@ -21,7 +21,8 @@
 } */
 
 .chatbox-messages {
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   padding: 0;
   height: 218px;
   /* height: 200px; */
