@@ -113,8 +113,7 @@ export class ChatRoomComponent implements OnChanges {
   }
 
   openProfile(username: any) {
-    if (username === undefined || username === null)
-      return ;
+    if (username === undefined || username === null) return;
     console.log(username);
     this.popupsService.openProfil(username);
   }
