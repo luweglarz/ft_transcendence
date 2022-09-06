@@ -25,6 +25,7 @@ export class GameComponent implements OnInit {
   ) {
     this.eventsService.auth.signout.subscribe(() => {
       this.gameService.requestLeaveGame();
+      this.gameService.socket.disconnect();
     });
     this.game = matchmakingService.game;
   }

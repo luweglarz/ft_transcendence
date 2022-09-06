@@ -20,6 +20,7 @@ export class MatchmakingComponent {
   ) {
     this.eventsService.auth.signout.subscribe(() => {
       this.matchmakingService.requestLeaveMatchmaking();
+      this.matchmakingService.socket.disconnect();
     });
   }
 

@@ -12,7 +12,7 @@ import { GameMode } from '../interface/game-mode';
 })
 export class MatchmakingService {
   constructor(
-    private socket: GameSocket,
+    public socket: GameSocket,
     private gameService: GameService,
     public notificationService: NotificationService,
     private jwtService: JwtService,

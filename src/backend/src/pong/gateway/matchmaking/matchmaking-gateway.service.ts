@@ -10,6 +10,7 @@ import { GameMode } from 'src/pong/interface/game-mode.interface';
 import { NormalGame } from 'src/pong/class/game-mode/normal-game/normal-game';
 import { CustomGame } from 'src/pong/class/game-mode/custom-game/custom-game';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
+import { ConnectedSocket } from '@nestjs/websockets';
 
 @Injectable()
 export class MatchmakingGatewayService {
@@ -48,7 +49,7 @@ export class MatchmakingGatewayService {
     return false;
   }
 
-  isClientInMatchmaking(client: Socket): boolean {
+  isClientInMatchmaking(@ConnectedSocket()client: Socket): boolean {
     for (const pool of this.pools) {
       for (const clientPool of pool) {
         if (
