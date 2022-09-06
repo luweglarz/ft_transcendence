@@ -7,7 +7,7 @@
 }
 
 .message-author {
-  width: 20%;
+  width: fit-content;
   font-weight: bolder;
 }
 
@@ -15,5 +15,5 @@
   overflow-wrap: break-word;
   padding-left: 8px;
   height: fit-content;
-  width: 80%;
+  display: inline-block;
 }
