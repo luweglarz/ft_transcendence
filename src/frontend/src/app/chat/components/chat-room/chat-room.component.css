@@ -13,16 +13,15 @@
   background-color: blue;
 } */
 
-.chatbox-header-span {
+/* .chatbox-header-span {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-}
+} */
 
 .chatbox-messages {
   overflow: scroll;
-  overflow-x: hidden;
   padding: 0;
   height: 218px;
   /* height: 200px; */
@@ -30,6 +29,10 @@
 
   border-radius: 1em;
   background-color: #1a202c;
+}
+
+.chatbox-messages-app {
+  width: 100%;
 }
 
 .chatbox-input {

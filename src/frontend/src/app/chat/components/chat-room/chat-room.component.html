@@ -13,7 +13,7 @@
     <!--Messages-->
     <div class="chatbox-messages" #msgs>
         <div *ngFor="let message of (messages|async)">
-            <app-chat-message [message]="message"></app-chat-message>
+            <app-chat-message class="chatbox-messages-app" [message]="message"></app-chat-message>
         </div>
     </div>
 
