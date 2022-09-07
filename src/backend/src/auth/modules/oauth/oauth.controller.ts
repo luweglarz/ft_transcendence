@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { User } from '../../decorators';
-import { OAuthUserDto, OAuthSignUpDto } from './dto';
+import { OAuthUserDto, OAuthSignUpDto, OAuthTempToken } from './dto';
 import { OAuth2Guard } from './guard';
 import { OauthService } from './oauth.service';
 
@@ -29,9 +29,15 @@ export class OauthController {
 
   @Get('signup-temp-token')
   @UseGuards(OAuth2Guard)
-  async oauthSignUpTempToken(@User() user: OAuthUserDto) {
-    return {
-      jwt: await this.service.signTempToken({ oAuthUser: user }),
-    };
+  async oauthSignUpTempToken(
+    @User() user: OAuthUserDto,
+  ): Promise<OAuthTempToken> {
+    if (await this.service.oauthExistUser(user))
+      return { jwt: '', alreadySignedUp: true };
+    else
+      return {
+        jwt: await this.service.signTempToken({ oAuthUser: user }),
+        alreadySignedUp: false,
+      };
   }
 }

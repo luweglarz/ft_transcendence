@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { SigninService } from '../signin/signin.service';
 import jwtDecode from 'jwt-decode';
-import { OAuthJwtPayload } from './dto';
+import { OAuthJwtPayload, OAuthTempToken } from './dto';
 
 @Injectable({
   providedIn: 'root',
@@ -64,15 +64,22 @@ export class OAuthService {
    */
   getTempToken(code: string) {
     this.http
-      .get<{ jwt: string }>(`${this.oauth_temp_token_url}?code=${code}`)
+      .get<OAuthTempToken>(`${this.oauth_temp_token_url}?code=${code}`)
       .subscribe({
         next: (response) => {
-          this.router.navigate(['/auth/signup'], {
-            queryParams: { type: 'oauth', jwt: response.jwt },
-            replaceUrl: true, // prevent going back to the callback page
-          });
+          if (response.jwt)
+            this.router.navigate(['/auth/signup'], {
+              queryParams: { type: 'oauth', jwt: response.jwt },
+              replaceUrl: true, // prevent going back to the callback page
+            });
+          else if (response.alreadySignedUp)
+            this.router.navigate(['/auth/signin'], {
+              state: {
+                error: 'OAuth account already used.',
+              },
+            });
         },
-        error: (err) => console.error(err),
+        error: (err) => console.warn(err),
       });
   }
 

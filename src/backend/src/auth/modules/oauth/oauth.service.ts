@@ -43,6 +43,14 @@ export class OauthService {
     else return authInfo.user;
   }
 
+  async oauthExistUser(apiUser: OAuthUserDto) {
+    const authInfo = await this.db.auth.findUnique({
+      where: { oauthId: apiUser.id },
+      include: { user: true },
+    });
+    return authInfo != null;
+  }
+
   async oauthCreateUser(dto: OAuthSignUpDto) {
     if (!(await this.verifyTempToken(dto.jwt)))
       throw new ForbiddenException('Invalid temp jwt token');
