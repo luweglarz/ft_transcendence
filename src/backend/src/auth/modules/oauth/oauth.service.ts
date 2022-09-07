@@ -39,7 +39,7 @@ export class OauthService {
       where: { oauthId: apiUser.id },
       include: { user: true },
     });
-    if (!authInfo) throw new ForbiddenException('Unknown user');
+    if (!authInfo) throw new ForbiddenException('Unknown user. Sign up first.');
     else return authInfo.user;
   }
 

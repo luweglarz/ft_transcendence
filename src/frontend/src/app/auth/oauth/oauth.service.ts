@@ -73,11 +73,7 @@ export class OAuthService {
               replaceUrl: true, // prevent going back to the callback page
             });
           else if (response.alreadySignedUp)
-            this.router.navigate(['/auth/signin'], {
-              state: {
-                error: 'OAuth account already used.',
-              },
-            });
+            this.signin.signInFailure('OAuth account already used');
         },
         error: (err) => console.warn(err),
       });

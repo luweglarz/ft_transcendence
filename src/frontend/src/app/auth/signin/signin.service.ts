@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { EventsService } from 'src/app/services/events.service';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
@@ -15,6 +16,8 @@ import { SignInData } from './interfaces/signin-data.interface';
 export class SigninService {
   private readonly local_signin_url = `${environment.backend}/auth/local/signin`;
   private readonly oauth_signin_url = `${environment.backend}/auth/oauth42/signin`;
+  private _signinError = new Subject<string>();
+  siginError$ = this._signinError.asObservable();
   private signinEvent: EventEmitter<boolean>;
 
   constructor(
@@ -26,7 +29,7 @@ export class SigninService {
     this.signinEvent = this.events.auth.signin;
   }
 
-  signIn(data: SignInData, state?: { failure: boolean; reason: string }) {
+  signIn(data: SignInData) {
     let url: string;
     const payload: LocalSigninDto | undefined = data.form;
 
@@ -49,8 +52,10 @@ export class SigninService {
           else if (response.status == 'complete')
             this.signInSuccess(response.tokens.access, response.tokens.refresh);
         },
-        error: (err: HttpErrorResponse) =>
-          this.signInFailure(err, payload, state),
+        error: (err: HttpErrorResponse) => {
+          this.signInFailure(err);
+          // if (payload) console.table(payload);
+        },
       });
   }
 
@@ -66,16 +71,15 @@ export class SigninService {
     this.jwt.logPayload();
   }
 
-  signInFailure(
-    err: HttpErrorResponse,
-    form: any,
-    state?: { failure: boolean; reason: string },
-  ) {
-    console.error(err);
-    console.table(form);
-    if (state) {
-      state.failure = true;
-      if ('message' in err.error) state.reason = err.error.message;
-    }
+  signInFailure(err: string | HttpErrorResponse) {
+    // extract error
+    let errMsg: string;
+    if (typeof err == 'string') errMsg = err;
+    else errMsg = err.error.message;
+
+    // redirect to the signin page
+    this.router
+      .navigate(['/auth/signin'])
+      .then(() => this._signinError.next(errMsg));
   }
 }

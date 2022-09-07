@@ -10,7 +10,7 @@ import { SigninService } from './signin.service';
   styleUrls: ['./signin.component.css'],
 })
 export class SignInComponent implements OnInit {
-  state = { failure: false, reason: '' };
+  signinError?: string;
 
   signInForm = this.formBuilder.nonNullable.group({
     username: ['', Validators.required],
@@ -23,11 +23,7 @@ export class SignInComponent implements OnInit {
     private service: SigninService,
     private signOut: SignoutService,
   ) {
-    const error = window.history.state['error'];
-    if (error) {
-      this.state.failure = true;
-      this.state.reason = error;
-    }
+    this.service.siginError$.subscribe((err) => (this.signinError = err));
   }
 
   ngOnInit(): void {
@@ -35,10 +31,7 @@ export class SignInComponent implements OnInit {
   }
 
   localSignIn() {
-    this.service.signIn(
-      { type: 'local', form: this.signInForm.getRawValue() },
-      this.state,
-    );
+    this.service.signIn({ type: 'local', form: this.signInForm.getRawValue() });
   }
 
   oAuthSignIn() {
