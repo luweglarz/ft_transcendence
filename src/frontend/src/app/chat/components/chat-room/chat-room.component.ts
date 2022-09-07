@@ -13,6 +13,7 @@ import { ChatService } from 'src/app/chat/chatService/chat.service';
 import { Observable } from 'rxjs';
 import { RoomUser } from 'src/app/chat/interface/roomUser';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PopupsService } from 'src/app/home-page/popups/popups.service';
 
 @Component({
   selector: 'app-chat-room',
@@ -44,6 +45,7 @@ export class ChatRoomComponent implements OnChanges {
   constructor(
     private chatService: ChatService,
     private snackBar: MatSnackBar,
+    private popupsService: PopupsService,
   ) {}
 
   //ngOnInit(): void {}
@@ -108,5 +110,11 @@ export class ChatRoomComponent implements OnChanges {
         this.scrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
     //console.log(this.chatRoom);
+  }
+
+  openProfile(username: any) {
+    if (username === undefined || username === null) return;
+    console.log(username);
+    this.popupsService.openProfil(username);
   }
 }

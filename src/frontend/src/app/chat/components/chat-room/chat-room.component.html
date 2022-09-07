@@ -4,7 +4,7 @@
         <h2>{{chatRoom.name}}</h2>
         </span>
         <span *ngFor="let roomUser of (roomUsers)">
-            {{roomUser.username}}
+            <a class="btn-profile" (click)="openProfile(roomUser.username)">{{roomUser.username}} </a>
             <!--Users-->
         </span>
     </div>
