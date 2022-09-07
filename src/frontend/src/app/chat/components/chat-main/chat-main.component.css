@@ -12,6 +12,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 
   height: 260px;
   width: calc(25% - 12px);
@@ -22,9 +23,12 @@
   overflow-x: hidden;
   padding: 0;
 
-  height: calc(260px - 32px);
+  height: calc(260px - 40px);
   width: 100%;
   padding-left: 8px;
+
+  border-radius: 1em;
+  background-color: #44526f;
 }
 
 .chat-selection-item {
