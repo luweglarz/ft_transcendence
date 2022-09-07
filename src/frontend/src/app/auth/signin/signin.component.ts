@@ -23,7 +23,11 @@ export class SignInComponent implements OnInit {
     private service: SigninService,
     private signOut: SignoutService,
   ) {
-    this.service.siginError$.subscribe((err) => (this.signinError = err));
+    // error state is used by JwtService if refresh fails
+    if (window.history.state['error'])
+      this.signinError = window.history.state['error'];
+    // otherwise errors are emitted within SigninService
+    this.service.signinError$.subscribe((err) => (this.signinError = err));
   }
 
   ngOnInit(): void {

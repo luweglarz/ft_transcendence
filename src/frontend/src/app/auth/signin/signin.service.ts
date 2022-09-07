@@ -17,7 +17,7 @@ export class SigninService {
   private readonly local_signin_url = `${environment.backend}/auth/local/signin`;
   private readonly oauth_signin_url = `${environment.backend}/auth/oauth42/signin`;
   private _signinError = new Subject<string>();
-  siginError$ = this._signinError.asObservable();
+  signinError$ = this._signinError.asObservable();
   private signinEvent: EventEmitter<boolean>;
 
   constructor(
