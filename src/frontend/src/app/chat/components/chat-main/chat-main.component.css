@@ -39,6 +39,19 @@
   height: 48px;
   border-radius: 1em;
   background-color: #1a202c;
+  color: white;
+  transition: 0.3s;
+}
+
+.chat-selection-item:hover {
+  background-color: #44526f;
+  transition: 0.3s;
+}
+
+.chat-selection-item:active {
+  background-color: white;
+  color: #1a202c;
+  transition: 0.3s;
 }
 
 .chat-selection-item-icon {
@@ -46,8 +59,51 @@
   stroke: white;
 }
 
-.chat-selection-button {
+.chat-selection-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
   height: 32px;
+  width: 100%;
+}
+
+.chat-selection-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 32px;
+  width: 45%;
+  background-color: #1a202c;
+  color: white;
+
+  transition: 0.3s;
+  border-radius: 1em;
+  cursor: pointer;
+  border: 0px;
+}
+
+.chat-selection-button:hover {
+  background-color: #44526f;
+  transition: 0.3s;
+}
+
+.chat-selection-button:active {
+  background-color: white;
+  color: #1a202c;
+  transition: 0.3s;
+}
+
+.chat-selection-button-icon {
+  fill: white;
+  transition: 0.3s;
+}
+
+.chat-selection-button:active .chat-selection-button-icon {
+  fill: #1a202c;
+  transition: 0.3s;
 }
 
 /* Chat */
