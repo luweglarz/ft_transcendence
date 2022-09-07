@@ -22,7 +22,11 @@
       <!-- Input -->
       <input class="chatbox-input-form" matInput [formControl]="chatMessage" type="text" (keyup.enter)="sendMessage()">
       <!-- Send button -->
-      <button class="chatbox-input-button" [disabled]="!chatMessage.valid && chatRoom" (click)="sendMessage()">Send</button>
+      <button class="chatbox-input-button" [disabled]="!chatMessage.valid && chatRoom" (click)="sendMessage()">
+        <svg class="chatbox-input-button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+      </button>
     </div>
 
     <!-- ???? -->

@@ -11,7 +11,7 @@
 
         <!-- Room list -->
         <div class="chat-selection-list">
-          <mat-selection-list class="chat-selections-items" [multiple]="false" (selectionChange)="onSelectRoom($event)">
+          <mat-selection-list [multiple]="false" (selectionChange)="onSelectRoom($event)">
             <mat-list-option *ngFor="let room of (rooms|async)" [value]="room">
               <div class="chat-selection-item">
                 <svg class="chat-selection-item-icon" *ngIf="room.roomType === 'PUBLIC'" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">

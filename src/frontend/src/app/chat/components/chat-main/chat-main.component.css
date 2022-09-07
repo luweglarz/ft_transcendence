@@ -24,10 +24,7 @@
 
   height: calc(260px - 32px);
   width: 100%;
-}
-
-.chat-selection-items {
-  background-color: red;
+  padding-left: 8px;
 }
 
 .chat-selection-item {
@@ -37,6 +34,7 @@
   align-items: center;
 
   height: 48px;
+  width: 100%;
   border-radius: 1em;
   background-color: #1a202c;
   color: white;
@@ -65,6 +63,8 @@
   justify-content: space-around;
   align-items: center;
 
+  padding-left: 8px;
+  padding-right: 16px;
   height: 32px;
   width: 100%;
 }
@@ -75,7 +75,7 @@
   align-items: center;
 
   height: 32px;
-  width: 45%;
+  width: 40%;
   background-color: #1a202c;
   color: white;
 
@@ -108,8 +108,9 @@
 
 /* Chat */
 .chat-box {
+  /* display: flex; */
+  /* justify-content: center; */
   height: 260px;
-  /* width: calc(50% - 12px); */
   width: calc(75% - 12px);
   background-color: #44526f;
   border-radius: 1em;

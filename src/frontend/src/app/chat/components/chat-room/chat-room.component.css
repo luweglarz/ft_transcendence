@@ -1,11 +1,8 @@
 .chatbox {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-
+  /* display: flex;
+  flex-direction: column; */
   width: calc(100% - 32px);
-  height: 100%;
+  padding-left: 16px;
 }
 
 /* .chatbox-header {
@@ -24,12 +21,13 @@
   overflow-y: scroll;
   overflow-x: hidden;
   padding: 0;
-  height: 218px;
-  /* height: 200px; */
+  height: 200px;
   width: 100%;
 
   border-radius: 1em;
   background-color: #1a202c;
+
+  margin-top: 12px;
 }
 
 .chatbox-messages-app {
@@ -45,6 +43,8 @@
 
   border-radius: 1em;
   background-color: #1a202c;
+
+  margin-top: 4px;
 }
 
 .chatbox-input-form {
@@ -53,7 +53,34 @@
 }
 
 .chatbox-input-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   height: 32px;
   width: 64px;
   border-radius: 1em;
+  background-color: white;
+  transition: 0.3s;
+  border: 0px;
+}
+
+.chatbox-input-button:hover {
+  background-color: #44526f;
+  transition: 0.3s;
+}
+
+.chatbox-input-button:active {
+  background-color: #1a202c;
+  transition: 0.3s;
+}
+
+.chatbox-input-button-icon {
+  stroke: #1a202c;
+  transition: 0.3s;
+}
+
+.chatbox-input-button:hover .chatbox-input-button-icon, .chatbox-input-button:active .chatbox-input-button-icon {
+  stroke: white;
+  transition: 0.3s;
 }
