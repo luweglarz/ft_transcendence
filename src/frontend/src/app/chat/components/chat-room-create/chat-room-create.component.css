@@ -61,10 +61,16 @@
   width: 200px;
   color: white;
 
-  /* background-color: white; */
+  background-color: #2c3649;
   border-radius: 1em;
 }
 
 .chatroom-create-select {
   color: white;
+  background-color: #44526f;
+}
+
+.chatroom-create-select:hover {
+  color: white;
+  background-color: #1a202c;
 }
