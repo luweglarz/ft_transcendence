@@ -21,5 +21,9 @@
         <app-chat-room [chatRoom]="selectedRoom"></app-chat-room>
       </div>
 
+      <div>
+        <app-chat-invite [chatRoom]="selectedRoom" (roomInvite)="joinRoomInvite($event)"></app-chat-invite>
+      </div>
+
       </div>
     </mat-card>

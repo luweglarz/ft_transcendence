@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { User } from '../../decorators';
-import { JwtAuthService } from '../jwt/jwt-auth.service';
 import { OAuthUserDto, OAuthSignUpDto } from './dto';
 import { OAuth2Guard } from './guard';
 import { OauthService } from './oauth.service';
@@ -9,7 +8,7 @@ import { OauthService } from './oauth.service';
 export class OauthController {
   private readonly client_id = process.env['OAUTH_42_CLIENT_ID'];
 
-  constructor(private service: OauthService, private jwt: JwtAuthService) {}
+  constructor(private service: OauthService) {}
 
   @Get('client_id')
   getOAuthClientId() {
@@ -19,6 +18,7 @@ export class OauthController {
   @Post('signin')
   @UseGuards(OAuth2Guard)
   async oauthSignIn(@User() user: OAuthUserDto) {
+    // console.log(body);
     return this.service.oauthSignIn(user);
   }
 
@@ -31,10 +31,7 @@ export class OauthController {
   @UseGuards(OAuth2Guard)
   async oauthSignUpTempToken(@User() user: OAuthUserDto) {
     return {
-      jwt: await this.jwt.signTempToken({
-        state: 'incomplete',
-        oAuthUser: user,
-      }),
+      jwt: await this.service.signTempToken({ oAuthUser: user }),
     };
   }
 }

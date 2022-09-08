@@ -21,7 +21,7 @@ export class DirectMessagesService {
   isLoaded = false;
 
   constructor(private jwtService: JwtService, private http: HttpClient) {
-    const tmp = this.jwtService.getPayload()?.username;
+    const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
   }
 

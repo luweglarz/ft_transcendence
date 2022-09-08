@@ -1,6 +1,7 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
+import { DbService } from 'src/db/db.service';
 import { GameGatewayService } from './game-gateway.service';
 
 describe('GameGatewayService', () => {
@@ -8,7 +9,7 @@ describe('GameGatewayService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [GameGatewayService, JwtAuthService],
+      providers: [GameGatewayService, JwtAuthService, DbService],
       imports: [JwtModule],
     }).compile();
 

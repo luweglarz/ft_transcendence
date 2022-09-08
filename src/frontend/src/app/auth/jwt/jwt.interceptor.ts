@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { JwtService } from './jwt.service';
 import { environment } from 'src/environments/environment';
 
@@ -18,11 +18,15 @@ export class JwtInterceptor implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     if (request.url.startsWith(environment.backend)) {
-      const token = this.jwt.getToken();
-      if (token)
-        request = request.clone({
-          setHeaders: { Authorization: `Bearer ${token}` },
-        });
+      return this.jwt.getToken$().pipe(
+        switchMap((token) => {
+          if (token)
+            request = request.clone({
+              setHeaders: { Authorization: `Bearer ${token}` },
+            });
+          return next.handle(request);
+        }),
+      );
     }
     return next.handle(request);
   }

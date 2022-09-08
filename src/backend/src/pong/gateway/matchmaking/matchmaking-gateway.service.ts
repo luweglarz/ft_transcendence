@@ -10,6 +10,7 @@ import { GameMode } from 'src/pong/interface/game-mode.interface';
 import { NormalGame } from 'src/pong/class/game-mode/normal-game/normal-game';
 import { CustomGame } from 'src/pong/class/game-mode/custom-game/custom-game';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
+import { ConnectedSocket } from '@nestjs/websockets';
 
 @Injectable()
 export class MatchmakingGatewayService {
@@ -18,7 +19,18 @@ export class MatchmakingGatewayService {
     private gameCoreService: GameCoreService,
     private gameGatewayService: GameGatewayService,
     private jwtService: JwtAuthService,
-  ) {}
+  ) {
+    this.normalClientPool = [];
+    this.pools = [];
+    this.pools.push(this.normalClientPool);
+    this.pools.push(this.rankedClientPool);
+    this.pools.push(this.customClientPool);
+  }
+
+  private pools: Socket[][];
+  private normalClientPool: Socket[] = [];
+  private rankedClientPool: Socket[] = [];
+  private customClientPool: Socket[] = [];
 
   private logger: Logger = new Logger('GameMatchMakingGateway');
 
@@ -36,7 +48,7 @@ export class MatchmakingGatewayService {
     }
     return false;
   }
-
+  
   isUserInGame(username: string): boolean {
     for (const room of this.gameGateway.rooms) {
       for (const player of room.players) {
@@ -46,8 +58,8 @@ export class MatchmakingGatewayService {
     return false;
   }
 
-  isClientInMatchmaking(client: Socket, clientPools: Socket[][]): boolean {
-    for (const pool of clientPools) {
+  isClientInMatchmaking(@ConnectedSocket()client: Socket): boolean {
+    for (const pool of this.pools) {
       for (const clientPool of pool) {
         if (
           clientPool.handshake.auth.token === client.handshake.auth.token ||
@@ -66,24 +78,24 @@ export class MatchmakingGatewayService {
     return false;
   }
 
-  clientJoinMatchmaking(
-    client: Socket,
-    clientPools: Socket[][],
-    gameType: string,
-  ) {
+  clientJoinMatchmaking(client: Socket, gameType: string) {
     if (gameType === 'normal') {
-      clientPools[0].push(client);
+      this.pools[0].push(client);
       client.emit('waitingForAMatch', 'Waiting for a normal match');
-      if (clientPools[0].length > 1) this.createGame(clientPools[0], gameType);
+      if (this.pools[0].length > 1) this.createGame(this.pools[0], gameType);
+    } else if (gameType === 'ranked') {
+      this.pools[1].push(client);
+      client.emit('waitingForAMatch', 'Waiting for a ranked match');
+      if (this.pools[1].length > 1) this.createGame(this.pools[1], gameType);
     } else if (gameType === 'custom') {
-      clientPools[1].push(client);
+      this.pools[2].push(client);
       client.emit('waitingForAMatch', 'Waiting for a custom match');
-      if (clientPools[1].length > 1) this.createGame(clientPools[1], gameType);
+      if (this.pools[2].length > 1) this.createGame(this.pools[2], gameType);
     }
   }
 
-  clientLeaveMatchmaking(client: Socket, clientPools: Socket[][]) {
-    for (const pool of clientPools) {
+  clientLeaveMatchmaking(client: Socket) {
+    for (const pool of this.pools) {
       for (const clientToken of pool) {
         if (clientToken.handshake.auth.token === client.handshake.auth.token) {
           pool.splice(
@@ -105,10 +117,16 @@ export class MatchmakingGatewayService {
     let players: Player[];
 
     if (gameType == 'normal') {
-      gameMode = new NormalGame(525, 950, 'black');
+      gameMode = new NormalGame(525, 950, 'black', gameType);
       players = [
         new Player(gameMode, clientPool.pop(), 1, 7, 'white'),
         new Player(gameMode, clientPool.pop(), 2, 7, 'white'),
+      ];
+    } else if (gameType == 'ranked') {
+      gameMode = new NormalGame(525, 950, 'black', gameType);
+      players = [
+        new Player(gameMode, clientPool.pop(), 1, 6, 'white'),
+        new Player(gameMode, clientPool.pop(), 2, 6, 'white'),
       ];
     } else if (gameType == 'custom') {
       gameMode = new CustomGame(525, 950, 'black');

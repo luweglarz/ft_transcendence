@@ -1,6 +1,7 @@
 import {
-  IsEmail,
+  IsAlphanumeric,
   IsNotEmpty,
+  IsNumber,
   IsString,
   IsUrl,
   MaxLength,
@@ -14,9 +15,8 @@ export class OAuthUserDto {
   @IsNotEmpty()
   login: string;
 
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+  @IsNumber()
+  id: number;
 
   @IsUrl()
   image_url: string;
@@ -29,8 +29,16 @@ export class OAuthSignUpDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(42)
+  @IsAlphanumeric()
   username: string;
 
   @IsString()
   jwt: string;
+}
+
+/*
+ * @brief Data stored in the temp jwt on oauth signup
+ */
+export interface OAuthJwtPayload {
+  oAuthUser: OAuthUserDto;
 }

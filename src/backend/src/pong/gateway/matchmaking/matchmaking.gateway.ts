@@ -11,16 +11,8 @@ import { MatchmakingGatewayService } from './matchmaking-gateway.service';
 @WebSocketGateway({ cors: true, path: '/pong' })
 export class MatchmakingGateway {
   constructor(private matchmakingGatewayService: MatchmakingGatewayService) {
-    this.normalClientPool = [];
-    this.pools = [];
-    this.pools.push(this.normalClientPool);
-    this.pools.push(this.customClientPool);
     this.logger = new Logger('GameMatchMakingGateway');
   }
-
-  private pools: Socket[][];
-  private normalClientPool: Socket[] = [];
-  private customClientPool: Socket[] = [];
   private logger: Logger;
 
   afterInit() {
@@ -36,23 +28,16 @@ export class MatchmakingGateway {
       client.emit('error', 'You are already in a game');
       return;
     } else if (
-      this.matchmakingGatewayService.isClientInMatchmaking(
-        client,
-        this.pools,
-      ) === true
+      this.matchmakingGatewayService.isClientInMatchmaking(client) === true
     ) {
       client.emit('error', 'You have already joined a matchmaking');
       return;
     } else
-      this.matchmakingGatewayService.clientJoinMatchmaking(
-        client,
-        this.pools,
-        gameType,
-      );
+      this.matchmakingGatewayService.clientJoinMatchmaking(client, gameType);
   }
 
   @SubscribeMessage('leaveMatchmaking')
   leaveMatchmaking(@ConnectedSocket() client: Socket) {
-    this.matchmakingGatewayService.clientLeaveMatchmaking(client, this.pools);
+    this.matchmakingGatewayService.clientLeaveMatchmaking(client);
   }
 }

@@ -26,7 +26,5 @@ import { DirectMessagesModule } from './direct-message/direct-messages.module';
       useClass: LoggingInterceptor,
     },
   ],
-  // controllers: [AppController], // TODO: should probably remove those
-  // providers: [AppService],
 })
 export class AppModule {}

@@ -5,20 +5,21 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { validate } from 'class-validator';
 import { lastValueFrom } from 'rxjs';
 import { DbService } from 'src/db/db.service';
-import { OAuthJwtPayload } from '../jwt/interfaces';
-import { JwtAuthService } from '../jwt/jwt-auth.service';
 import { AuthUtilsService } from '../utils/auth-utils.service';
-import { OAuthSignUpDto, OAuthUserDto } from './dto';
+import { OAuthJwtPayload, OAuthSignUpDto, OAuthUserDto } from './dto';
 
 @Injectable()
 export class OauthService {
   private readonly logger = new Logger(OauthService.name);
+  private readonly _tempTokenSecret = `temp ${process.env['JWT_SECRET']}`;
+
   constructor(
     private db: DbService,
-    private jwtAuth: JwtAuthService,
+    private jwt: JwtService,
     private readonly httpService: HttpService,
     private authUtils: AuthUtilsService,
   ) {}
@@ -35,7 +36,7 @@ export class OauthService {
 
   async oauthFindUser(apiUser: OAuthUserDto) {
     const authInfo = await this.db.auth.findUnique({
-      where: { email: apiUser.email },
+      where: { oauthId: apiUser.id },
       include: { user: true },
     });
     if (!authInfo) throw new ForbiddenException('Unknown user');
@@ -43,14 +44,24 @@ export class OauthService {
   }
 
   async oauthCreateUser(dto: OAuthSignUpDto) {
-    if (!(await this.jwtAuth.verifyTempToken(dto.jwt)))
+    if (!(await this.verifyTempToken(dto.jwt)))
       throw new ForbiddenException('Invalid temp jwt token');
-    const payload = this.jwtAuth.decode<OAuthJwtPayload>(dto.jwt);
+    const payload = <OAuthJwtPayload>this.jwt.decode(dto.jwt);
     const user = await this.authUtils.createUser({
       username: dto.username,
-      auth: { create: { email: payload.oAuthUser.email, authType: 'OAUTH42' } },
+      auth: { create: { oauthId: payload.oAuthUser.id, authType: 'OAUTH42' } },
     });
     return user;
+  }
+
+  signTempToken(payload: OAuthJwtPayload): Promise<string> {
+    return this.jwt.signAsync(payload, {
+      expiresIn: '10m',
+      secret: this._tempTokenSecret,
+    });
+  }
+  verifyTempToken(token: string) {
+    return this.jwt.verifyAsync(token, { secret: this._tempTokenSecret });
   }
 
   async fetch42APIUserData(accessToken: string) {
@@ -64,7 +75,7 @@ export class OauthService {
     if (!data)
       throw new ForbiddenException('Could not fetch user with 42 OAuth2 API');
     const user = new OAuthUserDto();
-    for (const key of ['login', 'email', 'image_url']) {
+    for (const key of ['login', 'id', 'image_url']) {
       user[key] = data[key];
     }
     const errors = await validate(user, {

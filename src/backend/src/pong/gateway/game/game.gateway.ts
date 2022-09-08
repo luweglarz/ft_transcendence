@@ -48,12 +48,9 @@ export class GameGateway
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
     if (this.matchmakingService.isClientInGame(client)) this.leaveGame(client);
+    if (this.matchmakingService.isClientInMatchmaking(client))
+      this.matchmakingService.clientLeaveMatchmaking(client);
     this.logger.log(`Client disconnected: ${client.id}`);
-  }
-
-  @SubscribeMessage('*')
-  socketMiddleware(@ConnectedSocket() client: Socket) {
-    this.gameGatewayService.checkJwtToken(client);
   }
 
   @SubscribeMessage('move')

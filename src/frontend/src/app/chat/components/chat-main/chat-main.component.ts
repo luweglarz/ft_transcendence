@@ -13,7 +13,7 @@ import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.co
 })
 export class ChatMainComponent implements OnInit, OnDestroy {
   rooms: Observable<Room[]> = this.chatService.getRooms();
-  createdRoom: Promise<Room> = this.chatService.getCreatedRoomFirst();
+  //createdRoom: Promise<Room> = this.chatService.getCreatedRoomFirst();
   selectedRoom: Room = {};
 
   constructor(private chatService: ChatService, public dialog: MatDialog) {}
@@ -27,7 +27,7 @@ export class ChatMainComponent implements OnInit, OnDestroy {
     this.selectedRoom = event.source.selectedOptions.selected[0].value;
   }
 
-  openDialog(): void {
+  async openDialog() {
     const dialogRef = this.dialog.open(ChatRoomCreateComponent, {
       width: '250px',
       data: {},
@@ -39,7 +39,7 @@ export class ChatMainComponent implements OnInit, OnDestroy {
       if (result !== undefined) {
         if (result !== 'no') {
           console.log('result'); // selectedroom must become the newly created room
-          this.chatService.getCreatedRoom().subscribe((resultRoom) => {
+          /*this.chatService.getCreatedRoom().subscribe((resultRoom) => {
             console.log('Roomresult');
             this.selectedRoom = resultRoom;
           });
@@ -49,13 +49,29 @@ export class ChatMainComponent implements OnInit, OnDestroy {
               this.selectedRoom = resultRoom;
             });
           }
+          this.chatService.getCreatedRoomFirst().then(async (room: Room) => {
+            console.log('in then');
+            this.chatService.joinRoom(room);
+            this.selectedRoom = room;
+          });
+          while (this.selectedRoom.id === undefined) {
+            console.log('empty do it again')
+            this.selectedRoom = await this.chatService.getCreatedRoomFirst();
+          }*/
+          this.selectedRoom = result;
+          console.log('why');
           console.log(this.selectedRoom);
         }
       }
     });
   }
 
+  joinRoomInvite(newRoom: Room) {
+    this.selectedRoom = newRoom;
+  }
+
   ngOnDestroy(): void {
+    this.chatService.closeChat();
     this.selectedRoom = {}; // probably useless
   }
 }

@@ -17,7 +17,7 @@ export class SocialComponent implements OnInit {
     public jwtService: JwtService,
     public dmsService: DirectMessagesService,
   ) {
-    const tmp = this.jwtService.getPayload()?.username;
+    const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
   }
 

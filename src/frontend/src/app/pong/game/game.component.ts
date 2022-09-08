@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
+import { EventsService } from 'src/app/services/events.service';
 import { GameMode } from '../interface/game-mode';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { GameService } from './game.service';
@@ -19,8 +20,13 @@ export class GameComponent implements OnInit {
   constructor(
     public collapseService: CollapseService,
     public gameService: GameService,
+    private eventsService: EventsService,
     matchmakingService: MatchmakingService,
   ) {
+    this.eventsService.auth.signout.subscribe(() => {
+      this.gameService.requestLeaveGame();
+      this.gameService.socket.disconnect();
+    });
     this.game = matchmakingService.game;
   }
 
@@ -34,8 +40,6 @@ export class GameComponent implements OnInit {
   private gameContext: any;
   @ViewChild('gameCanvas')
   private gameCanvas!: ElementRef;
-  @ViewChild('playersInfo')
-  private playersInfo!: ElementRef;
 
   @ViewChild('boostOne')
   private boostOne!: ElementRef;
@@ -43,8 +47,6 @@ export class GameComponent implements OnInit {
   private boostTwo!: ElementRef;
 
   ngAfterViewInit() {
-    this.playersInfo.nativeElement.style.width = this.game.canvaWidth + 'px';
-
     this.gameContext = this.gameCanvas.nativeElement.getContext('2d');
     this.gameCanvas.nativeElement.width = this.game.canvaWidth;
     this.gameCanvas.nativeElement.height = this.game.canvaHeight;

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { SigninService } from '../signin/signin.service';
 import jwtDecode from 'jwt-decode';
-import { OAuthJwtPayload } from '../interface';
+import { OAuthJwtPayload } from './dto';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +45,11 @@ export class OAuthService {
       if (params['code']) {
         if (params['state'] == 'signup') this.getTempToken(params['code']);
         else if (params['state'] == 'signin')
-          this.signin.signIn({ type: 'oauth', code: params['code'] });
+          this.signin.signIn({
+            type: 'oauth',
+            code: params['code'],
+            form: undefined,
+          });
       } else {
         console.warn('"code" or "state" query param is missing.');
       }

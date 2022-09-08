@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
-import { JwtGuard, User } from 'src/auth';
-import { JwtPayload } from 'src/auth/modules/jwt/interfaces';
+import { JwtAccessGuard, User } from 'src/auth';
+import { JwtUser } from 'src/auth/modules/jwt/dto';
 import { SocialService } from './social.service';
 
 @Controller('social')
@@ -25,11 +25,11 @@ export class SocialController {
   }
 
   @Post('add')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtAccessGuard)
   async addUserRelation(
     @Query('target') targetName: string,
     @Query('relation') relation: string,
-    @User() user: JwtPayload,
+    @User() user: JwtUser,
   ) {
     return this.socialService.addUserRelation(
       user.username,

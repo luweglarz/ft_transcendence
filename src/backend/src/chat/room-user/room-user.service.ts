@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
-import { RoomUser, Prisma } from '@prisma/client';
+import { RoomUser, Prisma, Role } from '@prisma/client';
 
 @Injectable()
 export class RoomUserService {
@@ -34,6 +34,17 @@ export class RoomUserService {
   async createRoomUser(data: Prisma.RoomUserCreateInput): Promise<RoomUser> {
     return this.prisma.roomUser.create({
       data,
+    });
+  }
+
+  async updateRole(id: number, role: Role) {
+    await this.prisma.roomUser.update({
+      where: {
+        roomUserId: id,
+      },
+      data: {
+        role: role,
+      },
     });
   }
 }

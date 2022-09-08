@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { tap } from 'rxjs';
+import { JwtService } from 'src/app/auth/jwt';
 import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { GameSocket } from '../class/game-socket';
 import { StopWatch } from '../class/stop-watch';
@@ -10,12 +12,13 @@ import { GameMode } from '../interface/game-mode';
 })
 export class MatchmakingService {
   constructor(
-    private socket: GameSocket,
+    public socket: GameSocket,
     private gameService: GameService,
     public notificationService: NotificationService,
+    private jwtService: JwtService,
   ) {
     this._stopWatch = new StopWatch();
-    this.socket.on('error', (msg: string) => {
+    this.socket.once('error', (msg: string) => {
       console.log(msg);
     });
   }
@@ -27,34 +30,67 @@ export class MatchmakingService {
     return this._stopWatch;
   }
 
-  requestJoinNormalMatchMaking() {
-    this.socket.connect();
-    this.socket.emit('joinMatchmaking', 'normal');
-    this.socket.onWaitingForAMatch(this.stopWatch);
-    this.socket.onMatchFound(
-      this.notificationService,
-      this.gameService,
-      this,
-      this._stopWatch,
-    );
-    this.socket.onMatchmakingLeft();
+  requestJoinNormalMatchmaking() {
+    this.jwtService
+      .getToken$()
+      .pipe(tap((token) => (this.socket.ioSocket.auth = { token: token })))
+      .subscribe(() => {
+        this.socket.connect();
+        this.socket.emit('joinMatchmaking', 'normal');
+        this.socket.onWaitingForAMatch(this.stopWatch);
+        this.socket.onMatchFound(
+          this.notificationService,
+          this.gameService,
+          this,
+          this._stopWatch,
+        );
+        this.socket.onMatchmakingLeft();
+      });
   }
 
-  requestJoinCustomGamemodeMatchamking() {
-    this.socket.connect();
-    this.socket.emit('joinMatchmaking', 'custom');
-    this.socket.onWaitingForAMatch(this.stopWatch);
-    this.socket.onMatchFound(
-      this.notificationService,
-      this.gameService,
-      this,
-      this._stopWatch,
-    );
-    this.socket.onMatchmakingLeft();
+  requestJoinRankedMatchmaking() {
+    this.jwtService
+      .getToken$()
+      .pipe(tap((token) => (this.socket.ioSocket.auth = { token: token })))
+      .subscribe(() => {
+        this.socket.connect();
+        this.socket.emit('joinMatchmaking', 'ranked');
+        this.socket.onWaitingForAMatch(this.stopWatch);
+        this.socket.onMatchFound(
+          this.notificationService,
+          this.gameService,
+          this,
+          this._stopWatch,
+        );
+        this.socket.onMatchmakingLeft();
+      });
   }
 
-  requestLeaveMatchMaking() {
-    this._stopWatch.clearTimer();
-    this.socket.emit('leaveMatchmaking');
+  requestJoinCustomMatchmaking() {
+    this.jwtService
+      .getToken$()
+      .pipe(tap((token) => (this.socket.ioSocket.auth = { token: token })))
+      .subscribe(() => {
+        this.socket.connect();
+        this.socket.emit('joinMatchmaking', 'custom');
+        this.socket.onWaitingForAMatch(this.stopWatch);
+        this.socket.onMatchFound(
+          this.notificationService,
+          this.gameService,
+          this,
+          this._stopWatch,
+        );
+        this.socket.onMatchmakingLeft();
+      });
+  }
+
+  requestLeaveMatchmaking() {
+    this.jwtService
+      .getToken$()
+      .pipe(tap((token) => (this.socket.ioSocket.auth = { token: token })))
+      .subscribe(() => {
+        this._stopWatch.clearTimer();
+        this.socket.emit('leaveMatchmaking');
+      });
   }
 }

@@ -1,5 +1,5 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { JwtGuard } from '../jwt';
+import { JwtAccessGuard } from '../jwt';
 import { AuthUtilsService } from './auth-utils.service';
 
 @Controller()
@@ -14,17 +14,9 @@ export class AuthUtilsController {
     };
   }
 
-  @Get('exists/email/:email')
-  async emailAlreadyExists(@Param('email') email: string) {
-    return {
-      email: email,
-      exists: await this.service.emailExists(email),
-    };
-  }
-
   //  ============================ Testing routes ============================  //
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtAccessGuard)
   @Get('private')
   isSignedIn() {
     return { message: 'Private connection established! 👍' };

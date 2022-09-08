@@ -32,7 +32,7 @@ export class LadderComponent implements OnInit {
     public jwtService: JwtService,
     public socialService: SocialService,
   ) {
-    const tmp = this.jwtService.getPayload()?.username;
+    const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
     this.http
       .get<Array<Player>>(`${environment.backend}/game/ladder`)

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
-import { JwtGuard, User } from 'src/auth';
-import { JwtPayload } from 'src/auth/modules/jwt/interfaces';
+import { JwtAccessGuard, User } from 'src/auth';
+import { JwtUser } from 'src/auth/modules/jwt/dto';
 import { DirectMessagesService } from './direct-messages.service';
 
 @Controller('direct-messages')
@@ -28,11 +28,11 @@ export class DirectMessagesController {
   }
 
   @Post('add')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtAccessGuard)
   async addUsersDm(
     @Query('target') targetName: string,
     @Body() content,
-    @User() user: JwtPayload,
+    @User() user: JwtUser,
   ) {
     return this.dmService.addUserDm(user.username, targetName, content.content);
   }

@@ -1,71 +1,145 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
-import { lastValueFrom } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  filter,
+  lastValueFrom,
+  map,
+  of,
+  take,
+  tap,
+} from 'rxjs';
 import { environment } from 'src/environments/environment';
-
-export interface JwtPayload {
-  sub: number;
-  username: string;
-  iat: number;
-  exp: number;
-}
+import { JwtData, JwtUser } from './dto';
+import { JwtTokens } from './dto/tokens.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JwtService {
-  private _token: string | null = null;
-  constructor(private http: HttpClient) {}
+  readonly refreshTokenUrl = `${environment.backend}/auth/jwt/refresh`;
 
+  private readonly _accessTokenKey = 'accessToken';
+  private readonly _refreshTokenKey = 'refreshToken';
+  private httpNoIntercept: HttpClient;
+
+  private _accessToken$ = new BehaviorSubject<string | null>(null);
+  private _ongoingRefresh = false;
+  private _data?: JwtData;
+
+  constructor(private http: HttpClient, httpBackend: HttpBackend) {
+    this.httpNoIntercept = new HttpClient(httpBackend);
+    this._accessToken$.next(localStorage.getItem(this._accessTokenKey));
+    const token = this._accessToken$.getValue();
+    if (token) {
+      this._data = jwtDecode<JwtData>(token);
+    }
+  }
+
+  //  =============================== Getters ================================  //
+
+  get user(): JwtUser | undefined {
+    const data = this._data;
+    if (data) return { sub: data.sub, username: data.username };
+    else return undefined;
+  }
   get username() {
-    return this.getPayload()?.username;
+    return this._data?.username;
+  }
+  get id() {
+    return this._data?.sub;
   }
 
-  getToken() {
-    if (!this._token) this._token = localStorage.getItem('jwt');
-    return this._token;
+  getToken$() {
+    const token = this._accessToken$.getValue();
+
+    if (this._ongoingRefresh) {
+      return this._accessToken$.pipe(
+        // TODO: fix possible issue when token refreshing fails (value === null)
+        filter((value) => value !== null),
+        take(1),
+      );
+    } else if (token && !this.isValid()) {
+      this._ongoingRefresh = true;
+      this._accessToken$.next(null);
+      return this.refreshTokens().pipe(
+        map((tokens) => {
+          if (tokens) return tokens.access;
+          else return null;
+        }),
+        tap(() => (this._ongoingRefresh = false)),
+      );
+    } else return of(token).pipe(take(1));
   }
 
-  setToken(token: string) {
-    localStorage.setItem('jwt', token);
-    this._token = token;
+  private get refreshToken() {
+    return localStorage.getItem(this._refreshTokenKey);
+  }
+
+  //  =============================== Methods ================================  //
+
+  private refreshTokens() {
+    return this.httpNoIntercept
+      .get<JwtTokens>(this.refreshTokenUrl, {
+        headers: {
+          Authorization: `Bearer ${this.refreshToken}`,
+        },
+      })
+      .pipe(
+        tap((tokens) => this.storeTokens(tokens.access, tokens.refresh)),
+        catchError((err) => {
+          console.error(`Could not refresh token (${err})`);
+          this._accessToken$.next(null);
+          return of(null);
+        }),
+      );
+  }
+
+  storeTokens(accessToken: string, refreshToken: string) {
+    this._data = jwtDecode<JwtData>(accessToken);
+    console.log('Storing tokens');
+    localStorage.setItem(this._accessTokenKey, accessToken);
+    localStorage.setItem(this._refreshTokenKey, refreshToken);
+    this._accessToken$.next(accessToken);
   }
 
   clearToken() {
-    localStorage.removeItem('jwt');
-    this._token = null;
-  }
-
-  getPayload() {
-    const token = this.getToken();
-    if (token) return jwtDecode<JwtPayload>(token);
-    else return undefined;
+    localStorage.removeItem(this._accessTokenKey);
+    localStorage.removeItem(this._refreshTokenKey);
+    this._accessToken$.next(null);
+    this._data = undefined;
   }
 
   logPayload() {
-    const payload = this.getPayload();
-    if (payload) {
-      console.table(payload);
+    if (this._data) {
+      console.table(this._data);
     } else console.error('Could not load jwt payload');
   }
 
+  /*
+   * @brief return false if access token currently invalid or being refreshed
+   */
   isValid() {
-    const payload = this.getPayload();
-    if (payload && payload.exp * 1000 > Date.now()) return true;
+    const exp = this._data?.exp;
+    if (exp && exp * 1000 > Date.now()) return true;
     else return false;
   }
 
   expirationString() {
-    const payload = this.getPayload();
-    if (payload) return new Date(payload.exp * 1000).toString();
+    const exp = this._data?.exp;
+    if (exp) return new Date(exp * 1000).toString();
     else return '';
   }
 
+  //  ================================ Tests =================================  //
+
   async testToken() {
     let status = { message: 'Cannot establish private connection... 🛑' };
-    if (this.getToken()) {
-      console.log(`My jwt: ${this._token}`);
+    const token = await lastValueFrom(this.getToken$());
+    if (token) {
+      console.log(`My jwt: ${this._accessToken$.getValue()}`);
       try {
         status = await lastValueFrom<{ message: string }>(
           this.http.get<{ message: string }>(

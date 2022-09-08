@@ -5,7 +5,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialogModule,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';
@@ -14,6 +18,8 @@ import { ChatMessageComponent } from './components/chat-message/chat-message.com
 import { ChatRoomCreateComponent } from './components/chat-room-create/chat-room-create.component';
 import { ChatMainComponent } from './components/chat-main/chat-main.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ChatInviteComponent } from './components/chat-invite/chat-invite.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
     ChatMessageComponent,
     ChatRoomCreateComponent,
     ChatMainComponent,
+    ChatInviteComponent,
   ],
   imports: [
     CommonModule,
@@ -35,12 +42,24 @@ import { MatCardModule } from '@angular/material/card';
     MatDialogModule,
     MatSelectModule,
     MatPaginatorModule,
+    MatSnackBarModule,
   ],
   exports: [
     ChatRoomComponent,
     ChatMessageComponent,
     ChatRoomCreateComponent,
     ChatMainComponent,
+    ChatInviteComponent,
+  ],
+  providers: [
+    {
+      provide: MatDialogRef,
+      useValue: {},
+    },
+    {
+      provide: MAT_DIALOG_DATA,
+      useValue: {},
+    },
   ],
 })
 export class ChatModule {}
