@@ -84,3 +84,52 @@
   stroke: white;
   transition: 0.3s;
 }
+
+/* PASSWORD */
+
+.chatbox-password {
+  height: 32px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  border-radius: 1em;
+  background-color: #1a202c;
+
+  margin-top: 4px;
+}
+
+.chatbox-password-input {
+  height: 32px;
+  width: calc(100% - 64px);
+  border-radius: 1em;
+  background-color: #1a202c;
+}
+
+.chatbox-password-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 32px;
+  width: 64px;
+  border-radius: 1em;
+  background-color: white;
+  transition: 0.3s;
+  border: 0px;
+}
+
+.chatbox-password-button:hover {
+  background-color: #44526f;
+  transition: 0.3s;
+}
+
+.chatbox-password-button:active {
+  background-color: #1a202c;
+  transition: 0.3s;
+}
+
+.chatbox-password-button-icon {
+  fill: white;
+}

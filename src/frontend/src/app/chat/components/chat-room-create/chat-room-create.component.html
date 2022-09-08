@@ -12,11 +12,13 @@
       <!-- Room type select field -->
       <mat-form-field class="chatroom-create-field" appearance="fill">
         <mat-label class="chatroom-create-label">Room type</mat-label>
+
         <mat-select class="chatroom-create-selector" [(ngModel)]="data.roomType" name="roomType" ngModel required>
           <mat-option class="chatroom-create-select" *ngFor="let roomType of roomTypes" [value]="roomType" aria-required>
             {{roomType}}
           </mat-option>
         </mat-select>
+
       </mat-form-field>
       <!-- Room password field -->
       <div *ngIf="data.roomType == 'PROTECTED'">
