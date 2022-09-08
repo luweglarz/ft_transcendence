@@ -120,8 +120,18 @@
   border: 0px;
 }
 
+.chatbox-password-button-icon {
+  fill: #1a202c;
+  transition: 0.3s;
+}
+
 .chatbox-password-button:hover {
   background-color: #44526f;
+  transition: 0.3s;
+}
+
+.chatbox-password-button:hover .chatbox-password-button-icon {
+  fill: white;
   transition: 0.3s;
 }
 
@@ -130,6 +140,8 @@
   transition: 0.3s;
 }
 
-.chatbox-password-button-icon {
+.chatbox-password-button:active .chatbox-password-button-icon {
   fill: white;
+  transition: 0.3s;
 }
+
