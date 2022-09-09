@@ -113,6 +113,7 @@
 
 .chatbox-messages-app {
   width: 100%;
+  height: fit-content;
 }
 
 .chatbox-input {
@@ -167,7 +168,6 @@
 }
 
 /* PASSWORD */
-
 .chatbox-password {
   height: 32px;
   width: 100%;
@@ -238,15 +238,3 @@
   fill: white;
   transition: 0.3s;
 }
-
-/* a {
-    cursor: pointer;
-}
-
-.mesgs {
-    overflow: scroll;
-    overflow-x: hidden;
-    padding: 0;
-    height: 250px;
-    width: 350px;
-} */
