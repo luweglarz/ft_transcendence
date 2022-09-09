@@ -42,13 +42,13 @@ export class ChatRoomComponent implements OnChanges {
       horizontalPosition: 'right',
     });
   });
-  username: string = '';
+  username = '';
 
   constructor(
     private chatService: ChatService,
     private snackBar: MatSnackBar,
     public popupsService: PopupsService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {
     const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;

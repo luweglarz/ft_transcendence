@@ -44,7 +44,7 @@ import { AvatarModule } from '../avatar';
     MatSelectModule,
     MatPaginatorModule,
     MatSnackBarModule,
-    AvatarModule
+    AvatarModule,
   ],
   exports: [
     ChatRoomComponent,

@@ -12,7 +12,7 @@
   width: fit-content;
   font-weight: bolder;
   font-size: 16px;
-  margin: 0px 0px 4px 0px;
+  margin: 2px 0px 2px 8px;
 }
 
 .message-content {
@@ -21,5 +21,5 @@
   height: fit-content;
   width: max-content;
   font-size: 16px;
-  margin: 0px 0px 4px 0px;
+  margin: 2px 0px 2px 0px;
 }
