@@ -2,7 +2,7 @@ export interface RoomUser {
   roomUserId?: number;
   userId?: number;
   roomId?: number;
-  username?: string;
+  username: string;
   role?: Role;
   isBanned?: boolean;
   isMuted?: boolean;
