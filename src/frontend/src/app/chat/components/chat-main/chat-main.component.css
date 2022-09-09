@@ -29,7 +29,27 @@
 
   border-radius: 1em;
   background-color: #44526f;
+
+  background-color: red;
 }
+
+/* .chat-selection-container1{
+  background-color: blue;
+  width: 100%;
+  height: 100%;
+  border-radius: 1em;
+  margin: 0px;
+  padding: 0px;
+}
+
+.chat-selection-container2{
+  background-color: purple;
+  width: 100%;
+  height: 100%;
+  border-radius: 1em;
+  margin: 0px;
+  padding: 0px;
+} */
 
 .chat-selection-item {
   display: flex;
@@ -43,6 +63,10 @@
   background-color: #1a202c;
   color: white;
   transition: 0.3s;
+
+  background: yellow;
+  padding: 0px;
+  margin: 0px;
 }
 
 .chat-selection-item:hover {
@@ -110,17 +134,8 @@
   transition: 0.3s;
 }
 
-/*  */
-/* .chat-roomuser {
-  width: calc(15% - 18px);
-  background-color: #44526f;
-  border-radius: 1em;
-} */
-
 /* Chat */
 .chat-box {
-  /* display: flex; */
-  /* justify-content: center; */
   height: 260px;
   width: calc(75% - 12px);
   background-color: #44526f;

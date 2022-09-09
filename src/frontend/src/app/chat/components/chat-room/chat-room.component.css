@@ -3,22 +3,11 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  width: calc(100% - 32px);
+  width: 100%;
   height: 100%;
-  /* padding-left: 16px; */
+
+  /* background-color: blue; */
 }
-
-/* .chatbox-header {
-  background-color: yellow;
-  background-color: blue;
-} */
-
-/* .chatbox-header-span {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-} */
 
 /* Chatroom users */
 .chatbox-roomuser {
@@ -28,10 +17,11 @@
 
   height: 238px;
   width: calc(30% - 12px);
+  width: 30%;
   background-color: #1a202c;
   border-radius: 1em;
 
-  margin-left: 32px;
+  /* background-color: red; */
 }
 
 .chatbox-roomuser-items {
@@ -81,14 +71,35 @@
   border-radius: 100%;
 }
 
+.chatbox-roomuser-item-button {
+  cursor: pointer;
+  fill: white;
+  transition: 0.3s;
+}
+
+.chatbox-roomuser-item-button:hover {
+  fill: #44526F;
+  transition: 0.3s;
+}
+
+.add:active {
+  fill: green;
+  transition: 0.3s;
+}
+
+.remove:active {
+  fill: red;
+  transition: 0.3s;
+}
+
 /* Chat */
 .chatbox-chat {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: calc(70% - 12px);
   height: 238px;
 
-  padding-left: 12px;
+  /* background-color: yellow; */
 }
 
 .chatbox-messages {

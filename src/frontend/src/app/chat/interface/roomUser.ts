@@ -7,6 +7,8 @@ export interface RoomUser {
   isBanned?: boolean;
   isMuted?: boolean;
   timeOut?: Date;
+
+  showButtons: boolean;
 }
 
 export enum Role {

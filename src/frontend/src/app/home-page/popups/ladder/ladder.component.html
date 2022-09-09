@@ -29,8 +29,8 @@
         <p *ngIf="!player.showButtons" (click)="popupsService.openProfil(player.username)"> {{ player.username }} </p>
         <img *ngIf="!player.showButtons" class="ladder-player-avatar" avatar username="{{ player.username }}" alt="">
 
-         <!-- Profil button -->
-         <svg class="ladder-player-button" *ngIf="player.showButtons" (click)="popupsService.openProfil(player.username)" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Profil button -->
+        <svg class="ladder-player-button" *ngIf="player.showButtons" (click)="popupsService.openProfil(player.username)" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M16 16C19.8675 16 23 12.8675 23 9C23 5.1325 19.8675 2 16 2C12.1325 2 9 5.1325 9 9C9 12.8675 12.1325 16 16 16ZM16 19.5C11.3275 19.5 2 21.845 2 26.5C2 28.433 3.567 30 5.5 30H26.5C28.433 30 30 28.433 30 26.5C30 21.845 20.6725 19.5 16 19.5Z"/>
         </svg>
 
