@@ -46,6 +46,29 @@
   height: fit-content;
 }
 
+/*  */
+::ng-deep.mat-input-underline {
+  background-color: white;
+}
+
+::ng-deep.mat-form-field-label {
+  color: white;
+}
+
+::ng-deep.mat-form-field-required-marker {
+  color: red;
+}
+
+/*  */
+::ng-deep.mat-form-field.mat-focused.mat-form-field-label {
+  color: white;
+}
+
+::ng-deep.mat-form-field.mat-focused.mat-form-field-required-marker {
+  color: red;
+}
+
+
 .chatroom-create-label {
   color: white;
 }

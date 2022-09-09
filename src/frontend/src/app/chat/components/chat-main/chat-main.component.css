@@ -110,6 +110,13 @@
   transition: 0.3s;
 }
 
+/*  */
+/* .chat-roomuser {
+  width: calc(15% - 18px);
+  background-color: #44526f;
+  border-radius: 1em;
+} */
+
 /* Chat */
 .chat-box {
   /* display: flex; */

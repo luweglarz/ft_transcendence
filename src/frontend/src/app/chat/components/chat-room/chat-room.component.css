@@ -1,8 +1,11 @@
 .chatbox {
-  /* display: flex;
-  flex-direction: column; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
   width: calc(100% - 32px);
-  padding-left: 16px;
+  height: 100%;
+  /* padding-left: 16px; */
 }
 
 /* .chatbox-header {
@@ -17,6 +20,62 @@
   justify-content: space-between;
 } */
 
+/* Chatroom users */
+.chatbox-roomuser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 238px;
+  width: calc(30% - 12px);
+  background-color: #1a202c;
+  border-radius: 1em;
+
+  margin-left: 32px;
+}
+
+.chatbox-roomuser-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  height: 232px;
+  width: calc(100% - 16px);
+}
+
+.chatbox-roomuser-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  width: 100%;
+  height: 32px;
+  border-radius: 1em;
+  background-color: green;
+  margin-bottom: 4px;
+}
+
+.chatbox-roomuser-item-avatar {
+  height: 24px;
+  width: 24px;
+  border-radius: 100%;
+}
+
+/* Chat */
+.chatbox-chat {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 238px;
+
+  padding-left: 12px;
+}
+
 .chatbox-messages {
   overflow-y: scroll;
   overflow-x: hidden;
@@ -26,8 +85,6 @@
 
   border-radius: 1em;
   background-color: #1a202c;
-
-  margin-top: 12px;
 }
 
 .chatbox-messages-app {
