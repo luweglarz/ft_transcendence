@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { StatusSocket } from 'src/app/home-page/popups/social/class/status-socket';
 import { OAuthService } from '../oauth';
 import { SignoutService } from '../signout/signout.service';
 import { SigninService } from './signin.service';
@@ -22,6 +23,7 @@ export class SignInComponent implements OnInit {
     private oauth: OAuthService,
     private service: SigninService,
     private signOut: SignoutService,
+    private statusSocket: StatusSocket,
   ) {
     const error = window.history.state['error'];
     if (error) {

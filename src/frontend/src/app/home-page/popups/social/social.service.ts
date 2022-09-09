@@ -19,7 +19,7 @@ export class SocialService {
     private dmService: DirectMessagesService,
     private jwtService: JwtService,
   ) {
-    const tmp = this.jwtService.username
+    const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
   }
 
