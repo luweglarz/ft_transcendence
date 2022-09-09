@@ -39,8 +39,16 @@ export class OauthService {
       where: { oauthId: apiUser.id },
       include: { user: true },
     });
-    if (!authInfo) throw new ForbiddenException('Unknown user');
+    if (!authInfo) throw new ForbiddenException('Unknown user. Sign up first.');
     else return authInfo.user;
+  }
+
+  async oauthExistUser(apiUser: OAuthUserDto) {
+    const authInfo = await this.db.auth.findUnique({
+      where: { oauthId: apiUser.id },
+      include: { user: true },
+    });
+    return authInfo != null;
   }
 
   async oauthCreateUser(dto: OAuthSignUpDto) {
