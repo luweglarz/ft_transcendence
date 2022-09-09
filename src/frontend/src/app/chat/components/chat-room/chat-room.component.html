@@ -4,8 +4,8 @@
         <span class="chatbox-header-span">
           <h2>{{chatRoom.name}}</h2>
         </span>
-        <span *ngFor="let roomUser of (roomUsers | async)">
-            {{roomUser.username}}
+        <span *ngFor="let roomUser of (roomUsers)">
+            <a class="btn-profile" (click)="openProfile(roomUser.username)">{{roomUser.username}} </a>
         </span>
     </div> -->
 
@@ -18,7 +18,8 @@
     </div>
 
     <!-- Input-->
-    <div class="chatbox-input" *ngIf="(roomUsers | async)?.length; else password">
+    <!-- <div class="chatbox-input" *ngIf="(roomUsers | async)?.length; else password"></div> -->
+    <div class="chatbox-input" *ngIf="password">
       <!-- Input -->
       <input class="chatbox-input-form" matInput [formControl]="chatMessage" type="text" (keyup.enter)="sendMessage()">
       <!-- Send button -->

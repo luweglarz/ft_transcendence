@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { JwtService } from 'src/app/auth/jwt';
 import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { environment } from 'src/environments/environment';
 import { GameService } from '../game/game.service';
@@ -15,7 +14,7 @@ import { StopWatch } from './stop-watch';
   providedIn: 'root',
 })
 export class GameSocket extends Socket {
-  constructor(jwtService: JwtService) {
+  constructor() {
     super({
       url: environment.backend,
       options: {
@@ -24,9 +23,6 @@ export class GameSocket extends Socket {
         transports: ['websocket', 'polling'],
       },
     });
-    jwtService
-      .getToken$()
-      .subscribe((token) => (this.ioSocket.auth = { token: token }));
   }
 
   onMatchFound(
@@ -68,7 +64,6 @@ export class GameSocket extends Socket {
             gameService,
           );
         } else if (gameType === 'custom') {
-          console.log('cusotmmode');
           matchmakingService.game = new CustomGame(
             gameMapInfo.canvaHeight,
             gameMapInfo.canvaWidth,

@@ -13,6 +13,7 @@ import { ChatService } from 'src/app/chat/chatService/chat.service';
 import { Observable } from 'rxjs';
 import { RoomUser } from 'src/app/chat/interface/roomUser';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PopupsService } from 'src/app/home-page/popups/popups.service';
 
 @Component({
   selector: 'app-chat-room',
@@ -31,7 +32,8 @@ export class ChatRoomComponent implements OnChanges {
     Validators.required,
   ]);
   messages: Observable<Message[]> = this.chatService.getMsgs();
-  roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
+  //roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
+  roomUsers: RoomUser[] = [];
   banMute = this.chatService.getBanMuteResult().subscribe((commandReturn) => {
     //console.log(commandReturn);
     this.snackBar.open(commandReturn, 'dismiss', {
@@ -43,6 +45,7 @@ export class ChatRoomComponent implements OnChanges {
   constructor(
     private chatService: ChatService,
     private snackBar: MatSnackBar,
+    private popupsService: PopupsService,
   ) {}
 
   //ngOnInit(): void {}
@@ -63,7 +66,12 @@ export class ChatRoomComponent implements OnChanges {
       //if (this.chatRoom.roomType !== 'PROTECTED')
       this.chatService.joinRoom(this.chatRoom); //trigger join room on sed password for protected
     }
-    this.roomUsers = this.chatService.getRoomUsers();
+    //this.roomUsers = new Observable<RoomUser[]>;
+    //this.roomUsers = this.chatService.getRoomUsers();
+    this.chatService.getRoomUsers().subscribe((roomUsers: RoomUser[]) => {
+      console.log(roomUsers);
+      if (roomUsers.length !== 0) this.roomUsers = roomUsers;
+    });
     this.messages = this.chatService.getMsgs();
   }
 
@@ -102,5 +110,11 @@ export class ChatRoomComponent implements OnChanges {
         this.scrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
     //console.log(this.chatRoom);
+  }
+
+  openProfile(username: any) {
+    if (username === undefined || username === null) return;
+    console.log(username);
+    this.popupsService.openProfil(username);
   }
 }

@@ -44,9 +44,6 @@ export class GameGatewayService {
 
   checkJwtToken(@ConnectedSocket() client: Socket): boolean {
     try {
-      // FIX: This function is called much too often when we start a game, see:
-      // console.log(`!!!${this.checkJwtToken.name} is called`);
-      // should also probably try it all async (for better performance)
       this.jwtService.verifyAccessToken(client.handshake.auth.token, 'sync');
       return true;
     } catch (error) {

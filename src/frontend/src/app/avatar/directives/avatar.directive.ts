@@ -1,11 +1,20 @@
-import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { AvatarService } from '../avatar.service';
 
 @Directive({
   selector: '[avatar]',
 })
-export class AvatarDirective implements AfterViewInit {
+export class AvatarDirective implements AfterViewInit, OnChanges {
   private img: HTMLImageElement;
+  private _srcSubstription?: Subscription;
   @Input() username = '';
 
   constructor(el: ElementRef, private service: AvatarService) {
@@ -14,9 +23,21 @@ export class AvatarDirective implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.username) {
-      this.service.me.src.subscribe(this.updateSrc);
-    } else this.service.getSrc(this.username).subscribe(this.updateSrc);
+    this.subscribeSrc();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['username']) {
+      this._srcSubstription?.unsubscribe();
+      this.subscribeSrc();
+    }
+  }
+
+  subscribeSrc() {
+    let src$: Observable<string>;
+    if (!this.username) src$ = this.service.me.src;
+    else src$ = this.service.getSrc(this.username);
+    this._srcSubstription = src$.subscribe(this.updateSrc);
   }
 
   updateSrc = (src: string) => {
