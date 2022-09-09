@@ -29,29 +29,9 @@
 
   border-radius: 1em;
   background-color: #44526f;
-
-  background-color: red;
 }
 
-/* .chat-selection-container1{
-  background-color: blue;
-  width: 100%;
-  height: 100%;
-  border-radius: 1em;
-  margin: 0px;
-  padding: 0px;
-}
-
-.chat-selection-container2{
-  background-color: purple;
-  width: 100%;
-  height: 100%;
-  border-radius: 1em;
-  margin: 0px;
-  padding: 0px;
-} */
-
-.chat-selection-item {
+.chat-selection-items {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -63,18 +43,25 @@
   background-color: #1a202c;
   color: white;
   transition: 0.3s;
-
-  background: yellow;
-  padding: 0px;
-  margin: 0px;
+  margin-bottom: 4px;
 }
 
-.chat-selection-item:hover {
+.chat-selection-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 48px;
+  width: 100%;
+}
+
+.chat-selection-items:hover {
   background-color: #44526f;
   transition: 0.3s;
 }
 
-.chat-selection-item:active {
+.chat-selection-items:active {
   background-color: white;
   color: #1a202c;
   transition: 0.3s;
@@ -83,6 +70,11 @@
 .chat-selection-item-icon {
   fill: white;
   stroke: white;
+}
+
+.chat-selection-items:active .chat-selection-item-icon {
+  fill: #1a202c;
+  stroke: #1a202c;
 }
 
 .chat-selection-buttons {
