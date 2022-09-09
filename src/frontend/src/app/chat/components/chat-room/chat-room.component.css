@@ -105,6 +105,19 @@
   width: calc(100% - 64px);
   border-radius: 1em;
   background-color: #1a202c;
+  color: white;
+
+  border: 0px;
+}
+
+.chatbox-password-input::after {
+  background-color: #1a202c;
+  border: 0px;
+}
+
+.chatbox-password-input:active {
+  background-color: #1a202c;
+  border: 0px;
 }
 
 .chatbox-password-button {

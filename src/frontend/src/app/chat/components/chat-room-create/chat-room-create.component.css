@@ -71,3 +71,26 @@
   background-color: #1a202c;
   transition: 0.3s;
 }
+
+.chatroom-create-button {
+  background-color: #1a202c;
+  color: white;
+  border-radius: 1em;
+
+  height: 32px;
+  width: fit-content;
+  margin-bottom: 16px;
+  transition: 0.3s;
+}
+
+.chatroom-create-button:hover {
+  background-color: #44526f;
+  color: white;
+  transition: 0.3s;
+}
+
+.chatroom-create-button:active {
+  background-color: white;
+  color: #1a202c;
+  transition: 0.3s;
+}
