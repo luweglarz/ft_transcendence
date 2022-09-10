@@ -22,7 +22,6 @@ export class SocialService {
     const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
   }
-
   //Return the friendlist of the user
   async getUserFriends(username: string) {
     this.http
