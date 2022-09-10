@@ -12,7 +12,7 @@ import { ChatService } from 'src/app/chat/chatService/chat.service';
 })
 export class ChatRoomCreateComponent /*implements OnInit*/ {
   roomTypes = Object.values(RoomType);
-  roomNameAvailable: Boolean = true;
+  roomNameAvailable = true;
 
   constructor(
     public dialogRef: MatDialogRef<ChatRoomCreateComponent>,
@@ -43,7 +43,9 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
       console.log(this.roomNameAvailable);
       this.roomNameAvailable = available;
     });*/
-    this.roomNameAvailable = await this.chatService.roomNameAvailable(this.data.name);
+    this.roomNameAvailable = await this.chatService.roomNameAvailable(
+      this.data.name,
+    );
     if (this.roomNameAvailable) {
       console.log(this.roomNameAvailable);
       this.chatService.createRoom(this.data);
