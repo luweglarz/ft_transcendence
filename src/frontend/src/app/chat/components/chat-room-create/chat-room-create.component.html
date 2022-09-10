@@ -4,6 +4,7 @@
         <mat-form-field appearance="fill">
             <mat-label>Room name</mat-label>
             <input matInput [(ngModel)]="data.name" type="text" name="roomName" ngModel required>
+            <div *ngIf="!roomNameAvailable"> room name is not available</div>
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label>Room type</mat-label>

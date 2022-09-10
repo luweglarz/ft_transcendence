@@ -12,6 +12,7 @@ import { ChatService } from 'src/app/chat/chatService/chat.service';
 })
 export class ChatRoomCreateComponent /*implements OnInit*/ {
   roomTypes = Object.values(RoomType);
+  roomNameAvailable: Boolean = true;
 
   constructor(
     public dialogRef: MatDialogRef<ChatRoomCreateComponent>,
@@ -34,15 +35,23 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
     }
   }*/
 
-  onSend(userForm: NgForm) {
+  async onSend(userForm: NgForm) {
     if (userForm.status === 'INVALID') return;
     const data = userForm.value;
     console.log(this.data);
-    this.chatService.createRoom(this.data);
-    this.chatService.getCreatedRoom().subscribe((room: Room) => {
-      console.log(room);
-      this.dialogRef.close(room);
-    });
+    /*this.chatService.roomNameAvailable(this.data.name).then((available: boolean) => {
+      console.log(this.roomNameAvailable);
+      this.roomNameAvailable = available;
+    });*/
+    this.roomNameAvailable = await this.chatService.roomNameAvailable(this.data.name);
+    if (this.roomNameAvailable) {
+      console.log(this.roomNameAvailable);
+      this.chatService.createRoom(this.data);
+      this.chatService.getCreatedRoom().subscribe((room: Room) => {
+        console.log(room);
+        this.dialogRef.close(room);
+      });
+    }
   }
 
   onNoClick(): void {

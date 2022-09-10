@@ -46,6 +46,11 @@ export class ChatService {
     return this.socket.fromEvent<{ invite: Invite; Room: Room }>('invitation');
   }
 
+  roomNameAvailable(roomName: any): Promise<boolean> {
+    this.socket.emit('roomNameAvailable', roomName);
+    return this.socket.fromOneTimeEvent<boolean>('roomNameAvailable');
+  }
+
   openChat() {
     this.socket.connect();
     this.socket.emit('getRooms');
