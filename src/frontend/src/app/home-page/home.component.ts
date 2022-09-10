@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
 import { GameService } from 'src/app/pong/game/game.service';
-import { StatusSocket } from './popups/social/class/status-socket';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +13,6 @@ export class HomeComponent implements OnInit {
     public gameService: GameService,
     public collapseService: CollapseService,
     public popupsService: PopupsService,
-    private statusSocket: StatusSocket,
   ) {
     //
   }
