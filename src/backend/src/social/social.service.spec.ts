@@ -1,4 +1,6 @@
+import { HttpModule } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
+import { DbModule } from 'src/db/db.module';
 import { SocialService } from './social.service';
 
 describe('SocialService', () => {
@@ -6,6 +8,7 @@ describe('SocialService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [DbModule, HttpModule],
       providers: [SocialService],
     }).compile();
 

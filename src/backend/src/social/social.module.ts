@@ -1,5 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { DbService } from 'src/db/db.service';
