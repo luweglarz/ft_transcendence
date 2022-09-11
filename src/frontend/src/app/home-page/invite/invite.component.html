@@ -1,0 +1,23 @@
+<div class="container">
+
+  <div class="invite-close">
+    <svg class="invite-close-button" (click)="inviteService.closeInvite()" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3334 2.66668C13.3337 2.38861 13.247 2.11742 13.0855 1.89106C12.924 1.66471 12.6958 1.49451 12.4327 1.40429C12.1697 1.31407 11.885 1.30834 11.6186 1.3879C11.3522 1.46746 11.1173 1.62834 10.9468 1.84801L1.61344 13.848C1.43137 14.0821 1.33252 14.3701 1.33252 14.6667C1.33252 14.9632 1.43137 15.2513 1.61344 15.4853L10.9468 27.4853C11.1173 27.705 11.3522 27.8659 11.6186 27.9455C11.885 28.025 12.1697 28.0193 12.4327 27.9291C12.6958 27.8388 12.924 27.6687 13.0855 27.4423C13.247 27.2159 13.3337 26.9447 13.3334 26.6667V21.3467C20.5054 21.496 23.9508 22.8573 25.6814 24.3373C27.3268 25.744 27.6281 27.3987 27.9414 29.132L28.0228 29.5787C28.0826 29.8983 28.2572 30.185 28.5136 30.3849C28.7701 30.5848 29.0908 30.6841 29.4153 30.6641C29.7399 30.6442 30.0459 30.5063 30.2759 30.2764C30.5059 30.0465 30.6439 29.7406 30.6641 29.416C30.8921 25.752 30.5494 20.4427 27.9614 16.0013C25.4494 11.6907 20.9254 8.37601 13.3334 8.02934V2.66668Z"/>
+    </svg>
+    <p class="invite-close-text">Go back home</p>
+  </div>
+  <h3 class="invite-title">Choose gamemode :</h3>
+
+  <div class="invite-cards" (click)="inviteService.selectNormal()">
+    <div class="invite-card">
+      <h3 class="invite-card-title" >Original</h3>
+      <img class="invite-card-logo" src="/assets/images/classic.png" alt="">
+    </div>
+    <p class="invite-or">OR</p>
+    <div class="invite-card" (click)="inviteService.selectFun()">
+      <h3 class="invite-card-title" >Fun</h3>
+      <img class="invite-card-logo" src="/assets/images/fun.png" alt="">
+    </div>
+  </div>
+
+</div>
