@@ -77,7 +77,6 @@ export class GameComponent implements OnInit {
   }
 
   buttonSpectateGame(username: string) {
-    console.log('button specatte game');
     this.jwtService
       .getToken$()
       .pipe(

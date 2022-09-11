@@ -119,8 +119,8 @@ export class GameGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() username: string,
   ) {
-    console.log('spectate a game?');
-    //chopper la room et la get
+    if (this.matchmakingService.isUserInGame(username) === false)
+      return;
     try {
       const gameRoom: Room = this.gameGatewayService.findRoomId(
         this.rooms,
@@ -131,7 +131,6 @@ export class GameGateway
     } catch (error) {
       this.logger.debug(error);
     }
-    //quand la room est get on emit (spectatedGame) et on join la room avec le client
   }
 
   get rooms(): Room[] {
