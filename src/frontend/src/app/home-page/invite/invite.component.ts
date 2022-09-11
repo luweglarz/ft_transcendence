@@ -5,13 +5,14 @@ import { InviteService } from '../services/invite.service';
 @Component({
   selector: 'app-invite',
   templateUrl: './invite.component.html',
-  styleUrls: ['./invite.component.css']
+  styleUrls: ['./invite.component.css'],
 })
 export class InviteComponent implements OnInit {
+  constructor(
+    public collapseService: CollapseService,
+    public inviteService: InviteService,
+  ) {}
 
-  constructor(public collapseService: CollapseService, public inviteService: InviteService) { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void
+//}
 }

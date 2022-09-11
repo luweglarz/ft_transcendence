@@ -16,7 +16,12 @@ import { PopupsModule } from './popups/popups.module';
 import { InviteComponent } from './invite/invite.component';
 
 @NgModule({
-  declarations: [HomeComponent, NavbarComponent, ChatbarComponent, InviteComponent],
+  declarations: [
+    HomeComponent,
+    NavbarComponent,
+    ChatbarComponent,
+    InviteComponent,
+  ],
   providers: [
     CollapseService,
     PopupsService,

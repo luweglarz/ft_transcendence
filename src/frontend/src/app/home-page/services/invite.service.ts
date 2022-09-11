@@ -3,12 +3,15 @@ import { PopupsService } from '../popups/popups.service';
 import { CollapseService } from './collapse.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InviteService {
-  isInInvite: boolean = false;
+  isInInvite = false;
 
-  constructor(private collapseService: CollapseService, private popupsService: PopupsService) { }
+  constructor(
+    private collapseService: CollapseService,
+    private popupsService: PopupsService,
+  ) {}
 
   openInvite() {
     console.log('debug');
