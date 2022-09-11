@@ -1,10 +1,17 @@
-import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
+import { FriendsStatusGateway } from './gateway/friends-status-gateway.gateway';
+
+export interface Social {
+  authorName: string;
+  targetName: string;
+  relation: string;
+  status: string;
+}
 
 @Injectable()
 export class SocialService {
-  constructor(private prisma: DbService, private http: HttpService) {
+  constructor(private prisma: DbService, @Inject(forwardRef(() => FriendsStatusGateway)) friendsStatusGateway: FriendsStatusGateway) {
     //
   }
 
@@ -13,12 +20,27 @@ export class SocialService {
     return socialList;
   }
 
-  getUserRelations(username: string) {
-    const userRelations = this.prisma.social.findMany({
+  async getUserRelations(username: string) {
+    const userRelations = await this.prisma.social.findMany({
       where: {
         authorName: username,
       },
     });
+
+    //
+    let formatedRelations: Social[] = [];
+    userRelations.forEach(element => {
+      formatedRelations.push(Object.assign({},
+          {
+            authorName: element.authorName,
+            targetName: element.targetName,
+            relation: element.relation,
+            status: 'offline',
+          },
+        ),
+      );
+    });
+
     return userRelations;
   }
 

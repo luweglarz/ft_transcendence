@@ -9,7 +9,7 @@ import { SocialController } from './social.controller';
 import { SocialService } from './social.service';
 
 @Module({
-  imports: [HttpModule, PongModule],
+  imports: [HttpModule/*, PongModule*/],
   providers: [
     SocialService,
     DbService,

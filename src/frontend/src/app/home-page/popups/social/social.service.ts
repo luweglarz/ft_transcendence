@@ -38,7 +38,8 @@ export class SocialService {
                 authorName: data.authorName,
                 targetName: data.targetName,
                 relation: data.relation,
-                status: this.getUserStatus(data.targetName),
+                //status: this.getUserStatus(data.targetName),
+                status: 'offline',
               },
             ),
           );
@@ -61,7 +62,8 @@ export class SocialService {
                 authorName: data.authorName,
                 targetName: data.targetName,
                 relation: data.relation,
-                status: this.getUserStatus(data.targetName),
+                //status: this.getUserStatus(data.targetName),
+                status: 'offline',
               },
             ),
           );
@@ -75,12 +77,6 @@ export class SocialService {
     this.blocked.splice(0, this.blocked.length);
     await this.getUserBlocked(username);
     await this.getUserFriends(username);
-    this.friends.forEach(
-      (friend) => (friend.status = this.getUserStatus(friend.targetName)),
-    );
-    this.blocked.forEach(
-      (blocked) => (blocked.status = this.getUserStatus(blocked.targetName)),
-    );
     this.isLoaded = true;
   }
 
@@ -106,7 +102,8 @@ export class SocialService {
                 authorName: this.username,
                 targetName: target,
                 relation: 'friend',
-                status: this.getUserStatus(target),
+                //status: this.getUserStatus(target),
+                status: 'offline',
               },
             ),
           );
@@ -160,7 +157,8 @@ export class SocialService {
                 authorName: this.username,
                 targetName: target,
                 relation: 'blocked',
-                status: this.getUserStatus(target),
+                //status: this.getUserStatus(target),
+                status: 'offline'
               },
             ),
           );
@@ -224,10 +222,10 @@ export class SocialService {
   }
 
   //Return the status of the user
-  getUserStatus(username: string) {
-    if (this.isOnline(username) == true) {
-      if (this.isInGame(username) == true) return 'ingame';
-      else return 'online';
-    } else return 'offline';
-  }
+  // getUserStatus(username: string) {
+  //   if (this.isOnline(username) == true) {
+  //     if (this.isInGame(username) == true) return 'ingame';
+  //     else return 'online';
+  //   } else return 'offline';
+  // }
 }
