@@ -1,27 +1,38 @@
-<h1 mat-dialog-title>Create Room</h1>
-<mat-dialog-content>
-    <form #userForm="ngForm" (ngSubmit)="onSend(userForm)">
-        <mat-form-field appearance="fill">
-            <mat-label>Room name</mat-label>
-            <input matInput [(ngModel)]="data.name" type="text" name="roomName" ngModel required>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Room type</mat-label>
-            <mat-select [(ngModel)]="data.roomType" name="roomType" ngModel required>
-                <mat-option *ngFor="let roomType of roomTypes" [value]="roomType" aria-required>
-                    {{roomType}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <div *ngIf="data.roomType == 'PROTECTED'">
-            <mat-form-field appearance="fill">
-               <mat-label>Room password</mat-label>
-                <input matInput [(ngModel)]="data.password" name="roomPassword" type="password" ngModel required>
-            </mat-form-field>
-        </div>
-    <mat-dialog-actions>
-        <button mat-button mat-dialog-close="no">Cancel</button>
-        <button type="submit" mat-button>Create</button>
-    </mat-dialog-actions>
-</form>
-</mat-dialog-content>
+<div class="chatroom-create">
+  <!-- Title -->
+  <h1 class="chatroom-create-title" mat-dialog-title>Create Room</h1>
+  <mat-dialog-content>
+    <!-- Forms -->
+    <form  class="chatroom-create-fields" #userForm="ngForm" (ngSubmit)="onSend(userForm)">
+      <!-- Room name field -->
+      <mat-form-field class="chatroom-create-field" appearance="fill">
+        <mat-label class="chatroom-create-label">Room name</mat-label>
+        <input matInput [(ngModel)]="data.name" type="text" name="roomName" ngModel required>
+      </mat-form-field>
+      <!-- Room type select field -->
+      <mat-form-field class="chatroom-create-field" appearance="fill">
+        <mat-label class="chatroom-create-label">Room type</mat-label>
+
+        <mat-select class="chatroom-create-selector" [(ngModel)]="data.roomType" name="roomType" ngModel required>
+          <mat-option class="chatroom-create-select" *ngFor="let roomType of roomTypes" [value]="roomType" aria-required>
+            {{roomType}}
+          </mat-option>
+        </mat-select>
+
+      </mat-form-field>
+      <!-- Room password field -->
+      <div *ngIf="data.roomType == 'PROTECTED'">
+          <mat-form-field class="chatroom-create-field" appearance="fill">
+             <mat-label class="chatroom-create-label">Room password</mat-label>
+            <input matInput [(ngModel)]="data.password" name="roomPassword" type="password" ngModel required>
+          </mat-form-field>
+      </div>
+
+      <!-- Buttons -->
+      <mat-dialog-actions>
+          <button class="chatroom-create-button" mat-button mat-dialog-close="no">Cancel</button>
+          <button class="chatroom-create-button" type="submit" mat-button>Create</button>
+      </mat-dialog-actions>
+    </form>
+  </mat-dialog-content>
+</div>

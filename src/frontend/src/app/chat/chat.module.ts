@@ -20,6 +20,7 @@ import { ChatMainComponent } from './components/chat-main/chat-main.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ChatInviteComponent } from './components/chat-invite/chat-invite.component';
+import { AvatarModule } from '../avatar';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ChatInviteComponent } from './components/chat-invite/chat-invite.compon
     MatSelectModule,
     MatPaginatorModule,
     MatSnackBarModule,
+    AvatarModule,
   ],
   exports: [
     ChatRoomComponent,
