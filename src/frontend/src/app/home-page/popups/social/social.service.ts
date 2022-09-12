@@ -16,7 +16,7 @@ export class SocialService {
 
   constructor(
     private http: HttpClient,
-    private dmService: DirectMessagesService,
+    //private dmService: DirectMessagesService,
     private jwtService: JwtService,
   ) {
     const tmp = this.jwtService.username;
@@ -222,12 +222,4 @@ export class SocialService {
   isOnline(username: string): boolean {
     return true;
   }
-
-  //Return the status of the user
-  // getUserStatus(username: string) {
-  //   if (this.isOnline(username) == true) {
-  //     if (this.isInGame(username) == true) return 'ingame';
-  //     else return 'online';
-  //   } else return 'offline';
-  // }
 }
