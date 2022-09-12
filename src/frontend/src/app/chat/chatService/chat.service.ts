@@ -46,6 +46,10 @@ export class ChatService {
     return this.socket.fromEvent<{ invite: Invite; Room: Room }>('invitation');
   }
 
+  deleteInvite(inviteId: number | undefined) {
+    return this.socket.emit('inviteRemove', inviteId);
+  }
+
   openChat() {
     this.socket.connect();
     this.socket.emit('getRooms');

@@ -388,6 +388,13 @@ export class ChatGateway
     }
   }
 
+  @SubscribeMessage('inviteRemove')
+  async inviteRemove(socket: Socket, inviteId: number) {
+    if (inviteId === undefined)
+      return ;
+    await this.prisma.invite.delete({where: {id: inviteId}});
+  }
+
   async getRoomUsers(roomId: number) {
     const roomUsers = JSON.parse(
       JSON.stringify(
