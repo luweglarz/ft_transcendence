@@ -112,11 +112,13 @@ export class MatchmakingGatewayService {
     client.emit('error', 'You are not in a matchmaking');
   }
 
-  private createGame(clientPool: Socket[], gameType: string) {
+  createGame(clientPool: Socket[], gameType: string) {
     let gameMode: GameMode;
     let players: Player[];
+    console.log('gameType: ' + gameType);
 
     if (gameType == 'normal') {
+      console.log('create normal game');
       gameMode = new NormalGame(525, 950, 'black', gameType);
       players = [
         new Player(gameMode, clientPool.pop(), 1, 7, 'white'),

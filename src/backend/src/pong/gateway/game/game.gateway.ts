@@ -16,6 +16,7 @@ import { Player } from '../../class/player/player';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { MatchmakingGatewayService } from '../matchmaking/matchmaking-gateway.service';
 import { JwtService } from '@nestjs/jwt';
+import { GameMode } from 'src/pong/interface/game-mode.interface';
 
 @WebSocketGateway({ cors: true, path: '/pong' })
 export class GameGateway
@@ -26,14 +27,17 @@ export class GameGateway
     private gameCoreService: GameCoreService,
     @Inject(forwardRef(() => MatchmakingGatewayService))
     private matchmakingService: MatchmakingGatewayService,
+    private jwtService: JwtService,
   ) {
     this.logger = new Logger('GameGateway');
     this._rooms = [];
+    this._users = [];
   }
 
   @WebSocketServer()
   private _server: Server;
   private _rooms: Room[];
+  private _users: Socket[];
 
   private logger: Logger;
 
@@ -43,14 +47,21 @@ export class GameGateway
   }
 
   handleConnection(client: Socket) {
-    if (this.gameGatewayService.checkJwtToken(client))
+    if (this.gameGatewayService.checkJwtToken(client)) {
+      this._users.push(client);
+      console.log('nb of users: ' + this._users.length);
       this.logger.log(`Client connected: ${client.id}`);
+    }
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
     if (this.matchmakingService.isClientInGame(client)) this.leaveGame(client);
     if (this.matchmakingService.isClientInMatchmaking(client))
       this.matchmakingService.clientLeaveMatchmaking(client);
+    this._users.splice(
+      this._users.findIndex((element) => element === client),
+      1,
+    );
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
@@ -58,11 +69,10 @@ export class GameGateway
   movement(@ConnectedSocket() client: Socket, @MessageBody() eventKey: string) {
     if (this.matchmakingService.isClientInGame(client) === false) return;
     try {
-      const jwtService = new JwtService();
       const gameRoom: Room = this.gameGatewayService.findRoomId(
         this.rooms,
         JSON.parse(
-          JSON.stringify(jwtService.decode(client.handshake.auth.token)),
+          JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
         ).username,
       );
       const player: Player = this.gameGatewayService.findPlayer(
@@ -130,6 +140,61 @@ export class GameGateway
     } catch (error) {
       this.logger.debug(error);
     }
+  }
+
+  @SubscribeMessage('invitePrivate')
+  invitePrivate(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() infos: string[],
+  ) {
+    console.log('usnermae: ' + infos[0] + ' gamemode: ' + infos[1]);
+    try {
+      const friend: Socket = this._users.find(
+        (element) =>
+          JSON.parse(
+            JSON.stringify(
+              this.jwtService.decode(element.handshake.auth.token),
+            ),
+          ).username === infos[0],
+      );
+      console.log('le emit');
+      friend.emit(
+        'gameInvitation',
+        JSON.parse(
+          JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
+        ).username,
+        infos[1],
+      );
+      console.log('le emit2');
+    } catch (error) {
+      this.logger.debug(error);
+    }
+  }
+
+  @SubscribeMessage('acceptInvitation')
+  acceptInvitation(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() infos: string[],
+  ) {
+    try {
+      const friend: Socket = this._users.find(
+        (element) =>
+          JSON.parse(
+            JSON.stringify(
+              this.jwtService.decode(element.handshake.auth.token),
+            ),
+          ).username === infos[0],
+      );
+      const players: Socket[] = [friend, client];
+      this.matchmakingService.createGame(players, infos[1]);
+    } catch (error) {
+      this.logger.debug(error);
+    }
+  }
+
+  @SubscribeMessage('declineInvitation')
+  declineInvitation() {
+    //deleta la room
   }
 
   get rooms(): Room[] {

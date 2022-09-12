@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { GameSocket } from 'src/app/pong/class/game-socket';
 import { PopupsService } from '../popups/popups.service';
 import { CollapseService } from './collapse.service';
 
@@ -11,10 +12,16 @@ export class InviteService {
   constructor(
     private collapseService: CollapseService,
     private popupsService: PopupsService,
-  ) {}
+    private gameSocket: GameSocket,
+  ) {
+    this.toInvite = '';
+  }
 
-  openInvite() {
+  private toInvite: string;
+
+  openInvite(toInvite: string) {
     console.log('debug');
+    this.toInvite = toInvite;
     this.isInInvite = true;
     this.collapseService.closeChat();
     this.collapseService.closeNav();
@@ -26,10 +33,12 @@ export class InviteService {
   }
 
   selectNormal() {
+    this.gameSocket.emit('invitePrivate', this.toInvite, 'normal');
     this.closeInvite();
   }
 
   selectFun() {
+    this.gameSocket.emit('invitePrivate', this.toInvite, 'custom');
     this.closeInvite();
   }
 }

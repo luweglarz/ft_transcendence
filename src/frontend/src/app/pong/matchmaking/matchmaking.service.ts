@@ -21,6 +21,12 @@ export class MatchmakingService {
     this.socket.once('error', (msg: string) => {
       console.log(msg);
     });
+    this.socket.onMatchFound(
+      this.notificationService,
+      this.gameService,
+      this,
+      this._stopWatch,
+    );
   }
 
   private _stopWatch: StopWatch;
@@ -38,12 +44,6 @@ export class MatchmakingService {
         this.socket.connect();
         this.socket.emit('joinMatchmaking', 'normal');
         this.socket.onWaitingForAMatch(this.stopWatch);
-        this.socket.onMatchFound(
-          this.notificationService,
-          this.gameService,
-          this,
-          this._stopWatch,
-        );
         this.socket.onMatchmakingLeft();
       });
   }
@@ -56,12 +56,6 @@ export class MatchmakingService {
         this.socket.connect();
         this.socket.emit('joinMatchmaking', 'ranked');
         this.socket.onWaitingForAMatch(this.stopWatch);
-        this.socket.onMatchFound(
-          this.notificationService,
-          this.gameService,
-          this,
-          this._stopWatch,
-        );
         this.socket.onMatchmakingLeft();
       });
   }
@@ -74,12 +68,6 @@ export class MatchmakingService {
         this.socket.connect();
         this.socket.emit('joinMatchmaking', 'custom');
         this.socket.onWaitingForAMatch(this.stopWatch);
-        this.socket.onMatchFound(
-          this.notificationService,
-          this.gameService,
-          this,
-          this._stopWatch,
-        );
         this.socket.onMatchmakingLeft();
       });
   }

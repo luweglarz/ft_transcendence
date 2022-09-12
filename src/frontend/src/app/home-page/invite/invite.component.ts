@@ -13,7 +13,7 @@ export class InviteComponent implements OnInit {
     public inviteService: InviteService,
   ) {}
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     //
   }
 }
