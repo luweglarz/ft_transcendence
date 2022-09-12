@@ -16,7 +16,6 @@ export class SocialService {
 
   constructor(
     private http: HttpClient,
-    //private dmService: DirectMessagesService,
     private jwtService: JwtService,
   ) {
     const tmp = this.jwtService.username;
@@ -30,7 +29,6 @@ export class SocialService {
       )
       .subscribe((val) => {
         val.forEach((data) => {
-          console.log(data);
           this.friends.push(
             Object.assign(
               {},
@@ -38,7 +36,7 @@ export class SocialService {
                 authorName: data.authorName,
                 targetName: data.targetName,
                 relation: data.relation,
-                status: data.relation,
+                status: data.status,
               },
             ),
           );
@@ -61,7 +59,7 @@ export class SocialService {
                 authorName: data.authorName,
                 targetName: data.targetName,
                 relation: data.relation,
-                status: data.relation,
+                status: data.status,
               },
             ),
           );
@@ -89,31 +87,8 @@ export class SocialService {
         {},
       )
       .subscribe(() => {
-        //const foundIndex = this.friends.findIndex(
-        //  (social) =>
-        //    social.authorName === this.username && social.targetName === target,
-        //);
-        //if (foundIndex === -1)
-        //  this.friends.push(
-        //    Object.assign(
-        //      {},
-        //      {
-        //        authorName: this.username,
-        //        targetName: target,
-        //        relation: 'friend',
-        //        //status: this.getUserStatus(target),
-        //        status: 'offline',
-        //      },
-        //    ),
-        //  );
-        //else {
-        //  this.friends.forEach((social, index) => {
-        //    if (index === foundIndex) social.relation = 'friend';
-        //  });
-        //}
         this.loadUserSocial(this.username);
       });
-    //this.loadUserSocial(this.username);
   }
 
   //Delete a friend
@@ -124,16 +99,8 @@ export class SocialService {
         {},
       )
       .subscribe(() => {
-        //const foundIndex = this.friends.findIndex(
-        //  (social) =>
-        //    social.authorName === this.username && social.targetName === target,
-        //);
-        //this.friends.forEach((social, index) => {
-        //  if (index === foundIndex) social.relation = 'none';
-        //});
         this.loadUserSocial(this.username);
       });
-    //this.loadUserSocial(this.username);
   }
 
   //Block an user
@@ -146,30 +113,8 @@ export class SocialService {
         {},
       )
       .subscribe(() => {
-        //const foundIndex = this.friends.findIndex(
-        //  (social) =>
-        //    social.authorName === this.username && social.targetName === target,
-        //);
-        //if (foundIndex === -1)
-        //  this.blocked.push(
-        //    Object.assign(
-        //      {},
-        //      {
-        //        authorName: this.username,
-        //        targetName: target,
-        //        relation: 'blocked',
-        //        status: 'offline'
-        //      },
-        //    ),
-        //  );
-        //else {
-        //  this.blocked.forEach((social, index) => {
-        //    if (index === foundIndex) social.relation = 'blocked';
-        //  });
-        //}
         this.loadUserSocial(this.username);
       });
-    //this.loadUserSocial(this.username);
   }
 
   //Unblock an user
@@ -180,16 +125,8 @@ export class SocialService {
         {},
       )
       .subscribe(() => {
-        //const foundIndex = this.blocked.findIndex(
-        //  (social) =>
-        //    social.authorName === this.username && social.targetName === target,
-        //);
-        //this.friends.forEach((social, index) => {
-        //  if (index === foundIndex) social.relation = 'none';
-        //});
         this.loadUserSocial(this.username);
       });
-    //this.loadUserSocial(this.username);
   }
 
   //Return the relations status between 2 users

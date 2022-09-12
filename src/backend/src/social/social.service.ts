@@ -21,7 +21,6 @@ export class SocialService {
   }
 
   async getUserRelations(username: string) {
-    console.log('debug');
     const userRelations = await this.prisma.social.findMany({
       where: {
         authorName: username,
