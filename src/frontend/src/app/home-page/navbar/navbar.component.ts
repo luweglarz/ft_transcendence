@@ -41,8 +41,8 @@ export class NavbarComponent {
   }
 
   /* SOCIAL POP UP */
-  openSocial() {
-    this.popupsService.openSocial();
+  openSocial(username: string) {
+    this.popupsService.openSocial(username);
   }
 
   /* SETTINGS POP UP */

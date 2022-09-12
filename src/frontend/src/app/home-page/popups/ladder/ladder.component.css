@@ -173,3 +173,13 @@
   fill: #44526F;
   transition: 0.3s;
 }
+
+.add:active {
+  fill: green;
+  transition: 0.3s;
+}
+
+.remove:active {
+  fill: red;
+  transition: 0.3s;
+}

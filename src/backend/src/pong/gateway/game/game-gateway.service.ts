@@ -15,10 +15,10 @@ export class GameGatewayService {
 
   private logger: Logger;
 
-  findRoomId(rooms: Room[], client: Socket): Room {
+  findRoomId(rooms: Room[], username: string): Room {
     for (const room of rooms) {
       for (const player of room.players) {
-        if (player.socket === client) return room;
+        if (player.username === username) return room;
       }
     }
     return;
@@ -75,6 +75,30 @@ export class GameGatewayService {
     server.to(newRoom.uuid).emit(
       'matchFound',
       'A match has been found',
+      this.getGameMode(newRoom.gameMode),
+      {
+        canvaHeight: newRoom.gameMode.canvaHeight,
+        canvaWidth: newRoom.gameMode.canvaWidth,
+        backgroundColor: newRoom.gameMode.backgroundColor,
+        ballRadius: newRoom.gameMode.ball.radius,
+        ballColor: newRoom.gameMode.ball.color,
+      },
+      {
+        height: newRoom.players[0].height,
+        width: newRoom.players[0].width,
+        playerOneColor: newRoom.players[0].color,
+        playerTwoColor: newRoom.players[1].color,
+        playerOneUsername: newRoom.players[0].username,
+        playerTwoUsername: newRoom.players[1].username,
+      },
+    );
+  }
+
+  emitSpectatedGame(server: Server, newRoom: Room) {
+    console.log('Info de la game genre: ' + newRoom.players[0].username);
+    server.to(newRoom.uuid).emit(
+      'spectatedGame',
+      'You are spectating a game',
       this.getGameMode(newRoom.gameMode),
       {
         canvaHeight: newRoom.gameMode.canvaHeight,

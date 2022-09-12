@@ -11,16 +11,20 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  username  String     @unique
-  auth      Auth?
-  avatar    Avatar?
-  RoomUser  RoomUser[]
-  Message   Message[]
-  wins      Game[]     @relation("Winner")
-  loses     Game[]     @relation("Loser")
+  id          Int             @id @default(autoincrement())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  username    String          @unique
+  auth        Auth?
+  avatar      Avatar?
+  RoomUser    RoomUser[]
+  Message     Message[]
+  wins        Game[]          @relation("Winner")
+  loses       Game[]          @relation("Loser")
+
+  social      Social[]        @relation("Social")
+  sendDms     DirectMessage[] @relation("Sent")
+  receivedDms DirectMessage[] @relation("Received")
 }
 
 model Auth {
@@ -118,4 +122,26 @@ model Game {
   loser       User     @relation("Loser", fields: [loserId], references: [id])
   loserId     Int
   loserGoals  Int
+}
+
+model Social {
+  id         Int      @id @default(autoincrement())
+  author     User     @relation("Social", fields: [authorName], references: [username])
+  authorName String
+  targetName String
+  relation   String
+}
+
+
+model DirectMessage {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+
+  author      User     @relation("Sent", fields: [authorName], references: [username])
+  authorName  String
+
+  target      User     @relation("Received", fields: [targetName], references: [username])
+  targetName  String
+
+  content     String
 }

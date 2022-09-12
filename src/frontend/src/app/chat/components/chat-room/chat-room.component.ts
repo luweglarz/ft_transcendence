@@ -14,6 +14,8 @@ import { Observable } from 'rxjs';
 import { RoomUser } from 'src/app/chat/interface/roomUser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
+import { JwtService } from 'src/app/auth/jwt';
+import { GameComponent } from 'src/app/pong/game/game.component';
 
 @Component({
   selector: 'app-chat-room',
@@ -41,12 +43,18 @@ export class ChatRoomComponent implements OnChanges {
       horizontalPosition: 'right',
     });
   });
+  username = '';
 
   constructor(
     private chatService: ChatService,
     private snackBar: MatSnackBar,
-    private popupsService: PopupsService,
-  ) {}
+    public popupsService: PopupsService,
+    private jwtService: JwtService,
+    public gameComponent: GameComponent,
+  ) {
+    const tmp = this.jwtService.username;
+    if (tmp != undefined) this.username = tmp;
+  }
 
   //ngOnInit(): void {}
 
