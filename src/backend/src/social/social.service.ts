@@ -11,7 +11,7 @@ export interface Social {
 
 @Injectable()
 export class SocialService {
-  constructor(private prisma: DbService, @Inject(forwardRef(() => FriendsStatusGateway)) friendsStatusGateway: FriendsStatusGateway) {
+  constructor(private prisma: DbService, @Inject(forwardRef(() => FriendsStatusGateway)) private friendsStatusGateway: FriendsStatusGateway) {
     //
   }
 
@@ -21,6 +21,7 @@ export class SocialService {
   }
 
   async getUserRelations(username: string) {
+    console.log('debug');
     const userRelations = await this.prisma.social.findMany({
       where: {
         authorName: username,
@@ -40,28 +41,77 @@ export class SocialService {
         ),
       );
     });
+    formatedRelations.forEach(relation => {
+      for (let onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
+        if (onlineUser === relation.targetName)
+          relation.status = 'online';
+      }
+    })
 
-    return userRelations;
+    //return userRelations;
+    return (formatedRelations);
   }
 
-  getUserFriends(username: string) {
-    const userFriends = this.prisma.social.findMany({
+  async getUserFriends(username: string) {
+    const userFriends = await this.prisma.social.findMany({
       where: {
         authorName: username,
         relation: 'friend',
       },
     });
-    return userFriends;
+
+    let formatedRelations: Social[] = [];
+    userFriends.forEach(element => {
+      formatedRelations.push(Object.assign({},
+          {
+            authorName: element.authorName,
+            targetName: element.targetName,
+            relation: element.relation,
+            status: 'offline',
+          },
+        ),
+      );
+    });
+    formatedRelations.forEach(relation => {
+      for (let onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
+        if (onlineUser === relation.targetName)
+          relation.status = 'online';
+      }
+    })
+
+    //return userFriends;
+    return (formatedRelations);
   }
 
-  getUserBlocked(username: string) {
-    const userBlocked = this.prisma.social.findMany({
+  async getUserBlocked(username: string) {
+    const userBlocked = await this.prisma.social.findMany({
       where: {
         authorName: username,
         relation: 'blocked',
       },
     });
-    return userBlocked;
+
+    let formatedRelations: Social[] = [];
+    userBlocked.forEach(element => {
+      formatedRelations.push(Object.assign({},
+          {
+            authorName: element.authorName,
+            targetName: element.targetName,
+            relation: element.relation,
+            status: 'offline',
+          },
+        ),
+      );
+    });
+    formatedRelations.forEach(relation => {
+      for (let onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
+        if (onlineUser === relation.targetName)
+          relation.status = 'online';
+      }
+    })
+
+    //return userBlocked;
+    return (formatedRelations);
   }
 
   async addUserRelation(author: string, target: string, relation: string) {
