@@ -321,6 +321,21 @@ export class ChatGateway
         invite,
         Room: await this.roomService.room({ id: command.id }),
       });
+    } else if (splitRet[0] === '/challenge') {
+      const invite: Invite = await this.prisma.invite.create({
+        data: {
+          userId: socket.data.user.id,
+          username: socket.data.user.username,
+          targetuserId: +splitRet[1],
+          roomId: command.id,
+          challenge: true,
+        },
+      });
+      console.log(this.connectedUsers.length);
+      this.server.to(splitRet[3]).emit('invitation', {
+        invite,
+        Room: await this.roomService.room({ id: command.id }),
+      });
     }
   }
 

@@ -46,7 +46,7 @@ export class ChatMainComponent implements OnInit, OnDestroy {
         return ;
       }
       else if (invite.result === 'challenge') {
-      this.invites = this.invites.filter((inv) => inv !== invite.invite);
+        this.invites = this.invites.filter((inv) => inv !== invite.invite);
         // challenge me
         return ;
       }
