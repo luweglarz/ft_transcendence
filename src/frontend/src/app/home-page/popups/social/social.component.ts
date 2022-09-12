@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
 import { DirectMessagesService } from './direct-messages.service';
-import { Social } from './interfaces/social';
 import { SocialService } from './social.service';
 
 @Component({
@@ -24,10 +23,6 @@ export class SocialComponent implements OnInit {
 
   ngOnInit(): void {
     //
-  }
-
-  debugStatus(user: Social ,status: string, relation: string){
-    console.log('User from social.component.html', user);
   }
 
   selectFriends() {

@@ -6,7 +6,6 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { Observable } from 'rxjs';
 import { ChatService } from '../../chatService/chat.service';
 import { Invite } from '../../interface/invite';
 import { Room } from '../../interface/room';

@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
 import { environment } from 'src/environments/environment';
-import { DirectMessagesService } from './direct-messages.service';
 import { Social } from './interfaces/social';
 
 @Injectable({
@@ -14,10 +13,7 @@ export class SocialService {
   blocked: Social[] = [];
   isLoaded = false;
 
-  constructor(
-    private http: HttpClient,
-    private jwtService: JwtService,
-  ) {
+  constructor(private http: HttpClient, private jwtService: JwtService) {
     const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
   }
@@ -153,10 +149,5 @@ export class SocialService {
         response = isInGame;
       });
     return response;
-  }
-
-  //Return true if the user is online.
-  isOnline(username: string): boolean {
-    return true;
   }
 }

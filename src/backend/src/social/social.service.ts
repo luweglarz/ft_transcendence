@@ -11,7 +11,11 @@ export interface Social {
 
 @Injectable()
 export class SocialService {
-  constructor(private prisma: DbService, @Inject(forwardRef(() => FriendsStatusGateway)) private friendsStatusGateway: FriendsStatusGateway) {
+  constructor(
+    private prisma: DbService,
+    @Inject(forwardRef(() => FriendsStatusGateway))
+    private friendsStatusGateway: FriendsStatusGateway,
+  ) {
     //
   }
 
@@ -28,9 +32,11 @@ export class SocialService {
     });
 
     //
-    let formatedRelations: Social[] = [];
-    userRelations.forEach(element => {
-      formatedRelations.push(Object.assign({},
+    const formatedRelations: Social[] = [];
+    userRelations.forEach((element) => {
+      formatedRelations.push(
+        Object.assign(
+          {},
           {
             authorName: element.authorName,
             targetName: element.targetName,
@@ -40,15 +46,14 @@ export class SocialService {
         ),
       );
     });
-    formatedRelations.forEach(relation => {
-      for (let onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
-        if (onlineUser === relation.targetName)
-          relation.status = 'online';
+    formatedRelations.forEach((relation) => {
+      for (const onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
+        if (onlineUser === relation.targetName) relation.status = 'online';
       }
-    })
+    });
 
     //return userRelations;
-    return (formatedRelations);
+    return formatedRelations;
   }
 
   async getUserFriends(username: string) {
@@ -59,9 +64,11 @@ export class SocialService {
       },
     });
 
-    let formatedRelations: Social[] = [];
-    userFriends.forEach(element => {
-      formatedRelations.push(Object.assign({},
+    const formatedRelations: Social[] = [];
+    userFriends.forEach((element) => {
+      formatedRelations.push(
+        Object.assign(
+          {},
           {
             authorName: element.authorName,
             targetName: element.targetName,
@@ -71,15 +78,14 @@ export class SocialService {
         ),
       );
     });
-    formatedRelations.forEach(relation => {
-      for (let onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
-        if (onlineUser === relation.targetName)
-          relation.status = 'online';
+    formatedRelations.forEach((relation) => {
+      for (const onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
+        if (onlineUser === relation.targetName) relation.status = 'online';
       }
-    })
+    });
 
     //return userFriends;
-    return (formatedRelations);
+    return formatedRelations;
   }
 
   async getUserBlocked(username: string) {
@@ -90,9 +96,11 @@ export class SocialService {
       },
     });
 
-    let formatedRelations: Social[] = [];
-    userBlocked.forEach(element => {
-      formatedRelations.push(Object.assign({},
+    const formatedRelations: Social[] = [];
+    userBlocked.forEach((element) => {
+      formatedRelations.push(
+        Object.assign(
+          {},
           {
             authorName: element.authorName,
             targetName: element.targetName,
@@ -102,15 +110,14 @@ export class SocialService {
         ),
       );
     });
-    formatedRelations.forEach(relation => {
-      for (let onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
-        if (onlineUser === relation.targetName)
-          relation.status = 'online';
+    formatedRelations.forEach((relation) => {
+      for (const onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
+        if (onlineUser === relation.targetName) relation.status = 'online';
       }
-    })
+    });
 
     //return userBlocked;
-    return (formatedRelations);
+    return formatedRelations;
   }
 
   async addUserRelation(author: string, target: string, relation: string) {
