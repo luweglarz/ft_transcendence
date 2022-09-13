@@ -9,6 +9,7 @@ export interface Message {
   userId?: number;
   content?: string;
   dm?: boolean;
+  targetUsernameDm?: string;
 }
 
 /*
