@@ -9,9 +9,7 @@ import { SocialService } from './social.service';
 export class SocialComponent implements OnInit {
   username = '';
 
-  constructor(
-    public socialService: SocialService
-  ) {
+  constructor(public socialService: SocialService) {
     //
   }
 
