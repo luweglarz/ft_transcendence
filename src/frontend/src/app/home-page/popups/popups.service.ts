@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { JwtService } from 'src/app/auth/jwt';
 import { ProfilInfoService } from './profil/profil-info.service';
 import { SocialService } from './social/social.service';
@@ -11,6 +12,8 @@ export class PopupsService {
     public profilInfoService: ProfilInfoService,
     public jwtService: JwtService,
     public socialService: SocialService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.profilPopup = false;
     this.ladderPopup = false;
@@ -23,7 +26,18 @@ export class PopupsService {
   public socialPopup;
   public settingsPopup;
 
+  routeTo(
+    component: 'profile' | 'ladder' | 'social' | 'settings',
+    opts?: { username?: string },
+  ) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { popup: component, ...opts },
+    });
+  }
+
   openProfil(username: string) {
+    this.routeTo('profile', { username: username });
     this.profilInfoService.loadUserProfil(username);
     this.profilPopup = true;
     this.ladderPopup = false;
@@ -32,6 +46,7 @@ export class PopupsService {
   }
 
   openLadder() {
+    this.routeTo('ladder');
     this.profilPopup = false;
     this.ladderPopup = true;
     this.socialPopup = false;
@@ -39,6 +54,7 @@ export class PopupsService {
   }
 
   openSocial(username: string) {
+    this.routeTo('social', { username: username });
     this.socialService.loadUserSocial(username);
     this.profilPopup = false;
     this.ladderPopup = false;
@@ -47,6 +63,7 @@ export class PopupsService {
   }
 
   openSettings() {
+    this.routeTo('settings');
     this.profilPopup = false;
     this.ladderPopup = false;
     this.socialPopup = false;
@@ -54,6 +71,10 @@ export class PopupsService {
   }
 
   closePopup() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+    });
     this.profilPopup = false;
     this.ladderPopup = false;
     this.socialPopup = false;
