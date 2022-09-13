@@ -1,7 +1,143 @@
-.rooms {
+/* Container */
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #2c3649;
+}
+
+/* Rooms selection */
+.chat-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 260px;
+  width: calc(25% - 12px);
+}
+
+.chat-selection-list {
   overflow: scroll;
   overflow-x: hidden;
   padding: 0;
-  height: 250px;
-  width: 350px;
+
+  height: calc(260px - 40px);
+  width: 100%;
+  padding-left: 8px;
+
+  border-radius: 1em;
+  background-color: #44526f;
 }
+
+.chat-selection-items {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 48px;
+  width: 100%;
+  border-radius: 1em;
+  background-color: #1a202c;
+  color: white;
+  transition: 0.3s;
+  margin-bottom: 4px;
+}
+
+.chat-selection-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 48px;
+  width: 100%;
+}
+
+.chat-selection-items:hover {
+  background-color: #44526f;
+  transition: 0.3s;
+}
+
+.chat-selection-items:active {
+  background-color: white;
+  color: #1a202c;
+  transition: 0.3s;
+}
+
+.chat-selection-item-icon {
+  fill: white;
+  stroke: white;
+}
+
+.chat-selection-items:active .chat-selection-item-icon {
+  fill: #1a202c;
+  stroke: #1a202c;
+}
+
+.chat-selection-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  padding-left: 8px;
+  padding-right: 16px;
+  height: 32px;
+  width: 100%;
+}
+
+.chat-selection-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 32px;
+  width: 40%;
+  background-color: #1a202c;
+  color: white;
+
+  transition: 0.3s;
+  border-radius: 1em;
+  cursor: pointer;
+  border: 0px;
+}
+
+.chat-selection-button:hover {
+  background-color: #44526f;
+  transition: 0.3s;
+}
+
+.chat-selection-button:active {
+  background-color: white;
+  color: #1a202c;
+  transition: 0.3s;
+}
+
+.chat-selection-button-icon {
+  fill: white;
+  transition: 0.3s;
+}
+
+.chat-selection-button:active .chat-selection-button-icon {
+  fill: #1a202c;
+  transition: 0.3s;
+}
+
+/* Chat */
+.chat-box {
+  height: 260px;
+  width: calc(75% - 12px);
+  background-color: #44526f;
+  border-radius: 1em;
+}
+
+/* Invite */
+/* .chat-invite {
+  height: 260px;
+  width: calc(25% - 12px);
+  background-color: #44526f;
+  border-radius: 1em;
+} */

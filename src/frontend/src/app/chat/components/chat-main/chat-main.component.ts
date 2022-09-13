@@ -29,7 +29,7 @@ export class ChatMainComponent implements OnInit, OnDestroy {
 
   async openDialog() {
     const dialogRef = this.dialog.open(ChatRoomCreateComponent, {
-      width: '250px',
+      // width: '250px',
       data: {},
     });
 

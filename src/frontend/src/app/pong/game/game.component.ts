@@ -5,7 +5,11 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { tap } from 'rxjs';
+import { JwtService } from 'src/app/auth/jwt';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
+import { NotificationService } from 'src/app/home-page/services/notification.service';
+import { EventsService } from 'src/app/services/events.service';
 import { GameMode } from '../interface/game-mode';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { GameService } from './game.service';
@@ -19,8 +23,15 @@ export class GameComponent implements OnInit {
   constructor(
     public collapseService: CollapseService,
     public gameService: GameService,
-    matchmakingService: MatchmakingService,
+    private eventsService: EventsService,
+    private matchmakingService: MatchmakingService,
+    private jwtService: JwtService,
+    private notificationService: NotificationService,
   ) {
+    this.eventsService.auth.signout.subscribe(() => {
+      this.gameService.requestLeaveGame();
+      this.gameService.socket.disconnect();
+    });
     this.game = matchmakingService.game;
   }
 
@@ -63,5 +74,23 @@ export class GameComponent implements OnInit {
 
   buttonRequestLeaveGame() {
     this.gameService.requestLeaveGame();
+  }
+
+  buttonSpectateGame(username: string) {
+    this.jwtService
+      .getToken$()
+      .pipe(
+        tap(
+          (token) => (this.gameService.socket.ioSocket.auth = { token: token }),
+        ),
+      )
+      .subscribe(() => {
+        this.gameService.socket.connect();
+        this.gameService.socket.onSpectatedGame(
+          this.gameService,
+          this.matchmakingService,
+        );
+        this.gameService.socket.emit('spectateGame', username);
+      });
   }
 }

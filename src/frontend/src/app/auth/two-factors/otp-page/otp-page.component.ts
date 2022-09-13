@@ -1,6 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AuthenticatorSigninDto, SignInSuccessDto } from '../../signin/dto';
 import { SigninService } from '../../signin/signin.service';
@@ -13,15 +12,12 @@ import { OtpCode } from '../dto';
 })
 export class OtpPageComponent implements OnInit {
   partialSigninToken?: string;
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private signinService: SigninService,
-  ) {}
+  constructor(private http: HttpClient, private signinService: SigninService) {}
 
   ngOnInit(): void {
     this.partialSigninToken = window.history.state['partialSigninToken'];
-    if (!this.partialSigninToken) this.router.navigate(['/auth/signin']);
+    if (!this.partialSigninToken)
+      this.signinService.signInFailure('2FA interrupted');
   }
 
   signin(otp: OtpCode) {
@@ -42,9 +38,7 @@ export class OtpPageComponent implements OnInit {
               response.tokens.refresh,
             ),
           error: (err: HttpErrorResponse) => {
-            this.router.navigate(['/auth/signin'], {
-              state: { error: err.error.message },
-            });
+            this.signinService.signInFailure(err);
           },
         });
     }

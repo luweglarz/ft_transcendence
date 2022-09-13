@@ -1,5 +1,6 @@
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import jwtDecode from 'jwt-decode';
 import {
   BehaviorSubject,
@@ -10,7 +11,9 @@ import {
   of,
   take,
   tap,
+  throwError,
 } from 'rxjs';
+import { EventsService } from 'src/app/services/events.service';
 import { environment } from 'src/environments/environment';
 import { JwtData, JwtUser } from './dto';
 import { JwtTokens } from './dto/tokens.dto';
@@ -29,7 +32,12 @@ export class JwtService {
   private _ongoingRefresh = false;
   private _data?: JwtData;
 
-  constructor(private http: HttpClient, httpBackend: HttpBackend) {
+  constructor(
+    private http: HttpClient,
+    httpBackend: HttpBackend,
+    private events: EventsService,
+    private router: Router,
+  ) {
     this.httpNoIntercept = new HttpClient(httpBackend);
     this._accessToken$.next(localStorage.getItem(this._accessTokenKey));
     const token = this._accessToken$.getValue();
@@ -57,7 +65,6 @@ export class JwtService {
 
     if (this._ongoingRefresh) {
       return this._accessToken$.pipe(
-        // TODO: fix possible issue when token refreshing fails (value === null)
         filter((value) => value !== null),
         take(1),
       );
@@ -89,17 +96,30 @@ export class JwtService {
       })
       .pipe(
         tap((tokens) => this.storeTokens(tokens.access, tokens.refresh)),
-        catchError((err) => {
-          console.error(`Could not refresh token (${err})`);
-          this._accessToken$.next(null);
-          return of(null);
+        catchError(() => {
+          // signout, redirect to signin page and return null
+          this.sessionExpired();
+          this._ongoingRefresh = false;
+          return throwError(() => 'Session expired');
+          // return of(null);
         }),
       );
   }
 
+  /*
+   * @brief signout and redirect to the signin page with error message
+   */
+  private sessionExpired() {
+    this.clearToken();
+    this.events.auth.signout.emit(true);
+    this.router.navigate(['/auth/signin'], {
+      state: { error: 'Session expired' },
+    });
+  }
+
   storeTokens(accessToken: string, refreshToken: string) {
     this._data = jwtDecode<JwtData>(accessToken);
-    console.log('Storing tokens');
+    console.debug('Storing tokens');
     localStorage.setItem(this._accessTokenKey, accessToken);
     localStorage.setItem(this._refreshTokenKey, refreshToken);
     this._accessToken$.next(accessToken);

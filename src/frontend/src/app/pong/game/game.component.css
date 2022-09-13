@@ -27,19 +27,45 @@
   margin-top: 1.5%;
  }
 
+ #playerOneInfo{
+  height: 100%;
+  width: 50%;
+ }
+
+ #playerTwoInfo{
+  height: 100%;
+  width: 50%;
+}
+
  #boostOne{
   background-color:rgb(255, 140, 64);
   height: 100%;
-  width: 50%;
+  width: 60%;
   margin-right: 5%;
+  margin-left: 5%;
  }
 
  #boostTwo{
   background-color:rgb(255, 140, 64);
   height: 100%;
-  width: 50%;
+  width: 60%;
   margin-left: 5%;
+  margin-right: 5%;
  }
+
+#avatarOne{
+  border-radius: 100%;
+  height: 100%;
+  width: 15%;
+  margin-right: 15%;
+}
+
+#avatarTwo{
+  border-radius: 100%;
+  height: 100%;
+  width: 15%;
+  margin-left: 15%;
+}
 
  .button-container {
   display: flex;
@@ -97,25 +123,4 @@
 
 .button-leave:active .button-leave-icon {
   fill: white;
-}
-#playerOneInfo{
-  height: 100%;
-  width: 50%;
- }
-
- #playerTwoInfo{
-  height: 100%;
-  width: 50%;
-}
-
-#avatarOne{
-  height: 100%;
-  width: 20%;
-  margin-right: 10%;
-}
-
-#avatarTwo{
-  height: 100%;
-  width: 20%;
-  margin-left: 10%;
 }

@@ -1,6 +1,7 @@
 .container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -9,6 +10,225 @@
 }
 
 .social {
+  width: calc(50% - 32px);
+  height: 95%;
+}
+
+.social-header {
+  display: flex;
+  flex-direction: row;
+
+  height: 32px;
+  width: 100%;
+}
+
+.social-header-button {
+  width: 50%;
+  height: 32px;
+  background-color: #1A202C;
+  color: white;
+  border: none;
+  border-radius: 1em;
+  transition: 0.3s;
+}
+
+.active {
+  background-color: white;
+  color: black;
+}
+
+.social-list {
+  display: flex;
+  flex-direction: column;
+
+  height: calc(100% - 32px);
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.social-list-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 64px;
+  width: 100%;
+  border-radius: 1em;
+
+  background-color: #1A202C;
+  color: white;
+  border: 1px solid black;
+  transition: 0.3s;
+}
+
+.social-list-item:hover {
+  background-color: white;
+  color: #1A202C;
+}
+
+.social-list-item-avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 100%;
+}
+
+.social-list-item-status {
+  height: 32px;
+  width: 32px;
+  border-radius: 100%;
+}
+
+.social-list-item-delete {
+  height: 32px;
+  width: 32px;
+  fill: white;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.social-list-item:hover .social-list-item-delete {
+  fill: black;
+}
+
+.online {
+  background-color: green;
+}
+
+.offline {
+  background-color: red;
+}
+
+.ingame{
+  background-color: orange;
+}
+
+/* DMS */
+
+.dms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(50% - 32px);
+  height: 95%;
+}
+
+.dms-box-messages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: calc(100% - 40px);
+  width: 100%;
+  border-radius: 1em;
+  background-color: #44526F;
+}
+
+.dms-box-messages-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 64px;
+  width: 100%;
+  border-radius: 1em;
+
+  background-color: #1A202C;
+}
+
+.dms-box-messages-header p {
+  font-size: 24px;
+  font-weight: bolder;
+}
+
+.dms-box-messages-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
+}
+
+.dms-box-messages-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100% - 48px);
+  height: fit-content;
+
+  font-size: 0px;
+}
+
+.sent {
+  flex-direction: row;
+}
+
+.received {
+  flex-direction: row-reverse;
+}
+
+.dms-box-messages-item p {
+  width: calc(100% - 64px);
+  height: fit-content;
+  font-size: 18px;
+}
+
+.dms-box-messages-item-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 64px;
+  height: 32px;
+}
+
+.dms-box-messages-item-avatar {
+  height: 32px;
+  width: 32px;
+  border-radius: 100%;
+}
+
+/* INPUT */
+.dms-box-messages-input {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  width: 100%;
+  border-radius: 1em;
+  background-color: #44526F;
+}
+
+.dms-box-messages-input-box {
+  height: 32px;
+  width: calc(100% - 96px);
+  border-radius: 1em;
+  background-color: #44526F;
+  color: white;
+  font-size: 18px;
+  outline: 0px;
+  border: 0px;
+}
+
+
+.dms-box-messages-input-send {
+  width: 96px;
+  height: 30px;
+  border-radius: 1em;
+
+  background-color: #1A202C;
+  color: white;
+  font-size: 18px;
+  border: 0px;
+  transition: 0.3s;
+}
+
+.dms-box-messages-input-send:hover {
+  background-color: white;
+  color: #1A202C;
+  transition: 0.3s;
 }

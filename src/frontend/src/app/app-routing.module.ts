@@ -7,11 +7,13 @@ import { OauthCallbackComponent } from './auth/oauth/oauth-callback.component';
 import { SignOutComponent } from './auth/signout/signout.component';
 import { InfoComponent } from './auth/info/info.component';
 import { OtpPageComponent } from './auth/two-factors/otp-page/otp-page.component';
+import { IsSignedInGuard } from './auth/jwt/guard/is-signed-in.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    canActivate: [IsSignedInGuard],
   },
   {
     path: 'auth',
