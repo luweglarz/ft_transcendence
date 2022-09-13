@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { tap } from 'rxjs';
 import { JwtService } from 'src/app/auth/jwt';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
-import { InviteService } from 'src/app/home-page/services/invite.service';
 import { EventsService } from 'src/app/services/events.service';
 import { MatchmakingService } from './matchmaking.service';
 
@@ -20,7 +19,6 @@ export class MatchmakingComponent {
     public matchmakingService: MatchmakingService,
     public collapseService: CollapseService,
     private eventsService: EventsService,
-    private inviteService: InviteService,
     jwtService: JwtService,
   ) {
     jwtService
@@ -34,13 +32,6 @@ export class MatchmakingComponent {
       .subscribe(() => {
         this.matchmakingService.socket.connect();
       });
-    console.log('constructor de matchamaking compo');
-    this.matchmakingService.socket.on(
-      'invitationAccepted',
-      (friendUsername: string) => {
-        this.inviteService.openInvite(friendUsername);
-      },
-    );
     this.eventsService.auth.signout.subscribe(() => {
       this.matchmakingService.requestLeaveMatchmaking();
       this.matchmakingService.socket.disconnect();

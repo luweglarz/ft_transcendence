@@ -7,7 +7,6 @@ import { Invite } from '../../interface/invite';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
 import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.component';
 import { ChatInviteComponent } from '../chat-invite/chat-invite.component';
-import { InviteService } from 'src/app/home-page/services/invite.service';
 import { GameSocket } from 'src/app/pong/class/game-socket';
 
 @Component({
@@ -54,12 +53,8 @@ export class ChatMainComponent implements OnInit, OnDestroy {
           return;
         } else if (invite.result === 'challenge') {
           this.invites = this.invites.filter((inv) => inv !== invite.invite);
-          console.log('avant emit acceptprivate : ' + invite.invite.username!);
-          this.gameSocket.emit(
-            'acceptPrivateInvitation',
-            invite.invite.username!,
-          );
-          // challenge me
+          const friendUsername = invite.invite.username;
+          this.gameSocket.emit('acceptPrivateInvitation', friendUsername);
           return;
         } else if (invite.result === 'false') {
           this.invites = this.invites.filter((inv) => inv !== invite.invite);

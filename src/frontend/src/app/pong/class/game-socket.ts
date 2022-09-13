@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { InviteService } from 'src/app/home-page/services/invite.service';
 import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { environment } from 'src/environments/environment';
 import { GameService } from '../game/game.service';
@@ -31,11 +32,9 @@ export class GameSocket extends Socket {
     matchmakingService: MatchmakingService,
     stopWatch: StopWatch,
   ) {
-    console.log('initon match found');
     this.on(
       'matchFound',
       (msg: any, gameType: string, gameMapInfo: any, playersInfo: any) => {
-        console.log('matchfouuuuuuuuuuuuuuuuund');
         notificationService.gameFound();
         stopWatch.clearTimer();
         const playerOne: Player = new Player(
@@ -55,7 +54,6 @@ export class GameSocket extends Socket {
           gameMapInfo.ballColor,
         );
         gameService.isInGame = true;
-        console.log(msg);
         if (gameType === 'normal' || gameType === 'ranked') {
           matchmakingService.game = new NormalGame(
             gameMapInfo.canvaHeight,
@@ -79,6 +77,12 @@ export class GameSocket extends Socket {
     );
   }
 
+  oninvitationAccepted(inviteService: InviteService) {
+    this.once('invitationAccepted', (friendUsername: string) => {
+      inviteService.openInvite(friendUsername);
+    });
+  }
+
   onMatchmakingLeft() {
     this.once('matchmakingLeft', (msg: any) => {
       console.log(msg);
@@ -94,7 +98,6 @@ export class GameSocket extends Socket {
 
   onGameFinished(gameService: GameService) {
     this.once('gameFinished', (winner: any, leaver?: any) => {
-      console.log('surgame finished ');
       clearInterval(gameService.keyEventsInterval);
       gameService.isInGame = false;
       if (leaver != null && leaver != undefined)
