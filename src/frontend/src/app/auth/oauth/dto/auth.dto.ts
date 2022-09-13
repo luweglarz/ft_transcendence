@@ -13,3 +13,8 @@ export interface OAuthUserDto {
 export interface OAuthJwtPayload {
   oAuthUser: OAuthUserDto;
 }
+
+export interface OAuthTempToken {
+  jwt: string;
+  alreadySignedUp: boolean;
+}
