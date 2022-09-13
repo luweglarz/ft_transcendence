@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
-import { DirectMessagesService } from './direct-messages.service';
+// import { DirectMessagesService } from './direct-messages.service';
 import { SocialService } from './social.service';
 
 @Component({
@@ -14,8 +14,7 @@ export class SocialComponent implements OnInit {
 
   constructor(
     public socialService: SocialService,
-    public jwtService: JwtService,
-    // public dmsService: DirectMessagesService,
+    public jwtService: JwtService, // public dmsService: DirectMessagesService,
   ) {
     const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
