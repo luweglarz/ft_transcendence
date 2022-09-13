@@ -10,7 +10,6 @@ import { UntypedFormControl, Validators } from '@angular/forms';
 import { Message } from 'src/app/chat/interface/message';
 import { Room } from 'src/app/chat/interface/room';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
-import { Observable } from 'rxjs';
 import { RoomUser } from 'src/app/chat/interface/roomUser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';

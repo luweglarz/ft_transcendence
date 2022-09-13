@@ -49,7 +49,7 @@ export class MatchmakingGatewayService {
     return false;
   }
 
-  isClientInMatchmaking(@ConnectedSocket()client: Socket): boolean {
+  isClientInMatchmaking(@ConnectedSocket() client: Socket): boolean {
     for (const pool of this.pools) {
       for (const clientPool of pool) {
         if (
