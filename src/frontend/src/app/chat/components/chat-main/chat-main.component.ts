@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectionListChange } from '@angular/material/list';
-import { Observable, subscribeOn } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Room } from 'src/app/chat/interface/room';
 import { Invite } from '../../interface/invite';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
@@ -40,25 +40,24 @@ export class ChatMainComponent implements OnInit, OnDestroy {
       data: this.invites,
     });
 
-    dialogRef.afterClosed().subscribe((invite: {result: string, invite: Invite}) => {
-      console.log(invite);
-      if (invite === null || invite === undefined) {
-        return ;
-      }
-      else if (invite.result === 'challenge') {
-        this.invites = this.invites.filter((inv) => inv !== invite.invite);
-        // challenge me
-        return ;
-      }
-      else if (invite.result === 'false') {
-        this.invites = this.invites.filter((inv) => inv !== invite.invite);
-        return ;
-      }
-      else if (invite.result === 'accept') {
-        this.invites = this.invites.filter((inv) => inv !== invite.invite);
-        this.selectedRoom = invite.invite.room;
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .subscribe((invite: { result: string; invite: Invite }) => {
+        console.log(invite);
+        if (invite === null || invite === undefined) {
+          return;
+        } else if (invite.result === 'challenge') {
+          this.invites = this.invites.filter((inv) => inv !== invite.invite);
+          // challenge me
+          return;
+        } else if (invite.result === 'false') {
+          this.invites = this.invites.filter((inv) => inv !== invite.invite);
+          return;
+        } else if (invite.result === 'accept') {
+          this.invites = this.invites.filter((inv) => inv !== invite.invite);
+          this.selectedRoom = invite.invite.room;
+        }
+      });
   }
 
   async openDialog() {
