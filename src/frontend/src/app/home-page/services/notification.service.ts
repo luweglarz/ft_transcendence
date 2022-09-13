@@ -7,29 +7,29 @@ import { Title } from '@angular/platform-browser';
 export class NotificationService {
   //Audio
   gameFoundSound: HTMLAudioElement = new Audio(
-    'assets/sounds/notification.wav',
+    'assets/sounds/gamefound.wav',
+  );
+  inviteReceivedSound: HTMLAudioElement = new Audio(
+    'assets/sounds/invitation.wav',
   );
 
-  //Notifications
-  msgNotification = 0;
-
   constructor(private title: Title) {}
-
-  //Message
-  updateTitle() {
-    if (this.msgNotification != 0) {
-      return '(' + this.msgNotification + ') 42Pong';
-    } else {
-      return '42Pong';
-    }
-  }
 
   //Game
   gameFound() {
     this.gameFoundSound.play();
     this.title.setTitle('Game is starting..');
     setTimeout(() => {
-      this.title.setTitle(this.updateTitle());
+      this.title.setTitle('42Pong');
+    }, 3000);
+  }
+
+  //Invite
+  inviteReceived() {
+    this.inviteReceivedSound.play();
+    this.title.setTitle('Invitation received !');
+    setTimeout(() => {
+      this.title.setTitle('42Pong');
     }, 3000);
   }
 }
