@@ -1,4 +1,6 @@
-<div class="message">
-  <p class="message-author">{{dateToTs(message.createdAt)}} {{ message.username }}:</p>
+<div class="message" [ngClass]="message.dm ? 'dm': ''">
+  <p *ngIf="message.dm" class="message-author">{{dateToTs(message.createdAt)}} from {{ message.username }}:</p>
+  <!-- <p *ngIf="message.dm" class="message-author">{{dateToTs(message.createdAt)}} to {{ message.username }}:</p> -->
+  <p *ngIf="!message.dm" class="message-author">{{dateToTs(message.createdAt)}} {{ message.username }}:</p>
   <p class="message-content">{{ message.content }}</p>
 </div>
