@@ -34,7 +34,7 @@ import { TwoFactorsModule } from 'src/app/auth/two-factors/two-factors.module';
     JwtService,
     LadderService,
     SocialService,
-    DirectMessagesService,
+    // DirectMessagesService,
   ],
   imports: [CommonModule, AvatarModule, TwoFactorsModule],
   exports: [PopupsComponent],

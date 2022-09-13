@@ -10,7 +10,7 @@
 }
 
 .social {
-  width: calc(50% - 32px);
+  width: calc(100% - 32px);
   height: 95%;
 }
 
@@ -20,6 +20,7 @@
 
   height: 32px;
   width: 100%;
+  padding-bottom: 4px;
 }
 
 .social-header-button {
@@ -32,9 +33,16 @@
   transition: 0.3s;
 }
 
-.active {
+/* .active {
   background-color: white;
   color: black;
+} */
+
+.social-lists {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
 }
 
 .social-list {
@@ -42,7 +50,7 @@
   flex-direction: column;
 
   height: calc(100% - 32px);
-  width: 100%;
+  width: 50%;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -104,9 +112,7 @@
   background-color: orange;
 }
 
-/* DMS */
-
-.dms {
+/* .dms {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -193,7 +199,6 @@
   border-radius: 100%;
 }
 
-/* INPUT */
 .dms-box-messages-input {
   display: flex;
   align-items: center;
@@ -231,4 +236,4 @@
   background-color: white;
   color: #1A202C;
   transition: 0.3s;
-}
+} */

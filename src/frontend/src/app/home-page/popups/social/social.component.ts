@@ -15,7 +15,7 @@ export class SocialComponent implements OnInit {
   constructor(
     public socialService: SocialService,
     public jwtService: JwtService,
-    public dmsService: DirectMessagesService,
+    // public dmsService: DirectMessagesService,
   ) {
     const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
@@ -33,7 +33,7 @@ export class SocialComponent implements OnInit {
     this.showFriends = false;
   }
 
-  openConversation(target: string) {
-    this.dmsService.loadUserDms(this.username, target);
-  }
+  // openConversation(target: string) {
+  //   this.dmsService.loadUserDms(this.username, target);
+  // }
 }

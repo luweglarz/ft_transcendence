@@ -4,14 +4,20 @@
   <div class="social">
     <!-- Social header -->
     <div class="social-header">
-      <button class="social-header-button" [ngClass]="showFriends === true ? 'active': 'social-header-button'" (click)="selectFriends()">Friends</button>
-      <button class="social-header-button" [ngClass]="showFriends === false ? 'active': 'social-header-button'" (click)="selectBlocked()">Blocked</button>
+      <!-- <button class="social-header-button" [ngClass]="showFriends === true ? 'active': 'social-header-button'" (click)="selectFriends()">Friends</button>
+      <button class="social-header-button" [ngClass]="showFriends === false ? 'active': 'social-header-button'" (click)="selectBlocked()">Blocked</button> -->
+      <button class="social-header-button">Friends</button>
+      <button class="social-header-button">Blocked</button>
     </div>
 
+    <div class="social-lists">
+
     <!-- Friend list -->
-    <div *ngIf="showFriends && socialService.isLoaded" class="social-list">
+    <!-- <div *ngIf="showFriends && socialService.isLoaded" class="social-list"> -->
+    <div class="social-list">
       <!-- Friend item -->
-      <div *ngFor="let user of socialService.friends" class="social-list-item" (click)="openConversation(user.targetName)">
+      <!-- <div *ngFor="let user of socialService.friends" class="social-list-item" (click)="openConversation(user.targetName)"> -->
+      <div *ngFor="let user of socialService.friends" class="social-list-item">
         <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
         <p>{{ user.targetName }}</p>
         <!-- Status (online, ingame, offline) -->
@@ -24,7 +30,8 @@
     </div>
 
     <!-- Block list -->
-    <div *ngIf="!showFriends && socialService.isLoaded" class="social-list">
+    <!-- <div *ngIf="!showFriends && socialService.isLoaded" class="social-list"> -->
+    <div class="social-list">
       <!-- Blocked item -->
       <div *ngFor="let user of socialService.blocked" class="social-list-item">
         <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
@@ -37,15 +44,14 @@
     </div>
   </div>
 
+  </div>
+
   <!-- Direct Messages -->
-  <div class="dms">
+  <!-- <div class="dms">
     <div class="dms-box-messages" *ngIf="socialService.isLoaded && dmsService.loadedDmUsername != ''">
-      <!-- Messages Header -->
       <div class="dms-box-messages-header">
         <p>{{ dmsService.loadedDmUsername }}</p>
       </div>
-
-      <!-- Messages -->
       <div class="dms-box-messages-items">
         <div class="dms-box-messages-item" *ngFor="let message of dmsService.loadedDms" [ngClass]="message.authorName === username ? 'sent': 'received'">
           <div class="dms-box-messages-item-user">
@@ -55,11 +61,10 @@
         </div>
       </div>
     </div>
-
     <div class="dms-box-messages-input" *ngIf="socialService.isLoaded && dmsService.loadedDmUsername != ''">
       <input class="dms-box-messages-input-box" #box (keyup.enter)="dmsService.sendMessage(dmsService.loadedDmUsername, box.value); box.value = ''" (blur)="dmsService.sendMessage(dmsService.loadedDmUsername, box.value); box.value = ''">
       <button class="dms-box-messages-input-send" (click)="dmsService.sendMessage(dmsService.loadedDmUsername, box.value); box.value = ''">Send</button>
     </div>
-  </div>
+  </div> -->
 
 </div>
