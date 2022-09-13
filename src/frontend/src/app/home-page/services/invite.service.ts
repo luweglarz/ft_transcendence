@@ -20,7 +20,6 @@ export class InviteService {
   private toInvite: string;
 
   openInvite(toInvite: string) {
-    console.log('debug');
     this.toInvite = toInvite;
     this.isInInvite = true;
     this.collapseService.closeChat();

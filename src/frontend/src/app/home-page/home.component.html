@@ -6,8 +6,9 @@
   <!-- Content of the home page (responsive container)-->
   <div class="home-container" [ngClass]="collapseService.navCollapsed ? 'home-container-nav-collapsed': 'home-container'">
     <!-- Matchmaking component-->
-    <app-matchmaking *ngIf="!gameService.isInGame && !inviteService.isInInvite"></app-matchmaking>
+    <app-matchmaking *ngIf="!gameService.isInGame && !inviteService.isInInvite && !waitService.isInWait"></app-matchmaking>
     <app-invite *ngIf="this.inviteService.isInInvite"></app-invite>
+    <app-wait *ngIf="this.waitService.isInWait"></app-wait>
     <app-game *ngIf="gameService.isInGame"></app-game>
 
     <!-- Chatbar Footer-->

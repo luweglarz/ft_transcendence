@@ -14,6 +14,7 @@ import { AvatarModule } from '../avatar';
 import { ProfilInfoService } from './popups/profil/profil-info.service';
 import { PopupsModule } from './popups/popups.module';
 import { InviteComponent } from './invite/invite.component';
+import { WaitComponent } from './wait/wait.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { InviteComponent } from './invite/invite.component';
     NavbarComponent,
     ChatbarComponent,
     InviteComponent,
+    WaitComponent,
   ],
   providers: [
     CollapseService,

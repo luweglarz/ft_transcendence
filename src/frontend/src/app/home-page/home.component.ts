@@ -3,6 +3,7 @@ import { CollapseService } from 'src/app/home-page/services/collapse.service';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
 import { GameService } from 'src/app/pong/game/game.service';
 import { InviteService } from './services/invite.service';
+import { WaitService } from './services/wait.service';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,7 @@ export class HomeComponent implements OnInit {
     public collapseService: CollapseService,
     public popupsService: PopupsService,
     public inviteService: InviteService,
+    public waitService: WaitService
   ) {
     //
   }

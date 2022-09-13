@@ -8,6 +8,7 @@ import { ChatService } from 'src/app/chat/chatService/chat.service';
 import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.component';
 import { ChatInviteComponent } from '../chat-invite/chat-invite.component';
 import { GameSocket } from 'src/app/pong/class/game-socket';
+import { WaitService } from 'src/app/home-page/services/wait.service';
 
 @Component({
   selector: 'app-chat',
@@ -29,6 +30,7 @@ export class ChatMainComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     public dialog: MatDialog,
     private gameSocket: GameSocket,
+    private waitService: WaitService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +57,7 @@ export class ChatMainComponent implements OnInit, OnDestroy {
           this.invites = this.invites.filter((inv) => inv !== invite.invite);
           const friendUsername = invite.invite.username;
           this.gameSocket.emit('acceptPrivateInvitation', friendUsername);
+          this.waitService.openWait();
           return;
         } else if (invite.result === 'false') {
           this.invites = this.invites.filter((inv) => inv !== invite.invite);
