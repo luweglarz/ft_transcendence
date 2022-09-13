@@ -26,7 +26,11 @@ export class ChatMainComponent implements OnInit, OnDestroy {
     this.invites.push(inv.invite);
   });
 
-  constructor(private chatService: ChatService, public dialog: MatDialog, private notification: NotificationService) {}
+  constructor(
+    private chatService: ChatService,
+    public dialog: MatDialog,
+    private notification: NotificationService,
+  ) {}
 
   ngOnInit(): void {
     this.chatService.openChat();

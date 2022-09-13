@@ -6,12 +6,8 @@ import { Title } from '@angular/platform-browser';
 })
 export class NotificationService {
   //Audio
-  gameFoundSound: HTMLAudioElement = new Audio(
-    'assets/sounds/gamefound.wav',
-  );
-  invitationSound: HTMLAudioElement = new Audio(
-    'assets/sounds/invitation.wav',
-  );
+  gameFoundSound: HTMLAudioElement = new Audio('assets/sounds/gamefound.wav');
+  invitationSound: HTMLAudioElement = new Audio('assets/sounds/invitation.wav');
 
   //Notifications
   msgNotification = 0;

@@ -9,7 +9,7 @@ import { JwtService } from 'src/app/auth/jwt';
 })
 export class ChatMessageComponent /*implements OnInit*/ {
   @Input() message: Message = {};
-  username: string = '';
+  username = '';
 
   constructor(private jwtService: JwtService) {
     const username = this.jwtService.username;

@@ -119,8 +119,7 @@ export class GameGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() username: string,
   ) {
-    if (this.matchmakingService.isUserInGame(username) === false)
-      return;
+    if (this.matchmakingService.isUserInGame(username) === false) return;
     try {
       const gameRoom: Room = this.gameGatewayService.findRoomId(
         this.rooms,
