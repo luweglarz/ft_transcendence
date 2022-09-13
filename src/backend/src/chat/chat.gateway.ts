@@ -355,6 +355,7 @@ export class ChatGateway
         username: socket.data.user.username,
         targetUserId: +splitRet[1],
         content: splitRet[4],
+        createdAt: new Date(Date.now()),
         dm: true,
       };
       this.server.to(splitRet[3]).emit('msg', dm);

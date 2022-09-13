@@ -14,4 +14,11 @@ export class ChatMessageComponent /*implements OnInit*/ {
   //  this.roomUsers
   //  return ({});
   //}
+  dateToTs(createdAt: Date | undefined): string {
+    if (createdAt === undefined)
+      return '[00:00]';
+    console.log(createdAt);
+    let time: Date = new Date(createdAt);
+    return '[' + time.getHours() + ':' + time.getMinutes() + ']';
+  }
 }

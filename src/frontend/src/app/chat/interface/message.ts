@@ -2,6 +2,7 @@ import { Room } from 'src/app/chat/interface/room';
 
 export interface Message {
   id?: number;
+  createdAt?: Date;
   room?: Room;
   roomId?: number;
   username?: string;
