@@ -7,6 +7,7 @@ import { Invite } from '../../interface/invite';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
 import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.component';
 import { ChatInviteComponent } from '../chat-invite/chat-invite.component';
+import { NotificationService } from 'src/app/home-page/services/notification.service';
 
 @Component({
   selector: 'app-chat',
@@ -20,11 +21,12 @@ export class ChatMainComponent implements OnInit, OnDestroy {
   invites: Invite[] = [];
   inviteEvent = this.chatService.getInvitations().subscribe((inv) => {
     console.log(inv);
+    this.notification.inviteReceived();
     inv.invite.room = inv.Room;
     this.invites.push(inv.invite);
   });
 
-  constructor(private chatService: ChatService, public dialog: MatDialog) {}
+  constructor(private chatService: ChatService, public dialog: MatDialog, private notification: NotificationService) {}
 
   ngOnInit(): void {
     this.chatService.openChat();
