@@ -1,0 +1,105 @@
+::ng-deep.mat-dialog-container {
+  overflow-x: hidden !important;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px !important;
+  margin: 0px !important;
+
+  border-radius: 1em;
+  background-color: #44526f;
+}
+
+::ng-deep.mat-dialong-content {
+  width: 240px;
+  height: 320px;
+}
+
+
+.invite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 240px;
+  height: 320px;
+  padding: 16px;
+  border-radius: 1em;
+  border: 5px solid #44526f;
+  background-color: #2c3649;
+
+  font-weight: bolder;
+  color: white;
+  font-size: 18px;
+}
+
+.invite-title {
+  height: 20px;
+  font-size: 20px;
+  font-weight: bolder;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 12px;
+}
+
+.invite-invites {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: calc(100% - 20px);
+  width: 100%;
+}
+
+.invite-invite {
+  width: 100%;
+  height: fit-content;
+  background-color: #1a202c;
+  border-radius: 1em;
+  margin-bottom: 4px;
+}
+
+.invite-invite-desc {
+  font-size: 20px;
+  text-align: center;
+  height: 20px;
+  width: 100%;
+  color: white;
+  font-weight: bolder;
+  padding-top: 8px;
+  margin: 0px;
+}
+
+.invite-invite-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  height: 24px;
+  width: 100%;
+  padding-bottom: 8px;
+  margin: 0px;
+}
+
+.invite-invite-button {
+  fill: white;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 1em;
+  margin: 0px 8px 0px 8px;
+  padding: 0px;
+}
+
+.yes:hover {
+  fill: white;
+  background-color: green;
+  transition: 0.3s;
+}
+
+.no:hover {
+  fill: white;
+  background-color: red;
+  transition: 0.3s;
+}

@@ -7,7 +7,7 @@ export interface Invite {
   targetUserId?: number;
   roomId?: number;
   challenge?: boolean;
-  room?: Room;
+  room: Room;
 }
 
 /*

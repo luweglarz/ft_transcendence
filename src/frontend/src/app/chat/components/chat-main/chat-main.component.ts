@@ -3,8 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSelectionListChange } from '@angular/material/list';
 import { Observable } from 'rxjs';
 import { Room } from 'src/app/chat/interface/room';
+import { Invite } from '../../interface/invite';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
 import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.component';
+import { ChatInviteComponent } from '../chat-invite/chat-invite.component';
 
 @Component({
   selector: 'app-chat',
@@ -15,6 +17,12 @@ export class ChatMainComponent implements OnInit, OnDestroy {
   rooms: Observable<Room[]> = this.chatService.getRooms();
   //createdRoom: Promise<Room> = this.chatService.getCreatedRoomFirst();
   selectedRoom: Room = {};
+  invites: Invite[] = [];
+  inviteEvent = this.chatService.getInvitations().subscribe((inv) => {
+    console.log(inv);
+    inv.invite.room = inv.Room;
+    this.invites.push(inv.invite);
+  });
 
   constructor(private chatService: ChatService, public dialog: MatDialog) {}
 
@@ -25,6 +33,31 @@ export class ChatMainComponent implements OnInit, OnDestroy {
   onSelectRoom(event: MatSelectionListChange) {
     //console.log('MLT', JSON.parse(JSON.stringify(event.source.selectedOptions.selected[0].value)));
     this.selectedRoom = event.source.selectedOptions.selected[0].value;
+  }
+
+  async openInvites() {
+    const dialogRef = this.dialog.open(ChatInviteComponent, {
+      data: this.invites,
+    });
+
+    dialogRef
+      .afterClosed()
+      .subscribe((invite: { result: string; invite: Invite }) => {
+        console.log(invite);
+        if (invite === null || invite === undefined) {
+          return;
+        } else if (invite.result === 'challenge') {
+          this.invites = this.invites.filter((inv) => inv !== invite.invite);
+          // challenge me
+          return;
+        } else if (invite.result === 'false') {
+          this.invites = this.invites.filter((inv) => inv !== invite.invite);
+          return;
+        } else if (invite.result === 'accept') {
+          this.invites = this.invites.filter((inv) => inv !== invite.invite);
+          this.selectedRoom = invite.invite.room;
+        }
+      });
   }
 
   async openDialog() {
@@ -64,10 +97,6 @@ export class ChatMainComponent implements OnInit, OnDestroy {
         }
       }
     });
-  }
-
-  joinRoomInvite(newRoom: Room) {
-    this.selectedRoom = newRoom;
   }
 
   ngOnDestroy(): void {

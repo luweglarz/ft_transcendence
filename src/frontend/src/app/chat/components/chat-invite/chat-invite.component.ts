@@ -1,12 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, Inject } from '@angular/core';
 import { ChatService } from '../../chatService/chat.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Invite } from '../../interface/invite';
 import { Room } from '../../interface/room';
 
@@ -15,37 +9,34 @@ import { Room } from '../../interface/room';
   templateUrl: './chat-invite.component.html',
   styleUrls: ['./chat-invite.component.css'],
 })
-export class ChatInviteComponent implements OnChanges {
+export class ChatInviteComponent {
   @Input() chatRoom: Room = {};
-  @Output() roomInvite = new EventEmitter<Room>();
-  invites: Invite[] = [];
-  inviteEvent = this.chatservice.getInvitations().subscribe((inv) => {
-    console.log(inv);
-    inv.invite.room = inv.Room;
-    this.invites.push(inv.invite);
-  });
 
-  constructor(private chatservice: ChatService) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.invites = this.invites.filter(
-      (inv) => inv.roomId !== changes['chatRoom'].currentValue.id,
-    );
-  }
+  constructor(
+    private chatService: ChatService,
+    public dialogRef: MatDialogRef<ChatInviteComponent>,
+    @Inject(MAT_DIALOG_DATA) public invites: Invite[],
+  ) {}
 
   openInvite(invite: Invite, accept: boolean) {
     if (accept === false) {
       this.invites = this.invites.filter((inv) => inv !== invite);
+      if (this.invites.length === 0)
+        this.dialogRef.close({ result: 'false', invite: invite });
+      this.chatService.deleteInvite(invite.id);
       return;
     }
     if (invite.challenge === true) {
       //challenge me
       this.invites = this.invites.filter((inv) => inv !== invite);
+      this.dialogRef.close({ result: 'challenge', invite: invite });
+      this.chatService.deleteInvite(invite.id);
       return;
     }
     // join room
     console.log(invite);
-    this.roomInvite.emit(invite.room);
+    this.dialogRef.close({ result: 'accept', invite: invite });
     this.invites = this.invites.filter((inv) => inv !== invite);
+    this.chatService.deleteInvite(invite.id);
   }
 }
