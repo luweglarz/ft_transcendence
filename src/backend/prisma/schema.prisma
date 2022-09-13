@@ -23,8 +23,6 @@ model User {
   loses       Game[]          @relation("Loser")
 
   social      Social[]        @relation("Social")
-  sendDms     DirectMessage[] @relation("Sent")
-  receivedDms DirectMessage[] @relation("Received")
 }
 
 model Auth {
@@ -130,18 +128,4 @@ model Social {
   authorName String
   targetName String
   relation   String
-}
-
-
-model DirectMessage {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-
-  author      User     @relation("Sent", fields: [authorName], references: [username])
-  authorName  String
-
-  target      User     @relation("Received", fields: [targetName], references: [username])
-  targetName  String
-
-  content     String
 }
