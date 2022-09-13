@@ -112,7 +112,6 @@ export class GameGateway
             leaver,
             true,
           );
-          client.disconnect();
           this.logger.log(
             `player ${leaver.username} has left the game ${room.uuid}`,
           );
@@ -146,7 +145,12 @@ export class GameGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() friendUsername: string,
   ) {
-    console.log('acceptPrivateInvitation');
+    this.logger.log(
+      'acceptPrivateInvitation; ' +
+        client.id +
+        ' friendusername: ' +
+        friendUsername,
+    );
     try {
       const friend: Socket = this._users.find(
         (element) =>
@@ -172,7 +176,6 @@ export class GameGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() infos: string[],
   ) {
-    console.log('choosep ricate mode');
     try {
       const friend: Socket = this._users.find(
         (element) =>

@@ -38,8 +38,6 @@ export class GameGatewayService {
       rooms.findIndex((element) => element === roomToClear),
       1,
     );
-    roomToClear.players[0].socket.disconnect();
-    roomToClear.players[1].socket.disconnect();
   }
 
   checkJwtToken(@ConnectedSocket() client: Socket): boolean {
