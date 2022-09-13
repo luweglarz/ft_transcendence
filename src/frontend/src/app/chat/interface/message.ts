@@ -7,6 +7,7 @@ export interface Message {
   username?: string;
   userId?: number;
   content?: string;
+  dm?: boolean;
 }
 
 /*

@@ -47,8 +47,10 @@ export class CommandService {
       return await this.password(splitCmd, command, roomUser);
     } else if (splitCmd[0] === '/mute' || splitCmd[0] === '/ban') {
       return this.banOrMute(splitCmd, command, roomUser);
-    } else if (splitCmd[0] === '/invite') {
+    } else if (splitCmd[0] === '/invite' || splitCmd[0] === '/challenge') {
       return this.invite(splitCmd, command, roomUser, connectedUsers);
+    } else if (splitCmd[0] === '/whisper' || splitCmd[0] === '/w') {
+      return this.whisper(splitCmd, command, roomUser);
     } else {
       return 'command not found';
     }
@@ -210,7 +212,7 @@ export class CommandService {
     connectedUsers: Socket[],
   ): Promise<string> {
     if (roomUser.role === 'USER') return "you don't have the right";
-    if (splitCmd.length > 2) return 'usage /invite USERNAME';
+    if (splitCmd.length > 2) return 'usage ' + splitCmd[0] + ' USERNAME';
     if (splitCmd.length < 2) return 'incomplete command';
     const room = await this.roomService.room({ id: command.id });
     if (room === undefined) return 'database error';
@@ -230,7 +232,7 @@ export class CommandService {
         targetUser.username === connectedUser.data.user.username
       ) {
         return (
-          '/invite ' +
+          splitCmd[0] + ' ' +
           targetUser.id +
           ' ' +
           targetUser.username +
@@ -241,6 +243,26 @@ export class CommandService {
     }
     return 'user is not in chat';
   }
+
+  async whisper(splitCmd: string[],
+    command,
+    roomUser: RoomUser,): Promise<string> {
+      const targetUser = await this.prisma.user.findUnique({
+        where: { username: splitCmd[1] },
+      });
+      if (targetUser === null) return 'not a user';
+      if (targetUser.id === roomUser.userId) return 'cannot dm yourself';
+      const targetRoomUser: RoomUser[] = await this.roomUserService.roomUsers({
+        where: { roomId: command.id, AND: { userId: targetUser.id } },
+      });
+      if (targetRoomUser.length < 1) return 'user is not in the room';
+      if (targetRoomUser.length > 1) return 'database error';
+      for (let i = 3; i < splitCmd.length; i++) {
+        splitCmd[2] = splitCmd[2] + ' ' + splitCmd[i];
+      }
+      console.log(splitCmd[2]);
+      return (splitCmd[0] + ' ' + targetUser.id + ' ' + targetUser.username + ' ' + targetRoomUser[0].socketId + ' ' + splitCmd[2]);
+  }
 }
 /*
 + ban 2
@@ -249,6 +271,6 @@ export class CommandService {
 + admin 0
 + deadmin 1 
 - leave 2
-- invite 3
-- challenge 4
++ invite 3
++ challenge 4
 */

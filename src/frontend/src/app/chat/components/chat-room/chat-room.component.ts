@@ -32,7 +32,11 @@ export class ChatRoomComponent implements OnChanges {
   pass: UntypedFormControl = new UntypedFormControl(null, [
     Validators.required,
   ]);
-  messages: Observable<Message[]> = this.chatService.getMsgs();
+  messagesEvent = this.chatService.getMsg().subscribe((nMessages: Message) => {
+    console.log(nMessages);
+    this.messages.push(nMessages);
+  });
+  messages: Message[] = [];
   //roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
   roomUsers: RoomUser[] = [];
   banMute = this.chatService.getBanMuteResult().subscribe((commandReturn) => {
@@ -78,7 +82,9 @@ export class ChatRoomComponent implements OnChanges {
       console.log(roomUsers);
       if (roomUsers.length !== 0) this.roomUsers = roomUsers;
     });
-    this.messages = this.chatService.getMsgs();
+    //this.messages = this.chatService.getMsgs();
+    this.messages = [];
+    this.messages.length = 0;
   }
 
   joinProtectedRoom() {

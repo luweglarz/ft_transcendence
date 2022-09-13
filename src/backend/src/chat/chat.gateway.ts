@@ -250,7 +250,7 @@ export class ChatGateway
       )) !== null
     )
       return;
-    await this.messageService.createMessage({
+    let nMessage: any = await this.messageService.createMessage({
       content: parsed.content,
       //room: { connect: message.room },
       room: { connect: { name: parsed.room.name } },
@@ -266,6 +266,11 @@ export class ChatGateway
     //parsed.room.messages = await this.messageService.messages({where: {roomId: parsed.room.id}});
     //console.log(parsed.room);
     //this.server.to(socket.id).emit('rooms', [JSON.parse(JSON.stringify(parsed.room))]);
+    const roomUsers = await this.roomUserService.roomUsers({where: {roomId: parsed.room.id}});
+    nMessage.username = socket.data.user.username;
+    for (const roomUser of roomUsers) {
+      this.server.to(roomUser.socketId).emit('msg', nMessage);
+    }
     this.getMsgs(socket, parsed.room.id);
     this.getRoomUsers(parsed.room.id);
   }
@@ -280,10 +285,14 @@ export class ChatGateway
     );
     this.logger.debug(resultCmd);
     const splitRet: string[] = resultCmd.split(/[ ]/);
-    if (splitRet[0] !== '/invite')
-      this.server.to(socket.id).emit('resultCommand', resultCmd);
-    else
+    if (splitRet[0] === '/invite')
       this.server.to(socket.id).emit('resultCommand', 'invited ' + splitRet[2]);
+    else if (splitRet[0] === '/challenge')
+      this.server.to(socket.id).emit('resultCommand', 'challenged ' + splitRet[2]);
+    else if (splitRet[0] === '/w' || splitRet[0] === '/whisper')
+    this.server.to(socket.id).emit('resultCommand', 'whispered to ' + splitRet[2]);
+    else
+      this.server.to(socket.id).emit('resultCommand', resultCmd);
     if (
       splitRet.length === 2 &&
       (splitRet[0] === 'banned' || splitRet[0] === 'muted')
@@ -336,6 +345,20 @@ export class ChatGateway
         invite,
         Room: await this.roomService.room({ id: command.id }),
       });
+    } else if (splitRet[0] === '/w' || splitRet[0] === '/whisper') {
+      for (let i = 5; i < splitRet.length; i++) {
+        splitRet[4] = splitRet[4] + ' ' + splitRet[i];
+      }
+      console.log(splitRet[4]);
+      const dm = {
+        userId: socket.data.user.id,
+        username: socket.data.user.username,
+        targetUserId: +splitRet[1],
+        content: splitRet[4],
+        dm: true,
+      };
+      this.server.to(splitRet[3]).emit('msg', dm);
+      this.server.to(socket.id).emit('msg', dm);
     }
   }
 

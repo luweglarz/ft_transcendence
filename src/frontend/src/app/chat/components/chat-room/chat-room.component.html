@@ -34,7 +34,7 @@
     <div class="chatbox-chat">
       <!--Messages-->
       <div class="chatbox-messages" #msgs>
-          <div *ngFor="let message of (messages|async)">
+          <div *ngFor="let message of (messages)">
               <app-chat-message class="chatbox-messages-app" [message]="message"></app-chat-message>
           </div>
       </div>
