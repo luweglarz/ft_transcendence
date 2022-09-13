@@ -16,7 +16,6 @@ import { Player } from '../../class/player/player';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { MatchmakingGatewayService } from '../matchmaking/matchmaking-gateway.service';
 import { JwtService } from '@nestjs/jwt';
-import { GameMode } from 'src/pong/interface/game-mode.interface';
 
 @WebSocketGateway({ cors: true, path: '/pong' })
 export class GameGateway
@@ -142,12 +141,12 @@ export class GameGateway
     }
   }
 
-  @SubscribeMessage('invitePrivate')
-  invitePrivate(
+  @SubscribeMessage('acceptPrivateInvitation')
+  acceptPrivateInvitation(
     @ConnectedSocket() client: Socket,
-    @MessageBody() infos: string[],
+    @MessageBody() friendUsername: string,
   ) {
-    console.log('usnermae: ' + infos[0] + ' gamemode: ' + infos[1]);
+    console.log('acceptPrivateInvitation');
     try {
       const friend: Socket = this._users.find(
         (element) =>
@@ -155,27 +154,25 @@ export class GameGateway
             JSON.stringify(
               this.jwtService.decode(element.handshake.auth.token),
             ),
-          ).username === infos[0],
+          ).username === friendUsername,
       );
-      console.log('le emit');
       friend.emit(
-        'gameInvitation',
+        'invitationAccepted',
         JSON.parse(
           JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
         ).username,
-        infos[1],
       );
-      console.log('le emit2');
     } catch (error) {
       this.logger.debug(error);
     }
   }
 
-  @SubscribeMessage('acceptInvitation')
-  acceptInvitation(
+  @SubscribeMessage('choosePrivateMode')
+  choosePrivateMode(
     @ConnectedSocket() client: Socket,
     @MessageBody() infos: string[],
   ) {
+    console.log('choosep ricate mode');
     try {
       const friend: Socket = this._users.find(
         (element) =>

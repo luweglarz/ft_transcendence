@@ -264,13 +264,15 @@ export class CommandService {
     });
     if (targetRoomUser.length < 1) return 'user is not in the room';
     if (targetRoomUser.length > 1) return 'database error';
-    return (splitCmd[0] +
+    return (
+      splitCmd[0] +
       ' ' +
       targetUser.id +
       ' ' +
       targetUser.username +
       ' ' +
-      targetRoomUser[0].socketId);
+      targetRoomUser[0].socketId
+    );
   }
 
   async whisper(

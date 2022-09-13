@@ -115,10 +115,8 @@ export class MatchmakingGatewayService {
   createGame(clientPool: Socket[], gameType: string) {
     let gameMode: GameMode;
     let players: Player[];
-    console.log('gameType: ' + gameType);
 
     if (gameType == 'normal') {
-      console.log('create normal game');
       gameMode = new NormalGame(525, 950, 'black', gameType);
       players = [
         new Player(gameMode, clientPool.pop(), 1, 7, 'white'),
@@ -148,7 +146,9 @@ export class MatchmakingGatewayService {
     this.logger.log(
       `Match between ${newRoom.players[0].username} & ${newRoom.players[1].username} in ${newRoom.uuid}`,
     );
+    console.log('emitmatchfound1');
     this.gameGatewayService.emitMatchFound(this.gameGateway.server, newRoom);
+    console.log('emitmatchfound2');
     newRoom.gameLoopInterval = newRoom.gameMode.gameLoop(
       newRoom,
       this.gameGateway.rooms,

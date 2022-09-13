@@ -31,9 +31,11 @@ export class GameSocket extends Socket {
     matchmakingService: MatchmakingService,
     stopWatch: StopWatch,
   ) {
-    this.once(
+    console.log('initon match found');
+    this.on(
       'matchFound',
       (msg: any, gameType: string, gameMapInfo: any, playersInfo: any) => {
+        console.log('matchfouuuuuuuuuuuuuuuuund');
         notificationService.gameFound();
         stopWatch.clearTimer();
         const playerOne: Player = new Player(
@@ -92,6 +94,7 @@ export class GameSocket extends Socket {
 
   onGameFinished(gameService: GameService) {
     this.once('gameFinished', (winner: any, leaver?: any) => {
+      console.log('surgame finished ');
       clearInterval(gameService.keyEventsInterval);
       gameService.isInGame = false;
       if (leaver != null && leaver != undefined)

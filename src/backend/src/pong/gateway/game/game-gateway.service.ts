@@ -95,7 +95,6 @@ export class GameGatewayService {
   }
 
   emitSpectatedGame(server: Server, newRoom: Room) {
-    console.log('Info de la game genre: ' + newRoom.players[0].username);
     server.to(newRoom.uuid).emit(
       'spectatedGame',
       'You are spectating a game',

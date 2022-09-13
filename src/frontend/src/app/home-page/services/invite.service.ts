@@ -33,12 +33,12 @@ export class InviteService {
   }
 
   selectNormal() {
-    this.gameSocket.emit('invitePrivate', this.toInvite, 'normal');
+    this.gameSocket.emit('choosePrivateMode', this.toInvite, 'normal');
     this.closeInvite();
   }
 
   selectFun() {
-    this.gameSocket.emit('invitePrivate', this.toInvite, 'custom');
+    this.gameSocket.emit('choosePrivateMode', this.toInvite, 'custom');
     this.closeInvite();
   }
 }
