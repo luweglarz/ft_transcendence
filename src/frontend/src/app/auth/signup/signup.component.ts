@@ -26,6 +26,7 @@ export class SignUpComponent implements OnInit {
   image_url = assets.defaultAvatar;
   // Oauth specific
   token?: string;
+  signupError = '';
   oAuthUser?: OAuthUserDto;
   private readonly _requirements = {
     username: [
@@ -94,9 +95,11 @@ export class SignUpComponent implements OnInit {
         this.oAuthUser = this.oauth.getOAuthUserData(this.token);
         this.registerForm.patchValue({ username: this.oAuthUser.login });
         this.image_url = this.oAuthUser.image_url;
+        this.signupError = '';
       } else if (params['type'] == 'local') {
         this.signUpType = 'local';
         this.registerForm = this.localForm;
+        this.signupError = '';
       }
     });
   }
@@ -108,12 +111,17 @@ export class SignUpComponent implements OnInit {
         this.registerForm?.value,
         this.token,
       );
-      signUpStatus$.subscribe((response) => {
-        this.signin.signInSuccess(
-          response.tokens.access,
-          response.tokens.refresh,
-        );
-        this.avatar.backendUpload();
+      signUpStatus$.subscribe({
+        next: (response) => {
+          this.signin.signInSuccess(
+            response.tokens.access,
+            response.tokens.refresh,
+          );
+          this.avatar.backendUpload();
+        },
+        error: () => {
+          this.signupError = 'Signup failed.';
+        },
       });
     }
   }

@@ -15,6 +15,7 @@ import { GameGatewayService } from './game-gateway.service';
 import { Player } from '../../class/player/player';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { MatchmakingGatewayService } from '../matchmaking/matchmaking-gateway.service';
+import { JwtService } from '@nestjs/jwt';
 
 @WebSocketGateway({ cors: true, path: '/pong' })
 export class GameGateway
@@ -55,14 +56,14 @@ export class GameGateway
 
   @SubscribeMessage('move')
   movement(@ConnectedSocket() client: Socket, @MessageBody() eventKey: string) {
-    if (this.matchmakingService.isClientInGame(client) === false) {
-      client.disconnect();
-      return;
-    }
+    if (this.matchmakingService.isClientInGame(client) === false) return;
     try {
+      const jwtService = new JwtService();
       const gameRoom: Room = this.gameGatewayService.findRoomId(
         this.rooms,
-        client,
+        JSON.parse(
+          JSON.stringify(jwtService.decode(client.handshake.auth.token)),
+        ).username,
       );
       const player: Player = this.gameGatewayService.findPlayer(
         gameRoom,
@@ -111,6 +112,25 @@ export class GameGateway
       }
     }
     client.emit('error', 'You are not in a game');
+  }
+
+  @SubscribeMessage('spectateGame')
+  spectateGame(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() username: string,
+  ) {
+    if (this.matchmakingService.isUserInGame(username) === false)
+      return;
+    try {
+      const gameRoom: Room = this.gameGatewayService.findRoomId(
+        this.rooms,
+        username,
+      );
+      client.join(gameRoom.uuid);
+      this.gameGatewayService.emitSpectatedGame(this.server, gameRoom);
+    } catch (error) {
+      this.logger.debug(error);
+    }
   }
 
   get rooms(): Room[] {

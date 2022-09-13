@@ -21,6 +21,7 @@ import { JwtAuthModule } from 'src/auth/modules/jwt/jwt-auth.module';
     GameDbService,
     GameController,
     DbService,
+    GameController,
   ],
 })
 export class PongModule {}

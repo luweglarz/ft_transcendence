@@ -34,8 +34,8 @@
       </button>
     </form>
 
-    <div *ngIf="state.failure" class="alert">
-      <p>Error: {{state.reason}}</p>
+    <div *ngIf="signinError" class="alert">
+      <p>Error: {{signinError}}</p>
     </div>
 
     <p>No account ? Sign up <a [routerLink]="['/auth/signup']">here</a></p>

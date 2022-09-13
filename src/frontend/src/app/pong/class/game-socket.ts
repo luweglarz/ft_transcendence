@@ -99,4 +99,52 @@ export class GameSocket extends Socket {
       console.log(winner.username + ' Has won the game');
     });
   }
+
+  onSpectatedGame(
+    gameService: GameService,
+    matchmakingService: MatchmakingService,
+  ) {
+    this.once(
+      'spectatedGame',
+      (msg: any, gameType: string, gameMapInfo: any, playersInfo: any) => {
+        console.log(msg);
+        const playerOne: Player = new Player(
+          playersInfo.height,
+          playersInfo.width,
+          playersInfo.playerOneColor,
+          playersInfo.playerOneUsername,
+        );
+        const playerTwo: Player = new Player(
+          playersInfo.height,
+          playersInfo.width,
+          playersInfo.playerTwoColor,
+          playersInfo.playerTwoUsername,
+        );
+        const ball: Ball = new Ball(
+          gameMapInfo.ballRadius,
+          gameMapInfo.ballColor,
+        );
+        gameService.isInGame = true;
+        if (gameType === 'normal' || gameType === 'ranked') {
+          matchmakingService.game = new NormalGame(
+            gameMapInfo.canvaHeight,
+            gameMapInfo.canvaWidth,
+            gameMapInfo.backgroundColor,
+            [playerOne, playerTwo],
+            ball,
+            gameService,
+          );
+        } else if (gameType === 'custom') {
+          matchmakingService.game = new CustomGame(
+            gameMapInfo.canvaHeight,
+            gameMapInfo.canvaWidth,
+            gameMapInfo.backgroundColor,
+            [playerOne, playerTwo],
+            ball,
+            gameService,
+          );
+        }
+      },
+    );
+  }
 }

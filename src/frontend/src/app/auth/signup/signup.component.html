@@ -14,7 +14,7 @@
       <div class="field-register">
         <label>Choose your username:</label>
         <input formControlName="username" placeholder="Username" name="username" autocomplete="username">
-        <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert">
+        <div *ngIf="username.invalid && (username.dirty || username.touched || username.value)" class="alert">
           <div *ngIf="username.errors?.['required']"> Username is required. </div>
           <div *ngIf="username.errors?.['maxlength']"> Username too long (42 char max). </div>
           <div *ngIf="username.errors?.['isAvailable']"> Username `{{username.value}}` is unavailable. </div>
@@ -51,5 +51,12 @@
 
     </form>
 
+    <div *ngIf="signupError" class="alert">
+      <p>Error: {{signupError}}</p>
+    </div>
+
     <app-select *ngIf="!signUpType"></app-select>
+
+    <!-- Sign-in redirect  -->
+    <p>Already have an account ? Sign in <a [routerLink]="['/auth/signin']">here</a></p>
   </div>
