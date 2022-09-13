@@ -52,7 +52,7 @@ export class GameSocket extends Socket {
           gameMapInfo.ballRadius,
           gameMapInfo.ballColor,
         );
-        gameService.isInGame = true;
+        gameService.isInGame.next(true);
         console.log(msg);
         if (gameType === 'normal' || gameType === 'ranked') {
           matchmakingService.game = new NormalGame(
@@ -93,7 +93,7 @@ export class GameSocket extends Socket {
   onGameFinished(gameService: GameService) {
     this.once('gameFinished', (winner: any, leaver?: any) => {
       clearInterval(gameService.keyEventsInterval);
-      gameService.isInGame = false;
+      gameService.isInGame.next(false);
       if (leaver != null && leaver != undefined)
         console.log(`Player ${leaver.username} has left the game`);
       console.log(winner.username + ' Has won the game');
@@ -124,7 +124,7 @@ export class GameSocket extends Socket {
           gameMapInfo.ballRadius,
           gameMapInfo.ballColor,
         );
-        gameService.isInGame = true;
+        gameService.isInGame.next(true);
         if (gameType === 'normal' || gameType === 'ranked') {
           matchmakingService.game = new NormalGame(
             gameMapInfo.canvaHeight,

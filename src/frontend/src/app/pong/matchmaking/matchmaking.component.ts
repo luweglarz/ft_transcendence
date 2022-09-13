@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
 import { EventsService } from 'src/app/services/events.service';
+import { GameService } from '../game/game.service';
 import { MatchmakingService } from './matchmaking.service';
 
 @Component({
@@ -8,7 +10,7 @@ import { MatchmakingService } from './matchmaking.service';
   templateUrl: './matchmaking.component.html',
   styleUrls: ['./matchmaking.component.css'],
 })
-export class MatchmakingComponent {
+export class MatchmakingComponent implements OnInit {
   normalQueue = false;
   customQueue = false;
   rankedQueue = false;
@@ -16,11 +18,19 @@ export class MatchmakingComponent {
   constructor(
     public matchmakingService: MatchmakingService,
     public collapseService: CollapseService,
+    private gameService: GameService,
+    private router: Router,
     private eventsService: EventsService,
   ) {
     this.eventsService.auth.signout.subscribe(() => {
       this.matchmakingService.requestLeaveMatchmaking();
       this.matchmakingService.socket.disconnect();
+    });
+  }
+
+  ngOnInit() {
+    this.gameService.isInGame.subscribe((isInGame) => {
+      if (isInGame) this.router.navigate(['/game']);
     });
   }
 

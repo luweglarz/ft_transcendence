@@ -5,10 +5,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { JwtService } from 'src/app/auth/jwt';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
-import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { EventsService } from 'src/app/services/events.service';
 import { GameMode } from '../interface/game-mode';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
@@ -26,8 +26,9 @@ export class GameComponent implements OnInit {
     private eventsService: EventsService,
     private matchmakingService: MatchmakingService,
     private jwtService: JwtService,
-    private notificationService: NotificationService,
+    private router: Router,
   ) {
+    if (!this.gameService.isInGame.getValue()) this.router.navigate(['/']);
     this.eventsService.auth.signout.subscribe(() => {
       this.gameService.requestLeaveGame();
       this.gameService.socket.disconnect();
@@ -38,6 +39,9 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.gameService.sendKeyEvents();
     this.gameService.socket.onGameFinished(this.gameService);
+    this.gameService.isInGame.subscribe((isInGame) => {
+      if (!isInGame) this.router.navigate(['']);
+    });
   }
 
   public game: GameMode;
