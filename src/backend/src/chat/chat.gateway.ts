@@ -362,6 +362,7 @@ export class ChatGateway
         content: splitRet[4],
         createdAt: new Date(Date.now()),
         dm: true,
+        targetUsernameDm: splitRet[2],
       };
       this.server.to(splitRet[3]).emit('msg', dm);
       this.server.to(socket.id).emit('msg', dm);
