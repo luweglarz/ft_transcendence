@@ -2,11 +2,12 @@ import {
   Component,
   ElementRef,
   HostListener,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { JwtService } from 'src/app/auth/jwt';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
 import { GameMode } from '../interface/game-mode';
@@ -18,7 +19,8 @@ import { GameService } from './game.service';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css'],
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
+  private _navToHome?: Subscription;
   constructor(
     public collapseService: CollapseService,
     public gameService: GameService,
@@ -28,16 +30,18 @@ export class GameComponent implements OnInit {
   ) {
     this.game = matchmakingService.game;
   }
-
   ngOnInit() {
     this.gameService.sendKeyEvents();
     this.gameService.socket.onGameFinished(this.gameService);
-    this.gameService.isInGame.subscribe((isInGame) => {
+    this._navToHome = this.gameService.isInGame.subscribe((isInGame) => {
       if (!isInGame)
         this.router.navigate([''], {
           queryParamsHandling: 'preserve',
         });
     });
+  }
+  ngOnDestroy(): void {
+    this._navToHome?.unsubscribe();
   }
 
   public game: GameMode;

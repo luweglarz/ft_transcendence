@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -12,13 +11,13 @@ import { MatchmakingService } from './matchmaking.service';
   styleUrls: ['./matchmaking.component.css'],
 })
 export class MatchmakingComponent implements OnInit, OnDestroy {
-  private _subscriptions = new Array<Subscription>();
+  private _navToGame?: Subscription;
+
   constructor(
     public matchmakingService: MatchmakingService,
     public collapseService: CollapseService,
     private gameService: GameService,
     private router: Router,
-    private location: Location,
   ) {}
 
   get queue() {
@@ -29,14 +28,12 @@ export class MatchmakingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._subscriptions.push(
-      this.gameService.isInGame.subscribe((isInGame) => {
-        if (isInGame) this.router.navigate(['/game']);
-      }),
-    );
-    // this.location.subscribe((popStateEvent) => {
-    //   console.debug(popStateEvent);
-    // });
+    this._navToGame = this.gameService.isInGame.subscribe((isInGame) => {
+      if (isInGame) this.router.navigate(['/game']);
+    });
+  }
+  ngOnDestroy() {
+    this._navToGame?.unsubscribe();
   }
 
   buttonRequestJoinMatchmaking(matchmakingType: typeof this.queue) {
@@ -45,10 +42,5 @@ export class MatchmakingComponent implements OnInit, OnDestroy {
 
   buttonRequestLeaveMatchmaking() {
     this.matchmakingService.requestLeaveMatchmaking();
-  }
-
-  ngOnDestroy() {
-    for (const sub of this._subscriptions) sub.unsubscribe();
-    // console.warn('destroy');
   }
 }
