@@ -26,10 +26,6 @@ export class GameComponent implements OnInit {
     private jwtService: JwtService,
     private router: Router,
   ) {
-    if (!this.gameService.isInGame.getValue())
-      this.router.navigate([''], {
-        queryParamsHandling: 'preserve',
-      });
     this.game = matchmakingService.game;
   }
 
