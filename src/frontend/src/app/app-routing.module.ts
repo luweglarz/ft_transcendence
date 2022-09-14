@@ -8,12 +8,20 @@ import { SignOutComponent } from './auth/signout/signout.component';
 import { InfoComponent } from './auth/info/info.component';
 import { OtpPageComponent } from './auth/two-factors/otp-page/otp-page.component';
 import { IsSignedInGuard } from './auth/jwt/guard/is-signed-in.guard';
+import { MatchmakingComponent } from './pong/matchmaking/matchmaking.component';
+import { GameComponent } from './pong/game/game.component';
+import { IsInGameGuard } from './pong/guard/is-in-game.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     canActivate: [IsSignedInGuard],
+    canActivateChild: [IsInGameGuard],
+    children: [
+      { path: '', component: MatchmakingComponent },
+      { path: 'game', component: GameComponent },
+    ],
   },
   {
     path: 'auth',

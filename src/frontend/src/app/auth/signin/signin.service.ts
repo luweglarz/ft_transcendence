@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { EventsService } from 'src/app/services/events.service';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
@@ -16,8 +16,8 @@ import { SignInData } from './interfaces/signin-data.interface';
 export class SigninService {
   private readonly local_signin_url = `${environment.backend}/auth/local/signin`;
   private readonly oauth_signin_url = `${environment.backend}/auth/oauth42/signin`;
-  private _signinError = new Subject<string>();
-  signinError$ = this._signinError.asObservable();
+  signinErrorSubject = new BehaviorSubject<string>('');
+  signinError$ = this.signinErrorSubject.asObservable();
   private signinEvent: EventEmitter<boolean>;
 
   constructor(
@@ -80,6 +80,6 @@ export class SigninService {
     // redirect to the signin page
     this.router
       .navigate(['/auth/signin'])
-      .then(() => this._signinError.next(errMsg));
+      .then(() => this.signinErrorSubject.next(errMsg));
   }
 }

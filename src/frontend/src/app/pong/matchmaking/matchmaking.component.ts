@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
-import { EventsService } from 'src/app/services/events.service';
+import { GameService } from '../game/game.service';
 import { MatchmakingService } from './matchmaking.service';
 
 @Component({
@@ -8,47 +10,37 @@ import { MatchmakingService } from './matchmaking.service';
   templateUrl: './matchmaking.component.html',
   styleUrls: ['./matchmaking.component.css'],
 })
-export class MatchmakingComponent {
-  normalQueue = false;
-  customQueue = false;
-  rankedQueue = false;
+export class MatchmakingComponent implements OnInit, OnDestroy {
+  private _navToGame?: Subscription;
 
   constructor(
     public matchmakingService: MatchmakingService,
     public collapseService: CollapseService,
-    private eventsService: EventsService,
-  ) {
-    this.eventsService.auth.signout.subscribe(() => {
-      this.matchmakingService.requestLeaveMatchmaking();
-      this.matchmakingService.socket.disconnect();
+    private gameService: GameService,
+    private router: Router,
+  ) {}
+
+  get queue() {
+    return this.matchmakingService.queue;
+  }
+  get stopWatch() {
+    return this.matchmakingService.stopWatch;
+  }
+
+  ngOnInit() {
+    this._navToGame = this.gameService.isInGame.subscribe((isInGame) => {
+      if (isInGame) this.router.navigate(['/game']);
     });
   }
-
-  buttonRequestJoinNormalMatchmaking() {
-    this.matchmakingService.requestJoinNormalMatchmaking();
-    this.normalQueue = true;
-    this.customQueue = false;
-    this.rankedQueue = false;
+  ngOnDestroy() {
+    this._navToGame?.unsubscribe();
   }
 
-  buttonRequestJoinRankedMatchmaking() {
-    this.matchmakingService.requestJoinRankedMatchmaking();
-    this.normalQueue = false;
-    this.customQueue = false;
-    this.rankedQueue = true;
-  }
-
-  buttonRequestJoinCustomMatchmaking() {
-    this.matchmakingService.requestJoinCustomMatchmaking();
-    this.normalQueue = false;
-    this.customQueue = true;
-    this.rankedQueue = false;
+  buttonRequestJoinMatchmaking(matchmakingType: typeof this.queue) {
+    this.matchmakingService.requestJoinMatchmaking(matchmakingType);
   }
 
   buttonRequestLeaveMatchmaking() {
     this.matchmakingService.requestLeaveMatchmaking();
-    this.normalQueue = false;
-    this.customQueue = false;
-    this.rankedQueue = false;
   }
 }

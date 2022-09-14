@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { toDataURL } from 'qrcode';
-import { tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { OtpCode } from '../dto';
 import { TwoFactorSecret } from '../dto/secret-data.dto';
@@ -12,8 +12,9 @@ import { TwoFactorSecret } from '../dto/secret-data.dto';
   templateUrl: './qrcode.component.html',
   styleUrls: ['./qrcode.component.css'],
 })
-export class QrcodeComponent implements OnInit {
+export class QrcodeComponent implements OnInit, OnDestroy {
   enabled = this.fb.control<boolean>(false, { nonNullable: true });
+  private _enableSubscription?: Subscription;
   secret?: string;
   codeSrc?: string;
   codeValid?: boolean;
@@ -25,14 +26,19 @@ export class QrcodeComponent implements OnInit {
       .get<boolean>(`${environment.backend}/auth/two-factors/is-enabled`)
       .pipe(tap((enabled) => this.enabled.setValue(enabled)))
       .subscribe(() => {
-        this.enabled.valueChanges.subscribe((enabled) => {
-          if (enabled) {
-            this.enable();
-          } else {
-            this.disable();
-          }
-        });
+        this._enableSubscription = this.enabled.valueChanges.subscribe(
+          (enabled) => {
+            if (enabled) {
+              this.enable();
+            } else {
+              this.disable();
+            }
+          },
+        );
       });
+  }
+  ngOnDestroy(): void {
+    this._enableSubscription?.unsubscribe();
   }
 
   disable() {
