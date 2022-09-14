@@ -28,7 +28,10 @@ export class GameComponent implements OnInit {
     private jwtService: JwtService,
     private router: Router,
   ) {
-    if (!this.gameService.isInGame.getValue()) this.router.navigate(['/']);
+    if (!this.gameService.isInGame.getValue())
+      this.router.navigate([''], {
+        queryParamsHandling: 'preserve',
+      });
     this.eventsService.auth.signout.subscribe(() => {
       this.gameService.requestLeaveGame();
       this.gameService.socket.disconnect();
@@ -40,7 +43,10 @@ export class GameComponent implements OnInit {
     this.gameService.sendKeyEvents();
     this.gameService.socket.onGameFinished(this.gameService);
     this.gameService.isInGame.subscribe((isInGame) => {
-      if (!isInGame) this.router.navigate(['']);
+      if (!isInGame)
+        this.router.navigate([''], {
+          queryParamsHandling: 'preserve',
+        });
     });
   }
 
