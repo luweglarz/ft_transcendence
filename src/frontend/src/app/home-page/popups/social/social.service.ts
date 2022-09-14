@@ -126,7 +126,8 @@ export class SocialService {
   }
 
   //Return the relations status between 2 users
-  checkUserRelation(author: string, target: string): string {
+  checkUserRelation(author: string, target: string | undefined): string {
+    if (target === undefined) return '';
     let foundIndex = this.blocked.findIndex(
       (social) => social.authorName === author && social.targetName === target,
     );

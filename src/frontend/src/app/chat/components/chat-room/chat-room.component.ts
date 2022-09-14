@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
 import { JwtService } from 'src/app/auth/jwt';
 import { GameComponent } from 'src/app/pong/game/game.component';
+import { SocialService } from 'src/app/home-page/popups/social/social.service';
 
 @Component({
   selector: 'app-chat-room',
@@ -32,9 +33,10 @@ export class ChatRoomComponent implements OnChanges {
   pass: UntypedFormControl = new UntypedFormControl(null, [
     Validators.required,
   ]);
-  messagesEvent = this.chatService.getMsg().subscribe((nMessages: Message) => {
-    console.log(nMessages);
-    this.messages.push(nMessages);
+  messagesEvent = this.chatService.getMsg().subscribe((nMessage: Message) => {
+    console.log(nMessage);
+    if (this.socialService.checkUserRelation(this.username, nMessage.username) !== 'blocked')
+      this.messages.push(nMessage);
   });
   messages: Message[] = [];
   //roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
@@ -54,6 +56,7 @@ export class ChatRoomComponent implements OnChanges {
     public popupsService: PopupsService,
     private jwtService: JwtService,
     public gameComponent: GameComponent,
+    private socialService: SocialService,
   ) {
     const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
@@ -89,7 +92,7 @@ export class ChatRoomComponent implements OnChanges {
       for (const message of msgs) {
         let add = true;
         for (const oldm of this.messages) {
-          if (message.id === oldm.id) add = false;
+          if (message.id === oldm.id || this.socialService.checkUserRelation(this.username, message.username) === 'blocked') add = false;
         }
         if (add) this.messages.push(message);
       }
