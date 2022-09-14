@@ -34,6 +34,7 @@ export class GameSocket extends Socket {
     this.once(
       'matchFound',
       (msg: any, gameType: string, gameMapInfo: any, playersInfo: any) => {
+        matchmakingService.requestLeaveMatchmaking();
         notificationService.gameFound();
         stopWatch.clearTimer();
         const playerOne: Player = new Player(

@@ -11,10 +11,6 @@ import { MatchmakingService } from './matchmaking.service';
   styleUrls: ['./matchmaking.component.css'],
 })
 export class MatchmakingComponent implements OnInit {
-  normalQueue = false;
-  customQueue = false;
-  rankedQueue = false;
-
   constructor(
     public matchmakingService: MatchmakingService,
     public collapseService: CollapseService,
@@ -28,37 +24,24 @@ export class MatchmakingComponent implements OnInit {
     });
   }
 
+  get queue() {
+    return this.matchmakingService.queue;
+  }
+  get stopWatch() {
+    return this.matchmakingService.stopWatch;
+  }
+
   ngOnInit() {
     this.gameService.isInGame.subscribe((isInGame) => {
       if (isInGame) this.router.navigate(['/game']);
     });
   }
 
-  buttonRequestJoinNormalMatchmaking() {
-    this.matchmakingService.requestJoinNormalMatchmaking();
-    this.normalQueue = true;
-    this.customQueue = false;
-    this.rankedQueue = false;
-  }
-
-  buttonRequestJoinRankedMatchmaking() {
-    this.matchmakingService.requestJoinRankedMatchmaking();
-    this.normalQueue = false;
-    this.customQueue = false;
-    this.rankedQueue = true;
-  }
-
-  buttonRequestJoinCustomMatchmaking() {
-    this.matchmakingService.requestJoinCustomMatchmaking();
-    this.normalQueue = false;
-    this.customQueue = true;
-    this.rankedQueue = false;
+  buttonRequestJoinMatchmaking(matchmakingType: typeof this.queue) {
+    this.matchmakingService.requestJoinMatchmaking(matchmakingType);
   }
 
   buttonRequestLeaveMatchmaking() {
     this.matchmakingService.requestLeaveMatchmaking();
-    this.normalQueue = false;
-    this.customQueue = false;
-    this.rankedQueue = false;
   }
 }
