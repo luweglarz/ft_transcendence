@@ -1,3 +1,4 @@
+/*  */
 .chatbox {
   display: flex;
   flex-direction: row;
@@ -96,11 +97,12 @@
   flex-direction: column;
   width: calc(70% - 12px);
   height: 238px;
-
-  /* background-color: yellow; */
 }
 
 .chatbox-messages {
+  display: flex;
+  flex-direction: column-reverse;
+
   overflow-y: scroll;
   overflow-x: hidden;
   padding: 0;
@@ -133,6 +135,10 @@
   height: 32px;
   width: calc(100% - 64px);
   margin-left: 8px;
+
+  border-radius: 1em;
+  background-color: #1a202c;
+  border: 0;
 }
 
 .chatbox-input-button {

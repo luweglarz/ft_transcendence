@@ -10,16 +10,24 @@
 
 .message-author {
   width: fit-content;
+  height: 16px;
   font-weight: bolder;
   font-size: 16px;
   margin: 2px 0px 2px 8px;
+  white-space: nowrap;
 }
 
 .message-content {
-  overflow-wrap: break-word;
+  word-break: break-all;
   padding-left: 8px;
   height: fit-content;
   width: max-content;
   font-size: 16px;
   margin: 2px 0px 2px 0px;
+}
+
+.dm {
+  color: rgb(196, 196, 196);
+  font-style: italic;
+  font-weight: lighter;
 }
