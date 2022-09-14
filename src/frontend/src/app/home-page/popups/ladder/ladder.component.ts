@@ -34,8 +34,9 @@ export class LadderComponent implements OnInit {
     public jwtService: JwtService,
     public socialService: SocialService,
     public gameComponent: GameComponent,
-    public inviteService: InviteService,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
     this.http
@@ -44,10 +45,6 @@ export class LadderComponent implements OnInit {
         this.ladder = data;
         this.isLoaded = true;
       });
-  }
-
-  ngOnInit(): void {
-    //
   }
 
   colorPodium(index: number): string {

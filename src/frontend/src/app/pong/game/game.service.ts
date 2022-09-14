@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { JwtService } from 'src/app/auth/jwt';
+import { EventsService } from 'src/app/services/events.service';
 import { CustomGame } from '../class/game-mode/custom-game';
 import { GameSocket } from '../class/game-socket';
 import { GameMode } from '../interface/game-mode';
@@ -9,12 +10,19 @@ import { GameMode } from '../interface/game-mode';
   providedIn: 'root',
 })
 export class GameService {
-  constructor(private _socket: GameSocket, private jwtService: JwtService) {
-    this.isInGame = false;
+  constructor(
+    private _socket: GameSocket,
+    private jwtService: JwtService,
+    private events: EventsService,
+  ) {
     this.keyPressed = '';
+    this.events.auth.signout.subscribe(() => {
+      this.requestLeaveGame();
+      this.socket.disconnect();
+    });
   }
 
-  public isInGame: boolean;
+  public isInGame = new BehaviorSubject<boolean>(false);
   public keyPressed: string;
   public keyEventsInterval: any;
 
@@ -27,7 +35,7 @@ export class GameService {
   }
 
   requestLeaveGame() {
-    this.isInGame = false;
+    this.isInGame.next(false);
     this.jwtService
       .getToken$()
       .pipe(tap((token) => (this.socket.ioSocket.auth = { token: token })))

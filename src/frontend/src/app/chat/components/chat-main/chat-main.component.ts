@@ -7,6 +7,7 @@ import { Invite } from '../../interface/invite';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
 import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.component';
 import { ChatInviteComponent } from '../chat-invite/chat-invite.component';
+import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { GameSocket } from 'src/app/pong/class/game-socket';
 import { WaitService } from 'src/app/home-page/services/wait.service';
 
@@ -22,6 +23,7 @@ export class ChatMainComponent implements OnInit, OnDestroy {
   invites: Invite[] = [];
   inviteEvent = this.chatService.getInvitations().subscribe((inv) => {
     console.log(inv);
+    this.notification.inviteReceived();
     inv.invite.room = inv.Room;
     this.invites.push(inv.invite);
   });
@@ -29,6 +31,7 @@ export class ChatMainComponent implements OnInit, OnDestroy {
   constructor(
     private chatService: ChatService,
     public dialog: MatDialog,
+    private notification: NotificationService,
     private gameSocket: GameSocket,
     private waitService: WaitService,
   ) {}

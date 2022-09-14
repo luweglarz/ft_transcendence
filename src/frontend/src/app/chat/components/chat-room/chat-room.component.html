@@ -4,12 +4,12 @@
       <div class="chatbox-roomuser-items">
         <div class="chatbox-roomuser-item" *ngFor="let roomUser of (roomUsers)" (mouseenter)="roomUser.showButtons = true" (mouseleave)="roomUser.showButtons = false">
           <!-- User info -->
-          <img *ngIf="!roomUser.showButtons || roomUser.username == username" class="chatbox-roomuser-item-avatar" avatar username="{{ roomUser.username }}">
+          <img (click)="openProfile(username)" *ngIf="!roomUser.showButtons || roomUser.username == username" class="chatbox-roomuser-item-avatar" avatar username="{{ roomUser.username }}">
           <p *ngIf="!roomUser.showButtons || roomUser.username == username">{{ roomUser.username }}</p>
 
           <!-- Buttons -->
-          <!-- Profil -->
-          <svg (click)="popupsService.openProfil(roomUser.username)" class="chatbox-roomuser-item-button" *ngIf="roomUser.showButtons && roomUser.username != username" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Profil button -->
+          <svg (click)="openProfile(roomUser.username)" class="chatbox-roomuser-item-button" *ngIf="roomUser.showButtons && roomUser.username != username" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 9C11.1755 9 12.9375 7.23797 12.9375 5.0625C12.9375 2.88703 11.1755 1.125 9 1.125C6.82453 1.125 5.0625 2.88703 5.0625 5.0625C5.0625 7.23797 6.82453 9 9 9ZM9 10.9688C6.37172 10.9688 1.125 12.2878 1.125 14.9062V14.9062C1.125 15.9936 2.00644 16.875 3.09375 16.875H14.9062C15.9936 16.875 16.875 15.9936 16.875 14.9062V14.9062C16.875 12.2878 11.6283 10.9688 9 10.9688Z"/>
           </svg>
 
@@ -39,7 +39,7 @@
     <div class="chatbox-chat">
       <!--Messages-->
       <div class="chatbox-messages" #msgs>
-          <div *ngFor="let message of (messages)">
+          <div *ngFor="let message of messages.reverse()">
               <app-chat-message class="chatbox-messages-app" [message]="message"></app-chat-message>
           </div>
       </div>

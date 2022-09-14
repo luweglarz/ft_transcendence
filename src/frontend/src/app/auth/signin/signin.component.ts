@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { OAuthService } from '../oauth';
 import { SignoutService } from '../signout/signout.service';
 import { SigninService } from './signin.service';
@@ -9,8 +10,9 @@ import { SigninService } from './signin.service';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css'],
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent implements OnInit, OnDestroy {
   signinError?: string;
+  private _signinErrorSubscription?: Subscription;
 
   signInForm = this.formBuilder.nonNullable.group({
     username: ['', Validators.required],
@@ -27,11 +29,17 @@ export class SignInComponent implements OnInit {
     if (window.history.state['error'])
       this.signinError = window.history.state['error'];
     // otherwise errors are emitted within SigninService
-    this.service.signinError$.subscribe((err) => (this.signinError = err));
   }
 
   ngOnInit(): void {
     this.signOut.signOut();
+    this._signinErrorSubscription = this.service.signinError$.subscribe(
+      (err) => (this.signinError = err),
+    );
+  }
+  ngOnDestroy(): void {
+    this.service.signinErrorSubject.next('');
+    this._signinErrorSubscription?.unsubscribe();
   }
 
   localSignIn() {

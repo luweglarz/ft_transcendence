@@ -4,6 +4,7 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
   SimpleChanges,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
@@ -12,7 +13,7 @@ import { AvatarService } from '../avatar.service';
 @Directive({
   selector: '[avatar]',
 })
-export class AvatarDirective implements AfterViewInit, OnChanges {
+export class AvatarDirective implements AfterViewInit, OnChanges, OnDestroy {
   private img: HTMLImageElement;
   private _srcSubstription?: Subscription;
   @Input() username = '';
@@ -24,6 +25,9 @@ export class AvatarDirective implements AfterViewInit, OnChanges {
 
   ngAfterViewInit(): void {
     this.subscribeSrc();
+  }
+  ngOnDestroy(): void {
+    this._srcSubstription?.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -7,6 +7,14 @@
   background-color: #2c3649;
 }
 
+/* Chat */
+.chat-box {
+  height: 260px;
+  width: calc(75% - 12px);
+  background-color: #44526f;
+  border-radius: 1em;
+}
+
 /* Rooms selection */
 .chat-selection {
   display: flex;
@@ -90,6 +98,9 @@
 }
 
 .chat-selection-button {
+  position: relative;
+  overflow: hidden;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -126,18 +137,47 @@
   transition: 0.3s;
 }
 
-/* Chat */
-.chat-box {
-  height: 260px;
-  width: calc(75% - 12px);
-  background-color: #44526f;
+/* Notification */
+.notification {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 18px;
+  width: 18px;
   border-radius: 1em;
+  overflow: hidden;
+  transition: 0.3s;
+  background-color: #44526f;
+  border: 1px solid #1a202c;
 }
 
-/* Invite */
-/* .chat-invite {
-  height: 260px;
-  width: calc(25% - 12px);
-  background-color: #44526f;
-  border-radius: 1em;
-} */
+.notification-number {
+  font-size: 14px;
+  font-weight: bolder;
+  height: fit-content;
+  width: fit-content;
+  transition: 0.3s;
+  color: white;
+}
+
+.chat-selection-button:hover .notification {
+  transition: 0.3s;
+  border: 1px solid #44526f;
+}
+
+.chat-selection-button:active .notification {
+  transition: 0.3s;
+  background-color: #1a202c;
+  border: 1px solid white;
+}
+
+.chat-selection-button:active .notification-number {
+  transition: 0.3s;
+  color: white;
+}
+

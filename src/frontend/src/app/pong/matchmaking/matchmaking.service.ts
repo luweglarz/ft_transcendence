@@ -34,17 +34,20 @@ export class MatchmakingService {
 
   private _stopWatch: StopWatch;
   public game!: GameMode;
+  public queue?: 'normal' | 'custom' | 'ranked';
 
   get stopWatch(): StopWatch {
     return this._stopWatch;
   }
 
-  requestJoinNormalMatchmaking() {
+  requestJoinMatchmaking(type: typeof this.queue) {
     this.jwtService
       .getToken$()
       .pipe(tap((token) => (this.socket.ioSocket.auth = { token: token })))
       .subscribe(() => {
         this.socket.connect();
+        this.socket.emit('joinMatchmaking', type);
+        this.socket.onWaitingForAMatch(this.stopWatch);
         this.socket.onMatchFound(
           this.notificationService,
           this.gameService,
@@ -54,42 +57,7 @@ export class MatchmakingService {
         this.socket.emit('joinMatchmaking', 'normal');
         this.socket.onWaitingForAMatch(this.stopWatch);
         this.socket.onMatchmakingLeft();
-      });
-  }
-
-  requestJoinRankedMatchmaking() {
-    this.jwtService
-      .getToken$()
-      .pipe(tap((token) => (this.socket.ioSocket.auth = { token: token })))
-      .subscribe(() => {
-        this.socket.connect();
-        this.socket.onMatchFound(
-          this.notificationService,
-          this.gameService,
-          this,
-          this._stopWatch,
-        );
-        this.socket.emit('joinMatchmaking', 'ranked');
-        this.socket.onWaitingForAMatch(this.stopWatch);
-        this.socket.onMatchmakingLeft();
-      });
-  }
-
-  requestJoinCustomMatchmaking() {
-    this.jwtService
-      .getToken$()
-      .pipe(tap((token) => (this.socket.ioSocket.auth = { token: token })))
-      .subscribe(() => {
-        this.socket.connect();
-        this.socket.onMatchFound(
-          this.notificationService,
-          this.gameService,
-          this,
-          this._stopWatch,
-        );
-        this.socket.emit('joinMatchmaking', 'custom');
-        this.socket.onWaitingForAMatch(this.stopWatch);
-        this.socket.onMatchmakingLeft();
+        this.queue = type;
       });
   }
 
@@ -100,6 +68,7 @@ export class MatchmakingService {
       .subscribe(() => {
         this._stopWatch.clearTimer();
         this.socket.emit('leaveMatchmaking');
+        this.queue = undefined;
       });
   }
 }

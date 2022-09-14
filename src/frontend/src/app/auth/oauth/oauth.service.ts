@@ -41,19 +41,18 @@ export class OAuthService {
    * according to the callback url state
    */
   oauthCallback(route: ActivatedRoute) {
-    route.queryParams.subscribe((params) => {
-      if (params['code']) {
-        if (params['state'] == 'signup') this.getTempToken(params['code']);
-        else if (params['state'] == 'signin')
-          this.signin.signIn({
-            type: 'oauth',
-            code: params['code'],
-            form: undefined,
-          });
-      } else {
-        console.warn('"code" or "state" query param is missing.');
-      }
-    });
+    const params = route.snapshot.queryParams;
+    if (params['code']) {
+      if (params['state'] == 'signup') this.getTempToken(params['code']);
+      else if (params['state'] == 'signin')
+        this.signin.signIn({
+          type: 'oauth',
+          code: params['code'],
+          form: undefined,
+        });
+    } else {
+      console.warn('"code" or "state" query param is missing.');
+    }
   }
 
   /*

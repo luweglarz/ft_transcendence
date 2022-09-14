@@ -85,9 +85,17 @@ export class ChatRoomComponent implements OnChanges {
       console.log(roomUsers);
       if (roomUsers.length !== 0) this.roomUsers = roomUsers;
     });
-    //this.messages = this.chatService.getMsgs();
     this.messages = [];
     this.messages.length = 0;
+    this.chatService.getMsgs().subscribe((msgs: Message[]) => {
+      for (const message of msgs) {
+        let add = true;
+        for (const oldm of this.messages) {
+          if (message.id === oldm.id) add = false;
+        }
+        if (add) this.messages.push(message);
+      }
+    });
   }
 
   joinProtectedRoom() {
