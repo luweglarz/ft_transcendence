@@ -439,6 +439,18 @@ export class ChatGateway
     await this.prisma.invite.delete({ where: { id: inviteId } });
   }
 
+  @SubscribeMessage('roomNameAvailable')
+  async roomNameAvailable(socket: Socket, roomName: string) {
+    if (!roomName) return;
+    if (
+      (await this.roomService.rooms({ where: { name: roomName } })).length > 0
+    ) {
+      this.server.to(socket.id).emit('roomNameAvailable', false);
+      return;
+    }
+    this.server.to(socket.id).emit('roomNameAvailable', true);
+  }
+
   async getRoomUsers(roomId: number) {
     const roomUsers = JSON.parse(
       JSON.stringify(
