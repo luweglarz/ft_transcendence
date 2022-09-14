@@ -1,5 +1,8 @@
 <!-- Matchmaking container -->
-<div class="matchmaking-cards" [ngClass]=" collapseService.chatCollapsed ? 'matchmaking-cards-collapsed': ''">
+<app-invite *ngIf="inviteService.isInInvite"></app-invite>
+<app-wait *ngIf="waitService.isInWait"></app-wait>
+
+<div *ngIf="!inviteService.isInInvite && !waitService.isInWait" class="matchmaking-cards" [ngClass]=" collapseService.chatCollapsed ? 'matchmaking-cards-collapsed': ''">
 
   <!-- Matchmaking gamemode-->
   <div *ngIf="!queue || queue == 'normal'" [ngClass]="queue ? 'matchmaking-card matchmaking-card-selected': 'matchmaking-card'">

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { PopupsService } from 'src/app/home-page/popups/popups.service';
+import { CollapseService } from 'src/app/home-page/services/collapse.service';
 import { GameSocket } from 'src/app/pong/class/game-socket';
-import { PopupsService } from '../popups/popups.service';
-import { CollapseService } from './collapse.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CollapseService } from '../services/collapse.service';
-import { InviteService } from '../services/invite.service';
+import { CollapseService } from '../../../home-page/services/collapse.service';
+import { InviteService } from './invite.service';
 
 @Component({
   selector: 'app-invite',

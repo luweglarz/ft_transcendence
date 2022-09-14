@@ -9,7 +9,7 @@ import { ChatRoomCreateComponent } from '../chat-room-create/chat-room-create.co
 import { ChatInviteComponent } from '../chat-invite/chat-invite.component';
 import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { GameSocket } from 'src/app/pong/class/game-socket';
-import { WaitService } from 'src/app/home-page/services/wait.service';
+import { WaitService } from 'src/app/pong/matchmaking/wait/wait.service';
 
 @Component({
   selector: 'app-chat',

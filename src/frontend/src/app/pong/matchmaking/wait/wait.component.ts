@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { CollapseService } from '../services/collapse.service';
-import { WaitService } from '../services/wait.service';
+import { CollapseService } from '../../../home-page/services/collapse.service';
+import { WaitService } from './wait.service';
 
 @Component({
   selector: 'app-wait',
