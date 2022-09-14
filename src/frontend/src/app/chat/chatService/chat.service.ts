@@ -22,6 +22,10 @@ export class ChatService {
     return this.socket.fromEvent<Message[]>('msgs');
   }
 
+  getMsg(): Observable<Message> {
+    return this.socket.fromEvent<Message>('msg');
+  }
+
   getRoomUsers(): Observable<RoomUser[]> {
     return this.socket.fromEvent<RoomUser[]>('roomUsers');
   }
@@ -44,6 +48,15 @@ export class ChatService {
 
   getInvitations(): Observable<{ invite: Invite; Room: Room }> {
     return this.socket.fromEvent<{ invite: Invite; Room: Room }>('invitation');
+  }
+
+  deleteInvite(inviteId: number | undefined) {
+    return this.socket.emit('inviteRemove', inviteId);
+  }
+
+  roomNameAvailable(roomName: any): Promise<boolean> {
+    this.socket.emit('roomNameAvailable', roomName);
+    return this.socket.fromOneTimeEvent<boolean>('roomNameAvailable');
   }
 
   openChat() {

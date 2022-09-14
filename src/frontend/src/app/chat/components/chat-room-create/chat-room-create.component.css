@@ -68,6 +68,10 @@
   color: red;
 }
 
+::ng-deep.mat-select-value-text {
+  color: white;
+}
+
 
 .chatroom-create-label {
   color: white;

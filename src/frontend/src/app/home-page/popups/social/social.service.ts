@@ -219,6 +219,7 @@ export class SocialService {
 
   //Return true if the user is online.
   isOnline(username: string): boolean {
+    console.log(username);
     return true;
   }
 
