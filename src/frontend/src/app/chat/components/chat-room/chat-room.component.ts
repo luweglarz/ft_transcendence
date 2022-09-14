@@ -10,7 +10,6 @@ import { UntypedFormControl, Validators } from '@angular/forms';
 import { Message } from 'src/app/chat/interface/message';
 import { Room } from 'src/app/chat/interface/room';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
-import { Observable } from 'rxjs';
 import { RoomUser } from 'src/app/chat/interface/roomUser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
@@ -33,7 +32,11 @@ export class ChatRoomComponent implements OnChanges {
   pass: UntypedFormControl = new UntypedFormControl(null, [
     Validators.required,
   ]);
-  messages: Observable<Message[]> = this.chatService.getMsgs();
+  messagesEvent = this.chatService.getMsg().subscribe((nMessages: Message) => {
+    console.log(nMessages);
+    this.messages.push(nMessages);
+  });
+  messages: Message[] = [];
   //roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
   roomUsers: RoomUser[] = [];
   banMute = this.chatService.getBanMuteResult().subscribe((commandReturn) => {
@@ -80,7 +83,17 @@ export class ChatRoomComponent implements OnChanges {
       console.log(roomUsers);
       if (roomUsers.length !== 0) this.roomUsers = roomUsers;
     });
-    this.messages = this.chatService.getMsgs();
+    this.messages = [];
+    this.messages.length = 0;
+    this.chatService.getMsgs().subscribe((msgs: Message[]) => {
+      for (const message of msgs) {
+        let add = true;
+        for (const oldm of this.messages) {
+          if (message.id === oldm.id) add = false;
+        }
+        if (add) this.messages.push(message);
+      }
+    });
   }
 
   joinProtectedRoom() {

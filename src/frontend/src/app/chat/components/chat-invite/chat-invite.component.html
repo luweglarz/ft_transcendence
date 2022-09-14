@@ -1,14 +1,20 @@
-<li *ngFor="let invite of invites">
-    <mat-card>from {{invite.username}} to
-        <div *ngIf="invite.challenge === true">challenge</div>
-        <div *ngIf="invite.challenge === false">a room</div>
-        <!-- Accept -->
-        <button mat-icon-button (click)="openInvite(invite, true)">
-          <mat-icon>yes</mat-icon>
-        </button>
-        <!-- Decline -->
-        <button mat-icon-button (click)="openInvite(invite, false)">
-          <mat-icon>no</mat-icon>
-        </button>
-    </mat-card>
-</li>
+<div class="invite">
+  <!-- Title -->
+  <h1 class="invite-title">Invitations</h1>
+
+  <div class="invite-invites">
+      <div class="invite-invite" *ngFor="let invite of invites">
+          <p class="invite-invite-desc">{{invite.username}} wants to {{ invite.challenge === true ? 'play': 'chat' }}<p>
+          <div class="invite-invite-buttons">
+            <!-- Accept -->
+            <svg class="invite-invite-button yes" (click)="openInvite(invite, true)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.796 5.86816L19.404 6.99616L12.432 17.0522H10.824L6.93604 11.6042L8.54403 10.1042L11.628 12.9842L17.796 5.86816Z"/>
+            </svg>
+            <!-- Decline -->
+            <svg class="invite-invite-button no" (click)="openInvite(invite, false)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.544 12L18.78 16.236L16.236 18.78L12 14.544L7.75201 18.792L5.20801 16.248L9.45601 12L5.20801 7.75201L7.75201 5.20801L12 9.45601L16.248 5.22001L18.792 7.76401L14.544 12Z"/>
+            </svg>
+          </div>
+      </div>
+  </div>
+</div>
