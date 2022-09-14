@@ -9,6 +9,7 @@
         <mat-label class="chatroom-create-label">Room name</mat-label>
         <input matInput [(ngModel)]="data.name" type="text" name="roomName" ngModel required>
       </mat-form-field>
+
       <!-- Room type select field -->
       <mat-form-field class="chatroom-create-field" appearance="fill">
         <mat-label class="chatroom-create-label">Room type</mat-label>
@@ -20,6 +21,7 @@
         </mat-select>
 
       </mat-form-field>
+
       <!-- Room password field -->
       <div *ngIf="data.roomType == 'PROTECTED'">
           <mat-form-field class="chatroom-create-field" appearance="fill">
