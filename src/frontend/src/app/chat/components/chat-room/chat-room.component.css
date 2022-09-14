@@ -96,11 +96,12 @@
   flex-direction: column;
   width: calc(70% - 12px);
   height: 238px;
-
-  /* background-color: yellow; */
 }
 
 .chatbox-messages {
+  display: flex;
+  flex-direction: column-reverse;
+
   overflow-y: scroll;
   overflow-x: hidden;
   padding: 0;
