@@ -18,7 +18,7 @@
 }
 
 .message-content {
-  overflow-wrap: break-word;
+  word-break: break-all;
   padding-left: 8px;
   height: fit-content;
   width: max-content;
