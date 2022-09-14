@@ -13,9 +13,17 @@ import { ChatModule } from '../chat/chat.module';
 import { AvatarModule } from '../avatar';
 import { ProfilInfoService } from './popups/profil/profil-info.service';
 import { PopupsModule } from './popups/popups.module';
+import { InviteComponent } from './invite/invite.component';
+import { WaitComponent } from './wait/wait.component';
 
 @NgModule({
-  declarations: [HomeComponent, NavbarComponent, ChatbarComponent],
+  declarations: [
+    HomeComponent,
+    NavbarComponent,
+    ChatbarComponent,
+    InviteComponent,
+    WaitComponent,
+  ],
   providers: [
     CollapseService,
     PopupsService,

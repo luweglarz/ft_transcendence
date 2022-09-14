@@ -38,8 +38,6 @@ export class GameGatewayService {
       rooms.findIndex((element) => element === roomToClear),
       1,
     );
-    roomToClear.players[0].socket.disconnect();
-    roomToClear.players[1].socket.disconnect();
   }
 
   checkJwtToken(@ConnectedSocket() client: Socket): boolean {
@@ -95,7 +93,6 @@ export class GameGatewayService {
   }
 
   emitSpectatedGame(server: Server, newRoom: Room) {
-    console.log('Info de la game genre: ' + newRoom.players[0].username);
     server.to(newRoom.uuid).emit(
       'spectatedGame',
       'You are spectating a game',

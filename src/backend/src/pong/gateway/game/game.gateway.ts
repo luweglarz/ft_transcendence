@@ -26,14 +26,17 @@ export class GameGateway
     private gameCoreService: GameCoreService,
     @Inject(forwardRef(() => MatchmakingGatewayService))
     private matchmakingService: MatchmakingGatewayService,
+    private jwtService: JwtService,
   ) {
     this.logger = new Logger('GameGateway');
     this._rooms = [];
+    this._users = [];
   }
 
   @WebSocketServer()
   private _server: Server;
   private _rooms: Room[];
+  private _users: Socket[];
 
   private logger: Logger;
 
@@ -43,14 +46,21 @@ export class GameGateway
   }
 
   handleConnection(client: Socket) {
-    if (this.gameGatewayService.checkJwtToken(client))
+    if (this.gameGatewayService.checkJwtToken(client)) {
+      this._users.push(client);
+      console.log('nb of users: ' + this._users.length);
       this.logger.log(`Client connected: ${client.id}`);
+    }
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
     if (this.matchmakingService.isClientInGame(client)) this.leaveGame(client);
     if (this.matchmakingService.isClientInMatchmaking(client))
       this.matchmakingService.clientLeaveMatchmaking(client);
+    this._users.splice(
+      this._users.findIndex((element) => element === client),
+      1,
+    );
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
@@ -58,11 +68,10 @@ export class GameGateway
   movement(@ConnectedSocket() client: Socket, @MessageBody() eventKey: string) {
     if (this.matchmakingService.isClientInGame(client) === false) return;
     try {
-      const jwtService = new JwtService();
       const gameRoom: Room = this.gameGatewayService.findRoomId(
         this.rooms,
         JSON.parse(
-          JSON.stringify(jwtService.decode(client.handshake.auth.token)),
+          JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
         ).username,
       );
       const player: Player = this.gameGatewayService.findPlayer(
@@ -103,7 +112,6 @@ export class GameGateway
             leaver,
             true,
           );
-          client.disconnect();
           this.logger.log(
             `player ${leaver.username} has left the game ${room.uuid}`,
           );
@@ -130,6 +138,63 @@ export class GameGateway
     } catch (error) {
       this.logger.debug(error);
     }
+  }
+
+  @SubscribeMessage('acceptPrivateInvitation')
+  acceptPrivateInvitation(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() friendUsername: string,
+  ) {
+    this.logger.log(
+      'acceptPrivateInvitation; ' +
+        client.id +
+        ' friendusername: ' +
+        friendUsername,
+    );
+    try {
+      const friend: Socket = this._users.find(
+        (element) =>
+          JSON.parse(
+            JSON.stringify(
+              this.jwtService.decode(element.handshake.auth.token),
+            ),
+          ).username === friendUsername,
+      );
+      friend.emit(
+        'invitationAccepted',
+        JSON.parse(
+          JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
+        ).username,
+      );
+    } catch (error) {
+      this.logger.debug(error);
+    }
+  }
+
+  @SubscribeMessage('choosePrivateMode')
+  choosePrivateMode(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() infos: string[],
+  ) {
+    try {
+      const friend: Socket = this._users.find(
+        (element) =>
+          JSON.parse(
+            JSON.stringify(
+              this.jwtService.decode(element.handshake.auth.token),
+            ),
+          ).username === infos[0],
+      );
+      const players: Socket[] = [friend, client];
+      this.matchmakingService.createGame(players, infos[1]);
+    } catch (error) {
+      this.logger.debug(error);
+    }
+  }
+
+  @SubscribeMessage('declineInvitation')
+  declineInvitation() {
+    //deleta la room
   }
 
   get rooms(): Room[] {

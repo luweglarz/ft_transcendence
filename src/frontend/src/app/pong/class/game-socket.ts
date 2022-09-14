@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { InviteService } from 'src/app/home-page/services/invite.service';
 import { NotificationService } from 'src/app/home-page/services/notification.service';
+import { WaitService } from 'src/app/home-page/services/wait.service';
 import { environment } from 'src/environments/environment';
 import { GameService } from '../game/game.service';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
@@ -14,7 +16,7 @@ import { StopWatch } from './stop-watch';
   providedIn: 'root',
 })
 export class GameSocket extends Socket {
-  constructor() {
+  constructor(public waitService: WaitService) {
     super({
       url: environment.backend,
       options: {
@@ -31,11 +33,12 @@ export class GameSocket extends Socket {
     matchmakingService: MatchmakingService,
     stopWatch: StopWatch,
   ) {
-    this.once(
+    this.on(
       'matchFound',
       (msg: any, gameType: string, gameMapInfo: any, playersInfo: any) => {
         matchmakingService.requestLeaveMatchmaking();
         notificationService.gameFound();
+        this.waitService.closeWait();
         stopWatch.clearTimer();
         const playerOne: Player = new Player(
           playersInfo.height,
@@ -76,6 +79,12 @@ export class GameSocket extends Socket {
         }
       },
     );
+  }
+
+  oninvitationAccepted(inviteService: InviteService) {
+    this.once('invitationAccepted', (friendUsername: string) => {
+      inviteService.openInvite(friendUsername);
+    });
   }
 
   onMatchmakingLeft() {

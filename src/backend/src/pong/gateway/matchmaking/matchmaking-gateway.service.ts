@@ -112,7 +112,7 @@ export class MatchmakingGatewayService {
     client.emit('error', 'You are not in a matchmaking');
   }
 
-  private createGame(clientPool: Socket[], gameType: string) {
+  createGame(clientPool: Socket[], gameType: string) {
     let gameMode: GameMode;
     let players: Player[];
 

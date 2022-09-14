@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
 import { GameComponent } from 'src/app/pong/game/game.component';
 import { environment } from 'src/environments/environment';
+import { InviteService } from '../../services/invite.service';
 import { PopupsService } from '../popups.service';
 import { SocialService } from '../social/social.service';
 
