@@ -23,7 +23,6 @@ export class StatusSocket extends Socket {
         transports: ['websocket', 'polling'],
       },
     });
-    console.log('status socket');
     eventsService.auth.signin.subscribe(() => {
       this.jwtService
         .getToken$()
@@ -31,39 +30,26 @@ export class StatusSocket extends Socket {
         .subscribe(() => {
           this.connect();
           this.once('online', (username: any) => {
-            console.log('online event: ' + username);
             const friend = this.socialService.friends.find(
               (element) => element.targetName === username,
             );
-            if (friend != undefined) {
-              console.log('user: ' + username + ' online');
-              friend.status = 'online';
-            }
+            if (friend != undefined) friend.status = 'online';
           });
 
           this.once('offline', (username: any) => {
             const friend = this.socialService.friends.find(
               (element) => element.targetName === username,
             );
-            console.log('offline event: ' + username);
-            if (friend != undefined) {
-              console.log('user: ' + username + ' offline');
-              friend.status = 'offline';
-            }
+            if (friend != undefined) friend.status = 'offline';
           });
 
           this.once('inGame', (username: any) => {
             const friend = this.socialService.friends.find(
               (element) => element.targetName === username,
             );
-            console.log('inGame event: ' + username);
-            if (friend != undefined) {
-              console.log('user: ' + username + ' offline');
-              friend.status = 'inGame';
-            }
+            if (friend != undefined) friend.status = 'inGame';
           });
           eventsService.auth.signout.subscribe(() => {
-            console.log('signout event');
             this.disconnect();
           });
         });

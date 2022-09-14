@@ -104,7 +104,6 @@ export class MatchmakingGatewayService {
           );
           this.logger.log(`A client has left the matchmaking: ${client.id}`);
           client.emit('matchmakingLeft', 'You have left the matchmaking');
-          client.disconnect();
           return;
         }
       }

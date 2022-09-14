@@ -83,6 +83,7 @@ export class GameSocket extends Socket {
 
   oninvitationAccepted(inviteService: InviteService) {
     this.once('invitationAccepted', (friendUsername: string) => {
+      ('open invite de invtiation accepted');
       inviteService.openInvite(friendUsername);
     });
   }
