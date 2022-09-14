@@ -3,7 +3,6 @@ import { Socket } from 'ngx-socket-io';
 import { InviteService } from 'src/app/home-page/services/invite.service';
 import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { WaitService } from 'src/app/home-page/services/wait.service';
-import { WaitComponent } from 'src/app/home-page/wait/wait.component';
 import { environment } from 'src/environments/environment';
 import { GameService } from '../game/game.service';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';

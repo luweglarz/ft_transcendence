@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
     public collapseService: CollapseService,
     public popupsService: PopupsService,
     public inviteService: InviteService,
-    public waitService: WaitService
+    public waitService: WaitService,
   ) {
     //
   }

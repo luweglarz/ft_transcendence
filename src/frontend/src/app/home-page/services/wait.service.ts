@@ -3,13 +3,15 @@ import { PopupsService } from '../popups/popups.service';
 import { CollapseService } from './collapse.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WaitService {
+  isInWait = false;
 
-  isInWait: boolean = false;
-
-  constructor(private collapseService: CollapseService, private popupsService: PopupsService) {
+  constructor(
+    private collapseService: CollapseService,
+    private popupsService: PopupsService,
+  ) {
     //
   }
 
@@ -23,5 +25,4 @@ export class WaitService {
   closeWait() {
     this.isInWait = false;
   }
-
 }

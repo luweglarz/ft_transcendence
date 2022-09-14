@@ -30,7 +30,7 @@ export class ChatMainComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     public dialog: MatDialog,
     private gameSocket: GameSocket,
-    private waitService: WaitService
+    private waitService: WaitService,
   ) {}
 
   ngOnInit(): void {
