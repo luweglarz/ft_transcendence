@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { JwtService } from 'src/app/auth/jwt';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
-import { EventsService } from 'src/app/services/events.service';
 import { GameMode } from '../interface/game-mode';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { GameService } from './game.service';
@@ -23,7 +22,6 @@ export class GameComponent implements OnInit {
   constructor(
     public collapseService: CollapseService,
     public gameService: GameService,
-    private eventsService: EventsService,
     private matchmakingService: MatchmakingService,
     private jwtService: JwtService,
     private router: Router,
@@ -32,10 +30,6 @@ export class GameComponent implements OnInit {
       this.router.navigate([''], {
         queryParamsHandling: 'preserve',
       });
-    this.eventsService.auth.signout.subscribe(() => {
-      this.gameService.requestLeaveGame();
-      this.gameService.socket.disconnect();
-    });
     this.game = matchmakingService.game;
   }
 
