@@ -16,6 +16,7 @@ import { SocialService } from './social/social.service';
 import { DirectMessagesService } from './social/direct-messages.service';
 import { SettingsComponent } from './settings/settings.component';
 import { TwoFactorsModule } from 'src/app/auth/two-factors/two-factors.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { TwoFactorsModule } from 'src/app/auth/two-factors/two-factors.module';
     SocialService,
     DirectMessagesService,
   ],
-  imports: [CommonModule, AvatarModule, TwoFactorsModule],
+  imports: [CommonModule, AvatarModule, TwoFactorsModule, ReactiveFormsModule],
   exports: [PopupsComponent],
 })
 export class PopupsModule {

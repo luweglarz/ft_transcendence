@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { JwtService } from 'src/app/auth/jwt';
+import { ValidatorBuilderService } from 'src/app/auth/signup/validators/validator-builder.service';
 import { AvatarUploadService } from 'src/app/avatar/avatar-upload/avatar-upload.service';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 
@@ -10,12 +12,26 @@ import { AvatarService } from 'src/app/avatar/avatar.service';
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   currentAvatar?: string;
-  uploadButton = false;
+  private readonly _requirements = {
+    username: [
+      Validators.required,
+      Validators.maxLength(42),
+      Validators.pattern(/^[a-zA-Z0-9]*$/),
+    ],
+  };
+  currentUsername = this.jwt.username;
+  username = this.formBuilder.control(this.currentUsername, {
+    validators: this._requirements.username,
+    asyncValidators: this.validators.isAvailable('username'),
+    updateOn: 'change',
+  });
 
   constructor(
     public avatarUpload: AvatarUploadService,
     private avatar: AvatarService,
     private jwt: JwtService,
+    private formBuilder: FormBuilder,
+    private validators: ValidatorBuilderService,
   ) {}
 
   ngOnInit(): void {
@@ -25,9 +41,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  update() {
+  updateAvatar() {
     this.avatarUpload.backendUpload();
     this.currentAvatar = this.avatarUpload.src;
+  }
+
+  updateUsername() {
+    console.error('NOT IMPLEMENTED');
   }
 
   ngOnDestroy(): void {

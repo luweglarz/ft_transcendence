@@ -71,3 +71,15 @@ button:active:enabled {
 button:active:enabled p {
   color: #1a202c;
 }
+
+/* VALIDATION */
+.alert {
+  color: #7d283c;
+  background-color: rgba(245, 206, 215, 0.8);
+  display: flex;
+  width: auto;
+  padding: 8px;
+  border-radius: 3px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
