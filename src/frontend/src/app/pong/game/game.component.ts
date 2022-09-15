@@ -98,4 +98,9 @@ export class GameComponent implements OnInit, OnDestroy {
       });
   }
 
+  //Rules
+  debug() {
+    console.log(this.game.constructor.name);
+  }
+
 }
