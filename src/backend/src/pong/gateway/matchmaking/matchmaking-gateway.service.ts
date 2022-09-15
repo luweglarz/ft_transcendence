@@ -104,7 +104,6 @@ export class MatchmakingGatewayService {
           );
           this.logger.log(`A client has left the matchmaking: ${client.id}`);
           client.emit('matchmakingLeft', 'You have left the matchmaking');
-          client.disconnect();
           return;
         }
       }
@@ -112,7 +111,7 @@ export class MatchmakingGatewayService {
     client.emit('error', 'You are not in a matchmaking');
   }
 
-  private createGame(clientPool: Socket[], gameType: string) {
+  createGame(clientPool: Socket[], gameType: string) {
     let gameMode: GameMode;
     let players: Player[];
 

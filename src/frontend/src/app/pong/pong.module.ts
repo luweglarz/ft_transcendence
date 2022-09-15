@@ -6,9 +6,16 @@ import { MatchmakingService } from './matchmaking/matchmaking.service';
 import { MatchmakingComponent } from './matchmaking/matchmaking.component';
 import { GameSocket } from './class/game-socket';
 import { AvatarModule } from '../avatar';
+import { InviteComponent } from './matchmaking/invite/invite.component';
+import { WaitComponent } from './matchmaking/wait/wait.component';
 
 @NgModule({
-  declarations: [MatchmakingComponent, GameComponent],
+  declarations: [
+    MatchmakingComponent,
+    InviteComponent,
+    WaitComponent,
+    GameComponent,
+  ],
   imports: [CommonModule, AvatarModule],
   providers: [GameService, MatchmakingService, GameComponent, GameSocket],
   exports: [MatchmakingComponent, GameComponent],

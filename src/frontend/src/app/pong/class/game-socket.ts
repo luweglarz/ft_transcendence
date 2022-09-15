@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { NotificationService } from 'src/app/home-page/services/notification.service';
+import { WaitService } from 'src/app/pong/matchmaking/wait/wait.service';
 import { environment } from 'src/environments/environment';
 import { GameService } from '../game/game.service';
+import { InviteService } from '../matchmaking/invite/invite.service';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { Ball } from './ball';
 import { CustomGame } from './game-mode/custom-game';
@@ -14,7 +16,7 @@ import { StopWatch } from './stop-watch';
   providedIn: 'root',
 })
 export class GameSocket extends Socket {
-  constructor() {
+  constructor(public waitService: WaitService) {
     super({
       url: environment.backend,
       options: {
@@ -31,10 +33,12 @@ export class GameSocket extends Socket {
     matchmakingService: MatchmakingService,
     stopWatch: StopWatch,
   ) {
-    this.once(
+    this.on(
       'matchFound',
       (msg: any, gameType: string, gameMapInfo: any, playersInfo: any) => {
+        matchmakingService.requestLeaveMatchmaking();
         notificationService.gameFound();
+        this.waitService.closeWait();
         stopWatch.clearTimer();
         const playerOne: Player = new Player(
           playersInfo.height,
@@ -52,7 +56,7 @@ export class GameSocket extends Socket {
           gameMapInfo.ballRadius,
           gameMapInfo.ballColor,
         );
-        gameService.isInGame = true;
+        gameService.isInGame.next(true);
         console.log(msg);
         if (gameType === 'normal' || gameType === 'ranked') {
           matchmakingService.game = new NormalGame(
@@ -77,6 +81,12 @@ export class GameSocket extends Socket {
     );
   }
 
+  oninvitationAccepted(inviteService: InviteService) {
+    this.on('invitationAccepted', (friendUsername: string) => {
+      inviteService.openInvite(friendUsername);
+    });
+  }
+
   onMatchmakingLeft() {
     this.once('matchmakingLeft', (msg: any) => {
       console.log(msg);
@@ -93,7 +103,7 @@ export class GameSocket extends Socket {
   onGameFinished(gameService: GameService) {
     this.once('gameFinished', (winner: any, leaver?: any) => {
       clearInterval(gameService.keyEventsInterval);
-      gameService.isInGame = false;
+      gameService.isInGame.next(false);
       if (leaver != null && leaver != undefined)
         console.log(`Player ${leaver.username} has left the game`);
       console.log(winner.username + ' Has won the game');
@@ -124,7 +134,7 @@ export class GameSocket extends Socket {
           gameMapInfo.ballRadius,
           gameMapInfo.ballColor,
         );
-        gameService.isInGame = true;
+        gameService.isInGame.next(true);
         if (gameType === 'normal' || gameType === 'ranked') {
           matchmakingService.game = new NormalGame(
             gameMapInfo.canvaHeight,

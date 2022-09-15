@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -15,13 +15,14 @@ import { SignupService } from './signup.service';
 import { ValidatorBuilderService } from './validators/validator-builder.service';
 import { AvatarUploadService } from 'src/app/avatar/avatar-upload/avatar-upload.service';
 import { assets } from 'src/assets/assets';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
   signUpType?: 'local' | 'oauth';
   image_url = assets.defaultAvatar;
   // Oauth specific
@@ -40,6 +41,7 @@ export class SignUpComponent implements OnInit {
       Validators.maxLength(42),
     ],
   };
+  private _querySubscription?: Subscription;
 
   registerForm?: UntypedFormGroup;
 
@@ -87,7 +89,7 @@ export class SignUpComponent implements OnInit {
       this.signOut.signOut();
       // window.location.reload(); // to clear the avatar
     }
-    this.route.queryParams.subscribe((params) => {
+    this._querySubscription = this.route.queryParams.subscribe((params) => {
       if (params['type'] == 'oauth') {
         this.signUpType = 'oauth';
         this.registerForm = this.oauthForm;
@@ -102,6 +104,9 @@ export class SignUpComponent implements OnInit {
         this.signupError = '';
       }
     });
+  }
+  ngOnDestroy(): void {
+    this._querySubscription?.unsubscribe();
   }
 
   signUp() {

@@ -2,14 +2,14 @@ import {
   Component,
   ElementRef,
   HostListener,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { tap } from 'rxjs';
+import { Router } from '@angular/router';
+import { Subscription, tap } from 'rxjs';
 import { JwtService } from 'src/app/auth/jwt';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
-import { NotificationService } from 'src/app/home-page/services/notification.service';
-import { EventsService } from 'src/app/services/events.service';
 import { GameMode } from '../interface/game-mode';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { GameService } from './game.service';
@@ -19,25 +19,29 @@ import { GameService } from './game.service';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css'],
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
+  private _navToHome?: Subscription;
   constructor(
     public collapseService: CollapseService,
     public gameService: GameService,
-    private eventsService: EventsService,
     private matchmakingService: MatchmakingService,
     private jwtService: JwtService,
-    private notificationService: NotificationService,
+    private router: Router,
   ) {
-    this.eventsService.auth.signout.subscribe(() => {
-      this.gameService.requestLeaveGame();
-      this.gameService.socket.disconnect();
-    });
     this.game = matchmakingService.game;
   }
-
   ngOnInit() {
     this.gameService.sendKeyEvents();
     this.gameService.socket.onGameFinished(this.gameService);
+    this._navToHome = this.gameService.isInGame.subscribe((isInGame) => {
+      if (!isInGame)
+        this.router.navigate([''], {
+          queryParamsHandling: 'preserve',
+        });
+    });
+  }
+  ngOnDestroy(): void {
+    this._navToHome?.unsubscribe();
   }
 
   public game: GameMode;

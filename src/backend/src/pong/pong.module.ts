@@ -8,6 +8,7 @@ import { GameDbService } from './service/game-db/game-db.service';
 import { GameController } from './controller/game/game.controller';
 import { DbService } from 'src/db/db.service';
 import { JwtAuthModule } from 'src/auth/modules/jwt/jwt-auth.module';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   controllers: [GameController],
@@ -22,6 +23,7 @@ import { JwtAuthModule } from 'src/auth/modules/jwt/jwt-auth.module';
     GameController,
     DbService,
     GameController,
+    JwtService,
   ],
 })
 export class PongModule {}

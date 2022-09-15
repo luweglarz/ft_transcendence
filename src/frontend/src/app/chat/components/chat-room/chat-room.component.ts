@@ -15,7 +15,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
 import { JwtService } from 'src/app/auth/jwt';
 import { GameComponent } from 'src/app/pong/game/game.component';
+<<<<<<< HEAD
 import { SocialService } from 'src/app/home-page/popups/social/social.service';
+=======
+import { InviteService } from 'src/app/pong/matchmaking/invite/invite.service';
+>>>>>>> main
 
 @Component({
   selector: 'app-chat-room',
@@ -56,7 +60,11 @@ export class ChatRoomComponent implements OnChanges {
     public popupsService: PopupsService,
     private jwtService: JwtService,
     public gameComponent: GameComponent,
+<<<<<<< HEAD
     private socialService: SocialService,
+=======
+    public inviteService: InviteService,
+>>>>>>> main
   ) {
     const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;

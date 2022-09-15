@@ -1,54 +1,70 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription, tap } from 'rxjs';
+import { JwtService } from 'src/app/auth/jwt';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
 import { EventsService } from 'src/app/services/events.service';
+import { GameService } from '../game/game.service';
+import { InviteService } from './invite/invite.service';
 import { MatchmakingService } from './matchmaking.service';
+import { WaitService } from './wait/wait.service';
 
 @Component({
   selector: 'app-matchmaking',
   templateUrl: './matchmaking.component.html',
   styleUrls: ['./matchmaking.component.css'],
 })
-export class MatchmakingComponent {
-  normalQueue = false;
-  customQueue = false;
-  rankedQueue = false;
+export class MatchmakingComponent implements OnInit, OnDestroy {
+  private _navToGame?: Subscription;
 
   constructor(
     public matchmakingService: MatchmakingService,
     public collapseService: CollapseService,
-    private eventsService: EventsService,
+    public inviteService: InviteService,
+    public waitService: WaitService,
+    private gameService: GameService,
+    private router: Router,
+    jwtService: JwtService,
+    eventsService: EventsService,
   ) {
-    this.eventsService.auth.signout.subscribe(() => {
+    jwtService
+      .getToken$()
+      .pipe(
+        tap(
+          (token) =>
+            (this.matchmakingService.socket.ioSocket.auth = { token: token }),
+        ),
+      )
+      .subscribe(() => {
+        this.matchmakingService.socket.connect();
+      });
+    eventsService.auth.signout.subscribe(() => {
       this.matchmakingService.requestLeaveMatchmaking();
       this.matchmakingService.socket.disconnect();
     });
   }
 
-  buttonRequestJoinNormalMatchmaking() {
-    this.matchmakingService.requestJoinNormalMatchmaking();
-    this.normalQueue = true;
-    this.customQueue = false;
-    this.rankedQueue = false;
+  get queue() {
+    return this.matchmakingService.queue;
+  }
+  get stopWatch() {
+    return this.matchmakingService.stopWatch;
   }
 
-  buttonRequestJoinRankedMatchmaking() {
-    this.matchmakingService.requestJoinRankedMatchmaking();
-    this.normalQueue = false;
-    this.customQueue = false;
-    this.rankedQueue = true;
+  ngOnInit() {
+    this._navToGame = this.gameService.isInGame.subscribe((isInGame) => {
+      if (isInGame) this.router.navigate(['/game']);
+    });
+  }
+  ngOnDestroy() {
+    this._navToGame?.unsubscribe();
   }
 
-  buttonRequestJoinCustomMatchmaking() {
-    this.matchmakingService.requestJoinCustomMatchmaking();
-    this.normalQueue = false;
-    this.customQueue = true;
-    this.rankedQueue = false;
+  buttonRequestJoinMatchmaking(matchmakingType: typeof this.queue) {
+    this.matchmakingService.requestJoinMatchmaking(matchmakingType);
   }
 
   buttonRequestLeaveMatchmaking() {
     this.matchmakingService.requestLeaveMatchmaking();
-    this.normalQueue = false;
-    this.customQueue = false;
-    this.rankedQueue = false;
   }
 }

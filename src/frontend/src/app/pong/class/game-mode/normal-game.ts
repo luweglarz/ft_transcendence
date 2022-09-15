@@ -148,7 +148,7 @@ export class NormalGame implements GameMode {
   }
 
   gameLoop: FrameRequestCallback = () => {
-    if (this.gameService.isInGame === false) return;
+    if (this.gameService.isInGame.getValue() === false) return;
     this.fillBackground();
     this.drawMiddleline();
     this.drawPaddles();

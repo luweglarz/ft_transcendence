@@ -1,17 +1,26 @@
 import { Injectable } from '@angular/core';
 import { ChatSocket } from 'src/app/chat/class/auth-socket';
 import { Room } from 'src/app/chat/interface/room';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Message } from 'src/app/chat/interface/message';
 import { RoomUser } from 'src/app/chat/interface/roomUser';
 import { Invite } from '../interface/invite';
+import { JwtService } from 'src/app/auth/jwt';
+import { EventsService } from 'src/app/services/events.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  constructor(private socket: ChatSocket) {
+  constructor(
+    private socket: ChatSocket,
+    private jwtService: JwtService,
+    private events: EventsService,
+  ) {
     //this.socket.connect();
+    this.events.auth.signout.subscribe(() => {
+      this.socket.disconnect();
+    });
   }
 
   getRooms(): Observable<Room[]> {
@@ -60,8 +69,13 @@ export class ChatService {
   }
 
   openChat() {
-    this.socket.connect();
-    this.socket.emit('getRooms');
+    this.jwtService
+      .getToken$()
+      .pipe(tap((token) => (this.socket.ioSocket.auth = { token: token })))
+      .subscribe(() => {
+        this.socket.connect();
+        this.socket.emit('getRooms');
+      });
   }
 
   closeChat() {
