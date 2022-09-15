@@ -29,30 +29,37 @@ export class StatusSocket extends Socket {
         .pipe(tap((token) => (this.ioSocket.auth = { token: token })))
         .subscribe(() => {
           this.connect();
-          this.once('online', (username: any) => {
-            const friend = this.socialService.friends.find(
-              (element) => element.targetName === username,
-            );
-            if (friend != undefined) friend.status = 'online';
-          });
-
-          this.once('offline', (username: any) => {
-            const friend = this.socialService.friends.find(
-              (element) => element.targetName === username,
-            );
-            if (friend != undefined) friend.status = 'offline';
-          });
-
-          this.once('inGame', (username: any) => {
-            const friend = this.socialService.friends.find(
-              (element) => element.targetName === username,
-            );
-            if (friend != undefined) friend.status = 'inGame';
-          });
           eventsService.auth.signout.subscribe(() => {
             this.disconnect();
           });
         });
+    });
+  }
+
+  onOnlineEvent() {
+    this.on('online', (username: any) => {
+      const friend = this.socialService.friends.find(
+        (element) => element.targetName === username,
+      );
+      if (friend != undefined) friend.status = 'online';
+    });
+  }
+
+  onOfflineEvent() {
+    this.on('offline', (username: any) => {
+      const friend = this.socialService.friends.find(
+        (element) => element.targetName === username,
+      );
+      if (friend != undefined) friend.status = 'offline';
+    });
+  }
+
+  onInGameEvent() {
+    this.on('inGame', (username: any) => {
+      const friend = this.socialService.friends.find(
+        (element) => element.targetName === username,
+      );
+      if (friend != undefined) friend.status = 'inGame';
     });
   }
 }

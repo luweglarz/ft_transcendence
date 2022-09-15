@@ -42,7 +42,6 @@ export class GameGateway
 
   afterInit() {
     this.logger.log('Init');
-    console.log('connected sockets: ', this.server.allSockets.length);
   }
 
   handleConnection(client: Socket) {

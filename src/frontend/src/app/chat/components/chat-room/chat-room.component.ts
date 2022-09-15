@@ -35,7 +35,10 @@ export class ChatRoomComponent implements OnChanges {
   ]);
   messagesEvent = this.chatService.getMsg().subscribe((nMessage: Message) => {
     console.log(nMessage);
-    if (this.socialService.checkUserRelation(this.username, nMessage.username) !== 'blocked')
+    if (
+      this.socialService.checkUserRelation(this.username, nMessage.username) !==
+      'blocked'
+    )
       this.messages.push(nMessage);
   });
   messages: Message[] = [];
@@ -92,7 +95,14 @@ export class ChatRoomComponent implements OnChanges {
       for (const message of msgs) {
         let add = true;
         for (const oldm of this.messages) {
-          if (message.id === oldm.id || this.socialService.checkUserRelation(this.username, message.username) === 'blocked') add = false;
+          if (
+            message.id === oldm.id ||
+            this.socialService.checkUserRelation(
+              this.username,
+              message.username,
+            ) === 'blocked'
+          )
+            add = false;
         }
         if (add) this.messages.push(message);
       }

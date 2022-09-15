@@ -1,8 +1,11 @@
 import { forwardRef, Inject, Logger } from '@nestjs/common';
-import { ConnectedSocket, WebSocketGateway } from '@nestjs/websockets';
-import { Socket } from 'socket.io';
+import {
+  ConnectedSocket,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
+import { Socket, Server } from 'socket.io';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
-import { Player } from 'src/pong/class/player/player';
 import { SocialService } from '../social.service';
 
 @WebSocketGateway({ cors: true, path: '/status' })
@@ -17,7 +20,8 @@ export class FriendsStatusGateway {
   }
 
   private logger: Logger;
-
+  @WebSocketServer()
+  private _server: Server;
   public onlineUsers: Map<string, Socket[]>;
 
   afterInit() {
@@ -26,22 +30,16 @@ export class FriendsStatusGateway {
 
   async handleConnection(client: Socket) {
     try {
-      this.jwtService.verifyAccessToken(client.handshake.auth.token, 'sync');
+      this.jwtService.verifyAccessToken(client.handshake.auth.token);
+      this.logger.log(`Client connected: ${client.id}`);
       const username: string = JSON.parse(
         JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
       ).username;
-      if (this.onlineUsers.has(username))
-        this.onlineUsers.get(username).push(client);
-      else this.onlineUsers.set(username, new Array<Socket>(client));
-      const friends = await this.socialService.getUserFriends(username);
+      this.onlineUsers.set(username, new Array<Socket>(client));
       for (const [key, value] of this.onlineUsers) {
-        for (const friend of friends) {
-          if (friend.targetName === key) {
-            client.emit('online', friend.targetName);
-            for (const socket of value) {
-              socket.emit('online', username);
-            }
-          }
+        client.emit('online', key);
+        for (const socket of value) {
+          socket.emit('online', username);
         }
       }
     } catch (error) {
@@ -55,7 +53,6 @@ export class FriendsStatusGateway {
     const username: string = JSON.parse(
       JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
     ).username;
-    const friends = await this.socialService.getUserFriends(username);
     this.onlineUsers.get(username).splice(
       this.onlineUsers
         .get(username)
@@ -65,12 +62,9 @@ export class FriendsStatusGateway {
     try {
       if (this.onlineUsers.get(username).length === 0) {
         for (const [key, value] of this.onlineUsers) {
-          for (const friend of friends) {
-            if (friend.targetName === key) {
-              for (const socket of value) {
-                socket.emit('offline', username);
-              }
-            }
+          key;
+          for (const socket of value) {
+            socket.emit('offline', username);
           }
         }
         this.onlineUsers.delete(username);
@@ -81,30 +75,30 @@ export class FriendsStatusGateway {
     }
   }
 
-  async emitInGameStatus(players: Player[]) {
-    const playerOneFriends = await this.socialService.getUserFriends(
-      players[0].username,
-    );
-    const playerTwoFriends = await this.socialService.getUserFriends(
-      players[1].username,
-    );
-    for (const [key, value] of this.onlineUsers) {
-      for (
-        let i = 0;
-        i < playerOneFriends.length && i < playerTwoFriends.length;
-        i++
-      ) {
-        if (playerOneFriends[i].targetName === key) {
-          for (const socket of value) {
-            socket.emit('inGame', players[0].username);
-          }
-        }
-        if (playerTwoFriends[i].targetName === key) {
-          for (const socket of value) {
-            socket.emit('inGame', players[1].username);
-          }
-        }
-      }
-    }
-  }
+  // async emitInGameStatus(players: Player[]) {
+  //   const playerOneFriends = await this.socialService.getUserFriends(
+  //     players[0].username,
+  //   );
+  //   const playerTwoFriends = await this.socialService.getUserFriends(
+  //     players[1].username,
+  //   );
+  //   for (const [key, value] of this.onlineUsers) {
+  //     for (
+  //       let i = 0;
+  //       i < playerOneFriends.length && i < playerTwoFriends.length;
+  //       i++
+  //     ) {
+  //       if (playerOneFriends[i].targetName === key) {
+  //         for (const socket of value) {
+  //           socket.emit('inGame', players[0].username);
+  //         }
+  //       }
+  //       if (playerTwoFriends[i].targetName === key) {
+  //         for (const socket of value) {
+  //           socket.emit('inGame', players[1].username);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 }

@@ -16,7 +16,13 @@ describe('SocialController', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule, JwtAuthModule, DbModule, HttpModule],
       controllers: [SocialController],
-      providers: [SocialService, FriendsStatusGateway, JwtAuthService, JwtService, DbService ],
+      providers: [
+        SocialService,
+        FriendsStatusGateway,
+        JwtAuthService,
+        JwtService,
+        DbService,
+      ],
     }).compile();
 
     controller = module.get<SocialController>(SocialController);

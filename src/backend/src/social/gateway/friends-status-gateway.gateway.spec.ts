@@ -14,7 +14,13 @@ describe('FriendsStatusGateway', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule, JwtAuthModule, DbModule, HttpModule],
-      providers: [FriendsStatusGateway, JwtAuthService, JwtService, SocialService, DbService],
+      providers: [
+        FriendsStatusGateway,
+        JwtAuthService,
+        JwtService,
+        SocialService,
+        DbService,
+      ],
     }).compile();
 
     gateway = module.get<FriendsStatusGateway>(FriendsStatusGateway);

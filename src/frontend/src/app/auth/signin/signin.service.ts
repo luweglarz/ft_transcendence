@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
+import { StatusSocket } from 'src/app/home-page/popups/social/class/status-socket';
 import { EventsService } from 'src/app/services/events.service';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../jwt';
@@ -25,6 +26,7 @@ export class SigninService {
     private router: Router,
     private http: HttpClient,
     private readonly events: EventsService,
+    private statusSocket: StatusSocket,
   ) {
     this.signinEvent = this.events.auth.signin;
   }
@@ -64,6 +66,18 @@ export class SigninService {
    */
   signInSuccess(accessToken: string, refreshToken: string) {
     this.jwt.storeTokens(accessToken, refreshToken);
+    console.log('accesstoken: ' + accessToken);
+    this.jwt
+      .getToken$()
+      .pipe(
+        tap((token) => (this.statusSocket.ioSocket.auth = { token: token })),
+      )
+      .subscribe(() => {
+        this.statusSocket.connect();
+      });
+    this.statusSocket.onOnlineEvent();
+    this.statusSocket.onOfflineEvent();
+    this.statusSocket.onInGameEvent();
     this.signinEvent.emit(true);
     this.router.navigate(['/'], {
       replaceUrl: true,

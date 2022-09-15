@@ -14,7 +14,13 @@ describe('SocialService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule, JwtAuthModule, DbModule, HttpModule],
-      providers: [SocialService, FriendsStatusGateway, JwtAuthService, JwtService, DbService],
+      providers: [
+        SocialService,
+        FriendsStatusGateway,
+        JwtAuthService,
+        JwtService,
+        DbService,
+      ],
     }).compile();
 
     service = module.get<SocialService>(SocialService);
