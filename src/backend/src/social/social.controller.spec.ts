@@ -1,4 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
+import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { DbModule } from 'src/db/db.module';
@@ -10,7 +11,7 @@ describe('SocialController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DbModule, HttpModule, JwtAuthService],
+      imports: [DbModule, HttpModule, JwtModule],
       controllers: [SocialController],
       providers: [SocialService],
     }).compile();
