@@ -27,6 +27,7 @@
       <div class="gameinfo-controls">
         <div class="gameinfo-controls-key" [ngClass]="gameService.keyPressed === 'ArrowUp' ? 'pressed': ''">Up</div>
         <div class="gameinfo-controls-key" [ngClass]="gameService.keyPressed === 'ArrowDown' ? 'pressed': ''">Down</div>
+        <div class="gameinfo-controls-key" [ngClass]="gameService.keyPressed === ' ' ? 'pressed': ''">Space</div>
       </div>
     </div>
   </div>
