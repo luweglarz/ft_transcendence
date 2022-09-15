@@ -1,28 +1,34 @@
 <!-- 2FA Opt-in/out -->
-<div class="checkbox-register">
-    <label>Enable 2FA</label>
-    <input [formControl]="enabled" type="checkbox">
-</div>
-
-<div *ngIf="enabled.value == true && enabled.dirty">
-    <!-- QR Code -->
-    <table>
-        <tr>
-            <td class="image"><img [src]="codeSrc"/></td>
-        </tr>
-        <tr>
-            <td>Secret: {{secret}}</td>
-        </tr>
-    </table>
-
-    <!-- Verify -->
-    <div>
-        <p>
-            Check your one-time passwords: 
-            <span *ngIf="codeValid === true" class="success">Code is valid!</span>
-            <span *ngIf="codeValid === false" class="alert">Code is invalid!</span>
-        </p>
-        <otp-input (codeCompleted)="checkCode($event)"></otp-input>
+<div class="column">
+    <div class="row">
+        <input [formControl]="enabled" type="checkbox" id="chck">
+        <label for="chck" class="check-trail">
+            <span class="check-handler"></span>
+        </label>
+        <p>2FA <span class="two-factor-status">({{enabled.value == true ? "enabled": "disabled"}})</span></p>
     </div>
 
-</div>
+    <div *ngIf="enabled.value == true && enabled.dirty">
+        <!-- QR Code -->
+        <table>
+            <tr>
+                <td class="image"><img [src]="codeSrc"/></td>
+            </tr>
+            <tr>
+                <td>Secret: {{secret}}</td>
+            </tr>
+        </table>
+
+        <!-- Verify -->
+        <div>
+            <p>
+                Check your one-time passwords: 
+                <span *ngIf="codeValid === true" class="success">Code is valid!</span>
+                <span *ngIf="codeValid === false" class="alert">Code is invalid!</span>
+            </p>
+            <otp-input (codeCompleted)="checkCode($event)"></otp-input>
+        </div>
+
+    </div>
+
+</div> <!-- .column-->
