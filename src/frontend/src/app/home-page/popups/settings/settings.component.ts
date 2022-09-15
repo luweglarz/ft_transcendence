@@ -9,16 +9,25 @@ import { AvatarService } from 'src/app/avatar/avatar.service';
   styleUrls: ['./settings.component.css'],
 })
 export class SettingsComponent implements OnInit, OnDestroy {
+  currentAvatar?: string;
+  uploadButton = false;
+
   constructor(
     public avatarUpload: AvatarUploadService,
-    public avatar: AvatarService,
+    private avatar: AvatarService,
     private jwt: JwtService,
   ) {}
 
   ngOnInit(): void {
     this.avatar.getSrc(this.jwt.username).subscribe((src) => {
+      this.currentAvatar = src;
       this.avatarUpload.update({ src: src });
     });
+  }
+
+  update() {
+    this.avatarUpload.backendUpload();
+    this.currentAvatar = this.avatarUpload.src;
   }
 
   ngOnDestroy(): void {
