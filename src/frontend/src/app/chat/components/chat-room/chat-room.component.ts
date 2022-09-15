@@ -56,7 +56,7 @@ export class ChatRoomComponent implements OnChanges {
     public popupsService: PopupsService,
     private jwtService: JwtService,
     public gameComponent: GameComponent,
-    private socialService: SocialService,
+    public socialService: SocialService,
   ) {
     const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
