@@ -5,13 +5,10 @@
 
   <!-- Content of the home page (responsive container)-->
   <div class="home-container" [ngClass]="collapseService.navCollapsed ? 'home-container-nav-collapsed': 'home-container'">
-    <!-- Matchmaking component-->
-    <!-- <app-matchmaking *ngIf="!gameService.isInGame && !inviteService.isInInvite && !waitService.isInWait"></app-matchmaking> -->
-    <!-- <app-game *ngIf="gameService.isInGame"></app-game>  -->
     <router-outlet></router-outlet>
 
     <!-- Chatbar Footer-->
-    <app-chatbar></app-chatbar>
+    <app-chatbar (click)="debug()" *ngIf="gameService.isInGame.getValue() === false"></app-chatbar>
   </div>
 
   <!-- Pop-ups -->
