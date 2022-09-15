@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
-import { JwtService } from 'src/app/auth/jwt';
 import { AvatarService } from 'src/app/avatar/avatar.service';
 import { environment } from 'src/environments/environment';
 import { Game } from '../../interfaces/game.interface';
@@ -24,7 +23,6 @@ export class ProfilInfoService implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private jwtService: JwtService,
     public avatar: AvatarService,
   ) {
     //
@@ -106,12 +104,12 @@ export class ProfilInfoService implements OnInit {
 
   //Retrieve the number of won games
   retrieveWinCounter(username: string, winHistory: Array<Game>) {
-    return winHistory.length;
+    return winHistory.filter(x => x.type === 'ranked').length;
   }
 
   //Retrieve the number of lost games
   retrieveLoseCounter(username: string, loseHistory: Array<Game>) {
-    return loseHistory.length;
+    return loseHistory.filter(x => x.type === 'ranked').length;
   }
 
   //Retrive the number of played games
@@ -120,20 +118,23 @@ export class ProfilInfoService implements OnInit {
   }
 
   //Calculate the score based on the win/lose ratio.
-  retrieveScore(username: string, nbWins: number, nbLoses: number) {
-    if (nbWins === 0 && nbLoses === 0) return 0;
-    else if (nbWins != 0 && nbLoses === 0) return nbWins * 350;
-    else return Math.round((nbWins / nbLoses) * 1000);
+  retrieveScore(nbWins: number, nbLoses: number) {
+    if (nbWins === 0 && nbLoses === 0)
+      return 0;
+    else if (nbWins != 0 && nbLoses === 0)
+      return nbWins * 350;
+    else
+      return Math.round((nbWins / nbLoses) * 1000);
   }
 
   //Retrieve the biggest win streak
   retrieveWinStreak(username: string, winHistory: Array<Game>) {
-    return this.findBiggestSpan(username, winHistory);
+    return this.findBiggestSpan(username, winHistory.filter(x => x.type === 'ranked'));
   }
 
   //Retrieve the biggest lose streak
   retrieveLoseStreak(username: string, loseHistory: Array<Game>) {
-    return this.findBiggestSpan(username, loseHistory);
+    return this.findBiggestSpan(username, loseHistory.filter(x => x.type === 'ranked'));
   }
 
   //Load the profil of a registred user.
@@ -151,6 +152,6 @@ export class ProfilInfoService implements OnInit {
     this.nbWins = this.retrieveWinCounter(username, this.winHistory);
     this.nbLoses = this.retrieveLoseCounter(username, this.loseHistory);
     this.nbGames = this.retrieveGameCounter(this.nbWins, this.nbLoses);
-    this.score = this.retrieveScore(username, this.nbWins, this.nbLoses);
+    this.score = this.retrieveScore(this.nbWins, this.nbLoses);
   }
 }
