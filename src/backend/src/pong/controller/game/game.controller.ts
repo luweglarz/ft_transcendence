@@ -68,7 +68,7 @@ export class GameController {
         },
       });
       if (wins === null) return 'Error retrieving wins';
-      nbWins = wins.filter(x => x.type === 'ranked').length;
+      nbWins = wins.filter((x) => x.type === 'ranked').length;
 
       //nbLoses (in ranked mode);
       let nbLoses = 0;
@@ -78,7 +78,7 @@ export class GameController {
         },
       });
       if (loses === null) return 'Error retrieving loses';
-      nbLoses = loses.filter(x => x.type === 'ranked').length;
+      nbLoses = loses.filter((x) => x.type === 'ranked').length;
 
       //Score (calculated on ranked matchs)
       let score = 0;

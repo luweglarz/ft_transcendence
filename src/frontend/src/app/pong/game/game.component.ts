@@ -97,5 +97,4 @@ export class GameComponent implements OnInit, OnDestroy {
         this.gameService.socket.emit('spectateGame', username);
       });
   }
-
 }

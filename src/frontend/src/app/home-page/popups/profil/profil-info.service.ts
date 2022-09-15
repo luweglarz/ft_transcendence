@@ -21,10 +21,7 @@ export class ProfilInfoService implements OnInit {
   loseHistory: Array<Game> = [];
   gameHistory: Array<Game> = [];
 
-  constructor(
-    private http: HttpClient,
-    public avatar: AvatarService,
-  ) {
+  constructor(private http: HttpClient, public avatar: AvatarService) {
     //
   }
 
@@ -104,12 +101,12 @@ export class ProfilInfoService implements OnInit {
 
   //Retrieve the number of won games
   retrieveWinCounter(username: string, winHistory: Array<Game>) {
-    return winHistory.filter(x => x.type === 'ranked').length;
+    return winHistory.filter((x) => x.type === 'ranked').length;
   }
 
   //Retrieve the number of lost games
   retrieveLoseCounter(username: string, loseHistory: Array<Game>) {
-    return loseHistory.filter(x => x.type === 'ranked').length;
+    return loseHistory.filter((x) => x.type === 'ranked').length;
   }
 
   //Retrive the number of played games
@@ -119,22 +116,25 @@ export class ProfilInfoService implements OnInit {
 
   //Calculate the score based on the win/lose ratio.
   retrieveScore(nbWins: number, nbLoses: number) {
-    if (nbWins === 0 && nbLoses === 0)
-      return 0;
-    else if (nbWins != 0 && nbLoses === 0)
-      return nbWins * 350;
-    else
-      return Math.round((nbWins / nbLoses) * 1000);
+    if (nbWins === 0 && nbLoses === 0) return 0;
+    else if (nbWins != 0 && nbLoses === 0) return nbWins * 350;
+    else return Math.round((nbWins / nbLoses) * 1000);
   }
 
   //Retrieve the biggest win streak
   retrieveWinStreak(username: string, winHistory: Array<Game>) {
-    return this.findBiggestSpan(username, winHistory.filter(x => x.type === 'ranked'));
+    return this.findBiggestSpan(
+      username,
+      winHistory.filter((x) => x.type === 'ranked'),
+    );
   }
 
   //Retrieve the biggest lose streak
   retrieveLoseStreak(username: string, loseHistory: Array<Game>) {
-    return this.findBiggestSpan(username, loseHistory.filter(x => x.type === 'ranked'));
+    return this.findBiggestSpan(
+      username,
+      loseHistory.filter((x) => x.type === 'ranked'),
+    );
   }
 
   //Load the profil of a registred user.
