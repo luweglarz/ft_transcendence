@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { forwardRef, Inject, Logger } from '@nestjs/common';
 import { ConnectedSocket, WebSocketGateway } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
@@ -9,6 +9,7 @@ import { SocialService } from '../social.service';
 export class FriendsStatusGateway {
   constructor(
     private jwtService: JwtAuthService,
+    @Inject(forwardRef(() => SocialService))
     private socialService: SocialService,
   ) {
     this.logger = new Logger('FriendsStatus');
