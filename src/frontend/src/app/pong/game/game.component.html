@@ -24,10 +24,31 @@
         <p>Leave game</p>
       </button>
 
+      <div class="game-info-rules">
+        <h3>Rules</h3>
+        <p>1. </p>
+      </div>
+
       <div class="gameinfo-controls">
-        <div class="gameinfo-controls-key" [ngClass]="gameService.keyPressed === 'ArrowUp' ? 'pressed': ''">Up</div>
-        <div class="gameinfo-controls-key" [ngClass]="gameService.keyPressed === 'ArrowDown' ? 'pressed': ''">Down</div>
-        <div class="gameinfo-controls-key" [ngClass]="gameService.keyPressed === ' ' ? 'pressed': ''">Space</div>
+        <!-- Up -->
+        <div class="gameinfo-controls-key" [ngClass]="gameService.keyPressed === 'ArrowUp' ? 'pressed': ''">
+          <svg class="gameinfo-controls-key-icon" [ngClass]="gameService.keyPressed === 'ArrowUp' ? 'pressed-icon': ''" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M23.6 17L14 31.4H33.2L23.6 17Z"/>
+          </svg>
+
+        </div>
+        <!-- Down -->
+        <div class="gameinfo-controls-key" [ngClass]="gameService.keyPressed === 'ArrowDown' ? 'pressed': ''">
+          <svg class="gameinfo-controls-key-icon" [ngClass]="gameService.keyPressed === 'ArrowDown' ? 'pressed-icon': ''" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M33.2 17L23.528 31.4L14 17H33.2Z"/>
+          </svg>
+        </div>
+        <!-- Space -->
+        <div class="gameinfo-controls-longkey" [ngClass]="gameService.keyPressed === ' ' ? 'pressed': ''">
+          <svg class="gameinfo-controls-key-icon" [ngClass]="gameService.keyPressed === ' ' ? 'pressed-icon': ''" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.75 27V39H43.5V27H40.5V36H6.75V27H3.75Z"/>
+          </svg>
+        </div>
       </div>
     </div>
   </div>

@@ -137,8 +137,6 @@
 
   width: 100%;
   height: fit-content;
-
-  background-color: blue;
 }
 
 .gameinfo-controls-key {
@@ -146,12 +144,43 @@
   justify-content: center;
   align-items: center;
 
-  height: 64px;
-  width: 64px;
+  height: 48px;
+  width: 48px;
 
-  background-color: red;
+  background-color: none;
+  border: solid 2px white;
+  border-radius: 1em;
+  transition: 0.3s;
+}
+
+.gameinfo-controls-longkey {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 48px;
+  width: 144px;
+
+  background-color: none;
+  border: solid 2px white;
+  border-radius: 0.8em;
+  transition: 0.3s;
 }
 
 .pressed {
-  background-color: orange;
+  transition: 0.3s;
+  background-color: white;
+}
+
+.gameinfo-controls-key-icon {
+  height: 48px;
+  width: 48px;
+
+  fill: white;
+  transition: 0.3s;
+}
+
+.pressed-icon {
+  fill: #1A202C;
+  transition: 0.3s;
 }
