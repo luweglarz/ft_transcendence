@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { InviteService } from 'src/app/home-page/services/invite.service';
 import { NotificationService } from 'src/app/home-page/services/notification.service';
-import { WaitService } from 'src/app/home-page/services/wait.service';
+import { WaitService } from 'src/app/pong/matchmaking/wait/wait.service';
 import { environment } from 'src/environments/environment';
 import { GameService } from '../game/game.service';
+import { InviteService } from '../matchmaking/invite/invite.service';
 import { MatchmakingService } from '../matchmaking/matchmaking.service';
 import { Ball } from './ball';
 import { CustomGame } from './game-mode/custom-game';
@@ -83,6 +83,7 @@ export class GameSocket extends Socket {
 
   oninvitationAccepted(inviteService: InviteService) {
     this.once('invitationAccepted', (friendUsername: string) => {
+      ('open invite de invtiation accepted');
       inviteService.openInvite(friendUsername);
     });
   }

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs';
 import { JwtService } from 'src/app/auth/jwt';
-import { InviteService } from 'src/app/home-page/services/invite.service';
 import { NotificationService } from 'src/app/home-page/services/notification.service';
 import { GameSocket } from '../class/game-socket';
 import { StopWatch } from '../class/stop-watch';
 import { GameService } from '../game/game.service';
 import { GameMode } from '../interface/game-mode';
+import { InviteService } from './invite/invite.service';
 
 @Injectable({
   providedIn: 'root',
@@ -54,8 +54,6 @@ export class MatchmakingService {
           this,
           this._stopWatch,
         );
-        this.socket.emit('joinMatchmaking', 'normal');
-        this.socket.onWaitingForAMatch(this.stopWatch);
         this.socket.onMatchmakingLeft();
         this.queue = type;
       });

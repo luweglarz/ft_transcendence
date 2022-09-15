@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PopupsService } from 'src/app/home-page/popups/popups.service';
 import { JwtService } from 'src/app/auth/jwt';
 import { GameComponent } from 'src/app/pong/game/game.component';
-import { InviteService } from 'src/app/home-page/services/invite.service';
+import { InviteService } from 'src/app/pong/matchmaking/invite/invite.service';
 
 @Component({
   selector: 'app-chat-room',
