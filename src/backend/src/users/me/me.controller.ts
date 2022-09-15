@@ -37,4 +37,9 @@ export class MeController {
   ) {
     this.avatar.uploadAvatar(user, avatar.buffer);
   }
+
+  @Post('avatar-clear')
+  clearAvatar(@User() user: JwtUser) {
+    this.avatar.clearAvatar(user);
+  }
 }

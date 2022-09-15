@@ -65,6 +65,10 @@ export class AvatarUploadService {
       this.http
         .post(`${environment.backend}/me/avatar`, formData)
         .subscribe(() => this.uploaded.next(src));
+    } else {
+      this.http
+        .post(`${environment.backend}/me/avatar-clear`, {})
+        .subscribe(() => this.uploaded.next(src));
     }
   }
 
