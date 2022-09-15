@@ -10,13 +10,25 @@
         <img class="history-item-avatar" avatar username="{{ getUsernameById(game.winnerId) }}" height="48px" width="48px" alt="">
         <p>{{ getUsernameById(game.winnerId) }}</p>
       </div>
-      <!-- Score -->
-      <div class="history-item-scoreboard">
-        <p class="history-item-score">{{ game.winnerGoals }}</p>
-        <img *ngIf="getUsernameById(game.winnerId) === profilInfoService.username" src="/assets/images/vs-win.png" alt="">
-        <img *ngIf="getUsernameById(game.winnerId) != profilInfoService.username" src="/assets/images/vs-lose.png" alt="">
-        <p class="history-item-score">{{ game.loserGoals }}</p>
+
+      <p class="history-item-score">{{ game.winnerGoals }}</p>
+
+      <div class="history-item-mid">
+        <!-- Type -->
+        <div class="history-item-type">
+          {{ game.type }}
+        </div>
+        <!-- VS -->
+        <div class="history-item-scoreboard">
+          <!-- <p class="history-item-score">{{ game.winnerGoals }}</p> -->
+          <img class="history-item-vs" *ngIf="getUsernameById(game.winnerId) === profilInfoService.username" src="/assets/images/vs-win.png" alt="">
+          <img class="history-item-vs" *ngIf="getUsernameById(game.winnerId) != profilInfoService.username" src="/assets/images/vs-lose.png" alt="">
+          <!-- <p class="history-item-score">{{ game.loserGoals }}</p> -->
+        </div>
       </div>
+
+      <p class="history-item-score">{{ game.loserGoals }}</p>
+
       <!-- Right player -->
       <div class="history-item-player">
         <p>{{ getUsernameById(game.loserId) }}</p>
