@@ -127,3 +127,31 @@
 .gameinfo-button:active .gameinfo-buttonicon {
   fill: white;
 }
+
+/* Controls */
+.gameinfo-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  width: 100%;
+  height: fit-content;
+
+  background-color: blue;
+}
+
+.gameinfo-controls-key {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 64px;
+  width: 64px;
+
+  background-color: red;
+}
+
+.pressed {
+  background-color: orange;
+}
