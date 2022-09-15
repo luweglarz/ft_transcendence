@@ -54,8 +54,6 @@ export class MatchmakingService {
           this,
           this._stopWatch,
         );
-        this.socket.emit('joinMatchmaking', 'normal');
-        this.socket.onWaitingForAMatch(this.stopWatch);
         this.socket.onMatchmakingLeft();
         this.queue = type;
       });
