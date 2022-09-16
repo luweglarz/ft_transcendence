@@ -340,13 +340,9 @@ export class ChatGateway
         .to(socket.id)
         .emit('resultCommand', 'whispered to ' + splitRet[2]);
     else if (splitRet[0] === '/leave')
-      this.server
-      .to(socket.id)
-      .emit('resultCommand', 'room leaved');
-      else if (splitRet[0] === '/kick')
-      this.server
-      .to(socket.id)
-      .emit('resultCommand', 'kicked ' + splitRet[2]);
+      this.server.to(socket.id).emit('resultCommand', 'room leaved');
+    else if (splitRet[0] === '/kick')
+      this.server.to(socket.id).emit('resultCommand', 'kicked ' + splitRet[2]);
     else this.server.to(socket.id).emit('resultCommand', resultCmd);
     if (
       splitRet.length === 2 &&
@@ -417,11 +413,11 @@ export class ChatGateway
       this.server.to(splitRet[3]).emit('msg', dm);
       this.server.to(socket.id).emit('msg', dm);
     } else if (splitRet[0] === '/leave') {
-        await this.leaveRoom(socket, command);
-        this.server.to(socket.id).emit('kickLeave');
+      await this.leaveRoom(socket, command);
+      this.server.to(socket.id).emit('kickLeave');
     } else if (splitRet[0] === '/kick') {
-        await this.leaveRoomById(splitRet[1], command);
-        this.server.to(splitRet[1]).emit('kickLeave');
+      await this.leaveRoomById(splitRet[1], command);
+      this.server.to(splitRet[1]).emit('kickLeave');
     }
   }
 

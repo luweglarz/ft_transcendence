@@ -23,7 +23,8 @@ export class CommandService {
     console.log(roomUser);
     const splitCmd: string[] = command.command.split(/[ \t\n]+/);
     console.log(splitCmd);
-    if (splitCmd.length < 2 && splitCmd[0] !== '/leave') return 'incomplete command';
+    if (splitCmd.length < 2 && splitCmd[0] !== '/leave')
+      return 'incomplete command';
     if (splitCmd[splitCmd.length - 1] === '') splitCmd.pop();
     return await this.cmdSelector(
       splitCmd,
@@ -315,17 +316,12 @@ export class CommandService {
     return '/leave';
   }
 
-  async kick(
-    splitCmd: string[],
-    command,
-    roomUser: RoomUser,
-  ): Promise<string> {
+  async kick(splitCmd: string[], command, roomUser: RoomUser): Promise<string> {
     if (roomUser.role === 'USER') return "you don't have the right";
     if (splitCmd.length > 2) return 'usage: /kick username ';
     if (splitCmd.length === 1) return 'incomplete command';
     const room = await this.roomService.room({ id: command.id });
     if (room === undefined) return 'database error';
-    let timeOut = 0;
     const targetUser = await this.prisma.user.findUnique({
       where: { username: splitCmd[1] },
     });
