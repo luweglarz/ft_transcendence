@@ -205,7 +205,7 @@ export class GameGateway
         gameRoom.players.findIndex((element) => element.username === username)
       ].socket = client;
       client.join(gameRoom.uuid);
-      this.gameGatewayService.emitMatchFound(this._server, gameRoom);
+      this.gameGatewayService.emitMatchFound(this._server, gameRoom, true);
     } catch (error) {
       this.logger.debug(error);
     }
