@@ -1,36 +1,44 @@
-<!-- <div class="container" [ngClass]="collapseService.chatCollapsed ? 'container-collapsed': ''"> -->
+<!-- Container -->
 <div class="container">
-  <div style="width: calc(100vmin - 85px);height: 55vmin;" align="center">
-      <div #playersInfo id= "players-info">
-        <img id="avatarOne" avatar username= {{this.game.players[0].username}}>
-        <span style="margin-bottom: 10%">{{this.game.players[0].username}}</span>
-        <canvas *ngIf="this.gameService.isCustomGame(this.game)" #boostOne id="boostOne"></canvas>
-        <div *ngIf="!this.gameService.isCustomGame(this.game)" style="height: 100%; width: 60%; margin-right: 5%; margin-left: 5%;"></div>
-        <span style="font-family: Courier New; width: 10%;">V.S</span>
-        <canvas *ngIf="this.gameService.isCustomGame(this.game)" #boostTwo id="boostTwo"></canvas>
-        <div *ngIf="!this.gameService.isCustomGame(this.game)" style="height: 100%; width: 60%; margin-right: 5%; margin-left: 5%;"></div>
-        <span style="margin-bottom: 10%">{{this.game.players[1].username}}</span>
-        <img id="avatarTwo" avatar username= {{this.game.players[1].username}}>
+
+  <!-- Wrapper for responsive -->
+  <div class="container-wrapper">
+      <!-- Player info -->
+      <div #playersInfo class="players-info">
+
+        <div class="playerinfo-box">
+        <!--  -->
+        <img class="playerinfo-avatar" avatar username= {{this.game.players[0].username}}>
+        <span class="playerinfo-name">{{this.game.players[0].username}}</span>
+        <!--  -->
+        <canvas class="playerinfo-custom" *ngIf="this.gameService.isCustomGame(this.game)" #boostOne id="boostOne"></canvas>
+        <div class="playerinfo-normal" *ngIf="!this.gameService.isCustomGame(this.game)"></div>
+        </div>
+
+        <!-- VS -->
+        <span class="playerinfo-vs">V.S</span>
+
+        <div class="playerinfo-box">
+        <!--  -->
+        <canvas class="playerinfo-custom" *ngIf="this.gameService.isCustomGame(this.game)" #boostTwo id="boostTwo"></canvas>
+        <div class="playerinfo-normal" *ngIf="!this.gameService.isCustomGame(this.game)"></div>
+        <!--  -->
+        <span class="playerinfo-name">{{this.game.players[1].username}}</span>
+        <img class="playerinfo-avatar" avatar username= {{this.game.players[1].username}}>
+        </div>
+
       </div>
+
+      <!-- Game -->
       <canvas id="canvas-container" #gameCanvas ></canvas>
 
-    <!-- Button -->
-    <div class="gameinfo">
-
-      <div class="game-info-rules">
-        <h3>Rules</h3>
-        <p>1. The first player to reach 11 goals win the match.</p>
-        <p>2. More the ball hit a paddle, speeder she goes.</p>
-        <p *ngIf="game.constructor.name === 'CustomGame'">3. Press the spacebar to use your power up spell !</p>
-      </div>
-
+      <!-- Controls -->
       <div class="gameinfo-controls">
         <!-- Up -->
         <div class="gameinfo-controls-key" [ngClass]="gameService.keyPressed === 'ArrowUp' ? 'pressed': ''">
           <svg class="gameinfo-controls-key-icon" [ngClass]="gameService.keyPressed === 'ArrowUp' ? 'pressed-icon': ''" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M23.6 17L14 31.4H33.2L23.6 17Z"/>
           </svg>
-
         </div>
         <!-- Down -->
         <div class="gameinfo-controls-key" [ngClass]="gameService.keyPressed === 'ArrowDown' ? 'pressed': ''">
@@ -53,8 +61,18 @@
           <p>Leave game</p>
         </button>
       </div>
+  </div>
 
+  <!-- Button -->
+  <div class="gameinfo">
+    <!-- Rules -->
+    <div class="game-info-rules">
+      <h3>Rules</h3>
+      <p>1. The first player to reach 11 goals win the match.</p>
+      <p>2. More the ball hit a paddle, speeder she goes.</p>
+      <p *ngIf="game.constructor.name === 'CustomGame'">3. Press the spacebar to use your power up spell !</p>
     </div>
+
   </div>
 
 </div>

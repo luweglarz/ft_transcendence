@@ -1,18 +1,22 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
-  /* height: calc(100% - 58px); */
   height: 100%;
   width: 100%;
   transition: all 0.3s;
+  overflow: hidden;
 }
 
-/* .container-collapsed {
-  height: calc(100% - 320px);
-} */
+.container-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: calc(100vmin - 85px);
+  height: calc(55vmin + 64px);
+}
 
 /* Game canva */
  #canvas-container{
@@ -20,55 +24,66 @@
   width: 100%;
  }
 
- #players-info{
-  height: 5%;
+ .players-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  height: 24px;
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1.5%;
-  margin-top: 1.5%;
+  margin-top: 16px;
+  margin-bottom: 16px;
+
+  /* background-color: aqua; */
  }
 
- #playerOneInfo{
-  height: 100%;
-  width: 50%;
+ .playerinfo-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  height: 24px;
+  width: calc(50% - 32px);
  }
 
- #playerTwoInfo{
-  height: 100%;
-  width: 50%;
+ .playerinfo-avatar {
+  border-radius: 100%;
+  width: 24px;
+  height: 24px;
 }
+
+ .playerinfo-name {
+  height: 24px;
+  width: calc(35% - 12px);
+  overflow: hidden;
+ }
+
+ .playerinfo-normal {
+  height: 100%;
+  width: max-content;
+ }
+
+ .playerinfo-vs {
+  font-family: Courier New;
+  text-align: center;
+  width: 64px;
+ }
 
  #boostOne{
   background-color:rgb(255, 140, 64);
   height: 100%;
-  width: 60%;
-  margin-right: 5%;
-  margin-left: 5%;
+  width: calc(55% - 12px);
  }
 
  #boostTwo{
   background-color:rgb(255, 140, 64);
   height: 100%;
-  width: 60%;
-  margin-left: 5%;
-  margin-right: 5%;
+  width: calc(55% - 12px);
  }
-
-#avatarOne{
-  border-radius: 100%;
-  height: 100%;
-  width: 15%;
-  margin-right: 15%;
-}
-
-#avatarTwo{
-  border-radius: 100%;
-  height: 100%;
-  width: 15%;
-  margin-left: 15%;
-}
-
 
 /* Game info */
  .gameinfo {
@@ -86,10 +101,10 @@
   align-items: center;
 
   width: fit-content;
-  height: 48px;
+  height: 32px;
   cursor: pointer;
 
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   font-family: 'Roboto', sans-serif;
   border-radius: 8px;
@@ -117,9 +132,9 @@
 
 .gameinfo-button .gameinfo-button-icon {
   fill: #1A202C;
-  width: 32px;
-  height: 32px;
-  margin-right: 12px;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
 }
 
 .gameinfo-button:hover .gameinfo-button-icon {
@@ -146,12 +161,12 @@
   justify-content: center;
   align-items: center;
 
-  height: 48px;
-  width: 48px;
+  height: 32px;
+  width: 32px;
 
   background-color: none;
   border: solid 2px white;
-  border-radius: 1em;
+  border-radius: 0.3em;
   transition: 0.3s;
 }
 
@@ -160,12 +175,12 @@
   justify-content: center;
   align-items: center;
 
-  height: 48px;
-  width: 144px;
+  height: 32px;
+  width: 80px;
 
   background-color: none;
   border: solid 2px white;
-  border-radius: 0.8em;
+  border-radius: 0.3em;
   transition: 0.3s;
 }
 
