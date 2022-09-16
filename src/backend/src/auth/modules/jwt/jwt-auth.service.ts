@@ -43,8 +43,7 @@ export class JwtAuthService {
     const user = await this.db.user.findUnique({ where: { id: payload.sub } });
     payload.username = user.username;
     return this.jwt.signAsync(payload, {
-      expiresIn: '42m',
-      // expiresIn: 10,
+      expiresIn: '4h',
       secret: this._accessTokenSecret,
     });
   }
@@ -54,7 +53,6 @@ export class JwtAuthService {
     payload.username = user.username;
     return this.jwt.signAsync(payload, {
       expiresIn: '42h',
-      // expiresIn: '42m',
       secret: this._refreshTokenSecret,
     });
   }

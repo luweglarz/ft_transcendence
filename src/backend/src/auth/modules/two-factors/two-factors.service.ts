@@ -1,11 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
 import { JwtData, JwtUser } from '../jwt/dto';
 
 @Injectable()
 export class TwoFactorsService {
-  private readonly _logger = new Logger(TwoFactorsService.name);
   private readonly _partialSigninTokenSecret = `partial ${process.env['JWT_SECRET']}`;
 
   constructor(
