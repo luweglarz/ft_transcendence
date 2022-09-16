@@ -53,7 +53,6 @@ export class GameGateway
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
-    if (this.matchmakingService.isClientInGame(client)) this.leaveGame(client);
     if (this.matchmakingService.isClientInMatchmaking(client))
       this.matchmakingService.clientLeaveMatchmaking(client);
     this._users.splice(
@@ -191,9 +190,25 @@ export class GameGateway
     }
   }
 
-  @SubscribeMessage('declineInvitation')
-  declineInvitation() {
-    //deleta la room
+  @SubscribeMessage('gameReconnection')
+  gameReconnction(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() username: string,
+  ) {
+    if (this.matchmakingService.isUserInGame(username) === false) return;
+    try {
+      const gameRoom: Room = this.gameGatewayService.findRoomId(
+        this.rooms,
+        username,
+      );
+      gameRoom.players[
+        gameRoom.players.findIndex((element) => element.username === username)
+      ].socket = client;
+      client.join(gameRoom.uuid);
+      this.gameGatewayService.emitMatchFound(this._server, gameRoom);
+    } catch (error) {
+      this.logger.debug(error);
+    }
   }
 
   get rooms(): Room[] {

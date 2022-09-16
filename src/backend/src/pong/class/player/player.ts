@@ -105,6 +105,10 @@ export class Player {
     return this._socket;
   }
 
+  set socket(newSocket: Socket) {
+    this._socket = newSocket;
+  }
+
   get color(): string {
     return this._color;
   }

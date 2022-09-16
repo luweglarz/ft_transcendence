@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs';
 import { JwtService } from 'src/app/auth/jwt';
@@ -17,6 +18,7 @@ export class MatchmakingService {
     private gameService: GameService,
     public notificationService: NotificationService,
     private jwtService: JwtService,
+    private httpClient: HttpClient,
     inviteService: InviteService,
   ) {
     this._stopWatch = new StopWatch();
@@ -30,6 +32,7 @@ export class MatchmakingService {
       this._stopWatch,
     );
     this.socket.oninvitationAccepted(inviteService);
+    this.socket.emit('gameReconnection', this.jwtService.username);
   }
 
   private _stopWatch: StopWatch;
