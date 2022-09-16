@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -18,6 +18,7 @@ import { MatchmakingGatewayService } from '../matchmaking/matchmaking-gateway.se
 import { JwtService } from '@nestjs/jwt';
 
 @WebSocketGateway({ cors: true, path: '/pong' })
+@Injectable()
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -44,9 +45,11 @@ export class GameGateway
     this.logger.log('Init');
   }
 
-  handleConnection(client: Socket) {
+  handleConnection(@ConnectedSocket() client: Socket) {
     if (this.gameGatewayService.checkJwtToken(client)) {
       this._users.push(client);
+      console.log('users: ' + this._users.length);
+      this.logger.log('nb de room a la construction: ' + this.rooms.length);
       this.logger.log(`Client connected: ${client.id}`);
     }
   }
@@ -188,11 +191,6 @@ export class GameGateway
     } catch (error) {
       this.logger.debug(error);
     }
-  }
-
-  @SubscribeMessage('declineInvitation')
-  declineInvitation() {
-    //deleta la room
   }
 
   get rooms(): Room[] {

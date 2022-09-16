@@ -1,27 +1,21 @@
 import { forwardRef, Inject, Logger } from '@nestjs/common';
-import {
-  ConnectedSocket,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
-import { Socket, Server } from 'socket.io';
+import { ConnectedSocket, WebSocketGateway } from '@nestjs/websockets';
+import { Socket } from 'socket.io';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
-import { SocialService } from '../social.service';
+import { MatchmakingGatewayService } from 'src/pong/gateway/matchmaking/matchmaking-gateway.service';
 
 @WebSocketGateway({ cors: true, path: '/status' })
 export class FriendsStatusGateway {
   constructor(
     private jwtService: JwtAuthService,
-    @Inject(forwardRef(() => SocialService))
-    private socialService: SocialService,
+    @Inject(forwardRef(() => MatchmakingGatewayService))
+    private matchmakingGatewayService: MatchmakingGatewayService,
   ) {
     this.logger = new Logger('FriendsStatus');
     this.onlineUsers = new Map<string, Socket[]>();
   }
 
   private logger: Logger;
-  @WebSocketServer()
-  private _server: Server;
   public onlineUsers: Map<string, Socket[]>;
 
   afterInit() {
@@ -37,7 +31,9 @@ export class FriendsStatusGateway {
       ).username;
       this.onlineUsers.set(username, new Array<Socket>(client));
       for (const [key, value] of this.onlineUsers) {
-        client.emit('online', key);
+        if (this.matchmakingGatewayService.isUserInGame(key) === true)
+          client.emit('inGame', key);
+        else client.emit('online', key);
         for (const socket of value) {
           socket.emit('online', username);
         }
@@ -75,30 +71,17 @@ export class FriendsStatusGateway {
     }
   }
 
-  // async emitInGameStatus(players: Player[]) {
-  //   const playerOneFriends = await this.socialService.getUserFriends(
-  //     players[0].username,
-  //   );
-  //   const playerTwoFriends = await this.socialService.getUserFriends(
-  //     players[1].username,
-  //   );
-  //   for (const [key, value] of this.onlineUsers) {
-  //     for (
-  //       let i = 0;
-  //       i < playerOneFriends.length && i < playerTwoFriends.length;
-  //       i++
-  //     ) {
-  //       if (playerOneFriends[i].targetName === key) {
-  //         for (const socket of value) {
-  //           socket.emit('inGame', players[0].username);
-  //         }
-  //       }
-  //       if (playerTwoFriends[i].targetName === key) {
-  //         for (const socket of value) {
-  //           socket.emit('inGame', players[1].username);
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
+  emitInGameStatus(player1: string, player2: string) {
+    try {
+      for (const [key, value] of this.onlineUsers) {
+        if (this.matchmakingGatewayService.isUserInGame(key) === true)
+          for (const socket of value) {
+            socket.emit('inGame', player1);
+            socket.emit('inGame', player2);
+          }
+      }
+    } catch (error) {
+      this.logger.debug(error);
+    }
+  }
 }

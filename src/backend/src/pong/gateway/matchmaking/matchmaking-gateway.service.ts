@@ -11,14 +11,18 @@ import { NormalGame } from 'src/pong/class/game-mode/normal-game/normal-game';
 import { CustomGame } from 'src/pong/class/game-mode/custom-game/custom-game';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
 import { ConnectedSocket } from '@nestjs/websockets';
+import { FriendsStatusGateway } from 'src/social/gateway/friends-status-gateway.gateway';
 
 @Injectable()
 export class MatchmakingGatewayService {
   constructor(
     @Inject(forwardRef(() => GameGateway)) private gameGateway: GameGateway,
+    @Inject(forwardRef(() => GameCoreService))
     private gameCoreService: GameCoreService,
     private gameGatewayService: GameGatewayService,
     private jwtService: JwtAuthService,
+    @Inject(forwardRef(() => FriendsStatusGateway))
+    private friendsStatusGateway: FriendsStatusGateway,
   ) {
     this.normalClientPool = [];
     this.pools = [];
@@ -50,6 +54,7 @@ export class MatchmakingGatewayService {
   }
 
   isUserInGame(username: string): boolean {
+    this.logger.log('this rooms length: ' + this.gameGateway.rooms.length);
     for (const room of this.gameGateway.rooms) {
       for (const player of room.players) {
         if (username === player.username) return true;
@@ -145,6 +150,17 @@ export class MatchmakingGatewayService {
     this.logger.log(
       `Match between ${newRoom.players[0].username} & ${newRoom.players[1].username} in ${newRoom.uuid}`,
     );
+    try {
+      for (const [key, value] of this.friendsStatusGateway.onlineUsers) {
+        key;
+        for (const socket of value) {
+          socket.emit('inGame', players[0].username);
+          socket.emit('inGame', players[1].username);
+        }
+      }
+    } catch (error) {
+      this.logger.debug(error);
+    }
     this.gameGatewayService.emitMatchFound(this.gameGateway.server, newRoom);
     newRoom.gameLoopInterval = newRoom.gameMode.gameLoop(
       newRoom,

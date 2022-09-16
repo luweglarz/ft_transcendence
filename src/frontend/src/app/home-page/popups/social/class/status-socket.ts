@@ -59,7 +59,7 @@ export class StatusSocket extends Socket {
       const friend = this.socialService.friends.find(
         (element) => element.targetName === username,
       );
-      if (friend != undefined) friend.status = 'inGame';
+      if (friend != undefined) friend.status = 'ingame';
     });
   }
 }

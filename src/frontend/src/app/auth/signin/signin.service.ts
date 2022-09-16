@@ -66,7 +66,6 @@ export class SigninService {
    */
   signInSuccess(accessToken: string, refreshToken: string) {
     this.jwt.storeTokens(accessToken, refreshToken);
-    console.log('accesstoken: ' + accessToken);
     this.jwt
       .getToken$()
       .pipe(
