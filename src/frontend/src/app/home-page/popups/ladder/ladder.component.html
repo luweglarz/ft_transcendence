@@ -34,11 +34,6 @@
           <path d="M16 16C19.8675 16 23 12.8675 23 9C23 5.1325 19.8675 2 16 2C12.1325 2 9 5.1325 9 9C9 12.8675 12.1325 16 16 16ZM16 19.5C11.3275 19.5 2 21.845 2 26.5C2 28.433 3.567 30 5.5 30H26.5C28.433 30 30 28.433 30 26.5C30 21.845 20.6725 19.5 16 19.5Z"/>
         </svg>
 
-        <!-- Spectate -->
-        <svg (click)="this.gameComponent.buttonSpectateGame(player.username)" *ngIf="player.showButtons && player.username != username" class="ladder-player-button" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 7.04004C5.5024 7.04004 0 14.7712 0 16C0 17.2256 5.5024 24.96 16 24.96C26.496 24.96 32 17.2256 32 16C32 14.7712 26.496 7.04004 16 7.04004ZM16 22.8912C12.072 22.8912 8.888 19.8064 8.888 16C8.888 12.1936 12.072 9.10564 16 9.10564C19.928 9.10564 23.1104 12.1936 23.1104 16C23.1104 19.8064 19.928 22.8912 16 22.8912ZM16 16C15.3488 15.2848 17.0608 12.5536 16 12.5536C14.0352 12.5536 12.4432 14.0976 12.4432 16C12.4432 17.9024 14.0352 19.4464 16 19.4464C17.9632 19.4464 19.5568 17.9024 19.5568 16C19.5568 15.1248 16.5536 16.6064 16 16Z"/>
-        </svg>
-
         <!-- Add / Remove friends-->
         <!-- Add -->
         <svg class="ladder-player-button add" *ngIf="player.showButtons && player.username != username && (socialService.checkUserRelation(username, player.username) === 'none' || socialService.checkUserRelation(username, player.username) === 'blocked')" (click)="socialService.friendUser(player.username)" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -1,5 +1,6 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
+import { MatchmakingGatewayService } from 'src/pong/gateway/matchmaking/matchmaking-gateway.service';
 import { FriendsStatusGateway } from './gateway/friends-status-gateway.gateway';
 
 export interface Social {
@@ -15,6 +16,7 @@ export class SocialService {
     private prisma: DbService,
     @Inject(forwardRef(() => FriendsStatusGateway))
     private friendsStatusGateway: FriendsStatusGateway,
+    private matchmaking: MatchmakingGatewayService,
   ) {
     //
   }
@@ -80,7 +82,12 @@ export class SocialService {
     });
     formatedRelations.forEach((relation) => {
       for (const onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
-        if (onlineUser === relation.targetName) relation.status = 'online';
+        if (onlineUser === relation.targetName) {
+          relation.status = 'online';
+          if (this.matchmaking.isUserInGame(relation.targetName))
+            relation.status = 'ingame';
+          break;
+        }
       }
     });
 

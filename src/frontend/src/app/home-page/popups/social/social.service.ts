@@ -140,15 +140,4 @@ export class SocialService {
       else return 'none';
     } else return 'blocked';
   }
-
-  //Return true if the user is actually playing a game.
-  isInGame(username: string): boolean {
-    let response = false;
-    this.http
-      .get<boolean>(`${environment.backend}/game/ingame?username=` + username)
-      .subscribe((isInGame) => {
-        response = isInGame;
-      });
-    return response;
-  }
 }

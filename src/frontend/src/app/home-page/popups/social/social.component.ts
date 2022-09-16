@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameComponent } from 'src/app/pong/game/game.component';
 import { SocialService } from './social.service';
 
 @Component({
@@ -9,7 +10,10 @@ import { SocialService } from './social.service';
 export class SocialComponent implements OnInit {
   username = '';
 
-  constructor(public socialService: SocialService) {
+  constructor(
+    public socialService: SocialService,
+    public gameComponent: GameComponent,
+  ) {
     //
   }
 

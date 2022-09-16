@@ -1,5 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtAuthModule } from 'src/auth/modules/jwt/jwt-auth.module';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
@@ -12,7 +12,6 @@ import { MatchmakingGateway } from 'src/pong/gateway/matchmaking/matchmaking.gat
 import { PongModule } from 'src/pong/pong.module';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { GameDbService } from 'src/pong/service/game-db/game-db.service';
-import { SocialService } from '../social.service';
 import { FriendsStatusGateway } from './friends-status-gateway.gateway';
 
 describe('FriendsStatusGateway', () => {

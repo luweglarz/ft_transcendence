@@ -13,11 +13,6 @@
             <path d="M9 9C11.1755 9 12.9375 7.23797 12.9375 5.0625C12.9375 2.88703 11.1755 1.125 9 1.125C6.82453 1.125 5.0625 2.88703 5.0625 5.0625C5.0625 7.23797 6.82453 9 9 9ZM9 10.9688C6.37172 10.9688 1.125 12.2878 1.125 14.9062V14.9062C1.125 15.9936 2.00644 16.875 3.09375 16.875H14.9062C15.9936 16.875 16.875 15.9936 16.875 14.9062V14.9062C16.875 12.2878 11.6283 10.9688 9 10.9688Z"/>
           </svg>
 
-          <!-- Spectate -->
-          <svg (click)="this.gameComponent.buttonSpectateGame(roomUser.username)" class="chatbox-roomuser-item-button" *ngIf="roomUser.showButtons && roomUser.username != username" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 3.95996C3.0951 3.95996 0 8.30876 0 8.99996C0 9.68936 3.0951 14.04 9 14.04C14.904 14.04 18 9.68936 18 8.99996C18 8.30876 14.904 3.95996 9 3.95996ZM9 12.8763C6.7905 12.8763 4.9995 11.1411 4.9995 8.99996C4.9995 6.85886 6.7905 5.12186 9 5.12186C11.2095 5.12186 12.9996 6.85886 12.9996 8.99996C12.9996 11.1411 11.2095 12.8763 9 12.8763ZM9 8.99996C8.6337 8.59766 9.5967 7.06136 9 7.06136C7.8948 7.06136 6.9993 7.92986 6.9993 8.99996C6.9993 10.0701 7.8948 10.9386 9 10.9386C10.1043 10.9386 11.0007 10.0701 11.0007 8.99996C11.0007 8.50766 9.3114 9.34106 9 8.99996Z"/>
-          </svg>
-
           <!-- Add / Remove friends-->
           <!-- Add -->
           <svg (click)="socialService.friendUser(roomUser.username)" class="chatbox-roomuser-item-button add" *ngIf="roomUser.showButtons && roomUser.username != username && (socialService.checkUserRelation(username, roomUser.username) === 'none' || socialService.checkUserRelation(username, roomUser.username) === 'blocked')" width="18" height="18" viewBox="0 0 18 18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">

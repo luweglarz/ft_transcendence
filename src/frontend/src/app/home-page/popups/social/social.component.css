@@ -113,3 +113,17 @@
 .ingame{
   background-color: orange;
 }
+
+/* Spectate */
+.social-list-item-button {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  fill: white;
+  transition: 0.3s;
+}
+
+.social-list-item:hover .social-list-item-button {
+  fill: #44526F;
+  transition: 0.3s;
+}
