@@ -5,6 +5,7 @@
   height: 40px;
   background-color: #2c3649;
   transition: 0.1s;
+  overflow: hidden;
 }
 
 .chatbar-collapsed {

@@ -1,3 +1,4 @@
+
 /*  */
 .chatbox {
   display: flex;
@@ -6,8 +7,6 @@
   align-items: center;
   width: 100%;
   height: 100%;
-
-  /* background-color: blue; */
 }
 
 /* Chatroom users */
@@ -124,10 +123,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-
   border-radius: 1em;
   background-color: #1a202c;
-
   margin-top: 4px;
 }
 
@@ -139,6 +136,8 @@
   border-radius: 1em;
   background-color: #1a202c;
   border: 0;
+  outline: none;
+  color: white;
 }
 
 .chatbox-input-button {
@@ -181,21 +180,21 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-
   border-radius: 1em;
   background-color: #1a202c;
-
   margin-top: 4px;
 }
 
 .chatbox-password-input {
   height: 32px;
   width: calc(100% - 64px);
+  margin-left: 8px;
+
   border-radius: 1em;
   background-color: #1a202c;
+  border: 0;
+  outline: none;
   color: white;
-
-  border: 0px;
 }
 
 .chatbox-password-input::after {

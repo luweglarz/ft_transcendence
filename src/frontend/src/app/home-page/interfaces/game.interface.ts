@@ -5,4 +5,5 @@ export interface Game {
   winnerGoals: number;
   loserId: number;
   loserGoals: number;
+  type: string;
 }

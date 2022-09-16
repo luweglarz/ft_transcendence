@@ -47,7 +47,7 @@
       <!-- Input-->
       <div class="chatbox-input" *ngIf="(roomUsers)?.length; else password">
         <!-- Input -->
-        <input class="chatbox-input-form" matInput [formControl]="chatMessage" type="text" (keyup.enter)="sendMessage()">
+        <input class="chatbox-input-form" [formControl]="chatMessage" type="text" (keyup.enter)="sendMessage()">
         <!-- Send button -->
         <button class="chatbox-input-button" [disabled]="!chatMessage.valid && chatRoom" (click)="sendMessage()">
           <svg class="chatbox-input-button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
