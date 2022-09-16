@@ -87,7 +87,7 @@ export class JwtService {
 
   //  =============================== Methods ================================  //
 
-  private refreshTokens() {
+  refreshTokens() {
     return this.httpNoIntercept
       .get<JwtTokens>(this.refreshTokenUrl, {
         headers: {

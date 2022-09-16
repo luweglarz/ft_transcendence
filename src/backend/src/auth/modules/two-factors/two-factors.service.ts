@@ -34,4 +34,13 @@ export class TwoFactorsService {
       })
     ).auth.twoFactor;
   }
+
+  async isEnabledFromId(id: number) {
+    return (
+      await this.db.user.findUnique({
+        include: { auth: true },
+        where: { id: id },
+      })
+    ).auth.twoFactor;
+  }
 }

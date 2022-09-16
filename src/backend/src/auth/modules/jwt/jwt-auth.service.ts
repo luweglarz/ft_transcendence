@@ -38,14 +38,20 @@ export class JwtAuthService {
 
   //  ============================== Sign token ==============================  //
 
-  private signAccessToken(payload: JwtUser): Promise<string> {
+  private async signAccessToken(payload: JwtUser): Promise<string> {
+    // Username can change!
+    const user = await this.db.user.findUnique({ where: { id: payload.sub } });
+    payload.username = user.username;
     return this.jwt.signAsync(payload, {
       expiresIn: '42m',
       // expiresIn: 10,
       secret: this._accessTokenSecret,
     });
   }
-  private signRefreshToken(payload: JwtUser): Promise<string> {
+  private async signRefreshToken(payload: JwtUser): Promise<string> {
+    // Username can change!
+    const user = await this.db.user.findUnique({ where: { id: payload.sub } });
+    payload.username = user.username;
     return this.jwt.signAsync(payload, {
       expiresIn: '42h',
       // expiresIn: '42m',

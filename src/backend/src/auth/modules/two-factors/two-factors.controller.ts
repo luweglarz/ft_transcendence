@@ -16,6 +16,6 @@ export class TwoFactorsController {
   @Get('is-enabled')
   @UseGuards(JwtAccessGuard)
   isEnabled(@User() user: JwtUser) {
-    return this.service.isEnabled(user.username);
+    return this.service.isEnabledFromId(user.sub);
   }
 }
