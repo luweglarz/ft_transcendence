@@ -30,6 +30,7 @@ export class MatchmakingService {
       this._stopWatch,
     );
     this.socket.oninvitationAccepted(inviteService);
+    this.socket.emit('gameReconnection', this.jwtService.username);
   }
 
   private _stopWatch: StopWatch;

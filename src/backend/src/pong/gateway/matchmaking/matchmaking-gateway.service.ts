@@ -145,7 +145,11 @@ export class MatchmakingGatewayService {
     this.logger.log(
       `Match between ${newRoom.players[0].username} & ${newRoom.players[1].username} in ${newRoom.uuid}`,
     );
-    this.gameGatewayService.emitMatchFound(this.gameGateway.server, newRoom);
+    this.gameGatewayService.emitMatchFound(
+      this.gameGateway.server,
+      newRoom,
+      false,
+    );
     newRoom.gameLoopInterval = newRoom.gameMode.gameLoop(
       newRoom,
       this.gameGateway.rooms,
