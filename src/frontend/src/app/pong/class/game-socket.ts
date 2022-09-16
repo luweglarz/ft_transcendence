@@ -35,7 +35,13 @@ export class GameSocket extends Socket {
   ) {
     this.on(
       'matchFound',
-      (msg: any, gameType: string, gameMapInfo: any, playersInfo: any, reconnection: any) => {
+      (
+        msg: any,
+        gameType: string,
+        gameMapInfo: any,
+        playersInfo: any,
+        reconnection: any,
+      ) => {
         matchmakingService.requestLeaveMatchmaking();
         if (reconnection.reconnectionBool == false)
           notificationService.gameFound();
