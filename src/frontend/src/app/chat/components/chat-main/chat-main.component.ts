@@ -27,6 +27,9 @@ export class ChatMainComponent implements OnInit, OnDestroy {
     inv.invite.room = inv.Room;
     this.invites.push(inv.invite);
   });
+  kickLeave = this.chatService.kickLeaveEvent().subscribe(() => {
+    this.selectedRoom = {};
+  });
 
   constructor(
     private chatService: ChatService,

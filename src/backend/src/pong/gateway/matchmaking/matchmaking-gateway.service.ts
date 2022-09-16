@@ -161,7 +161,7 @@ export class MatchmakingGatewayService {
     } catch (error) {
       this.logger.debug(error);
     }
-    this.gameGatewayService.emitMatchFound(this.gameGateway.server, newRoom);
+    this.gameGatewayService.emitMatchFound(this.gameGateway.server, newRoom, false);
     newRoom.gameLoopInterval = newRoom.gameMode.gameLoop(
       newRoom,
       this.gameGateway.rooms,

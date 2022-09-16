@@ -11,6 +11,4 @@ export class EventsService {
   avatar = {
     upload: new EventEmitter<string>(),
   };
-
-  // constructor() {}
 }

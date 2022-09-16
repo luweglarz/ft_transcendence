@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   HttpStatus,
   ParseFilePipeBuilder,
@@ -11,11 +12,16 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { User, JwtAccessGuard } from 'src/auth';
 import { JwtUser } from 'src/auth/modules/jwt/dto';
 import { AvatarService } from '../services/avatar/avatar.service';
+import { UsersService } from '../services/users/users.service';
+import { UsernameUpdateDto } from './dto/usernameUpdate.dto';
 
 @Controller('me')
 @UseGuards(JwtAccessGuard)
 export class MeController {
-  constructor(private avatar: AvatarService) {}
+  constructor(
+    private avatar: AvatarService,
+    private usersService: UsersService,
+  ) {}
 
   @Post('avatar')
   @UseInterceptors(FileInterceptor('avatar'))
@@ -36,5 +42,15 @@ export class MeController {
     @User() user: JwtUser,
   ) {
     this.avatar.uploadAvatar(user, avatar.buffer);
+  }
+
+  @Post('avatar-clear')
+  clearAvatar(@User() user: JwtUser) {
+    this.avatar.clearAvatar(user);
+  }
+
+  @Post('username/update')
+  updateUsername(@User() user: JwtUser, @Body() dto: UsernameUpdateDto) {
+    this.usersService.updateUsername(user, dto.username);
   }
 }

@@ -51,6 +51,10 @@ export class ChatService {
     return this.socket.fromOneTimeEvent<string>('resultCommand');
   }
 
+  kickLeaveEvent(): Observable<Room> {
+    return this.socket.fromEvent<Room>('kickLeave');
+  }
+
   getBanMuteResult(): Observable<string> {
     return this.socket.fromEvent<string>('banMute');
   }

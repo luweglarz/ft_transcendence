@@ -69,7 +69,7 @@ export class GameGatewayService {
     return 'ranked';
   }
 
-  emitMatchFound(server: Server, newRoom: Room) {
+  emitMatchFound(server: Server, newRoom: Room, reconnection: boolean) {
     server.to(newRoom.uuid).emit(
       'matchFound',
       'A match has been found',
@@ -88,6 +88,9 @@ export class GameGatewayService {
         playerTwoColor: newRoom.players[1].color,
         playerOneUsername: newRoom.players[0].username,
         playerTwoUsername: newRoom.players[1].username,
+      },
+      {
+        reconnectionBool: reconnection,
       },
     );
   }

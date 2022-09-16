@@ -4,37 +4,16 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   transition: all 0.3s;
+  overflow: hidden;
 }
 
 .container-collapsed {
   height: calc(100% - 300px);
 }
 
-.invite-close {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  height: 32px;
-  width: fit-content;
-}
-
-.invite-close-button {
-  fill: white;
-  cursor: pointer;
-  transition: 0.3s;
-
-  padding-left: 32px;
-  padding-right: 8px;
-}
-
-.invite-close-text {
-  cursor: pointer;
-  font-size: 24px;
-  font-weight: bolder;
-  color: white;
-}
-
+/* Invite content */
 .invite-title {
   font-size: 32px;
   height: fit-content;
@@ -44,13 +23,15 @@
   color: white;
 }
 
+/* Cards */
 .invite-cards {
-  height: fit-content;
-  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+
+  height: fit-content;
+  width: 100%;
 }
 
 .invite-card {
@@ -67,7 +48,6 @@
   color: white;
   font-family: 'Roboto', sans-serif;
   text-align: center;
-  margin: 0px 18px 0px 18px;
 
   transition: 1s;
 }
@@ -95,7 +75,8 @@
 
 .invite-or {
   height: fit-content;
-  width: fit-content;
+  width: 128px;
   font-size: 32px;
   font-weight: bolder;
+  text-align: center;
 }

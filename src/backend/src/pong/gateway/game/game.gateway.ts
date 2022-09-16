@@ -55,7 +55,6 @@ export class GameGateway
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
-    if (this.matchmakingService.isClientInGame(client)) this.leaveGame(client);
     if (this.matchmakingService.isClientInMatchmaking(client))
       this.matchmakingService.clientLeaveMatchmaking(client);
     this._users.splice(
@@ -188,6 +187,27 @@ export class GameGateway
       );
       const players: Socket[] = [friend, client];
       this.matchmakingService.createGame(players, infos[1]);
+    } catch (error) {
+      this.logger.debug(error);
+    }
+  }
+
+  @SubscribeMessage('gameReconnection')
+  gameReconnction(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() username: string,
+  ) {
+    if (this.matchmakingService.isUserInGame(username) === false) return;
+    try {
+      const gameRoom: Room = this.gameGatewayService.findRoomId(
+        this.rooms,
+        username,
+      );
+      gameRoom.players[
+        gameRoom.players.findIndex((element) => element.username === username)
+      ].socket = client;
+      client.join(gameRoom.uuid);
+      this.gameGatewayService.emitMatchFound(this._server, gameRoom, true);
     } catch (error) {
       this.logger.debug(error);
     }

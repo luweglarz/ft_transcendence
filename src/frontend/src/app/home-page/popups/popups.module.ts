@@ -15,6 +15,7 @@ import { LadderService } from './ladder/ladder.service';
 import { SocialService } from './social/social.service';
 import { SettingsComponent } from './settings/settings.component';
 import { TwoFactorsModule } from 'src/app/auth/two-factors/two-factors.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { TwoFactorsModule } from 'src/app/auth/two-factors/two-factors.module';
     LadderService,
     SocialService,
   ],
-  imports: [CommonModule, AvatarModule, TwoFactorsModule],
+  imports: [CommonModule, AvatarModule, TwoFactorsModule, ReactiveFormsModule],
   exports: [PopupsComponent],
 })
 export class PopupsModule {

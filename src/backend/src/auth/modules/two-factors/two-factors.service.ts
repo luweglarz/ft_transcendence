@@ -1,11 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
 import { JwtData, JwtUser } from '../jwt/dto';
 
 @Injectable()
 export class TwoFactorsService {
-  private readonly _logger = new Logger(TwoFactorsService.name);
   private readonly _partialSigninTokenSecret = `partial ${process.env['JWT_SECRET']}`;
 
   constructor(
@@ -31,6 +30,15 @@ export class TwoFactorsService {
       await this.db.user.findUnique({
         include: { auth: true },
         where: { username: username },
+      })
+    ).auth.twoFactor;
+  }
+
+  async isEnabledFromId(id: number) {
+    return (
+      await this.db.user.findUnique({
+        include: { auth: true },
+        where: { id: id },
       })
     ).auth.twoFactor;
   }

@@ -1,6 +1,27 @@
 <div class="container">
-  <div class="settings">
+  <div class="settings" *ngIf="!game.isInGame.getValue()">
+    <h3>Profile Settings</h3>
+    <div class="sub-container">
+      <!-- AVATAR -->
+      <app-avatar-upload></app-avatar-upload>
+      <button *ngIf="avatarUpload.src != currentAvatar" (click)="updateAvatar()">Update avatar</button>
+
+      <!-- Username -->
+      <input [formControl]="username" placeholder="Username" name="username" autocomplete="username">
+      <div *ngIf="username.invalid && username.value && username.value != currentUsername" class="alert">
+        <div *ngIf="username.errors?.['maxlength']"> Username too long (42 char max). </div>
+        <div *ngIf="username.errors?.['isAvailable'] && username.value != currentUsername"> Username `{{username.value}}` is unavailable. </div>
+        <div *ngIf="username.errors?.['pattern']"> Username must be alphanumeric. </div>
+      </div>
+      <button *ngIf="!username.errors" (click)="updateUsername()">Update username</button>
+    </div>
+
     <h3>Auth Settings</h3>
-    <two-factor-qrcode></two-factor-qrcode>
+    <div class="sub-container">
+      <two-factor-qrcode></two-factor-qrcode>
+    </div>
+  </div>
+  <div class="settings" *ngIf="game.isInGame.getValue()">
+    <div class="alert">You cannot edit your settings while you're in game.</div>
   </div>
 </div>
