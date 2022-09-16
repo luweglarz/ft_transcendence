@@ -16,7 +16,9 @@ export class SettingsService {
       this.http
         .post(`${environment.backend}/me/username/update`, dto)
         .subscribe(() => {
-          this.jwt.refreshTokens().subscribe();
+          this.jwt.refreshTokens().subscribe(() => {
+            location.reload(); // especially for the sockets
+          });
         });
     }
   }

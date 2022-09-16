@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="settings">
+  <div class="settings" *ngIf="!game.isInGame.getValue()">
     <h3>Profile Settings</h3>
     <div class="sub-container">
       <!-- AVATAR -->
@@ -20,5 +20,8 @@
     <div class="sub-container">
       <two-factor-qrcode></two-factor-qrcode>
     </div>
+  </div>
+  <div class="settings" *ngIf="game.isInGame.getValue()">
+    <div class="alert">You cannot edit your settings while you're in game.</div>
   </div>
 </div>

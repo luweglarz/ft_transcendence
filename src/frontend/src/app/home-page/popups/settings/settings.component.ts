@@ -4,6 +4,7 @@ import { JwtService } from 'src/app/auth/jwt';
 import { ValidatorBuilderService } from 'src/app/auth/signup/validators/validator-builder.service';
 import { AvatarUploadService } from 'src/app/avatar/avatar-upload/avatar-upload.service';
 import { AvatarService } from 'src/app/avatar/avatar.service';
+import { GameService } from 'src/app/pong/game/game.service';
 import { SettingsService } from './settings.service';
 
 @Component({
@@ -34,6 +35,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private jwt: JwtService,
     private formBuilder: FormBuilder,
     private validators: ValidatorBuilderService,
+    public readonly game: GameService,
   ) {}
 
   ngOnInit(): void {
