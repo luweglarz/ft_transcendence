@@ -234,6 +234,48 @@ export class ChatGateway
     await this.getRoomUsers(room.id);
   }
 
+  async leaveRoomById(socketId: string, room: Room) {
+    this.logger.debug(room);
+    const roomUsers = await this.roomUserService.roomUsers({
+      where: { socketId: socketId, roomId: room.id },
+    });
+    for (const roomUser of roomUsers) {
+      this.logger.debug('in handle disco', roomUser);
+      const otherRoomUser = await this.roomUserService.roomUsers({
+        where: { roomId: roomUser.roomId },
+      });
+      this.logger.debug('otherroomuser', otherRoomUser.length);
+      if (otherRoomUser.length == 1) {
+        await this.prisma.message.deleteMany({
+          where: { roomId: roomUser.roomId },
+        });
+        await this.prisma.roomUser.delete({
+          where: { roomUserId: roomUser.roomUserId },
+        });
+        await this.prisma.jailUser.deleteMany({
+          where: { roomId: roomUser.roomId },
+        });
+        await this.prisma.invite.deleteMany({
+          where: { roomId: roomUser.roomId },
+        });
+        await this.prisma.room.delete({ where: { id: roomUser.roomId } });
+      }
+    }
+    await this.prisma.roomUser.deleteMany({
+      where: { socketId: socketId, roomId: room.id },
+    });
+    /*let roomUsers = await this.roomUserService.roomUsers({where: {userId: socket.data.user.id}});
+    for (let roomUser of roomUsers) {
+      this.logger.debug(roomUser);
+      if (roomUser.roomId == room.id)
+      this.logger.debug('inif', roomUser);
+    }*/
+    this.server.to(socketId).emit('msgs', []);
+    this.server.to(socketId).emit('roomUsers', []);
+    await this.getRooms();
+    await this.getRoomUsers(room.id);
+  }
+
   @SubscribeMessage('addMessage')
   async addMessage(socket: Socket, message: string) {
     console.log(socket);
@@ -297,6 +339,14 @@ export class ChatGateway
       this.server
         .to(socket.id)
         .emit('resultCommand', 'whispered to ' + splitRet[2]);
+    else if (splitRet[0] === '/leave')
+      this.server
+      .to(socket.id)
+      .emit('resultCommand', 'room leaved');
+      else if (splitRet[0] === '/kick')
+      this.server
+      .to(socket.id)
+      .emit('resultCommand', 'kicked ' + splitRet[2]);
     else this.server.to(socket.id).emit('resultCommand', resultCmd);
     if (
       splitRet.length === 2 &&
@@ -366,6 +416,12 @@ export class ChatGateway
       };
       this.server.to(splitRet[3]).emit('msg', dm);
       this.server.to(socket.id).emit('msg', dm);
+    } else if (splitRet[0] === '/leave') {
+        await this.leaveRoom(socket, command);
+        this.server.to(socket.id).emit('kickLeave');
+    } else if (splitRet[0] === '/kick') {
+        await this.leaveRoomById(splitRet[1], command);
+        this.server.to(splitRet[1]).emit('kickLeave');
     }
   }
 

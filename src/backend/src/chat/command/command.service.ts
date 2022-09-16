@@ -23,7 +23,7 @@ export class CommandService {
     console.log(roomUser);
     const splitCmd: string[] = command.command.split(/[ \t\n]+/);
     console.log(splitCmd);
-    if (splitCmd.length < 2) return 'incomplete command';
+    if (splitCmd.length < 2 && splitCmd[0] !== '/leave') return 'incomplete command';
     if (splitCmd[splitCmd.length - 1] === '') splitCmd.pop();
     return await this.cmdSelector(
       splitCmd,
@@ -53,6 +53,10 @@ export class CommandService {
       return this.challenge(splitCmd, command, roomUser);
     } else if (splitCmd[0] === '/whisper' || splitCmd[0] === '/w') {
       return this.whisper(splitCmd, command, roomUser);
+    } else if (splitCmd[0] === '/leave') {
+      return this.leave();
+    } else if (splitCmd[0] === '/kick') {
+      return this.kick(splitCmd, command, roomUser);
     } else {
       return 'command not found';
     }
@@ -305,6 +309,36 @@ export class CommandService {
       ' ' +
       splitCmd[2]
     );
+  }
+
+  async leave(): Promise<string> {
+    return '/leave';
+  }
+
+  async kick(
+    splitCmd: string[],
+    command,
+    roomUser: RoomUser,
+  ): Promise<string> {
+    if (roomUser.role === 'USER') return "you don't have the right";
+    if (splitCmd.length > 2) return 'usage: /kick username ';
+    if (splitCmd.length === 1) return 'incomplete command';
+    const room = await this.roomService.room({ id: command.id });
+    if (room === undefined) return 'database error';
+    let timeOut = 0;
+    const targetUser = await this.prisma.user.findUnique({
+      where: { username: splitCmd[1] },
+    });
+    if (targetUser === null) return 'not a user';
+    const targetRoomUser: RoomUser[] = await this.roomUserService.roomUsers({
+      where: { roomId: command.id, AND: { userId: targetUser.id } },
+    }); // get targetUser
+    console.log('WHY', targetRoomUser[0]);
+    if (targetRoomUser.length === 0) return 'user is not in the room';
+    if (targetRoomUser.length !== 1) return 'database error';
+    if (targetRoomUser[0].role !== 'USER')
+      return 'you cannot kick an owner or an admin';
+    return '/kick ' + targetRoomUser[0].socketId + ' ' + targetUser.username;
   }
 }
 /*
