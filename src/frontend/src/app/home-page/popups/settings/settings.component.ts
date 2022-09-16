@@ -4,6 +4,7 @@ import { JwtService } from 'src/app/auth/jwt';
 import { ValidatorBuilderService } from 'src/app/auth/signup/validators/validator-builder.service';
 import { AvatarUploadService } from 'src/app/avatar/avatar-upload/avatar-upload.service';
 import { AvatarService } from 'src/app/avatar/avatar.service';
+import { SettingsService } from './settings.service';
 
 @Component({
   selector: 'app-settings',
@@ -27,6 +28,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   });
 
   constructor(
+    private service: SettingsService,
     public avatarUpload: AvatarUploadService,
     private avatar: AvatarService,
     private jwt: JwtService,
@@ -47,7 +49,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   updateUsername() {
-    console.error('NOT IMPLEMENTED');
+    if (this.username.value) this.service.updateUsername(this.username.value);
   }
 
   ngOnDestroy(): void {
