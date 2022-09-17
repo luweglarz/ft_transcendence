@@ -17,7 +17,6 @@ export class ChatService {
     private jwtService: JwtService,
     private events: EventsService,
   ) {
-    //this.socket.connect();
     this.events.auth.signout.subscribe(() => {
       this.socket.disconnect();
     });
@@ -99,7 +98,6 @@ export class ChatService {
   }
 
   sendMessage(message: Message) {
-    console.log(message.room);
     this.socket.emit('addMessage', message);
   }
 

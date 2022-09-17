@@ -1,11 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
 import { Prisma, JailUser } from '@prisma/client';
 import { RoomService } from '../room/room.service';
 
 @Injectable()
 export class JailUserService {
-  private readonly logger = new Logger(JailUserService.name);
 
   constructor(private prisma: DbService, private roomService: RoomService) {}
 
@@ -41,7 +40,6 @@ export class JailUserService {
   }
 
   async deleteJailUser(jailUserId: number, roomId: number, userId: number) {
-    console.log('delete jail user has been called');
     const ju: number[] = (await this.roomService.room({ id: roomId }))
       .jailUsers;
     await this.prisma.room.update({
