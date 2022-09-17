@@ -35,7 +35,9 @@ export class FriendsStatusGateway {
           client.emit('inGame', key);
         else client.emit('online', key);
         for (const socket of value) {
-          socket.emit('online', username);
+          if (this.matchmakingGatewayService.isUserInGame(username) === true)
+            socket.emit('inGame', username);
+          else socket.emit('online', username);
         }
       }
     } catch (error) {

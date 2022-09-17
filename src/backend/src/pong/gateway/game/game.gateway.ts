@@ -48,8 +48,6 @@ export class GameGateway
   handleConnection(@ConnectedSocket() client: Socket) {
     if (this.gameGatewayService.checkJwtToken(client)) {
       this._users.push(client);
-      console.log('users: ' + this._users.length);
-      this.logger.log('nb de room a la construction: ' + this.rooms.length);
       this.logger.log(`Client connected: ${client.id}`);
     }
   }
