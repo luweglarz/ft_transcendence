@@ -27,14 +27,11 @@ export class ChatInviteComponent {
       return;
     }
     if (invite.challenge === true) {
-      //challenge me
       this.invites = this.invites.filter((inv) => inv !== invite);
       this.dialogRef.close({ result: 'challenge', invite: invite });
       this.chatService.deleteInvite(invite.id);
       return;
     }
-    // join room
-    console.log(invite);
     this.dialogRef.close({ result: 'accept', invite: invite });
     this.invites = this.invites.filter((inv) => inv !== invite);
     this.chatService.deleteInvite(invite.id);

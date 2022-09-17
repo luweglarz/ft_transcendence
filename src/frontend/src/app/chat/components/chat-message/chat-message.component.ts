@@ -7,7 +7,7 @@ import { JwtService } from 'src/app/auth/jwt';
   templateUrl: './chat-message.component.html',
   styleUrls: ['./chat-message.component.css'],
 })
-export class ChatMessageComponent /*implements OnInit*/ {
+export class ChatMessageComponent {
   @Input() message: Message = {};
   username = '';
 
@@ -16,11 +16,6 @@ export class ChatMessageComponent /*implements OnInit*/ {
     if (username) this.username = username;
   }
 
-  //ngOnInit(): void {}
-  //findUser(message: Message): RoomUser {
-  //  this.roomUsers
-  //  return ({});
-  //}
   dateToTs(createdAt: Date | undefined): string {
     if (createdAt === undefined) return '[00:00]';
     const time: Date = new Date(createdAt);

@@ -18,11 +18,9 @@ import { WaitService } from 'src/app/pong/matchmaking/wait/wait.service';
 })
 export class ChatMainComponent implements OnInit, OnDestroy {
   rooms: Observable<Room[]> = this.chatService.getRooms();
-  //createdRoom: Promise<Room> = this.chatService.getCreatedRoomFirst();
   selectedRoom: Room = {};
   invites: Invite[] = [];
   inviteEvent = this.chatService.getInvitations().subscribe((inv) => {
-    console.log(inv);
     this.notification.inviteReceived();
     inv.invite.room = inv.Room;
     this.invites.push(inv.invite);
@@ -44,7 +42,6 @@ export class ChatMainComponent implements OnInit, OnDestroy {
   }
 
   onSelectRoom(event: MatSelectionListChange) {
-    //console.log('MLT', JSON.parse(JSON.stringify(event.source.selectedOptions.selected[0].value)));
     this.selectedRoom = event.source.selectedOptions.selected[0].value;
   }
 
@@ -56,7 +53,6 @@ export class ChatMainComponent implements OnInit, OnDestroy {
     dialogRef
       .afterClosed()
       .subscribe((invite: { result: string; invite: Invite }) => {
-        console.log(invite);
         if (invite === null || invite === undefined) {
           return;
         } else if (invite.result === 'challenge') {
@@ -77,38 +73,13 @@ export class ChatMainComponent implements OnInit, OnDestroy {
 
   async openDialog() {
     const dialogRef = this.dialog.open(ChatRoomCreateComponent, {
-      // width: '250px',
       data: {},
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      //this.roomCreate = result;
-      console.log(result);
       if (result !== undefined) {
         if (result !== 'no') {
-          console.log('result'); // selectedroom must become the newly created room
-          /*this.chatService.getCreatedRoom().subscribe((resultRoom) => {
-            console.log('Roomresult');
-            this.selectedRoom = resultRoom;
-          });
-          if (this.selectedRoom.id === undefined) {
-            this.createdRoom.then((resultRoom) => {
-              console.log('Roomresult');
-              this.selectedRoom = resultRoom;
-            });
-          }
-          this.chatService.getCreatedRoomFirst().then(async (room: Room) => {
-            console.log('in then');
-            this.chatService.joinRoom(room);
-            this.selectedRoom = room;
-          });
-          while (this.selectedRoom.id === undefined) {
-            console.log('empty do it again')
-            this.selectedRoom = await this.chatService.getCreatedRoomFirst();
-          }*/
           this.selectedRoom = result;
-          console.log('why');
-          console.log(this.selectedRoom);
         }
       }
     });
@@ -116,6 +87,6 @@ export class ChatMainComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.chatService.closeChat();
-    this.selectedRoom = {}; // probably useless
+    this.selectedRoom = {};
   }
 }
