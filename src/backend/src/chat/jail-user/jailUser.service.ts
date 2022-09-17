@@ -5,7 +5,6 @@ import { RoomService } from '../room/room.service';
 
 @Injectable()
 export class JailUserService {
-
   constructor(private prisma: DbService, private roomService: RoomService) {}
 
   async jailUser(

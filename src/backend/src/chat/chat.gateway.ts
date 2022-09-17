@@ -155,8 +155,7 @@ export class ChatGateway
         this.getMsgs(socket, room.id);
         this.getRoomUsers(room.id);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
     await this.prisma.invite.deleteMany({
       where: {
         roomId: room.id,

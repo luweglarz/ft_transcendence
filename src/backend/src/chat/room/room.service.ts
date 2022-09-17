@@ -5,7 +5,6 @@ import * as argon from 'argon2';
 
 @Injectable()
 export class RoomService {
-
   constructor(private prisma: DbService) {}
 
   async room(

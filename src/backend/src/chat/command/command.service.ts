@@ -21,7 +21,10 @@ export class CommandService {
     });
     if (roomUser.length != 1) return 'database error';
     const splitCmd: string[] = command.command.split(/[ \t\n]+/);
-    if (splitCmd.length < 2 && !(splitCmd[0] === '/leave' || splitCmd[0] === '/help'))
+    if (
+      splitCmd.length < 2 &&
+      !(splitCmd[0] === '/leave' || splitCmd[0] === '/help')
+    )
       return 'incomplete command';
     if (splitCmd[splitCmd.length - 1] === '') splitCmd.pop();
     return await this.cmdSelector(
