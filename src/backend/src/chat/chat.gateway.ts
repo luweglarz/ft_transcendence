@@ -137,7 +137,7 @@ export class ChatGateway
       where: { roomId: room.id, AND: { isBanned: true } },
     });
     for (const jailUser of jailUsers) {
-      if (user.id === jailUser.userId){
+      if (user.id === jailUser.userId && jailUser.isBanned === true) {
         this.server.to(socket.id).emit('kickLeave');
         this.server.to(socket.id).emit('banMute', 'you were banned');
         return;
@@ -317,8 +317,10 @@ export class ChatGateway
         this.server
           .to(jailUsers[0].socketId)
           .emit('banMute', 'you are ' + splitRet[0]);
-          await this.leaveRoomById(jailUsers[0].socketId, command);
-          this.server.to(jailUsers[0].socketId).emit('kickLeave');
+          if (splitRet[0] === 'banned') {
+            await this.leaveRoomById(jailUsers[0].socketId, command);
+            this.server.to(jailUsers[0].socketId).emit('kickLeave');
+          }
       }
     } else if (splitRet[0] === '/invite') {
       const invite: Invite = await this.prisma.invite.create({
