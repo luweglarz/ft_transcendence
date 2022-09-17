@@ -21,3 +21,20 @@ OAUTH client ID: your 42 OAUTH credentials
 OAUTH client secret (hidden): your 42 OAUTH credentials
 ~ make
 ```
+## Chat - commands
+
+Admin commands:
+```
+/ban [username] - Ban an user from the chat room.
+/admin [username] - Grant admin priviledge to an user.
+/kick [username] - Kick an user from the chat room.
+/deadmin [username] - Revoke admin priviledge to an admin.
+/invite [username] - Invite an user into the char room.
+/mute [username] -  Mute an user into the chat room.
+/password [password] - Change the password of a protected room.
+```
+User commands:
+```
+/leave - Leave the chat room.
+/challenge [username] - Challenge to a private game another user in the chat room.
+```
