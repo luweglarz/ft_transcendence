@@ -25,8 +25,4 @@ export class HomeComponent implements OnInit {
   closePopup() {
     this.popupsService.closePopup();
   }
-
-  debug() {
-    console.log(this.gameService.isInGame.getValue());
-  }
 }
