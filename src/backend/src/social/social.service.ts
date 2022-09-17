@@ -1,10 +1,23 @@
-import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
+import { MatchmakingGatewayService } from 'src/pong/gateway/matchmaking/matchmaking-gateway.service';
+import { FriendsStatusGateway } from './gateway/friends-status-gateway.gateway';
+
+export interface Social {
+  authorName: string;
+  targetName: string;
+  relation: string;
+  status: string;
+}
 
 @Injectable()
 export class SocialService {
-  constructor(private prisma: DbService, private http: HttpService) {
+  constructor(
+    private prisma: DbService,
+    @Inject(forwardRef(() => FriendsStatusGateway))
+    private friendsStatusGateway: FriendsStatusGateway,
+    private matchmaking: MatchmakingGatewayService,
+  ) {
     //
   }
 
@@ -13,33 +26,105 @@ export class SocialService {
     return socialList;
   }
 
-  getUserRelations(username: string) {
-    const userRelations = this.prisma.social.findMany({
+  async getUserRelations(username: string) {
+    const userRelations = await this.prisma.social.findMany({
       where: {
         authorName: username,
       },
     });
-    return userRelations;
+
+    //
+    const formatedRelations: Social[] = [];
+    userRelations.forEach((element) => {
+      formatedRelations.push(
+        Object.assign(
+          {},
+          {
+            authorName: element.authorName,
+            targetName: element.targetName,
+            relation: element.relation,
+            status: 'offline',
+          },
+        ),
+      );
+    });
+    formatedRelations.forEach((relation) => {
+      for (const onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
+        if (onlineUser === relation.targetName) relation.status = 'online';
+      }
+    });
+
+    //return userRelations;
+    return formatedRelations;
   }
 
-  getUserFriends(username: string) {
-    const userFriends = this.prisma.social.findMany({
+  async getUserFriends(username: string) {
+    const userFriends = await this.prisma.social.findMany({
       where: {
         authorName: username,
         relation: 'friend',
       },
     });
-    return userFriends;
+
+    const formatedRelations: Social[] = [];
+    userFriends.forEach((element) => {
+      formatedRelations.push(
+        Object.assign(
+          {},
+          {
+            authorName: element.authorName,
+            targetName: element.targetName,
+            relation: element.relation,
+            status: 'offline',
+          },
+        ),
+      );
+    });
+    formatedRelations.forEach((relation) => {
+      for (const onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
+        if (onlineUser === relation.targetName) {
+          relation.status = 'online';
+          if (this.matchmaking.isUserInGame(relation.targetName))
+            relation.status = 'ingame';
+          break;
+        }
+      }
+    });
+
+    //return userFriends;
+    return formatedRelations;
   }
 
-  getUserBlocked(username: string) {
-    const userBlocked = this.prisma.social.findMany({
+  async getUserBlocked(username: string) {
+    const userBlocked = await this.prisma.social.findMany({
       where: {
         authorName: username,
         relation: 'blocked',
       },
     });
-    return userBlocked;
+
+    const formatedRelations: Social[] = [];
+    userBlocked.forEach((element) => {
+      formatedRelations.push(
+        Object.assign(
+          {},
+          {
+            authorName: element.authorName,
+            targetName: element.targetName,
+            relation: element.relation,
+            status: 'offline',
+          },
+        ),
+      );
+    });
+    formatedRelations.forEach((relation) => {
+      for (const onlineUser of this.friendsStatusGateway.onlineUsers.keys()) {
+        if (onlineUser === relation.targetName) relation.status = 'online';
+      }
+    });
+
+    //return userBlocked;
+    return formatedRelations;
   }
 
   async addUserRelation(author: string, target: string, relation: string) {

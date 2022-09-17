@@ -8,7 +8,7 @@
     <router-outlet></router-outlet>
 
     <!-- Chatbar Footer-->
-    <app-chatbar (click)="debug()" *ngIf="gameService.isInGame.getValue() === false"></app-chatbar>
+    <app-chatbar *ngIf="gameService.isInGame.getValue() === false"></app-chatbar>
   </div>
 
   <!-- Pop-ups -->
