@@ -7,6 +7,8 @@ import { GameGateway } from 'src/pong/gateway/game/game.gateway';
 import { MatchmakingGatewayService } from 'src/pong/gateway/matchmaking/matchmaking-gateway.service';
 import { GameCoreService } from 'src/pong/service/game-core/game-core.service';
 import { GameDbService } from 'src/pong/service/game-db/game-db.service';
+import { FriendsStatusGateway } from 'src/social/gateway/friends-status-gateway.gateway';
+import { SocialModule } from 'src/social/social.module';
 import { GameController } from './game.controller';
 
 describe('GameController', () => {
@@ -14,7 +16,7 @@ describe('GameController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DbModule, JwtModule],
+      imports: [DbModule, JwtModule, SocialModule],
       controllers: [GameController],
       providers: [
         GameDbService,
@@ -23,6 +25,7 @@ describe('GameController', () => {
         GameGatewayService,
         GameGateway,
         MatchmakingGatewayService,
+        FriendsStatusGateway,
       ],
     }).compile();
 

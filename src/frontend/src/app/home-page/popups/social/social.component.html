@@ -1,67 +1,47 @@
 <div class="container">
-
   <!-- Friend / Block list -->
   <div class="social">
     <!-- Social header -->
     <div class="social-header">
-      <button class="social-header-button" [ngClass]="showFriends === true ? 'active': 'social-header-button'" (click)="selectFriends()">Friends</button>
-      <button class="social-header-button" [ngClass]="showFriends === false ? 'active': 'social-header-button'" (click)="selectBlocked()">Blocked</button>
+      <button class="social-header-button">Friends</button>
+      <button class="social-header-button">Blocked</button>
     </div>
 
-    <!-- Friend list -->
-    <div *ngIf="showFriends && socialService.isLoaded" class="social-list">
-      <!-- Friend item -->
-      <div *ngFor="let user of socialService.friends" class="social-list-item" (click)="openConversation(user.targetName)">
-        <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
-        <p>{{ user.targetName }}</p>
-        <!-- Status (online, ingame, offline) -->
-        <div class="social-list-item-status" [ngClass]="user.status"></div>
-        <!-- Unfriend button -->
-        <!-- <svg class="social-list-item-delete" (click)="socialService.unfriendUser(username, user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> -->
-        <svg class="social-list-item-delete" (click)="socialService.unfriendUser(user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M24 3.4284L20.5716 0L12 8.5716L3.4284 0L0 3.4284L8.5716 12L0 20.5716L3.4284 24L12 15.4284L20.5716 24L24 20.5716L15.4284 12L24 3.4284Z"/>
-        </svg>
-      </div>
-    </div>
+    <!-- Friends / Blocked -->
+    <div class="social-lists">
+      <!-- Friend list -->
+      <div class="social-list">
+        <!-- Friend item -->
+        <div *ngFor="let user of socialService.friends" class="social-list-item">
+          <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
+          <p>{{ user.targetName }}</p>
+          <!-- Status (online, ingame, offline) -->
+          <div class="social-list-item-status" [ngClass]="user.status"></div>
 
-    <!-- Block list -->
-    <div *ngIf="!showFriends && socialService.isLoaded" class="social-list">
-      <!-- Blocked item -->
-      <div *ngFor="let user of socialService.blocked" class="social-list-item">
-        <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
-        <p>{{ user.targetName }}</p>
-        <!-- Unblock button -->
-        <!-- <svg class="social-list-item-delete" (click)="socialService.unblockUser(username, user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> -->
-        <svg class="social-list-item-delete" (click)="socialService.unblockUser(user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M24 3.4284L20.5716 0L12 8.5716L3.4284 0L0 3.4284L8.5716 12L0 20.5716L3.4284 24L12 15.4284L20.5716 24L24 20.5716L15.4284 12L24 3.4284Z"/>
-        </svg>
-      </div>
-    </div>
-  </div>
+           <!-- Spectate -->
+          <svg class="social-list-item-button" (click)="this.gameComponent.buttonSpectateGame(user.targetName)" *ngIf="user.targetName != username && user.status === 'ingame'" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 7.04004C5.5024 7.04004 0 14.7712 0 16C0 17.2256 5.5024 24.96 16 24.96C26.496 24.96 32 17.2256 32 16C32 14.7712 26.496 7.04004 16 7.04004ZM16 22.8912C12.072 22.8912 8.888 19.8064 8.888 16C8.888 12.1936 12.072 9.10564 16 9.10564C19.928 9.10564 23.1104 12.1936 23.1104 16C23.1104 19.8064 19.928 22.8912 16 22.8912ZM16 16C15.3488 15.2848 17.0608 12.5536 16 12.5536C14.0352 12.5536 12.4432 14.0976 12.4432 16C12.4432 17.9024 14.0352 19.4464 16 19.4464C17.9632 19.4464 19.5568 17.9024 19.5568 16C19.5568 15.1248 16.5536 16.6064 16 16Z"/>
+          </svg>
 
-  <!-- Direct Messages -->
-  <div class="dms">
-    <div class="dms-box-messages" *ngIf="socialService.isLoaded && dmsService.loadedDmUsername != ''">
-      <!-- Messages Header -->
-      <div class="dms-box-messages-header">
-        <p>{{ dmsService.loadedDmUsername }}</p>
+          <!-- Unfriend button -->
+          <svg class="social-list-item-delete" (click)="socialService.unfriendUser(user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 3.4284L20.5716 0L12 8.5716L3.4284 0L0 3.4284L8.5716 12L0 20.5716L3.4284 24L12 15.4284L20.5716 24L24 20.5716L15.4284 12L24 3.4284Z"/>
+          </svg>
+        </div>
       </div>
 
-      <!-- Messages -->
-      <div class="dms-box-messages-items">
-        <div class="dms-box-messages-item" *ngFor="let message of dmsService.loadedDms" [ngClass]="message.authorName === username ? 'sent': 'received'">
-          <div class="dms-box-messages-item-user">
-            <img class="dms-box-messages-item-avatar" avatar username="{{ message.authorName }}" alt="">
-          </div>
-          <p>{{ message.content }}</p>
+      <!-- Block list -->
+      <div class="social-list">
+        <!-- Blocked item -->
+        <div *ngFor="let user of socialService.blocked" class="social-list-item">
+          <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
+          <p>{{ user.targetName }}</p>
+          <!-- Unblock button -->
+          <svg class="social-list-item-delete" (click)="socialService.unblockUser(user.targetName)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 3.4284L20.5716 0L12 8.5716L3.4284 0L0 3.4284L8.5716 12L0 20.5716L3.4284 24L12 15.4284L20.5716 24L24 20.5716L15.4284 12L24 3.4284Z"/>
+          </svg>
         </div>
       </div>
     </div>
-
-    <div class="dms-box-messages-input" *ngIf="socialService.isLoaded && dmsService.loadedDmUsername != ''">
-      <input class="dms-box-messages-input-box" #box (keyup.enter)="dmsService.sendMessage(dmsService.loadedDmUsername, box.value); box.value = ''" (blur)="dmsService.sendMessage(dmsService.loadedDmUsername, box.value); box.value = ''">
-      <button class="dms-box-messages-input-send" (click)="dmsService.sendMessage(dmsService.loadedDmUsername, box.value); box.value = ''">Send</button>
-    </div>
   </div>
-
 </div>

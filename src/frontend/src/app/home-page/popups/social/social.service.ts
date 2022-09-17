@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtService } from 'src/app/auth/jwt';
 import { environment } from 'src/environments/environment';
-import { DirectMessagesService } from './direct-messages.service';
 import { Social } from './interfaces/social';
 
 @Injectable({
@@ -14,11 +13,7 @@ export class SocialService {
   blocked: Social[] = [];
   isLoaded = false;
 
-  constructor(
-    private http: HttpClient,
-    private dmService: DirectMessagesService,
-    private jwtService: JwtService,
-  ) {
+  constructor(private http: HttpClient, private jwtService: JwtService) {
     const tmp = this.jwtService.username;
     if (tmp != undefined) this.username = tmp;
   }
@@ -37,7 +32,7 @@ export class SocialService {
                 authorName: data.authorName,
                 targetName: data.targetName,
                 relation: data.relation,
-                status: this.getUserStatus(data.targetName),
+                status: data.status,
               },
             ),
           );
@@ -60,7 +55,7 @@ export class SocialService {
                 authorName: data.authorName,
                 targetName: data.targetName,
                 relation: data.relation,
-                status: this.getUserStatus(data.targetName),
+                status: data.status,
               },
             ),
           );
@@ -70,16 +65,11 @@ export class SocialService {
 
   //Load the friendlist and blockedlist of the user
   async loadUserSocial(username: string) {
+    this.isLoaded = false;
     this.friends.splice(0, this.friends.length);
     this.blocked.splice(0, this.blocked.length);
     await this.getUserBlocked(username);
     await this.getUserFriends(username);
-    this.friends.forEach(
-      (friend) => (friend.status = this.getUserStatus(friend.targetName)),
-    );
-    this.blocked.forEach(
-      (blocked) => (blocked.status = this.getUserStatus(blocked.targetName)),
-    );
     this.isLoaded = true;
   }
 
@@ -93,29 +83,8 @@ export class SocialService {
         {},
       )
       .subscribe(() => {
-        const foundIndex = this.friends.findIndex(
-          (social) =>
-            social.authorName === this.username && social.targetName === target,
-        );
-        if (foundIndex === -1)
-          this.friends.push(
-            Object.assign(
-              {},
-              {
-                authorName: this.username,
-                targetName: target,
-                relation: 'friend',
-                status: this.getUserStatus(target),
-              },
-            ),
-          );
-        else {
-          this.friends.forEach((social, index) => {
-            if (index === foundIndex) social.relation = 'friend';
-          });
-        }
+        this.loadUserSocial(this.username);
       });
-    this.loadUserSocial(this.username);
   }
 
   //Delete a friend
@@ -126,15 +95,8 @@ export class SocialService {
         {},
       )
       .subscribe(() => {
-        const foundIndex = this.friends.findIndex(
-          (social) =>
-            social.authorName === this.username && social.targetName === target,
-        );
-        this.friends.forEach((social, index) => {
-          if (index === foundIndex) social.relation = 'none';
-        });
+        this.loadUserSocial(this.username);
       });
-    this.loadUserSocial(this.username);
   }
 
   //Block an user
@@ -147,29 +109,8 @@ export class SocialService {
         {},
       )
       .subscribe(() => {
-        const foundIndex = this.friends.findIndex(
-          (social) =>
-            social.authorName === this.username && social.targetName === target,
-        );
-        if (foundIndex === -1)
-          this.blocked.push(
-            Object.assign(
-              {},
-              {
-                authorName: this.username,
-                targetName: target,
-                relation: 'blocked',
-                status: this.getUserStatus(target),
-              },
-            ),
-          );
-        else {
-          this.blocked.forEach((social, index) => {
-            if (index === foundIndex) social.relation = 'blocked';
-          });
-        }
+        this.loadUserSocial(this.username);
       });
-    this.loadUserSocial(this.username);
   }
 
   //Unblock an user
@@ -180,19 +121,13 @@ export class SocialService {
         {},
       )
       .subscribe(() => {
-        const foundIndex = this.blocked.findIndex(
-          (social) =>
-            social.authorName === this.username && social.targetName === target,
-        );
-        this.friends.forEach((social, index) => {
-          if (index === foundIndex) social.relation = 'none';
-        });
+        this.loadUserSocial(this.username);
       });
-    this.loadUserSocial(this.username);
   }
 
   //Return the relations status between 2 users
-  checkUserRelation(author: string, target: string): string {
+  checkUserRelation(author: string, target: string | undefined): string {
+    if (target === undefined) return '';
     let foundIndex = this.blocked.findIndex(
       (social) => social.authorName === author && social.targetName === target,
     );
@@ -204,30 +139,5 @@ export class SocialService {
       if (foundIndex != -1) return 'friend';
       else return 'none';
     } else return 'blocked';
-  }
-
-  //Return true if the user is actually playing a game.
-  isInGame(username: string): boolean {
-    let response = false;
-    this.http
-      .get<boolean>(`${environment.backend}/game/ingame?username=` + username)
-      .subscribe((isInGame) => {
-        response = isInGame;
-      });
-    return response;
-  }
-
-  //Return true if the user is online.
-  isOnline(username: string): boolean {
-    console.log(username);
-    return true;
-  }
-
-  //Return the status of the user
-  getUserStatus(username: string) {
-    if (this.isOnline(username) == true) {
-      if (this.isInGame(username) == true) return 'ingame';
-      else return 'online';
-    } else return 'offline';
   }
 }

@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Server } from 'socket.io';
 import { Player } from 'src/pong/class/player/player';
 import { Room } from 'src/pong/class/room/room';
 import { GameGatewayService } from 'src/pong/gateway/game/game-gateway.service';
+import { FriendsStatusGateway } from 'src/social/gateway/friends-status-gateway.gateway';
 import { GameDbService } from '../game-db/game-db.service';
 
 @Injectable()
@@ -10,6 +11,8 @@ export class GameCoreService {
   constructor(
     private gameGatewayService: GameGatewayService,
     private gameDbService: GameDbService,
+    @Inject(forwardRef(() => FriendsStatusGateway))
+    private friendsStatusGateway: FriendsStatusGateway,
   ) {}
 
   gameFinished(
@@ -20,6 +23,13 @@ export class GameCoreService {
     loser: Player,
     gameLeft: boolean,
   ) {
+    for (const [key, value] of this.friendsStatusGateway.onlineUsers) {
+      key;
+      for (const socket of value) {
+        socket.emit('online', winner.username);
+        socket.emit('online', loser.username);
+      }
+    }
     this.gameDbService.pushGameDb(winner, loser, gameRoom.gameMode.gameType);
     if (gameLeft === false)
       this.gameGatewayService.emitGameFinished(

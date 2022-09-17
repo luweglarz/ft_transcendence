@@ -5,6 +5,7 @@ import { DbService } from 'src/db/db.service';
 import { GameGatewayService } from 'src/pong/gateway/game/game-gateway.service';
 import { GameGateway } from 'src/pong/gateway/game/game.gateway';
 import { MatchmakingGatewayService } from 'src/pong/gateway/matchmaking/matchmaking-gateway.service';
+import { SocialModule } from 'src/social/social.module';
 import { GameDbService } from '../game-db/game-db.service';
 import { GameCoreService } from './game-core.service';
 
@@ -23,7 +24,7 @@ describe('GameCoreService', () => {
         GameDbService,
         MatchmakingGatewayService,
       ],
-      imports: [JwtModule],
+      imports: [JwtModule, SocialModule],
     }).compile();
 
     service = module.get<GameCoreService>(GameCoreService);

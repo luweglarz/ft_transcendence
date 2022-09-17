@@ -8,6 +8,8 @@ import { MatchmakingGatewayService } from './matchmaking-gateway.service';
 import { DbService } from 'src/db/db.service';
 import { GameDbService } from 'src/pong/service/game-db/game-db.service';
 import { JwtAuthService } from 'src/auth/modules/jwt/jwt-auth.service';
+import { SocialModule } from 'src/social/social.module';
+import { FriendsStatusGateway } from 'src/social/gateway/friends-status-gateway.gateway';
 
 describe('MatchmakingGatewayService', () => {
   let service: MatchmakingGatewayService;
@@ -15,6 +17,7 @@ describe('MatchmakingGatewayService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        MatchmakingGateway,
         MatchmakingGatewayService,
         GameGateway,
         MatchmakingGateway,
@@ -23,8 +26,9 @@ describe('MatchmakingGatewayService', () => {
         DbService,
         GameDbService,
         JwtAuthService,
+        FriendsStatusGateway,
       ],
-      imports: [JwtModule],
+      imports: [JwtModule, SocialModule],
     }).compile();
 
     service = module.get<MatchmakingGatewayService>(MatchmakingGatewayService);

@@ -105,10 +105,4 @@ export class GameController {
     //Return
     return ladder;
   }
-
-  //SOCIAL
-  @Get('ingame')
-  isUserInGame(@Query('username') username: string) {
-    return this.matchmaking.isUserInGame(username);
-  }
 }

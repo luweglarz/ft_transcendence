@@ -13,7 +13,6 @@ import { ProfilInfoService } from './profil/profil-info.service';
 import { JwtService } from '../../auth/jwt';
 import { LadderService } from './ladder/ladder.service';
 import { SocialService } from './social/social.service';
-import { DirectMessagesService } from './social/direct-messages.service';
 import { SettingsComponent } from './settings/settings.component';
 import { TwoFactorsModule } from 'src/app/auth/two-factors/two-factors.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -35,7 +34,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     JwtService,
     LadderService,
     SocialService,
-    DirectMessagesService,
   ],
   imports: [CommonModule, AvatarModule, TwoFactorsModule, ReactiveFormsModule],
   exports: [PopupsComponent],
