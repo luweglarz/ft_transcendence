@@ -29,11 +29,19 @@ export class StatusSocket extends Socket {
         .pipe(tap((token) => (this.ioSocket.auth = { token: token })))
         .subscribe(() => {
           this.connect();
-          eventsService.auth.signout.subscribe(() => {
-            this.disconnect();
-          });
         });
     });
+    eventsService.auth.signout.subscribe(() => {
+      this.jwtService
+        .getToken$()
+        .pipe(tap((token) => (this.ioSocket.auth = { token: token })))
+        .subscribe(() => {
+          this.disconnect();
+        });
+    });
+    this.onOnlineEvent();
+    this.onOfflineEvent();
+    this.onInGameEvent();
   }
 
   onOnlineEvent() {
