@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameComponent } from 'src/app/pong/game/game.component';
+import { PopupsService } from '../popups.service';
 import { SocialService } from './social.service';
 
 @Component({
@@ -13,6 +14,7 @@ export class SocialComponent implements OnInit {
   constructor(
     public socialService: SocialService,
     public gameComponent: GameComponent,
+    public popupsService: PopupsService
   ) {
     //
   }
