@@ -72,7 +72,6 @@ export class GameGatewayService {
   emitMatchFound(server: Server, newRoom: Room, reconnection: boolean) {
     server.to(newRoom.uuid).emit(
       'matchFound',
-      'A match has been found',
       this.getGameMode(newRoom.gameMode),
       {
         canvaHeight: newRoom.gameMode.canvaHeight,
@@ -98,7 +97,6 @@ export class GameGatewayService {
   emitSpectatedGame(server: Server, newRoom: Room) {
     server.to(newRoom.uuid).emit(
       'spectatedGame',
-      'You are spectating a game',
       this.getGameMode(newRoom.gameMode),
       {
         canvaHeight: newRoom.gameMode.canvaHeight,

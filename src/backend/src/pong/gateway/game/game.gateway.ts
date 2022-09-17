@@ -117,7 +117,6 @@ export class GameGateway
         }
       }
     }
-    client.emit('error', 'You are not in a game');
   }
 
   @SubscribeMessage('spectateGame')
