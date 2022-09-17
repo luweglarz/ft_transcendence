@@ -42,7 +42,6 @@ export class GameGateway
 
   afterInit() {
     this.logger.log('Init');
-    console.log('connected sockets: ', this.server.allSockets.length);
   }
 
   handleConnection(client: Socket) {
@@ -117,7 +116,6 @@ export class GameGateway
         }
       }
     }
-    client.emit('error', 'You are not in a game');
   }
 
   @SubscribeMessage('spectateGame')

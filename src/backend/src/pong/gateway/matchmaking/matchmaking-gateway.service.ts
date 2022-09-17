@@ -81,15 +81,15 @@ export class MatchmakingGatewayService {
   clientJoinMatchmaking(client: Socket, gameType: string) {
     if (gameType === 'normal') {
       this.pools[0].push(client);
-      client.emit('waitingForAMatch', 'Waiting for a normal match');
+      client.emit('waitingForAMatch');
       if (this.pools[0].length > 1) this.createGame(this.pools[0], gameType);
     } else if (gameType === 'ranked') {
       this.pools[1].push(client);
-      client.emit('waitingForAMatch', 'Waiting for a ranked match');
+      client.emit('waitingForAMatch');
       if (this.pools[1].length > 1) this.createGame(this.pools[1], gameType);
     } else if (gameType === 'custom') {
       this.pools[2].push(client);
-      client.emit('waitingForAMatch', 'Waiting for a custom match');
+      client.emit('waitingForAMatch');
       if (this.pools[2].length > 1) this.createGame(this.pools[2], gameType);
     }
   }
@@ -103,12 +103,10 @@ export class MatchmakingGatewayService {
             1,
           );
           this.logger.log(`A client has left the matchmaking: ${client.id}`);
-          client.emit('matchmakingLeft', 'You have left the matchmaking');
           return;
         }
       }
     }
-    client.emit('error', 'You are not in a matchmaking');
   }
 
   createGame(clientPool: Socket[], gameType: string) {
@@ -138,7 +136,6 @@ export class MatchmakingGatewayService {
   }
 
   private generateGameRoom(gameMode: GameMode, players: Player[]) {
-    this.logger.log('Enough player to generate a game room');
     const newRoom: Room = new Room(uuidv4(), gameMode, players);
 
     this.gameGateway.rooms.push(newRoom);

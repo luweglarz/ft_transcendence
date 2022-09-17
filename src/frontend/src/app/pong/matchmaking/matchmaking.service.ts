@@ -20,9 +20,6 @@ export class MatchmakingService {
     inviteService: InviteService,
   ) {
     this._stopWatch = new StopWatch();
-    this.socket.once('error', (msg: string) => {
-      console.log(msg);
-    });
     this.socket.onMatchFound(
       this.notificationService,
       this.gameService,
@@ -55,7 +52,6 @@ export class MatchmakingService {
           this,
           this._stopWatch,
         );
-        this.socket.onMatchmakingLeft();
         this.queue = type;
       });
   }

@@ -35,7 +35,12 @@ export class GameSocket extends Socket {
   ) {
     this.on(
       'matchFound',
-      (msg: any, gameType: string, gameMapInfo: any, playersInfo: any, reconnection: any) => {
+      (
+        gameType: string,
+        gameMapInfo: any,
+        playersInfo: any,
+        reconnection: any,
+      ) => {
         matchmakingService.requestLeaveMatchmaking();
         if (reconnection.reconnectionBool == false)
           notificationService.gameFound();
@@ -58,7 +63,6 @@ export class GameSocket extends Socket {
           gameMapInfo.ballColor,
         );
         gameService.isInGame.next(true);
-        console.log(msg);
         if (gameType === 'normal' || gameType === 'ranked') {
           matchmakingService.game = new NormalGame(
             gameMapInfo.canvaHeight,
@@ -88,16 +92,9 @@ export class GameSocket extends Socket {
     });
   }
 
-  onMatchmakingLeft() {
-    this.once('matchmakingLeft', (msg: any) => {
-      console.log(msg);
-    });
-  }
-
   onWaitingForAMatch(stopWatch: StopWatch) {
-    this.once('waitingForAMatch', (msg: any) => {
+    this.once('waitingForAMatch', () => {
       stopWatch.startTimer();
-      console.log(msg);
     });
   }
 
@@ -107,7 +104,7 @@ export class GameSocket extends Socket {
       gameService.isInGame.next(false);
       if (leaver != null && leaver != undefined)
         console.log(`Player ${leaver.username} has left the game`);
-      console.log(winner.username + ' Has won the game');
+      console.log(winner.username + ' has won the game');
     });
   }
 
@@ -117,8 +114,7 @@ export class GameSocket extends Socket {
   ) {
     this.once(
       'spectatedGame',
-      (msg: any, gameType: string, gameMapInfo: any, playersInfo: any) => {
-        console.log(msg);
+      (gameType: string, gameMapInfo: any, playersInfo: any) => {
         const playerOne: Player = new Player(
           playersInfo.height,
           playersInfo.width,
