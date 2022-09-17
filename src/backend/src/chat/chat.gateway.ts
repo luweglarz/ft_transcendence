@@ -138,7 +138,8 @@ export class ChatGateway
     });
     for (const jailUser of jailUsers) {
       if (user.id === jailUser.userId){
-        console.log('TU ES BANNIS');
+        this.server.to(socket.id).emit('kickLeave');
+        this.server.to(socket.id).emit('banMute', 'you were banned');
         return;
       }
     }
