@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { StatusSocket } from './home-page/popups/social/class/status-socket';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +6,5 @@ import { StatusSocket } from './home-page/popups/social/class/status-socket';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  constructor(private statusSocket: StatusSocket) {}
   title = 'frontend';
 }

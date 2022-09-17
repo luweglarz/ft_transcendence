@@ -69,10 +69,9 @@ export class GameGatewayService {
     return 'ranked';
   }
 
-  emitMatchFound(server: Server, newRoom: Room) {
+  emitMatchFound(server: Server, newRoom: Room, reconnection: boolean) {
     server.to(newRoom.uuid).emit(
       'matchFound',
-      'A match has been found',
       this.getGameMode(newRoom.gameMode),
       {
         canvaHeight: newRoom.gameMode.canvaHeight,
@@ -89,13 +88,15 @@ export class GameGatewayService {
         playerOneUsername: newRoom.players[0].username,
         playerTwoUsername: newRoom.players[1].username,
       },
+      {
+        reconnectionBool: reconnection,
+      },
     );
   }
 
   emitSpectatedGame(server: Server, newRoom: Room) {
     server.to(newRoom.uuid).emit(
       'spectatedGame',
-      'You are spectating a game',
       this.getGameMode(newRoom.gameMode),
       {
         canvaHeight: newRoom.gameMode.canvaHeight,

@@ -30,3 +30,66 @@ td.image {
   padding: 7px;
   display: inline-block;
 }
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.column {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.two-factor-status {
+  color: #98a5c0;
+}
+
+/* SWITCH */
+/* Hide the input */
+input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+.check-trail {
+  display: flex;
+  align-items: center;
+  width: 3.6em;
+  height: 2em;
+  background: #1a202c;
+  border-radius: 2.5em;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+.check-handler {
+  display: flex;
+  margin-left: 0.2em;
+  justify-content: center;
+  align-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  background: #2c3649;
+  border-radius: 50%;
+  transition: all 0.5s ease;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+.check-handler:before {
+  content: '\00D7';
+  color: white;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+input[type='checkbox']:checked + .check-trail {
+  background: #16a085;
+}
+
+input[type='checkbox']:checked + .check-trail .check-handler {
+  margin-left: 50%;
+  background: #1abc9c;
+}
+
+input[type='checkbox']:checked + .check-trail .check-handler::before {
+  content: '\2714';
+}

@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -18,6 +18,7 @@ import { MatchmakingGatewayService } from '../matchmaking/matchmaking-gateway.se
 import { JwtService } from '@nestjs/jwt';
 
 @WebSocketGateway({ cors: true, path: '/pong' })
+@Injectable()
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -42,10 +43,9 @@ export class GameGateway
 
   afterInit() {
     this.logger.log('Init');
-    console.log('connected sockets: ', this.server.allSockets.length);
   }
 
-  handleConnection(client: Socket) {
+  handleConnection(@ConnectedSocket() client: Socket) {
     if (this.gameGatewayService.checkJwtToken(client)) {
       this._users.push(client);
       this.logger.log(`Client connected: ${client.id}`);
@@ -53,7 +53,6 @@ export class GameGateway
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
-    if (this.matchmakingService.isClientInGame(client)) this.leaveGame(client);
     if (this.matchmakingService.isClientInMatchmaking(client))
       this.matchmakingService.clientLeaveMatchmaking(client);
     this._users.splice(
@@ -118,7 +117,6 @@ export class GameGateway
         }
       }
     }
-    client.emit('error', 'You are not in a game');
   }
 
   @SubscribeMessage('spectateGame')
@@ -191,9 +189,25 @@ export class GameGateway
     }
   }
 
-  @SubscribeMessage('declineInvitation')
-  declineInvitation() {
-    //deleta la room
+  @SubscribeMessage('gameReconnection')
+  gameReconnction(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() username: string,
+  ) {
+    if (this.matchmakingService.isUserInGame(username) === false) return;
+    try {
+      const gameRoom: Room = this.gameGatewayService.findRoomId(
+        this.rooms,
+        username,
+      );
+      gameRoom.players[
+        gameRoom.players.findIndex((element) => element.username === username)
+      ].socket = client;
+      client.join(gameRoom.uuid);
+      this.gameGatewayService.emitMatchFound(this._server, gameRoom, true);
+    } catch (error) {
+      this.logger.debug(error);
+    }
   }
 
   get rooms(): Room[] {

@@ -24,16 +24,12 @@ export class MatchmakingGateway {
     @ConnectedSocket() client: Socket,
     @MessageBody() gameType: string,
   ) {
-    if (this.matchmakingGatewayService.isClientInGame(client) === true) {
-      client.emit('error', 'You are already in a game');
-      return;
-    } else if (
+    if (this.matchmakingGatewayService.isClientInGame(client) === true) return;
+    else if (
       this.matchmakingGatewayService.isClientInMatchmaking(client) === true
-    ) {
-      client.emit('error', 'You have already joined a matchmaking');
+    )
       return;
-    } else
-      this.matchmakingGatewayService.clientJoinMatchmaking(client, gameType);
+    else this.matchmakingGatewayService.clientJoinMatchmaking(client, gameType);
   }
 
   @SubscribeMessage('leaveMatchmaking')

@@ -60,23 +60,27 @@ export class GameController {
       let username = '';
       if (users[i].username != undefined) username = users[i].username;
 
-      //nbWins
+      //nbWins (in ranked mode);
       let nbWins = 0;
       const wins = await this.prismaClient.game.findMany({
-        where: { winnerId: users[i].id },
+        where: {
+          winnerId: users[i].id,
+        },
       });
       if (wins === null) return 'Error retrieving wins';
-      nbWins = wins.length;
+      nbWins = wins.filter((x) => x.type === 'ranked').length;
 
-      //nbLoses
+      //nbLoses (in ranked mode);
       let nbLoses = 0;
       const loses = await this.prismaClient.game.findMany({
-        where: { loserId: users[i].id },
+        where: {
+          loserId: users[i].id,
+        },
       });
       if (loses === null) return 'Error retrieving loses';
-      nbLoses = loses.length;
+      nbLoses = loses.filter((x) => x.type === 'ranked').length;
 
-      //Score
+      //Score (calculated on ranked matchs)
       let score = 0;
       if (nbWins === 0 && nbLoses === 0) score = 0;
       else if (nbWins != 0 && nbLoses === 0) score = nbWins * 350;
@@ -100,11 +104,5 @@ export class GameController {
 
     //Return
     return ladder;
-  }
-
-  //SOCIAL
-  @Get('ingame')
-  isUserInGame(@Query('username') username: string) {
-    return this.matchmaking.isUserInGame(username);
   }
 }

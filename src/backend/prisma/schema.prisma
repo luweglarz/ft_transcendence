@@ -11,20 +11,19 @@ datasource db {
 }
 
 model User {
-  id          Int             @id @default(autoincrement())
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-  username    String          @unique
-  auth        Auth?
-  avatar      Avatar?
-  RoomUser    RoomUser[]
-  Message     Message[]
-  wins        Game[]          @relation("Winner")
-  loses       Game[]          @relation("Loser")
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  username  String     @unique
+  auth      Auth?
+  avatar    Avatar?
+  RoomUser  RoomUser[]
+  Message   Message[]
+  wins      Game[]     @relation("Winner")
+  loses     Game[]     @relation("Loser")
 
-  social      Social[]        @relation("Social")
-  sendDms     DirectMessage[] @relation("Sent")
-  receivedDms DirectMessage[] @relation("Received")
+  social  Social[] @relation("Social")
+  friends Social[] @relation("Friend")
 }
 
 model Auth {
@@ -73,11 +72,11 @@ model RoomUser {
 }
 
 model Message {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  room      Room      @relation(fields: [roomId], references: [id])
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  room      Room     @relation(fields: [roomId], references: [id])
   roomId    Int
-  user      User      @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   userId    Int
   content   String
 }
@@ -93,12 +92,12 @@ model JailUser {
 }
 
 model Invite {
-  id            Int     @id @default(autoincrement())
-  userId        Int
-  username      String
-  targetuserId  Int
-  roomId        Int?
-  challenge     Boolean
+  id           Int     @id @default(autoincrement())
+  userId       Int
+  username     String
+  targetuserId Int
+  roomId       Int?
+  challenge    Boolean
 }
 
 model Room {
@@ -126,23 +125,10 @@ model Game {
 }
 
 model Social {
-  id         Int      @id @default(autoincrement())
-  author     User     @relation("Social", fields: [authorName], references: [username])
+  id         Int    @id @default(autoincrement())
+  author     User   @relation("Social", fields: [authorName], references: [username])
   authorName String
+  target     User   @relation("Friend", fields: [targetName], references: [username])
   targetName String
   relation   String
-}
-
-
-model DirectMessage {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-
-  author      User     @relation("Sent", fields: [authorName], references: [username])
-  authorName  String
-
-  target      User     @relation("Received", fields: [targetName], references: [username])
-  targetName  String
-
-  content     String
 }

@@ -27,7 +27,7 @@ export class AuthUtilsService {
     },
     step: '1FA' | '2FA' = '1FA',
   ): Promise<SignInSuccessDto | SignInPartialDto> {
-    if (step == '2FA' || !(await this.twoFactors.isEnabled(user.username))) {
+    if (step == '2FA' || !(await this.twoFactors.isEnabledFromId(user.id))) {
       this.logger.log(`User '${user.username}' successfully signed in!`);
       return {
         message: `${user.username} successfully signed in!`,
