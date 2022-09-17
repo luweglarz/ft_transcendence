@@ -13,7 +13,7 @@ export class SignupService {
   constructor(private http: HttpClient) {}
 
   postSignUpData(type: 'local' | 'oauth', payload: any, token?: string) {
-    console.table(payload);
+    // console.table(payload);
     if (type == 'local') {
       return this.http.post<SignInSuccessDto>(this.local_signup_url, payload);
     } else {
