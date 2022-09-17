@@ -5,7 +5,7 @@ import { OauthService } from '../oauth.service';
 
 @Injectable()
 export class OAuth2Strategy extends PassportStrategy(Strategy, 'oauth2') {
-  private readonly logger = new Logger(OAuth2Strategy.name);
+  // private readonly logger = new Logger(OAuth2Strategy.name);
 
   // @doc http://www.passportjs.org/packages/passport-oauth2/
   constructor(private readonly authService: OauthService) {
@@ -17,7 +17,7 @@ export class OAuth2Strategy extends PassportStrategy(Strategy, 'oauth2') {
       callbackURL: 'http://localhost:4200/auth/oauth42/callback',
       scope: ['public'],
     });
-    this.logger.debug(`OAUTH client ID: ${process.env['OAUTH_42_CLIENT_ID']}`);
+    // this.logger.debug(`OAUTH client ID: ${process.env['OAUTH_42_CLIENT_ID']}`);
     // this.logger.debug(`OAUTH SECRET: ${process.env['OAUTH_42_CLIENT_SECRET']}`);
   }
 
@@ -27,9 +27,9 @@ export class OAuth2Strategy extends PassportStrategy(Strategy, 'oauth2') {
     profile: any, // empty object
     verified: VerifyCallback,
   ) {
-    this.logger.debug(`${OAuth2Strategy.name}.${this.validate.name} called`);
-    this.logger.debug(`accessToken: ${accessToken}`);
-    this.logger.debug(`refreshToken: ${refreshToken}`);
+    // this.logger.debug(`${OAuth2Strategy.name}.${this.validate.name} called`);
+    // this.logger.debug(`accessToken: ${accessToken}`);
+    // this.logger.debug(`refreshToken: ${refreshToken}`);
     const user = this.authService.fetch42APIUserData(accessToken);
     verified(null, user, { accessToken, refreshToken, profile });
   }

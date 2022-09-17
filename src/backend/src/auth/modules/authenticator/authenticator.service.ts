@@ -13,7 +13,7 @@ export class AuthenticatorService {
   private readonly _cryptr = new this._Cryptr(
     `encrypt ${process.env['JWT_SECRET']}`,
   );
-  private readonly _logger = new Logger(AuthenticatorService.name);
+  // private readonly _logger = new Logger(AuthenticatorService.name);
 
   constructor(
     private readonly db: DbService,
@@ -45,7 +45,7 @@ export class AuthenticatorService {
       data: { twoFactor: true, twoFactorSecret: this._cryptr.encrypt(secret) },
       where: { userId: user.sub },
     });
-    this._logger.log(`${user.username} enabled 2FA`);
+    // this._logger.log(`${user.username} enabled 2FA`);
     return {
       secret: secret,
       QRCodeData: this.QRCodeData(user.username, secret),
@@ -60,8 +60,8 @@ export class AuthenticatorService {
   }
 
   async verify(userId: number, code: string) {
-    console.debug(`Received code: ${code}`);
-    console.debug(code);
+    // console.debug(`Received code: ${code}`);
+    // console.debug(code);
     const secret = (
       await this.db.auth.findUnique({
         select: { twoFactorSecret: true },

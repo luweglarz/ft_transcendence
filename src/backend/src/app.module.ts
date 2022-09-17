@@ -3,8 +3,8 @@ import { PongModule } from './pong/pong.module';
 import { ChatModule } from './chat/chat.module';
 import { DbModule } from './db/db.module';
 import { AuthModule } from './auth/auth.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggingInterceptor } from './interceptors/logging.interceptor';
+// import { APP_INTERCEPTOR } from '@nestjs/core';
+// import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { UsersModule } from './users/users.module';
 import { SocialModule } from './social/social.module';
 
@@ -18,11 +18,11 @@ import { SocialModule } from './social/social.module';
     SocialModule,
   ],
   providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      scope: Scope.REQUEST,
-      useClass: LoggingInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   scope: Scope.REQUEST,
+    //   useClass: LoggingInterceptor,
+    // },
   ],
 })
 export class AppModule {}

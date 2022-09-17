@@ -70,7 +70,7 @@ export class QrcodeComponent implements OnInit, OnDestroy {
   }
 
   checkCode(code: OtpCode) {
-    console.log(code);
+    // console.log(code);
     this.http
       .post(`${environment.backend}/auth/authenticator/verify`, code)
       .subscribe((isValid) => {

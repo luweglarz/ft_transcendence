@@ -119,7 +119,7 @@ export class JwtService {
 
   storeTokens(accessToken: string, refreshToken: string) {
     this._data = jwtDecode<JwtData>(accessToken);
-    console.debug('Storing tokens');
+    // console.debug('Storing tokens');
     localStorage.setItem(this._accessTokenKey, accessToken);
     localStorage.setItem(this._refreshTokenKey, refreshToken);
     this._accessToken$.next(accessToken);
@@ -133,9 +133,9 @@ export class JwtService {
   }
 
   logPayload() {
-    if (this._data) {
-      console.table(this._data);
-    } else console.error('Could not load jwt payload');
+    // if (this._data) {
+    //   console.table(this._data);
+    // } else console.error('Could not load jwt payload');
   }
 
   /*

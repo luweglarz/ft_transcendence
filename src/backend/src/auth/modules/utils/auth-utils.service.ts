@@ -38,7 +38,7 @@ export class AuthUtilsService {
         }),
       };
     } else {
-      this.logger.log(`User '${user.username}' partially signed in!`);
+      // this.logger.log(`User '${user.username}' partially signed in!`);
       return {
         message: `${user.username} successfully signed in!`,
         status: 'partial',

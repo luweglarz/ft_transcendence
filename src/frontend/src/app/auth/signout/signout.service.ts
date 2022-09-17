@@ -17,10 +17,10 @@ export class SignoutService {
   }
 
   signOut() {
-    const username = this.jwt.username;
+    // const username = this.jwt.username;
     this.statusSocket.disconnect();
     this.jwt.clearToken();
     this.signoutEvent.emit(true);
-    if (username) console.log(`${username} successfully signed out`);
+    // if (username) console.log(`${username} successfully signed out`);
   }
 }

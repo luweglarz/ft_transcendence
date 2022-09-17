@@ -14,7 +14,7 @@ import { OAuthJwtPayload, OAuthSignUpDto, OAuthUserDto } from './dto';
 
 @Injectable()
 export class OauthService {
-  private readonly logger = new Logger(OauthService.name);
+  // private readonly logger = new Logger(OauthService.name);
   private readonly _tempTokenSecret = `temp ${process.env['JWT_SECRET']}`;
 
   constructor(
@@ -30,7 +30,7 @@ export class OauthService {
 
   async oauthSignIn(oauthUser: OAuthUserDto) {
     const user = await this.oauthFindUser(oauthUser);
-    this.logger.debug(`Sign in user: ${user.username}`);
+    // this.logger.debug(`OAuth sign in user: ${user.username}`);
     return this.authUtils.signInSuccess(user);
   }
 

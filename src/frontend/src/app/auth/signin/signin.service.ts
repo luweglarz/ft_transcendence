@@ -68,7 +68,7 @@ export class SigninService {
     this.router.navigate(['/'], {
       replaceUrl: true,
     });
-    this.jwt.logPayload();
+    // this.jwt.logPayload();
   }
 
   signInFailure(err: string | HttpErrorResponse) {
