@@ -24,7 +24,7 @@ export class FriendsStatusGateway {
 
   async handleConnection(client: Socket) {
     try {
-      this.jwtService.verifyAccessToken(client.handshake.auth.token);
+      await this.jwtService.verifyAccessToken(client.handshake.auth.token);
       this.logger.log(`Client connected: ${client.id}`);
       const username: string = JSON.parse(
         JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
@@ -47,17 +47,17 @@ export class FriendsStatusGateway {
   }
 
   async handleDisconnect(@ConnectedSocket() client: Socket) {
-    this.logger.log(`Client disconnected: ${client.id}`);
-    const username: string = JSON.parse(
-      JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
-    ).username;
-    this.onlineUsers.get(username).splice(
-      this.onlineUsers
-        .get(username)
-        .findIndex((element) => element.id === client.id),
-      1,
-    );
     try {
+      const username: string = JSON.parse(
+        JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
+      ).username;
+      this.onlineUsers.get(username).splice(
+        this.onlineUsers
+          .get(username)
+          .findIndex((element) => element.id === client.id),
+        1,
+      );
+      this.logger.log(`Client disconnected: ${client.id}`);
       if (this.onlineUsers.get(username).length === 0) {
         for (const [key, value] of this.onlineUsers) {
           key;
