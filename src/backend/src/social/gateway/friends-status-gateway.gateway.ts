@@ -29,7 +29,9 @@ export class FriendsStatusGateway {
       const username: string = JSON.parse(
         JSON.stringify(this.jwtService.decode(client.handshake.auth.token)),
       ).username;
-      this.onlineUsers.set(username, new Array<Socket>(client));
+      if (this.onlineUsers.has(username))
+        this.onlineUsers.get(username).push(client);
+      else this.onlineUsers.set(username, new Array<Socket>(client));
       for (const [key, value] of this.onlineUsers) {
         if (this.matchmakingGatewayService.isUserInGame(key) === true)
           client.emit('inGame', key);
