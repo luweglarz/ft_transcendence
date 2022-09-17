@@ -8,6 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { JwtService } from 'src/app/auth/jwt';
 import { AvatarService } from '../avatar.service';
 
 @Directive({
@@ -18,7 +19,11 @@ export class AvatarDirective implements AfterViewInit, OnChanges, OnDestroy {
   private _srcSubstription?: Subscription;
   @Input() username = '';
 
-  constructor(el: ElementRef, private service: AvatarService) {
+  constructor(
+    el: ElementRef,
+    private service: AvatarService,
+    private jwt: JwtService,
+  ) {
     this.img = el.nativeElement;
     this.img.src = this.service.default_src;
   }
@@ -39,7 +44,8 @@ export class AvatarDirective implements AfterViewInit, OnChanges, OnDestroy {
 
   subscribeSrc() {
     let src$: Observable<string>;
-    if (!this.username) src$ = this.service.me.src;
+    if (!this.username || this.username == this.jwt.username)
+      src$ = this.service.me.src;
     else src$ = this.service.getSrc(this.username);
     this._srcSubstription = src$.subscribe(this.updateSrc);
   }
