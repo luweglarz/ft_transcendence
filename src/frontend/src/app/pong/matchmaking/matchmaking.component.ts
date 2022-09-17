@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Subscription, tap } from 'rxjs';
 import { JwtService } from 'src/app/auth/jwt';
 import { CollapseService } from 'src/app/home-page/services/collapse.service';
-import { EventsService } from 'src/app/services/events.service';
 import { GameService } from '../game/game.service';
 import { InviteService } from './invite/invite.service';
 import { MatchmakingService } from './matchmaking.service';
@@ -25,7 +24,6 @@ export class MatchmakingComponent implements OnInit, OnDestroy {
     private gameService: GameService,
     private router: Router,
     jwtService: JwtService,
-    eventsService: EventsService,
   ) {
     jwtService
       .getToken$()
@@ -38,10 +36,6 @@ export class MatchmakingComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.matchmakingService.socket.connect();
       });
-    eventsService.auth.signout.subscribe(() => {
-      this.matchmakingService.requestLeaveMatchmaking();
-      this.matchmakingService.socket.disconnect();
-    });
   }
 
   get queue() {
