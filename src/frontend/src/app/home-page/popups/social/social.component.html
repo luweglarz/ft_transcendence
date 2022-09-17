@@ -12,7 +12,7 @@
       <!-- Friend list -->
       <div class="social-list">
         <!-- Friend item -->
-        <div *ngFor="let user of socialService.friends" class="social-list-item">
+        <div *ngFor="let user of socialService.friends" class="social-list-item" (click)="popupsService.openProfil(user.targetName)">
           <img class="social-list-item-avatar" avatar username="{{user.targetName}}" alt="">
           <p>{{ user.targetName }}</p>
           <!-- Status (online, ingame, offline) -->
