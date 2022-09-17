@@ -11,7 +11,7 @@ import { take } from 'rxjs';
   templateUrl: './chat-room-create.component.html',
   styleUrls: ['./chat-room-create.component.css'],
 })
-export class ChatRoomCreateComponent /*implements OnInit*/ {
+export class ChatRoomCreateComponent {
   roomTypes = Object.values(RoomType);
   roomNameAvailable = true;
 
@@ -21,40 +21,17 @@ export class ChatRoomCreateComponent /*implements OnInit*/ {
     private chatService: ChatService,
   ) {}
 
-  //ngOnInit(): void {}
-
-  /*create() {
-    console.log('call create');
-    this.dialogRef.close();
-    console.log(this.data);
-    if (
-      this.data.name &&
-      this.data.roomType &&
-      (this.data.password || this.data.roomType != 'PROTECTED')
-    ) {
-      this.chatService.createRoom(this.data);
-    }
-  }*/
-
   async onSend(userForm: NgForm) {
     if (userForm.status === 'INVALID') return;
-    //const data = userForm.value;
-    console.log(this.data);
-    /*this.chatService.roomNameAvailable(this.data.name).then((available: boolean) => {
-      console.log(this.roomNameAvailable);
-      this.roomNameAvailable = available;
-    });*/
     this.roomNameAvailable = await this.chatService.roomNameAvailable(
       this.data.name,
     );
     if (this.roomNameAvailable) {
-      console.log(this.roomNameAvailable);
       this.chatService.createRoom(this.data);
       this.chatService
         .getCreatedRoom()
         .pipe(take(1))
         .subscribe((room: Room) => {
-          console.log(room);
           this.dialogRef.close(room);
         });
     }

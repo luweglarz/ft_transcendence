@@ -41,7 +41,6 @@ export class ChatRoomComponent implements OnChanges, OnInit, OnDestroy {
   getMsgsEvent?: Subscription;
   getRoomUsersEvent?: Subscription;
   messages: Message[] = [];
-  //roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
   roomUsers: RoomUser[] = [];
   username = '';
 
@@ -61,7 +60,6 @@ export class ChatRoomComponent implements OnChanges, OnInit, OnDestroy {
     this.getMsgEvent = this.chatService
       .getMsg()
       .subscribe((nMessage: Message) => {
-        console.log(nMessage);
         if (
           this.socialService.checkUserRelation(
             this.username,
@@ -73,7 +71,6 @@ export class ChatRoomComponent implements OnChanges, OnInit, OnDestroy {
     this.banMuteEvent = this.chatService
       .getBanMuteResult()
       .subscribe((commandReturn) => {
-        //console.log(commandReturn);
         this.snackBar.open(commandReturn, 'dismiss', {
           duration: 3000,
           horizontalPosition: 'right',
@@ -100,7 +97,6 @@ export class ChatRoomComponent implements OnChanges, OnInit, OnDestroy {
     this.getRoomUsersEvent = this.chatService
       .getRoomUsers()
       .subscribe((roomUsers: RoomUser[]) => {
-        console.log(roomUsers);
         if (roomUsers.length !== 0) this.roomUsers = roomUsers;
       });
   }
@@ -119,17 +115,11 @@ export class ChatRoomComponent implements OnChanges, OnInit, OnDestroy {
       changes['chatRoom'].previousValue.id !==
         changes['chatRoom'].currentValue.id
     ) {
-      console.log('previous room', changes['chatRoom'].previousValue);
-      console.log('current room', changes['chatRoom'].currentValue);
       this.chatService.leaveRoom(changes['chatRoom'].previousValue);
     }
     if (this.chatRoom.id) {
-      console.log(`Join room: ${this.chatRoom.name}`);
-      //if (this.chatRoom.roomType !== 'PROTECTED')
-      this.chatService.joinRoom(this.chatRoom); //trigger join room on sed password for protected
+      this.chatService.joinRoom(this.chatRoom);
     }
-    //this.roomUsers = new Observable<RoomUser[]>;
-    //this.roomUsers = this.chatService.getRoomUsers();
     this.messages = [];
     this.messages.length = 0;
   }
@@ -141,16 +131,12 @@ export class ChatRoomComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   sendMessage() {
-    //console.log(this.chatRoom.name);
-    //console.log(this.chatMessage.value);
     if (!this.chatMessage.valid) {
       return;
     }
     if (this.chatMessage.value[0] === '/') {
-      console.log('command');
       this.chatService.sendCommand(this.chatMessage.value, this.chatRoom);
       this.chatService.getCommandResult().then((commandReturn) => {
-        //console.log(commandReturn);
         this.snackBar.open(commandReturn, 'dismiss', {
           duration: 3000,
           horizontalPosition: 'right',
@@ -168,12 +154,10 @@ export class ChatRoomComponent implements OnChanges, OnInit, OnDestroy {
       this.scrollContainer.nativeElement.scrollTop =
         this.scrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
-    //console.log(this.chatRoom);
   }
 
   openProfile(username: any) {
     if (username === undefined || username === null) return;
-    console.log(username);
     this.popupsService.openProfil(username);
   }
 }

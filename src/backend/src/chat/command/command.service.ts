@@ -20,10 +20,11 @@ export class CommandService {
       where: { roomId: command.id, AND: { userId: user.id } },
     });
     if (roomUser.length != 1) return 'database error';
-    console.log(roomUser);
     const splitCmd: string[] = command.command.split(/[ \t\n]+/);
-    console.log(splitCmd);
-    if (splitCmd.length < 2 && splitCmd[0] !== '/leave')
+    if (
+      splitCmd.length < 2 &&
+      !(splitCmd[0] === '/leave' || splitCmd[0] === '/help')
+    )
       return 'incomplete command';
     if (splitCmd[splitCmd.length - 1] === '') splitCmd.pop();
     return await this.cmdSelector(
@@ -58,6 +59,8 @@ export class CommandService {
       return this.leave();
     } else if (splitCmd[0] === '/kick') {
       return this.kick(splitCmd, command, roomUser);
+    } else if (splitCmd[0] === '/help') {
+      return this.help();
     } else {
       return 'command not found';
     }
@@ -73,15 +76,12 @@ export class CommandService {
     const targetUser = await this.prisma.user.findUnique({
       where: { username: splitCmd[1] },
     });
-    console.log(targetUser);
     if (targetUser === null) return 'no such user';
     const targetRoomUser = await this.roomUserService.roomUsers({
       where: { roomId: command.id, AND: { userId: targetUser.id } },
     });
-    console.log(targetRoomUser);
     if (targetRoomUser.length === 0) return 'user is not in the room';
     if (targetRoomUser.length !== 1) return 'database error';
-    console.log('just before the update');
     if (targetRoomUser[0].role === 'USER') {
       await this.roomUserService.updateRole(
         targetRoomUser[0].roomUserId,
@@ -114,15 +114,12 @@ export class CommandService {
     const targetUser = await this.prisma.user.findUnique({
       where: { username: splitCmd[1] },
     });
-    console.log(targetUser);
     if (targetUser === null) return 'no such user';
     const targetRoomUser = await this.roomUserService.roomUsers({
       where: { roomId: command.id, AND: { userId: targetUser.id } },
     });
-    console.log(targetRoomUser);
     if (targetRoomUser.length === 0) return 'user is not in the room';
     if (targetRoomUser.length !== 1) return 'database error';
-    console.log('just before the update');
     if (targetRoomUser[0].role === 'ADMIN') {
       await this.roomUserService.updateRole(
         targetRoomUser[0].roomUserId,
@@ -151,13 +148,10 @@ export class CommandService {
     roomUser: RoomUser,
   ): Promise<string> {
     if (roomUser.role !== 'OWNER') return "you don't have the right";
-    console.log('after check owner');
     if (splitCmd.length === 1) return 'incomplete command';
-    console.log('after check length');
     const room = await this.roomService.room({ id: command.id });
     if (room === undefined) return 'database error';
     if (room.roomType !== 'PROTECTED') return 'not a protected room';
-    console.log('after check room');
     if (splitCmd[1] === 'remove') {
       await this.roomService.removePassword(room);
       return 'this room is now public';
@@ -199,7 +193,6 @@ export class CommandService {
       timeOut = +splitCmd[2];
       if (isNaN(timeOut)) return 'enter a number';
       if (timeOut < 1) return 'enter a positive value greater than 0';
-      console.log(timeOut);
     }
     await this.jailUserService.banOrMuteUser(
       targetRoomUser[0].userId,
@@ -298,7 +291,6 @@ export class CommandService {
     for (let i = 3; i < splitCmd.length; i++) {
       splitCmd[2] = splitCmd[2] + ' ' + splitCmd[i];
     }
-    console.log(splitCmd[2]);
     return (
       splitCmd[0] +
       ' ' +
@@ -328,22 +320,15 @@ export class CommandService {
     if (targetUser === null) return 'not a user';
     const targetRoomUser: RoomUser[] = await this.roomUserService.roomUsers({
       where: { roomId: command.id, AND: { userId: targetUser.id } },
-    }); // get targetUser
-    console.log('WHY', targetRoomUser[0]);
+    });
     if (targetRoomUser.length === 0) return 'user is not in the room';
     if (targetRoomUser.length !== 1) return 'database error';
     if (targetRoomUser[0].role !== 'USER')
       return 'you cannot kick an owner or an admin';
     return '/kick ' + targetRoomUser[0].socketId + ' ' + targetUser.username;
   }
+
+  async help(): Promise<string> {
+    return 'commands:\t/help\n\t/ban <username> <time?>\n\t/mute <username> <time?>\n\t/password (remove ^ change <newPassword>)\n\t/admin <username>\n\t/deadmin <username>\n\t/leave\n\t/kick <username>\n\t/invite <username>\n\t/challenge <username>';
+  }
 }
-/*
-+ ban 2
-+ mute 2
-+ password 0
-+ admin 0
-+ deadmin 1 
-- leave 2
-+ invite 3
-+ challenge 4
-*/

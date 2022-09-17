@@ -1,12 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
 import { Room, Prisma, Message } from '@prisma/client';
 import * as argon from 'argon2';
 
 @Injectable()
 export class RoomService {
-  private readonly logger = new Logger(RoomService.name);
-
   constructor(private prisma: DbService) {}
 
   async room(
@@ -62,9 +60,6 @@ export class RoomService {
       where: { roomId: room.id, userId: userId },
     });
     if (existingRoomUser) {
-      this.logger.debug(
-        `user ${userId} already in room ${room.name}:${room.id}`,
-      );
     } else {
       return this.prisma.roomUser.create({
         data: {
