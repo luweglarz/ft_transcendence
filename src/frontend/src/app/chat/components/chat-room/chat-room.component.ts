@@ -5,6 +5,8 @@ import {
   SimpleChanges,
   ViewChild,
   ElementRef,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { Message } from 'src/app/chat/interface/message';
@@ -16,13 +18,14 @@ import { PopupsService } from 'src/app/home-page/popups/popups.service';
 import { JwtService } from 'src/app/auth/jwt';
 import { GameComponent } from 'src/app/pong/game/game.component';
 import { SocialService } from 'src/app/home-page/popups/social/social.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat-room',
   templateUrl: './chat-room.component.html',
   styleUrls: ['./chat-room.component.css'],
 })
-export class ChatRoomComponent implements OnChanges {
+export class ChatRoomComponent implements OnChanges, OnInit, OnDestroy {
   @Input() chatRoom: Room = {};
   @ViewChild('mesgs') private scrollContainer: ElementRef = new ElementRef(
     'mesgs',
@@ -33,24 +36,13 @@ export class ChatRoomComponent implements OnChanges {
   pass: UntypedFormControl = new UntypedFormControl(null, [
     Validators.required,
   ]);
-  messagesEvent = this.chatService.getMsg().subscribe((nMessage: Message) => {
-    console.log(nMessage);
-    if (
-      this.socialService.checkUserRelation(this.username, nMessage.username) !==
-      'blocked'
-    )
-      this.messages.push(nMessage);
-  });
+  getMsgEvent?: Subscription;
+  banMuteEvent?: Subscription;
+  getMsgsEvent?: Subscription;
+  getRoomUsersEvent?: Subscription;
   messages: Message[] = [];
   //roomUsers: Observable<RoomUser[]> = this.chatService.getRoomUsers();
   roomUsers: RoomUser[] = [];
-  banMute = this.chatService.getBanMuteResult().subscribe((commandReturn) => {
-    //console.log(commandReturn);
-    this.snackBar.open(commandReturn, 'dismiss', {
-      duration: 3000,
-      horizontalPosition: 'right',
-    });
-  });
   username = '';
 
   constructor(
@@ -65,7 +57,60 @@ export class ChatRoomComponent implements OnChanges {
     if (tmp != undefined) this.username = tmp;
   }
 
-  //ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getMsgEvent = this.chatService
+      .getMsg()
+      .subscribe((nMessage: Message) => {
+        console.log(nMessage);
+        if (
+          this.socialService.checkUserRelation(
+            this.username,
+            nMessage.username,
+          ) !== 'blocked'
+        )
+          this.messages.push(nMessage);
+      });
+    this.banMuteEvent = this.chatService
+      .getBanMuteResult()
+      .subscribe((commandReturn) => {
+        //console.log(commandReturn);
+        this.snackBar.open(commandReturn, 'dismiss', {
+          duration: 3000,
+          horizontalPosition: 'right',
+        });
+      });
+    this.getMsgsEvent = this.chatService
+      .getMsgs()
+      .subscribe((msgs: Message[]) => {
+        for (const message of msgs) {
+          let add = true;
+          for (const oldm of this.messages) {
+            if (
+              message.id === oldm.id ||
+              this.socialService.checkUserRelation(
+                this.username,
+                message.username,
+              ) === 'blocked'
+            )
+              add = false;
+          }
+          if (add) this.messages.push(message);
+        }
+      });
+    this.getRoomUsersEvent = this.chatService
+      .getRoomUsers()
+      .subscribe((roomUsers: RoomUser[]) => {
+        console.log(roomUsers);
+        if (roomUsers.length !== 0) this.roomUsers = roomUsers;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.getMsgEvent?.unsubscribe();
+    this.banMuteEvent?.unsubscribe();
+    this.getMsgsEvent?.unsubscribe();
+    this.getRoomUsersEvent?.unsubscribe();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (
@@ -85,28 +130,8 @@ export class ChatRoomComponent implements OnChanges {
     }
     //this.roomUsers = new Observable<RoomUser[]>;
     //this.roomUsers = this.chatService.getRoomUsers();
-    this.chatService.getRoomUsers().subscribe((roomUsers: RoomUser[]) => {
-      console.log(roomUsers);
-      if (roomUsers.length !== 0) this.roomUsers = roomUsers;
-    });
     this.messages = [];
     this.messages.length = 0;
-    this.chatService.getMsgs().subscribe((msgs: Message[]) => {
-      for (const message of msgs) {
-        let add = true;
-        for (const oldm of this.messages) {
-          if (
-            message.id === oldm.id ||
-            this.socialService.checkUserRelation(
-              this.username,
-              message.username,
-            ) === 'blocked'
-          )
-            add = false;
-        }
-        if (add) this.messages.push(message);
-      }
-    });
   }
 
   joinProtectedRoom() {
