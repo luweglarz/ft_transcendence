@@ -392,16 +392,24 @@ export class ChatGateway
     const jailUsers: JailUser[] = await this.jailUserService.jailUsers({
       where: { roomId: roomId, AND: { isBanned: true } },
     });
-    let j = 0;
-    for (const jailUser of jailUsers) {
-      j = 0;
-      for (const roomUser of roomUsers) {
-        if (roomUser.userId === jailUser.userId) {
-          delete roomUsers[j];
+
+
+    try {
+      let j = 0;
+      for (const jailUser of jailUsers) {
+        j = 0;
+        for (const roomUser of roomUsers) {
+          if (roomUser.userId === jailUser.userId) {
+            delete roomUsers[j];
+          }
+          j++;
         }
-        j++;
       }
+    } catch (error) {
+      error;
     }
+
+
     for (const roomuser of roomUsers) {
       if (roomuser !== undefined)
         this.server.to(roomuser.socketId).emit('msgs', messages);
