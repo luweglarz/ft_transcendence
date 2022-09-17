@@ -131,6 +131,19 @@ export class ChatGateway
     const findusers = await this.roomUserService.roomUsers({
       where: { roomId: room.id },
     });
+
+    /* Mon code pour empecher la connexion si l'user fais partie des jailUsers */
+    const jailUsers: JailUser[] = await this.jailUserService.jailUsers({
+      where: { roomId: room.id, AND: { isBanned: true } },
+    });
+    for (const jailUser of jailUsers) {
+      if (user.id === jailUser.userId && jailUser.isBanned === true) {
+        this.server.to(socket.id).emit('kickLeave');
+        this.server.to(socket.id).emit('banMute', 'you were banned');
+        return;
+      }
+    }
+
     for (const finduser of findusers) {
       if (finduser.userId === user.id) {
         this.getMsgs(socket, room.id);
@@ -304,6 +317,10 @@ export class ChatGateway
         this.server
           .to(jailUsers[0].socketId)
           .emit('banMute', 'you are ' + splitRet[0]);
+          if (splitRet[0] === 'banned') {
+            await this.leaveRoomById(jailUsers[0].socketId, command);
+            this.server.to(jailUsers[0].socketId).emit('kickLeave');
+          }
       }
     } else if (splitRet[0] === '/invite') {
       const invite: Invite = await this.prisma.invite.create({
@@ -378,16 +395,24 @@ export class ChatGateway
     const jailUsers: JailUser[] = await this.jailUserService.jailUsers({
       where: { roomId: roomId, AND: { isBanned: true } },
     });
-    let j = 0;
-    for (const jailUser of jailUsers) {
-      j = 0;
-      for (const roomUser of roomUsers) {
-        if (roomUser.userId === jailUser.userId) {
-          delete roomUsers[j];
+
+
+    try {
+      let j = 0;
+      for (const jailUser of jailUsers) {
+        j = 0;
+        for (const roomUser of roomUsers) {
+          if (roomUser.userId === jailUser.userId) {
+            delete roomUsers[j];
+          }
+          j++;
         }
-        j++;
       }
+    } catch (error) {
+      error;
     }
+
+
     for (const roomuser of roomUsers) {
       if (roomuser !== undefined)
         this.server.to(roomuser.socketId).emit('msgs', messages);
