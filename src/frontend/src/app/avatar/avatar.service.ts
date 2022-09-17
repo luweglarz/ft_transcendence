@@ -27,7 +27,7 @@ export class AvatarService {
       this.me.src.next(this.default_src);
     });
     this.events.avatar.upload.subscribe((src) => {
-      console.debug(`Avatar refreshed with recently uploaded src.`);
+      // console.debug(`Avatar refreshed with recently uploaded src.`);
       this.me.src.next(src);
     });
   }
@@ -53,7 +53,7 @@ export class AvatarService {
         // on signup the avatar upload and signin events can overlap
         // and on signin the server takes time to process the avatar
         if (this.me.src.value == this.default_src) {
-          console.debug(`Avatar refreshed with: ${src}`);
+          // console.debug(`Avatar refreshed with: ${src}`);
           this.me.src.next(src);
         }
       });

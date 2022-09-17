@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Room } from 'src/app/chat/interface/room';
 import { RoomType } from 'src/app/chat/interface/room';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-chat-room-create',
@@ -27,9 +28,12 @@ export class ChatRoomCreateComponent {
     );
     if (this.roomNameAvailable) {
       this.chatService.createRoom(this.data);
-      this.chatService.getCreatedRoom().subscribe((room: Room) => {
-        this.dialogRef.close(room);
-      });
+      this.chatService
+        .getCreatedRoom()
+        .pipe(take(1))
+        .subscribe((room: Room) => {
+          this.dialogRef.close(room);
+        });
     }
   }
 

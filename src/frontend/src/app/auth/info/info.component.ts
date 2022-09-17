@@ -29,7 +29,7 @@ export class InfoComponent implements OnInit {
     this.jwt
       .testToken()
       .then((status) => (this.backend_messagee = status.message));
-    this.jwt.logPayload();
+    // this.jwt.logPayload();
     this.http
       .get<string[]>(`${environment.backend}/users`)
       .subscribe((users) => (this.users = users));

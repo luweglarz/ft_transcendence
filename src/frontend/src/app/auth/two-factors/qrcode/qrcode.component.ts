@@ -48,7 +48,7 @@ export class QrcodeComponent implements OnInit, OnDestroy {
     this.http
       .get(`${environment.backend}/auth/authenticator/disable`)
       .subscribe(() => {
-        console.log('2FA disabled');
+        // console.log('2FA disabled');
       });
   }
 
@@ -56,7 +56,7 @@ export class QrcodeComponent implements OnInit, OnDestroy {
     this.http
       .get<TwoFactorSecret>(`${environment.backend}/auth/authenticator/enable`)
       .subscribe((twoFactorData) => {
-        console.log('2FA enabled');
+        // console.log('2FA enabled');
         this.secret = twoFactorData.secret;
         this.updateQRCode(twoFactorData.QRCodeData);
       });
@@ -70,15 +70,15 @@ export class QrcodeComponent implements OnInit, OnDestroy {
   }
 
   checkCode(code: OtpCode) {
-    console.log(code);
+    // console.log(code);
     this.http
       .post(`${environment.backend}/auth/authenticator/verify`, code)
       .subscribe((isValid) => {
         if (isValid) {
-          console.log('Code is valid');
+          // console.log('Code is valid');
           this.codeValid = true;
         } else {
-          console.error('Code is invalid');
+          // console.error('Code is invalid');
           this.codeValid = false;
         }
       });

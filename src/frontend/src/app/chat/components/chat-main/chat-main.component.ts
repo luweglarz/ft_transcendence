@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectionListChange } from '@angular/material/list';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Room } from 'src/app/chat/interface/room';
 import { Invite } from '../../interface/invite';
 import { ChatService } from 'src/app/chat/chatService/chat.service';
@@ -20,15 +20,8 @@ export class ChatMainComponent implements OnInit, OnDestroy {
   rooms: Observable<Room[]> = this.chatService.getRooms();
   selectedRoom: Room = {};
   invites: Invite[] = [];
-  inviteEvent = this.chatService.getInvitations().subscribe((inv) => {
-    this.notification.inviteReceived();
-    inv.invite.room = inv.Room;
-    this.invites.push(inv.invite);
-  });
-  kickLeave = this.chatService.kickLeaveEvent().subscribe(() => {
-    this.selectedRoom = {};
-  });
-
+  inviteEvent?: Subscription;
+  kickLeaveEvent?: Subscription;
   constructor(
     private chatService: ChatService,
     public dialog: MatDialog,
@@ -38,7 +31,22 @@ export class ChatMainComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.inviteEvent = this.chatService.getInvitations().subscribe((inv) => {
+      this.notification.inviteReceived();
+      inv.invite.room = inv.Room;
+      this.invites.push(inv.invite);
+    });
+    this.kickLeaveEvent = this.chatService.kickLeaveEvent().subscribe(() => {
+      this.selectedRoom = {};
+    });
     this.chatService.openChat();
+  }
+
+  ngOnDestroy(): void {
+    this.chatService.closeChat();
+    this.selectedRoom = {}; // probably useless
+    this.inviteEvent?.unsubscribe();
+    this.kickLeaveEvent?.unsubscribe();
   }
 
   onSelectRoom(event: MatSelectionListChange) {
@@ -83,10 +91,5 @@ export class ChatMainComponent implements OnInit, OnDestroy {
         }
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    this.chatService.closeChat();
-    this.selectedRoom = {};
   }
 }

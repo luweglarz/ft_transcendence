@@ -28,7 +28,7 @@ export class AvatarUploadComponent implements OnInit, OnDestroy {
         this.error = 'Image to large: max size 10Mb';
       } else {
         this.error = '';
-        console.debug(`Loaded image: ${image.name}`);
+        // console.debug(`Loaded image: ${image.name}`);
         this.service.update({ file: image });
       }
     }
